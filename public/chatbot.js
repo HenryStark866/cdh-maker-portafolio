@@ -283,4 +283,11 @@
     panel.hidden = true;
     fab.classList.remove("open");
   }
+  // Cerrar con Escape o haciendo clic fuera del widget
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !panel.hidden) closeChat();
+  });
+  document.addEventListener("click", (e) => {
+    if (!panel.hidden && !root.contains(e.target)) closeChat();
+  });
 })();
