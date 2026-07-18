@@ -24,4 +24,4 @@ firebase deploy --only hosting
 ```
 
 ---
-Hecho con 🧡 en Colombia.
+Hecho con 💜 en Colombia.
