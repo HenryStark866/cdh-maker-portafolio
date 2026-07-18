@@ -244,7 +244,13 @@
   function handleUser(text, forcedAction) {
     addMsg(text.replace(/</g, "&lt;"), "user");
     quick.innerHTML = "";
-    const action = forcedAction || detectIntent(text) || { type: "fallback" };
+    let action = forcedAction || detectIntent(text) || { type: "fallback" };
+    // Si ya le pedimos describir su proyecto y escribe algo sustancioso,
+    // capturamos la descripcion (afinando el servicio detectado) en vez de repetir el pitch.
+    if (!forcedAction && askedProject && text.trim().length > 12 && action.type === "svc") {
+      lastService = action.svc;
+      action = { type: "fallback" };
+    }
     respond(action, text);
   }
 
