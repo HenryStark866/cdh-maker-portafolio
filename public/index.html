@@ -1,12 +1,37 @@
 <!DOCTYPE html>
+<!-- ═══════════════════════════════════════════════════════════════════════════
+  CDH MAKER — index.html
+  Página principal del portafolio de servicios de CDH Maker.
+
+  Estructura del documento (cada zona está marcada con comentarios de sección):
+    <head>   → SEO (meta/OG), fuentes, estilos, tema y seguridad (cargan primero)
+    Nav      → sidebar con logo, secciones, cuenta de cliente, idioma y tema
+    Hero     → titular con texto rotativo, estadísticas y CTAs
+    Secciones→ Servicios · Proceso · Proyectos · Sobre mí · FAQ · Contacto
+    Modales  → Área de clientes (registro/login)
+    Scripts  → Firebase SDK, fondo animado, i18n, auth, interacciones y chatbot
+
+  Convenciones importantes:
+    - data-i18n="clave"        → texto traducible (ver i18n.js)
+    - data-require-auth        → sección bloqueada para visitantes sin cuenta
+    - data-contact="wa|mail"   → botones de contacto (URL solo con sesión)
+    - ?v=N en scripts/estilos  → control de versión de caché (subir al editar)
+  ───────────────────────────────────────────────────────────────────────────
+  Autor:    Ing. Henry Taborda — CDH Maker (Medellín, Colombia)
+  Contacto: cdhmaker@gmail.com
+  Última actualización: 2026-07-19
+  ═══════════════════════════════════════════════════════════════════════════ -->
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CDH Maker — Ingeniería, Fabricación Digital y Desarrollo</title>
-  <meta name="description" content="CDH Maker: desarrollo web y software, fabricación digital (impresión 3D, corte láser, CNC), electrónica e IoT, diseño CAD y consultoría técnica. Del diseño al prototipo." />
+  <meta name="description"
+    content="CDH Maker: desarrollo web y software, fabricación digital (impresión 3D, corte láser, CNC), electrónica e IoT, diseño CAD y consultoría técnica. Del diseño al prototipo." />
   <meta property="og:title" content="CDH Maker — Ingeniería, Fabricación Digital y Desarrollo" />
-  <meta property="og:description" content="Soluciones de ingeniería: software, prototipado, electrónica e IoT, diseño y consultoría técnica." />
+  <meta property="og:description"
+    content="Soluciones de ingeniería: software, prototipado, electrónica e IoT, diseño y consultoría técnica." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://cdh-maker-portafolio.web.app/" />
   <meta property="og:image" content="https://cdh-maker-portafolio.web.app/media/og.jpg" />
@@ -16,13 +41,16 @@
   <link rel="manifest" href="manifest.json" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=12" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2306232e'/%3E%3Ctext x='50' y='66' font-size='44' text-anchor='middle' fill='%2322d3ee' font-family='Arial' font-weight='bold'%3EC%3C/text%3E%3C/svg%3E" />
-  <script src="theme.js?v=3"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=15" />
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
+  <script src="theme.js?v=4"></script>
+  <script src="security.js?v=4"></script>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@graph":[
-    {"@type":"ProfessionalService","name":"CDH Maker","description":"Desarrollo web y software, fabricación digital (impresión 3D, corte láser, CNC), electrónica e IoT, diseño CAD y consultoría técnica.","url":"https://cdh-maker-portafolio.web.app/","email":"cdhmaker@gmail.com","telephone":"+573245769748","address":{"@type":"PostalAddress","addressLocality":"Medellín","addressCountry":"CO"},"founder":{"@type":"Person","name":"Henry Taborda"}},
+    {"@type":"ProfessionalService","name":"CDH Maker","description":"Desarrollo web y software, fabricación digital (impresión 3D, corte láser, CNC), electrónica e IoT, diseño CAD y consultoría técnica.","url":"https://cdh-maker-portafolio.web.app/","address":{"@type":"PostalAddress","addressLocality":"Medellín","addressCountry":"CO"},"founder":{"@type":"Person","name":"CDH Maker"}},
     {"@type":"FAQPage","mainEntity":[
       {"@type":"Question","name":"¿Cuánto cuesta un proyecto?","acceptedAnswer":{"@type":"Answer","text":"Cada proyecto es único, por eso la cotización es personalizada y gratuita: recibes precio y tiempos en menos de 24 horas, sin compromiso."}},
       {"@type":"Question","name":"¿Cómo es el proceso de trabajo y pago?","acceptedAnswer":{"@type":"Answer","text":"Trabajamos por etapas con entregas parciales y pago por hitos. Sin sorpresas ni letra pequeña."}},
@@ -32,6 +60,7 @@
   ]}
   </script>
 </head>
+
 <body>
 
   <a href="#servicios" class="skip-link" data-i18n="skip">Saltar al contenido</a>
@@ -39,30 +68,266 @@
   <!-- ===== FONDO OCÉANO ===== -->
   <canvas id="metaverse" aria-hidden="true"></canvas>
 
-  <!-- ===== NAV ===== -->
-  <header class="nav" id="top">
-    <div class="container nav-inner">
-      <a href="#top" class="logo">
-        <span class="logo-mark">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7l-9-5z"/><path d="M12 22V12"/><path d="M3 7l9 5 9-5"/></svg>
+  <!-- ===== SIDEBAR NAV ===== -->
+  <header class="nav" id="top" role="navigation" aria-label="Navegación principal">
+
+    <!-- Logo -->
+    <a href="#top" class="nav-logo" aria-label="CDH Maker IT — inicio">
+      <!-- Estado colapsado: Solo la C con circuito -->
+      <span class="logo-mark">
+        <svg viewBox="0 0 70 70" fill="none">
+          <style>
+            .c-base {
+              stroke: currentColor;
+              stroke-width: 14;
+              stroke-linecap: square;
+            }
+
+            .c-circ {
+              stroke: var(--accent);
+              stroke-width: 2.5;
+              stroke-linecap: round;
+            }
+
+            .c-dot {
+              fill: var(--accent);
+            }
+          </style>
+          <path class="c-base" d="M 55 15 L 25 15 A 15 15 0 0 0 10 30 L 10 40 A 15 15 0 0 0 25 55 L 55 55" />
+          <path class="c-circ" d="M 55 15 L 25 15 A 15 15 0 0 0 10 30 L 10 32 L 25 32 L 25 22" />
+          <circle class="c-dot" cx="25" cy="22" r="3" />
+          <path class="c-circ" d="M 10 45 L 10 40 A 15 15 0 0 1 25 55 L 45 55 L 45 42" />
+          <circle class="c-dot" cx="45" cy="42" r="3" />
+          <circle class="c-dot" cx="10" cy="45" r="3" />
+        </svg>
+      </span>
+      <!-- Estado expandido: Logo completo -->
+      <span class="nav-logo-text">
+        <svg viewBox="0 0 280 110" width="160" height="63">
+          <style>
+            .l-main {
+              fill: currentColor;
+            }
+
+            .l-acc {
+              fill: var(--accent);
+            }
+
+            .l-circ {
+              fill: none;
+              stroke: var(--accent);
+              stroke-width: 2.5;
+              stroke-linecap: round;
+              stroke-linejoin: round;
+            }
+
+            .l-base {
+              fill: none;
+              stroke: currentColor;
+              stroke-width: 16;
+              stroke-linecap: square;
+              stroke-linejoin: miter;
+            }
+
+            .l-chip {
+              fill: none;
+              stroke: var(--accent);
+              stroke-width: 2;
+              stroke-linecap: round;
+              stroke-linejoin: round;
+            }
+          </style>
+          <g transform="translate(10, 20)">
+            <path class="l-base" d="M 60 15 L 25 15 A 15 15 0 0 0 10 30 L 10 45 A 15 15 0 0 0 25 60 L 60 60" />
+            <path class="l-base" d="M 75 15 L 105 15 A 22.5 22.5 0 0 1 127.5 37.5 A 22.5 22.5 0 0 1 105 60 L 75 60 Z" />
+            <path class="l-base" d="M 145 15 L 145 60 M 145 37.5 L 195 37.5 M 195 15 L 195 60" />
+
+            <path class="l-circ" d="M 60 15 L 25 15 A 15 15 0 0 0 10 30 L 10 35 L 25 35 L 25 25" />
+            <circle class="l-acc" cx="25" cy="25" r="2.5" />
+            <path class="l-circ" d="M 10 50 L 10 45 A 15 15 0 0 1 25 60 L 50 60 L 50 45" />
+            <circle class="l-acc" cx="50" cy="45" r="2.5" />
+            <circle class="l-acc" cx="10" cy="50" r="2.5" />
+
+            <path class="l-circ" d="M 75 60 L 105 60 A 22.5 22.5 0 0 0 127.5 37.5 L 115 37.5 L 115 50" />
+            <circle class="l-acc" cx="115" cy="50" r="2.5" />
+            <path class="l-circ" d="M 75 15 L 75 40 L 90 40 L 90 25" />
+            <circle class="l-acc" cx="90" cy="25" r="2.5" />
+            <circle class="l-acc" cx="75" cy="15" r="2.5" />
+
+            <path class="l-circ" d="M 145 60 L 145 37.5 L 170 37.5 L 170 50" />
+            <circle class="l-acc" cx="170" cy="50" r="2.5" />
+            <path class="l-circ" d="M 195 60 L 195 37.5 L 180 37.5 L 180 20" />
+            <circle class="l-acc" cx="180" cy="20" r="2.5" />
+
+            <g transform="translate(95, -18)">
+              <polygon class="l-chip" points="15,0 30,8 15,16 0,8" />
+              <polygon class="l-chip" points="0,8 15,16 15,22 0,14" />
+              <polygon class="l-chip" points="30,8 15,16 15,22 30,14" />
+              <line class="l-chip" x1="5" y1="18" x2="5" y2="28" />
+              <circle class="l-acc" cx="5" cy="28" r="2" />
+              <line class="l-chip" x1="15" y1="23" x2="15" y2="33" />
+              <circle class="l-acc" cx="15" cy="33" r="2" />
+              <line class="l-chip" x1="25" y1="18" x2="25" y2="28" />
+              <circle class="l-acc" cx="25" cy="28" r="2" />
+            </g>
+
+            <g transform="translate(150, -5)">
+              <line class="l-base" style="stroke-width:4;stroke-linecap:round;" x1="5" y1="20" x2="5" y2="0" />
+              <circle class="l-main" cx="5" cy="-2" r="3.5" />
+              <line class="l-base" style="stroke-width:4;stroke-linecap:round;" x1="20" y1="20" x2="20" y2="-10" />
+              <circle class="l-main" cx="20" cy="-12" r="3.5" />
+              <line class="l-base" style="stroke-width:4;stroke-linecap:round;" x1="35" y1="20" x2="35" y2="-5" />
+              <circle class="l-main" cx="35" cy="-7" r="3.5" />
+              <line class="l-base" style="stroke-width:4;stroke-linecap:round;" x1="50" y1="20" x2="50" y2="5" />
+              <circle class="l-main" cx="50" cy="3" r="3.5" />
+            </g>
+          </g>
+          <g transform="translate(14, 100)" font-family="'Space Grotesk', 'Inter', sans-serif" font-weight="700">
+            <text x="0" y="0" font-size="28" class="l-main" letter-spacing="1">Maker</text>
+            <text x="96" y="0" font-size="28" class="l-acc" letter-spacing="1">IT</text>
+          </g>
+        </svg>
+      </span>
+    </a>
+
+    <!-- Links de navegación -->
+    <nav class="nav-links" id="navLinks">
+      <a href="#servicios" class="nav-item">
+        <span class="nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="m8 6-6 6 6 6" />
+            <path d="m16 6 6 6-6 6" />
+            <path d="m14 4-4 16" />
+          </svg>
         </span>
-        CDH<span class="accent">Maker</span>
+        <span class="nav-label" data-i18n="nav_serv">Servicios</span>
       </a>
-      <nav class="nav-links" id="navLinks">
-        <a href="#servicios" data-i18n="nav_serv">Servicios</a>
-        <a href="#proceso" data-i18n="nav_proc">Proceso</a>
-        <a href="#proyectos" data-i18n="nav_proj">Proyectos</a>
-        <a href="#sobre" data-i18n="nav_about">Sobre mí</a>
-        <a href="#contacto" class="btn btn-small" data-i18n="nav_contact">Contacto</a>
-      </nav>
-      <div class="nav-controls">
-        <select id="langSelect" class="lang-select" data-i18n-aria="lang_label" aria-label="Cambiar idioma"></select>
-        <button id="themeToggle" class="theme-toggle" data-i18n-aria="theme_label" aria-label="Cambiar tema claro/oscuro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="17" height="17"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></button>
-        <button class="nav-toggle" id="navToggle" data-i18n-aria="menu_label" aria-label="Abrir menú">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      <a href="#proceso" class="nav-item">
+        <span class="nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M12 20h9" />
+            <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
+          </svg>
+        </span>
+        <span class="nav-label" data-i18n="nav_proc">Proceso</span>
+      </a>
+      <a href="#proyectos" class="nav-item">
+        <span class="nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <rect x="2" y="3" width="6" height="6" rx="1" />
+            <rect x="16" y="3" width="6" height="6" rx="1" />
+            <rect x="9" y="3" width="6" height="6" rx="1" />
+            <rect x="2" y="13" width="6" height="8" rx="1" />
+            <rect x="9" y="13" width="6" height="8" rx="1" />
+            <rect x="16" y="13" width="6" height="8" rx="1" />
+          </svg>
+        </span>
+        <span class="nav-label" data-i18n="nav_proj">Proyectos</span>
+      </a>
+      <a href="#sobre" class="nav-item">
+        <span class="nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+        </span>
+        <span class="nav-label" data-i18n="nav_about">Sobre mí</span>
+      </a>
+      <a href="#contacto" class="nav-item nav-item--accent">
+        <span class="nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+        </span>
+        <span class="nav-label" data-i18n="nav_contact">Contacto</span>
+      </a>
+    </nav>
+
+    <!-- Controles: cuenta, idioma, tema -->
+    <div class="nav-bottom">
+
+      <!-- Cuenta / usuario -->
+      <div class="nav-auth-area">
+        <button type="button" id="authNavBtn" class="nav-item nav-item--auth">
+          <span class="nav-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <line x1="19" y1="8" x2="19" y2="14" />
+              <line x1="22" y1="11" x2="16" y2="11" />
+            </svg>
+          </span>
+          <span class="nav-label" data-i18n="auth_nav">Crear cuenta</span>
         </button>
+
+        <div id="authUserMenu" class="nav-user-menu" hidden>
+          <a href="perfil.html" class="nav-item nav-user-chip" title="Ver mi perfil" style="text-decoration: none;">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+            </span>
+            <span class="nav-label" data-user-name>Cliente</span>
+          </a>
+          <button type="button" id="authLogoutBtn" class="nav-item nav-item--logout">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+              </svg>
+            </span>
+            <span class="nav-label" data-i18n="auth_logout">Salir</span>
+          </button>
+        </div>
       </div>
+
+      <!-- Idioma -->
+      <div class="nav-item nav-item--control nav-lang-wrap">
+        <span class="nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M2 12h20" />
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+          </svg>
+        </span>
+        <select id="langSelect" class="lang-select nav-label" data-i18n-aria="lang_label"
+          aria-label="Cambiar idioma"></select>
+      </div>
+
+      <!-- Tema -->
+      <button id="themeToggle" class="nav-item nav-item--control" data-i18n-aria="theme_label"
+        aria-label="Cambiar tema">
+        <span class="nav-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round" width="18" height="18">
+            <circle cx="12" cy="12" r="4" />
+            <path
+              d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+          </svg>
+        </span>
+        <span class="nav-label">Tema</span>
+      </button>
+
     </div>
+
+    <!-- Toggle móvil -->
+    <button class="nav-toggle" id="navToggle" data-i18n-aria="menu_label" aria-label="Abrir menú" aria-expanded="false"
+      aria-controls="navLinks">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M3 6h18M3 12h18M3 18h18" />
+      </svg>
+    </button>
+
   </header>
 
   <!-- ===== HERO ===== -->
@@ -70,21 +335,32 @@
     <div class="orb orb-1" aria-hidden="true"></div>
     <div class="orb orb-2" aria-hidden="true"></div>
     <div class="container hero-inner">
-      <p class="hero-kicker">// <span id="typed">Ingeniería</span><span class="typed-cursor">▌</span></p>
-      <h1 data-i18n="hero_h1" data-i18n-html>Del <span class="grad-text">diseño</span> al <span class="grad-text">prototipo</span>,<br />de la idea al <span class="grad-text-2">producto</span>.</h1>
+      <p class="hero-kicker">// <span id="typed"></span><span class="typed-cursor">▌</span></p>
+      <h1 data-i18n="hero_h1" data-i18n-html>Del <span class="grad-text">diseño</span> al <span
+          class="grad-text">prototipo</span>,<br />de la idea al <span class="grad-text-2">producto</span>.</h1>
       <p class="hero-sub" data-i18n="hero_sub" data-i18n-html>
-        Soy <strong>Henry Taborda</strong>, ingeniero y maker. En <strong>CDH Maker</strong> convierto ideas en
+        Somos CDH Maker, y aquí convertimos ideas en
         soluciones reales: desarrollo de software, fabricación digital, electrónica, IoT y consultoría técnica.
       </p>
       <div class="hero-cta">
-        <a href="#contacto" class="btn btn-primary btn-glow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg><span data-i18n="hero_cta1">Trabajemos juntos</span></a>
+        <a href="#contacto" class="btn btn-primary btn-glow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14" />
+            <path d="m13 6 6 6-6 6" />
+          </svg><span data-i18n="hero_cta1">Trabajemos juntos</span></a>
         <a href="#proyectos" class="btn btn-ghost" data-i18n="hero_cta2">Ver mi trabajo</a>
       </div>
+      <p class="hero-privacy-note" data-i18n="hero_privacy">Explora el portafolio libremente. Para contactarme o acceder
+        a herramientas como PrivacyCheck, crea tu cuenta gratis.</p>
       <div class="hero-stats">
-        <div><strong><span class="count" data-count="4">0</span></strong><span data-i18n="stat1_l">líneas de servicio</span></div>
-        <div><strong><span class="count" data-count="10">0</span>+</strong><span data-i18n="stat2_l">proyectos construidos</span></div>
-        <div><strong>&lt;<span class="count" data-count="24">0</span>h</strong><span data-i18n="stat3_l">tiempo de respuesta</span></div>
-        <div><strong><span class="count" data-count="100">0</span>%</strong><span data-i18n="stat4_l">pasión maker</span></div>
+        <div><strong><span class="count" data-count="4">0</span></strong><span data-i18n="stat1_l">líneas de
+            servicio</span></div>
+        <div><strong><span class="count" data-count="10">0</span>+</strong><span data-i18n="stat2_l">proyectos
+            construidos</span></div>
+        <div><strong>&lt;<span class="count" data-count="24">0</span>h</strong><span data-i18n="stat3_l">tiempo de
+            respuesta</span></div>
+        <div><strong><span class="count" data-count="100">0</span>%</strong><span data-i18n="stat4_l">pasión
+            maker</span></div>
       </div>
     </div>
   </section>
@@ -92,12 +368,20 @@
   <!-- ===== MARQUEE TECNOLOGÍAS ===== -->
   <div class="marquee" aria-hidden="true">
     <div class="marquee-track">
-      <span>Impresión 3D</span><span>◆</span><span>Corte láser</span><span>◆</span><span>CNC</span><span>◆</span><span>Diseño CAD</span><span>◆</span><span>Arduino</span><span>◆</span><span>ESP32</span><span>◆</span><span>Raspberry Pi</span><span>◆</span><span>IoT</span><span>◆</span><span>Domótica</span><span>◆</span><span>Python</span><span>◆</span><span>JavaScript</span><span>◆</span><span>Firebase</span><span>◆</span><span>Inteligencia Artificial</span><span>◆</span>
-      <span>Impresión 3D</span><span>◆</span><span>Corte láser</span><span>◆</span><span>CNC</span><span>◆</span><span>Diseño CAD</span><span>◆</span><span>Arduino</span><span>◆</span><span>ESP32</span><span>◆</span><span>Raspberry Pi</span><span>◆</span><span>IoT</span><span>◆</span><span>Domótica</span><span>◆</span><span>Python</span><span>◆</span><span>JavaScript</span><span>◆</span><span>Firebase</span><span>◆</span><span>Inteligencia Artificial</span><span>◆</span>
+      <span>Impresión 3D</span><span>◆</span><span>Corte
+        láser</span><span>◆</span><span>CNC</span><span>◆</span><span>Diseño
+        CAD</span><span>◆</span><span>Arduino</span><span>◆</span><span>ESP32</span><span>◆</span><span>Raspberry
+        Pi</span><span>◆</span><span>IoT</span><span>◆</span><span>Domótica</span><span>◆</span><span>Python</span><span>◆</span><span>JavaScript</span><span>◆</span><span>Firebase</span><span>◆</span><span>Inteligencia
+        Artificial</span><span>◆</span>
+      <span>Impresión 3D</span><span>◆</span><span>Corte
+        láser</span><span>◆</span><span>CNC</span><span>◆</span><span>Diseño
+        CAD</span><span>◆</span><span>Arduino</span><span>◆</span><span>ESP32</span><span>◆</span><span>Raspberry
+        Pi</span><span>◆</span><span>IoT</span><span>◆</span><span>Domótica</span><span>◆</span><span>Python</span><span>◆</span><span>JavaScript</span><span>◆</span><span>Firebase</span><span>◆</span><span>Inteligencia
+        Artificial</span><span>◆</span>
     </div>
   </div>
 
-  <!-- ===== SERVICIOS ===== -->
+  <!-- ===== SERVICIOS (visible para todos) ===== -->
   <section class="section" id="servicios">
     <div class="container">
       <p class="section-kicker" data-i18n="serv_k">// Servicios</p>
@@ -107,10 +391,16 @@
       <div class="cards">
         <article class="card">
           <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m8 6-6 6 6 6"/><path d="m16 6 6 6-6 6"/><path d="m14 4-4 16"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="m8 6-6 6 6 6" />
+              <path d="m16 6 6 6-6 6" />
+              <path d="m14 4-4 16" />
+            </svg>
           </div>
           <h3 data-i18n="s1_t">Desarrollo web y software</h3>
-          <p data-i18n="s1_p">Páginas web, aplicaciones y sistemas a la medida. Sitios modernos, rápidos y pensados para hacer crecer tu negocio o proyecto.</p>
+          <p data-i18n="s1_p">Páginas web, aplicaciones y sistemas a la medida. Sitios modernos, rápidos y pensados para
+            hacer crecer tu negocio o proyecto.</p>
           <ul>
             <li data-i18n="s1_a">Sitios web y landing pages</li>
             <li data-i18n="s1_b">Aplicaciones web a la medida</li>
@@ -120,10 +410,16 @@
 
         <article class="card">
           <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9l4-6z"/><path d="M11 3 8 9l4 12 4-12-3-6"/><path d="M2 9h20"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M6 3h12l4 6-10 12L2 9l4-6z" />
+              <path d="M11 3 8 9l4 12 4-12-3-6" />
+              <path d="M2 9h20" />
+            </svg>
           </div>
           <h3 data-i18n="s2_t">Fabricación digital / Maker</h3>
-          <p data-i18n="s2_p">Prototipado y fabricación con tecnologías digitales: de tu idea o plano a la pieza terminada.</p>
+          <p data-i18n="s2_p">Prototipado y fabricación con tecnologías digitales: de tu idea o plano a la pieza
+            terminada.</p>
           <ul>
             <li data-i18n="s2_a">Impresión 3D (FDM / resina)</li>
             <li data-i18n="s2_b">Corte y grabado láser</li>
@@ -133,10 +429,16 @@
 
         <article class="card">
           <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <rect x="4" y="4" width="16" height="16" rx="2" />
+              <path d="M9 9h6v6H9z" />
+              <path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3" />
+            </svg>
           </div>
           <h3 data-i18n="s3_t">Electrónica e IoT</h3>
-          <p data-i18n="s3_p">Sistemas electrónicos y conectados: sensórica, automatización y monitoreo remoto para hogares, industria y agro.</p>
+          <p data-i18n="s3_p">Sistemas electrónicos y conectados: sensórica, automatización y monitoreo remoto para
+            hogares, industria y agro.</p>
           <ul>
             <li data-i18n="s3_a">Sistemas embebidos (Arduino, ESP32, Raspberry Pi)</li>
             <li data-i18n="s3_b">Domótica y automatización</li>
@@ -146,7 +448,11 @@
 
         <article class="card">
           <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M12 20h9" />
+              <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+            </svg>
           </div>
           <h3 data-i18n="s4_t">Diseño y consultoría técnica</h3>
           <p data-i18n="s4_p">Acompañamiento experto para materializar tu proyecto: diseño, asesoría y formación.</p>
@@ -169,31 +475,55 @@
       <div class="why-grid">
         <div class="why-item">
           <div class="why-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 8.5 4.9v9.8L12 21.6l-8.5-4.9V6.9L12 2z"/><path d="M12 22V12"/><path d="m3.5 7 8.5 5 8.5-5"/><circle cx="12" cy="12" r="0.5"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="m12 2 8.5 4.9v9.8L12 21.6l-8.5-4.9V6.9L12 2z" />
+              <path d="M12 22V12" />
+              <path d="m3.5 7 8.5 5 8.5-5" />
+              <circle cx="12" cy="12" r="0.5" />
+            </svg>
           </div>
           <h3 data-i18n="w1_t">Todo bajo un mismo techo</h3>
-          <p data-i18n="w1_p">Software, electrónica y fabricación en un solo lugar: no necesitas coordinar tres proveedores distintos.</p>
+          <p data-i18n="w1_p">Software, electrónica y fabricación en un solo lugar: no necesitas coordinar tres
+            proveedores distintos.</p>
         </div>
         <div class="why-item">
           <div class="why-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4.5 13.5H11L9.5 22 19 9.5h-6.5L13 2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M13 2 4.5 13.5H11L9.5 22 19 9.5h-6.5L13 2z" />
+            </svg>
           </div>
           <h3 data-i18n="w2_t">Prototipado rápido</h3>
-          <p data-i18n="w2_p">Filosofía maker: construir, probar y mejorar. Ves avances reales desde los primeros días.</p>
+          <p data-i18n="w2_p">Filosofía maker: construir, probar y mejorar. Ves avances reales desde los primeros días.
+          </p>
         </div>
         <div class="why-item">
           <div class="why-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
           </div>
           <h3 data-i18n="w3_t">Trato directo y honesto</h3>
-          <p data-i18n="w3_p">Hablas directamente con quien construye tu proyecto. Cotización gratis y sin letra pequeña.</p>
+          <p data-i18n="w3_p">Hablas directamente con quien construye tu proyecto. Cotización gratis y sin letra
+            pequeña.</p>
         </div>
         <div class="why-item">
           <div class="why-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M9 9h6v6H9z"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+              stroke-linejoin="round">
+              <rect x="5" y="5" width="14" height="14" rx="2" />
+              <path d="M9 9h6v6H9z" />
+              <path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3" />
+            </svg>
           </div>
           <h3 data-i18n="w4_t">Tecnología de punta</h3>
-          <p data-i18n="w4_p">IA, IoT y nube aplicadas a problemas reales — las mismas herramientas de mis propios proyectos.</p>
+          <p data-i18n="w4_p">IA, IoT y nube aplicadas a problemas reales — las mismas herramientas de mis propios
+            proyectos.</p>
         </div>
       </div>
     </div>
@@ -206,10 +536,22 @@
       <h2 data-i18n="proc_t">Cómo trabajo</h2>
       <p class="section-sub" data-i18n="proc_s">Un flujo claro, de principio a fin.</p>
       <div class="steps">
-        <div class="step"><span class="step-num">01</span><h3 data-i18n="pr1_t">Escucha</h3><p data-i18n="pr1_p">Entendemos tu necesidad, el contexto y los objetivos del proyecto.</p></div>
-        <div class="step"><span class="step-num">02</span><h3 data-i18n="pr2_t">Diseño</h3><p data-i18n="pr2_p">Propuesta técnica y de diseño: bocetos, CAD, arquitectura de software.</p></div>
-        <div class="step"><span class="step-num">03</span><h3 data-i18n="pr3_t">Construcción</h3><p data-i18n="pr3_p">Desarrollo, fabricación y pruebas iterativas con tu retroalimentación.</p></div>
-        <div class="step"><span class="step-num">04</span><h3 data-i18n="pr4_t">Entrega</h3><p data-i18n="pr4_p">Producto funcionando, documentación y acompañamiento posterior.</p></div>
+        <div class="step"><span class="step-num">01</span>
+          <h3 data-i18n="pr1_t">Escucha</h3>
+          <p data-i18n="pr1_p">Entendemos tu necesidad, el contexto y los objetivos del proyecto.</p>
+        </div>
+        <div class="step"><span class="step-num">02</span>
+          <h3 data-i18n="pr2_t">Diseño</h3>
+          <p data-i18n="pr2_p">Propuesta técnica y de diseño: bocetos, CAD, arquitectura de software.</p>
+        </div>
+        <div class="step"><span class="step-num">03</span>
+          <h3 data-i18n="pr3_t">Construcción</h3>
+          <p data-i18n="pr3_p">Desarrollo, fabricación y pruebas iterativas con tu retroalimentación.</p>
+        </div>
+        <div class="step"><span class="step-num">04</span>
+          <h3 data-i18n="pr4_t">Entrega</h3>
+          <p data-i18n="pr4_p">Producto funcionando, documentación y acompañamiento posterior.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -228,8 +570,13 @@
         <div class="project-body">
           <div class="project-tag" data-i18n="tag_video">Demo en video</div>
           <h3 data-i18n="pj_featured_t">PrivacyCheck — Cumplimiento Ley 1581 en acción</h3>
-          <p data-i18n="pj_featured_p">Demo real de la plataforma: registro de entidades, consulta al RNBD, autodiagnóstico con puntaje, simulador y análisis con IA. Next.js, en la nube.</p>
-          <a class="btn btn-primary pc-cta" href="https://privacycheck-co.vercel.app" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span data-i18n="pc_cta">Usar PrivacyCheck gratis</span></a>
+          <p data-i18n="pj_featured_p">Demo real de la plataforma: registro de entidades, consulta al RNBD,
+            autodiagnóstico con puntaje, simulador y análisis con IA. Next.js, en la nube.</p>
+          <a class="btn btn-primary pc-cta" href="https://privacycheck-co.vercel.app" target="_blank" rel="noopener"
+            data-require-login data-i18n-pc-cta><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg><span data-i18n="pc_cta">Usar PrivacyCheck gratis</span></a>
         </div>
       </article>
 
@@ -241,7 +588,8 @@
           <div class="project-body">
             <div class="project-tag" data-i18n="tag_ai">Inteligencia Artificial</div>
             <h3 data-i18n="pj_eva_t">EvaIA — Asistente de IA local</h3>
-            <p data-i18n="pj_eva_p">Asistente de IA que corre 100% en local: voz, respuesta hablada, visión por cámara, memoria en base de datos y avatar animado propio.</p>
+            <p data-i18n="pj_eva_p">Asistente de IA que corre 100% en local: voz, respuesta hablada, visión por cámara,
+              memoria en base de datos y avatar animado propio.</p>
           </div>
         </article>
         <article class="project project-with-media">
@@ -254,7 +602,8 @@
           <div class="project-body">
             <div class="project-tag" data-i18n="tag_sw">Software</div>
             <h3 data-i18n="pj_dev_t">Desarrollo a la medida, en acción</h3>
-            <p data-i18n="pj_dev_p">Así trabajamos: análisis, diseño, construcción e iteración hasta que todo funciona — código limpio, pruebas y despliegue en la nube.</p>
+            <p data-i18n="pj_dev_p">Así trabajamos: análisis, diseño, construcción e iteración hasta que todo funciona —
+              código limpio, pruebas y despliegue en la nube.</p>
           </div>
         </article>
         <article class="project project-with-media">
@@ -264,7 +613,8 @@
           <div class="project-body">
             <div class="project-tag" data-i18n="tag_web">Web</div>
             <h3 data-i18n="pj_cav_t">Autodiagnóstico Ley 1581 — Reto CAVALTEC</h3>
-            <p data-i18n="pj_cav_p">Plataforma web de autodiagnóstico de cumplimiento en protección de datos (Ley 1581), con el equipo Sintaxis TI para el reto CAVALTEC.</p>
+            <p data-i18n="pj_cav_p">Plataforma web de autodiagnóstico de cumplimiento en protección de datos (Ley 1581),
+              con el equipo Sintaxis TI para el reto CAVALTEC.</p>
           </div>
         </article>
         <article class="project project-with-media">
@@ -274,8 +624,10 @@
           <div class="project-body">
             <div class="project-tag" data-i18n="tag_saas">Web · SaaS</div>
             <h3 data-i18n="pj_at_t">A Tiempo Logística — Última milla</h3>
-            <p data-i18n="pj_at_p">Plataforma SaaS de logística de última milla para e-commerce en Medellín: rastreo de guías, CEDI, rutas, recaudo contraentrega y trazabilidad punta a punta. Next.js + Supabase.</p>
-            <a class="project-link" href="https://atiempo-logistica.vercel.app" target="_blank" rel="noopener" data-i18n="live">Ver en vivo →</a>
+            <p data-i18n="pj_at_p">Plataforma SaaS de logística de última milla para e-commerce en Medellín: rastreo de
+              guías, CEDI, rutas, recaudo contraentrega y trazabilidad punta a punta. Next.js + Supabase.</p>
+            <a class="project-link" href="https://atiempo-logistica.vercel.app" target="_blank" rel="noopener"
+              data-i18n="live">Ver en vivo →</a>
           </div>
         </article>
         <article class="project project-with-media">
@@ -285,8 +637,10 @@
           <div class="project-body">
             <div class="project-tag" data-i18n="tag_saas">Web · SaaS</div>
             <h3 data-i18n="pj_taxi_t">TaxiYa — Central de taxis</h3>
-            <p data-i18n="pj_taxi_p">Plataforma para que empresas de taxis operen sin llamadas ni planes de datos costosos: apps para pasajero, conductor y central, con despacho en tiempo real. Producto de CDH Maker.</p>
-            <a class="project-link" href="https://taxiya.vercel.app" target="_blank" rel="noopener" data-i18n="live">Ver en vivo →</a>
+            <p data-i18n="pj_taxi_p">Plataforma para que empresas de taxis operen sin llamadas ni planes de datos
+              costosos: apps para pasajero, conductor y central, con despacho en tiempo real. Producto de CDH Maker.</p>
+            <a class="project-link" href="https://taxiya.vercel.app" target="_blank" rel="noopener" data-i18n="live">Ver
+              en vivo →</a>
           </div>
         </article>
         <article class="project project-with-media">
@@ -296,15 +650,18 @@
           <div class="project-body">
             <div class="project-tag" data-i18n="tag_saas_ai">Web · SaaS · IA</div>
             <h3 data-i18n="pj_inc_t">IncubApp — Operación industrial</h3>
-            <p data-i18n="pj_inc_p">SaaS multi-empresa para plantas de incubación y granjas: rondas con foto, órdenes de trabajo, ventas, logística, sanidad y gerencia en tiempo real, con IA. Producto de CDH Maker.</p>
-            <a class="project-link" href="https://incubant-app.vercel.app" target="_blank" rel="noopener" data-i18n="live">Ver en vivo →</a>
+            <p data-i18n="pj_inc_p">SaaS multi-empresa para plantas de incubación y granjas: rondas con foto, órdenes de
+              trabajo, ventas, logística, sanidad y gerencia en tiempo real, con IA. Producto de CDH Maker.</p>
+            <a class="project-link" href="https://incubant-app.vercel.app" target="_blank" rel="noopener"
+              data-i18n="live">Ver en vivo →</a>
           </div>
         </article>
         <article class="project project-cta">
           <div class="project-body">
             <div class="project-tag" data-i18n="tag_idea">Tu idea</div>
             <h3 data-i18n="cta_t">Tu proyecto podría estar aquí</h3>
-            <p data-i18n="cta_p">¿Tienes una idea de software, electrónica o fabricación digital? Hagámosla realidad.</p>
+            <p data-i18n="cta_p">¿Tienes una idea de software, electrónica o fabricación digital? Hagámosla realidad.
+            </p>
             <a href="#contacto" class="btn btn-ghost" data-i18n="cta_btn">Conversemos →</a>
           </div>
         </article>
@@ -317,14 +674,14 @@
     <div class="container about">
       <div>
         <p class="section-kicker" data-i18n="about_k">// Sobre mí</p>
-        <h2 data-i18n="about_t">Henry Taborda — CDH Maker</h2>
+        <h2 data-i18n="about_t">CDH Maker</h2>
         <p data-i18n="about_p1">
-          Soy un apasionado por la tecnología y la cultura maker. Combino la ingeniería, la fabricación
+          Somos un equipo apasionado por la tecnología y la cultura maker. Combino la ingeniería, la fabricación
           digital y el desarrollo de software para resolver problemas reales, con un enfoque práctico:
           prototipar rápido, iterar y entregar soluciones que funcionan.
         </p>
         <p data-i18n="about_p2" data-i18n-html>
-          Creo en el poder de <em>aprender haciendo</em> y en que la tecnología debe estar al alcance de
+          Creemos en el poder de <em>aprender haciendo</em> y en que la tecnología debe estar al alcance de
           todos: por eso también comparto conocimiento a través de talleres y capacitaciones.
         </p>
         <div class="chips">
@@ -337,7 +694,7 @@
         <div class="terminal">
           <div class="terminal-bar"><span></span><span></span><span></span></div>
           <pre><code>$ whoami
-<span class="t-accent">henry@cdhmaker</span>
+<span class="t-accent">cdhmaker@gmail.com</span>
 
 $ cat perfil.txt
 &gt; <span data-i18n="term_role" data-i18n-html>Ingeniero &amp; Maker</span>
@@ -360,41 +717,79 @@ $ estado
       <div class="faq-list">
         <details class="faq-item">
           <summary><span data-i18n="faq1_q">¿Cuánto cuesta un proyecto?</span><i class="faq-chev"></i></summary>
-          <p data-i18n="faq1_a">Cada proyecto es único, por eso la cotización es personalizada y gratuita: describes tu idea, la revisamos y recibes precio y tiempos en menos de 24 horas, sin compromiso.</p>
+          <p data-i18n="faq1_a">Cada proyecto es único, por eso la cotización es personalizada y gratuita: describes tu
+            idea, la revisamos y recibes precio y tiempos en menos de 24 horas, sin compromiso.</p>
         </details>
         <details class="faq-item">
-          <summary><span data-i18n="faq2_q">¿Cómo es el proceso de trabajo y pago?</span><i class="faq-chev"></i></summary>
-          <p data-i18n="faq2_a">Trabajamos por etapas con entregas parciales: ves avances reales desde los primeros días y el pago se divide por hitos. Sin sorpresas ni letra pequeña.</p>
+          <summary><span data-i18n="faq2_q">¿Cómo es el proceso de trabajo y pago?</span><i class="faq-chev"></i>
+          </summary>
+          <p data-i18n="faq2_a">Trabajamos por etapas con entregas parciales: ves avances reales desde los primeros días
+            y el pago se divide por hitos. Sin sorpresas ni letra pequeña.</p>
         </details>
         <details class="faq-item">
-          <summary><span data-i18n="faq3_q">¿Atienden clientes fuera de Medellín?</span><i class="faq-chev"></i></summary>
-          <p data-i18n="faq3_a">Sí. El software se entrega en la nube para cualquier parte del mundo, y las piezas físicas (3D, láser, CNC) se envían por mensajería a todo Colombia.</p>
+          <summary><span data-i18n="faq3_q">¿Atienden clientes fuera de Medellín?</span><i class="faq-chev"></i>
+          </summary>
+          <p data-i18n="faq3_a">Sí. El software se entrega en la nube para cualquier parte del mundo, y las piezas
+            físicas (3D, láser, CNC) se envían por mensajería a todo Colombia.</p>
         </details>
         <details class="faq-item">
           <summary><span data-i18n="faq4_q">¿Qué pasa después de la entrega?</span><i class="faq-chev"></i></summary>
-          <p data-i18n="faq4_a">Recibes documentación y acompañamiento posterior: resolvemos dudas, ajustamos detalles y te dejamos todo funcionando. La relación no termina con la entrega.</p>
+          <p data-i18n="faq4_a">Recibes documentación y acompañamiento posterior: resolvemos dudas, ajustamos detalles y
+            te dejamos todo funcionando. La relación no termina con la entrega.</p>
         </details>
       </div>
     </div>
   </section>
 
-  <!-- ===== CONTACTO ===== -->
-  <section class="section" id="contacto">
-    <div class="container contact">
+  <!-- ===== CONTACTO (requiere cuenta de cliente) ===== -->
+  <section class="section gated-section" id="contacto" data-require-auth>
+    <div class="auth-lock-overlay" aria-hidden="false">
+      <div class="auth-lock-card">
+        <div class="auth-lock-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          </svg>
+        </div>
+        <h3 data-i18n="lock_contact_t">Contacto solo para clientes</h3>
+        <p data-i18n="lock_contact_p">Regístrate para escribirnos. No mostramos datos de contacto al público: así
+          protegemos nuestra privacidad y construimos nuestra base de clientes.</p>
+        <button type="button" class="btn btn-primary" data-open-auth="register" data-i18n="auth_nav">Crear
+          cuenta</button>
+        <button type="button" class="btn btn-ghost" data-open-auth="login" data-i18n="auth_login_tab">Ya tengo
+          cuenta</button>
+      </div>
+    </div>
+    <div class="container contact gated-content">
       <p class="section-kicker" data-i18n="contact_k">// Contacto</p>
       <h2 data-i18n="contact_t">¿Tienes un proyecto en mente?</h2>
       <p class="section-sub" data-i18n="contact_s">Cuéntame tu idea y busquemos la mejor forma de hacerla realidad.</p>
-      <div class="contact-actions">
-        <a class="btn btn-whatsapp" href="https://wa.me/573245769748?text=Hola%20Henry%2C%20vengo%20de%20tu%20p%C3%A1gina%20web%20y%20quiero%20informaci%C3%B3n%20sobre%20tus%20servicios." target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.019-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.297-.497.1-.198.05-.371-.025-.52-.074-.149-.668-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/></svg>
-          WhatsApp: 324 576 9748
+      <div class="contact-actions contact-actions-icons">
+        <a class="contact-icon-btn contact-wa" data-contact="wa" href="#" target="_blank" rel="noopener noreferrer"
+          aria-label="WhatsApp" title="WhatsApp">
+          <span class="contact-icon-ring">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.019-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.297-.497.1-.198.05-.371-.025-.52-.074-.149-.668-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413" />
+            </svg>
+          </span>
+          <span class="contact-icon-label">WhatsApp</span>
         </a>
-        <a class="btn btn-primary" href="mailto:cdhmaker@gmail.com?subject=Proyecto%20con%20CDH%20Maker">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
-          cdhmaker@gmail.com
+        <a class="contact-icon-btn contact-mail" data-contact="mail" href="#" aria-label="Email" title="Email">
+          <span class="contact-icon-ring">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="4" width="20" height="16" rx="2" />
+              <path d="m22 7-10 6L2 7" />
+            </svg>
+          </span>
+          <span class="contact-icon-label" data-i18n="contact_email_label">Correo</span>
         </a>
       </div>
       <p class="contact-note" data-i18n="contact_note">Respuesta usualmente en menos de 24 horas.</p>
+      <p class="contact-privacy" data-i18n="contact_privacy">Los canales se activan al iniciar sesión. No publicamos
+        número ni correo en la página.</p>
     </div>
   </section>
 
@@ -404,11 +799,17 @@ $ estado
       <div>
         <a href="#top" class="logo">
           <span class="logo-mark">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7l-9-5z"/><path d="M12 22V12"/><path d="M3 7l9 5 9-5"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M12 2 3 7v10l9 5 9-5V7l-9-5z" />
+              <path d="M12 22V12" />
+              <path d="M3 7l9 5 9-5" />
+            </svg>
           </span>
           CDH<span class="accent">Maker</span>
         </a>
-        <p class="footer-tagline" data-i18n="foot_tag" data-i18n-html>Si lo puedes imaginar,<br />lo podemos construir.</p>
+        <p class="footer-tagline" data-i18n="foot_tag" data-i18n-html>Si lo puedes imaginar,<br />lo podemos construir.
+        </p>
       </div>
       <div>
         <h4 data-i18n="foot_nav_h">Navegación</h4>
@@ -419,26 +820,110 @@ $ estado
       </div>
       <div>
         <h4 data-i18n="foot_contact_h">Contacto</h4>
-        <a href="https://wa.me/573245769748?text=Hola%20Henry%2C%20vengo%20de%20tu%20p%C3%A1gina%20web." target="_blank" rel="noopener">WhatsApp: 324 576 9748</a>
-        <a href="mailto:cdhmaker@gmail.com">cdhmaker@gmail.com</a>
+        <a href="#contacto" data-i18n="foot_contact_cta">Acceder a contacto</a>
+        <a href="#" data-open-auth="register" data-i18n="auth_nav">Crear cuenta</a>
         <a href="https://github.com/HenryStark866" target="_blank" rel="noopener">GitHub</a>
-        <span class="footer-loc"><svg class="loc-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg> <span data-i18n="term_loc">Medellín, Colombia</span></span>
+        <span class="footer-loc"><svg class="loc-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg> <span data-i18n="term_loc">Medellín, Colombia</span></span>
       </div>
     </div>
     <div class="container footer-inner">
-      <p>© <span id="year"></span> <span data-i18n="foot_copy">CDH Maker — Henry Taborda. Hecho con 💜 en Colombia.</span></p>
+      <p>© <span id="year"></span> <span data-i18n="foot_copy">CDH Maker. Hecho con 💜 en Colombia.</span></p>
       <a href="#top" data-i18n="foot_backtop">Volver arriba ↑</a>
     </div>
   </footer>
 
   <button id="to-top" aria-label="Volver arriba">↑</button>
   <div id="scroll-progress" aria-hidden="true"></div>
-  <div id="depth-hud" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="m7 17 5 5 5-5"/></svg><span id="depth-val">0 m</span></div>
+  <div id="depth-hud" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2v20" />
+      <path d="m7 17 5 5 5-5" />
+    </svg><span id="depth-val">0 m</span></div>
   <div id="cursor-glow" aria-hidden="true"></div>
 
-  <script src="metaverse.js?v=3"></script>
-  <script src="i18n.js?v=5"></script>
-  <script src="script.js?v=5"></script>
-  <script src="chatbot.js?v=5"></script>
+  <!-- ===== MODAL DE CUENTA CLIENTE ===== -->
+  <div id="authModal" class="auth-modal" hidden role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
+    <div class="auth-dialog">
+      <button type="button" id="authModalClose" class="auth-close" aria-label="Cerrar">&times;</button>
+      <div class="auth-brand">
+        <span class="logo-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M12 2 3 7v10l9 5 9-5V7l-9-5z" />
+            <path d="M12 22V12" />
+            <path d="M3 7l9 5 9-5" />
+          </svg>
+        </span>
+        <div>
+          <h2 id="authModalTitle" data-i18n="auth_title">Área de clientes</h2>
+          <p data-i18n="auth_sub">Crea tu cuenta para acceder a servicios y contacto. Tus datos alimentan nuestra base
+            de clientes.</p>
+        </div>
+      </div>
+      <div class="auth-tabs">
+        <button type="button" class="active" data-auth-tab="register" data-i18n="auth_reg_tab">Crear cuenta</button>
+        <button type="button" data-auth-tab="login" data-i18n="auth_login_tab">Iniciar sesión</button>
+      </div>
+
+      <form id="authRegisterForm" class="auth-form" data-auth-panel="register" autocomplete="on">
+        <label><span data-i18n="auth_name">Nombre completo</span>
+          <input type="text" name="name" id="authRegName" required minlength="2" maxlength="80"
+            placeholder="Tu nombre" />
+        </label>
+        <label><span data-i18n="auth_email">Correo</span>
+          <input type="email" name="email" required maxlength="120" placeholder="tu@email.com" />
+        </label>
+        <label><span data-i18n="auth_phone">Teléfono / WhatsApp</span>
+          <input type="tel" name="phone" required maxlength="30" placeholder="+57 300 000 0000" />
+        </label>
+        <label><span data-i18n="auth_company">Empresa (opcional)</span>
+          <input type="text" name="company" maxlength="80" placeholder="Tu empresa o proyecto" />
+        </label>
+        <label><span data-i18n="auth_interest">¿Qué te interesa?</span>
+          <select name="interest">
+            <option value="web" data-i18n="auth_int_web">Web / software</option>
+            <option value="maker" data-i18n="auth_int_maker">Fabricación digital</option>
+            <option value="iot" data-i18n="auth_int_iot">Electrónica / IoT</option>
+            <option value="consultoria" data-i18n="auth_int_consult">Diseño / consultoría</option>
+            <option value="otro" data-i18n="auth_int_other">Otro / varios</option>
+          </select>
+        </label>
+        <label><span data-i18n="auth_pass">Contraseña</span>
+          <input type="password" name="password" required minlength="6" maxlength="72"
+            placeholder="Mínimo 6 caracteres" />
+        </label>
+        <p class="auth-legal" data-i18n="auth_legal">Al registrarte aceptas que CDH Maker almacene tus datos como
+          cliente para contacto comercial y seguimiento de proyectos.</p>
+        <p id="authRegError" class="auth-error" hidden></p>
+        <button type="submit" class="btn btn-primary btn-block" data-i18n="auth_reg_btn">Crear mi cuenta</button>
+      </form>
+
+      <form id="authLoginForm" class="auth-form" data-auth-panel="login" hidden autocomplete="on">
+        <label><span data-i18n="auth_email">Correo</span>
+          <input type="email" name="email" id="authLoginEmail" required maxlength="120" placeholder="tu@email.com" />
+        </label>
+        <label><span data-i18n="auth_pass">Contraseña</span>
+          <input type="password" name="password" required minlength="6" maxlength="72" placeholder="Tu contraseña" />
+        </label>
+        <p id="authLoginError" class="auth-error" hidden></p>
+        <button type="submit" class="btn btn-primary btn-block" data-i18n="auth_login_btn">Entrar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Firebase (Auth + Firestore) — se activa cuando esté habilitado en la consola -->
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+  <script src="metaverse.js?v=6"></script>
+  <script src="i18n.js?v=7"></script>
+  <script src="auth.js?v=5"></script>
+  <script src="script.js?v=8"></script>
+  <script src="chatbot.js?v=8"></script>
 </body>
+
 </html>

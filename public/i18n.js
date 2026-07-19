@@ -1,5 +1,27 @@
-// CDH Maker — Internacionalización (10 idiomas más hablados)
+/* ═══════════════════════════════════════════════════════════════════════════
+   CDH MAKER — i18n.js
+   Sistema de internacionalización del sitio: 10 idiomas (los más hablados).
+
+   Cómo funciona:
+     1. El HTML marca cada texto traducible con data-i18n="clave".
+     2. Este archivo contiene el diccionario I18N con todas las claves por idioma.
+     3. apply(lang) recorre el DOM y reemplaza cada texto por su traducción,
+        ajusta <html lang> y la dirección rtl/ltr (árabe), y emite el evento
+        "cdh:langchange" para que el resto de scripts se re-rendericen.
+     4. El idioma inicial se decide por: ?lang= en la URL → elección guardada
+        en localStorage → idioma del navegador → español por defecto.
+
+   Para editar una traducción: busca la clave en el bloque del idioma.
+   Para añadir un idioma: agrégalo a LANGS y crea su bloque en I18N.
+   ───────────────────────────────────────────────────────────────────────────
+   Autor:    Ing. Henry Taborda — CDH Maker (Medellín, Colombia)
+   Contacto: cdhmaker@gmail.com
+   Última actualización: 2026-07-19
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+// IIFE: módulo autocontenido
 (function () {
+  // Catálogo de idiomas disponibles en el selector (código ISO, nombre, bandera)
   const LANGS = [
     { code: "es", name: "Español", flag: "🇪🇸" },
     { code: "en", name: "English", flag: "🇬🇧" },
@@ -13,6 +35,11 @@
     { code: "id", name: "Indonesia", flag: "🇮🇩" },
   ];
 
+  // ── Diccionario maestro de traducciones ─────────────────────────────────────
+  // Un bloque por idioma; dentro, cada clave corresponde a un data-i18n del HTML.
+  // Convención de prefijos: nav_ (menú) · hero_ (portada) · s1..s4 (servicios) ·
+  // pj_ (proyectos) · about_ (sobre mí) · faq_ (preguntas) · auth_ (cuenta) ·
+  // foot_ (pie de página) · err_ (mensajes de error de formularios)
   const I18N = {
     es: {
       meta_title: "CDH Maker — Ingeniería, Fabricación Digital y Desarrollo",
@@ -20,7 +47,7 @@
       menu_label: "Abrir menú", theme_label: "Cambiar tema claro/oscuro", lang_label: "Cambiar idioma",
       hero_typed: ["Ingeniería", "Fabricación digital", "Desarrollo de software", "Electrónica e IoT", "Inteligencia Artificial", "Cultura maker"],
       hero_h1: "Del <span class='grad-text'>diseño</span> al <span class='grad-text'>prototipo</span>,<br>de la idea al <span class='grad-text-2'>producto</span>.",
-      hero_sub: "Soy <strong>Henry Taborda</strong>, ingeniero y maker. En <strong>CDH Maker</strong> convierto ideas en soluciones reales: desarrollo de software, fabricación digital, electrónica, IoT y consultoría técnica.",
+      hero_sub: "Somos <strong>CDH Maker</strong> y aquí convertimos ideas en soluciones reales: desarrollo de software, fabricación digital, electrónica, IoT y consultoría técnica.",
       hero_cta1: "Trabajemos juntos", hero_cta2: "Ver mi trabajo",
       stat1_l: "líneas de servicio", stat2_l: "proyectos construidos", stat3_l: "tiempo de respuesta", stat4_l: "pasión maker",
       serv_k: "// Servicios", serv_t: "¿Qué puedo hacer por ti?", serv_s: "Un portafolio integral: desde el código hasta el objeto físico.",
@@ -48,12 +75,23 @@
       pj_taxi_t: "TaxiYa — Central de taxis", pj_taxi_p: "Plataforma para que empresas de taxis operen sin llamadas ni datos costosos: apps de pasajero, conductor y central en tiempo real.",
       pj_inc_t: "IncubApp — Operación industrial", pj_inc_p: "SaaS multi-empresa para plantas de incubación y granjas: rondas con foto, órdenes de trabajo, ventas, logística y gerencia con IA.",
       live: "Ver en vivo →", cta_t: "Tu proyecto podría estar aquí", cta_p: "¿Tienes una idea de software, electrónica o fabricación digital? Hagámosla realidad.", cta_btn: "Conversemos →",
-      about_k: "// Sobre mí", about_t: "Henry Taborda — CDH Maker",
-      about_p1: "Soy un apasionado por la tecnología y la cultura maker. Combino la ingeniería, la fabricación digital y el desarrollo de software para resolver problemas reales: prototipar rápido, iterar y entregar soluciones que funcionan.",
-      about_p2: "Creo en el poder de <em>aprender haciendo</em> y en que la tecnología debe estar al alcance de todos: por eso también comparto conocimiento con talleres y capacitaciones.",
-      term_role: "Ingeniero &amp; Maker", term_loc: "Medellín, Colombia", term_quote: "\"Si lo puedes imaginar,<br>&nbsp;&nbsp;&nbsp;lo podemos construir.\"", term_status: "● Disponible para proyectos",
+      about_k: "// Sobre mí", about_t: "CDH Maker",
+      about_p1: "Somos apasionados por la tecnología y la cultura maker. Combinamos la ingeniería, la fabricación digital y el desarrollo de software para resolver problemas reales: prototipar rápido, iterar y entregar soluciones que funcionan.",
+      about_p2: "Creemos en el poder de <em>aprender haciendo</em> y en que la tecnología debe estar al alcance de todos: por eso también compartimos conocimiento con talleres y capacitaciones.",
+      term_role: "Ingeniería &amp; Desarrollo", term_loc: "Medellín, Colombia", term_quote: "\"Si lo puedes imaginar,<br>&nbsp;&nbsp;&nbsp;lo podemos construir.\"", term_status: "● Disponible para proyectos",
       contact_k: "// Contacto", contact_t: "¿Tienes un proyecto en mente?", contact_s: "Cuéntame tu idea y busquemos la mejor forma de hacerla realidad.", contact_note: "Respuesta usualmente en menos de 24 horas.",
-      foot_tag: "Si lo puedes imaginar,<br>lo podemos construir.", foot_nav_h: "Navegación", foot_contact_h: "Contacto", foot_why: "¿Por qué CDH Maker?", foot_copy: "CDH Maker — Henry Taborda. Hecho con 💜 en Colombia.", foot_backtop: "Volver arriba ↑",
+      contact_email_label: "Correo", contact_privacy: "Los canales se activan al iniciar sesión. No publicamos número ni correo en la página.",
+      hero_privacy: "Puedes explorar el portafolio con libertad. Para servicios y contacto, crea tu cuenta de cliente.",
+      auth_nav: "Crear cuenta", auth_logout: "Salir", auth_title: "Área de clientes", auth_sub: "Crea tu cuenta para acceder a servicios y contacto. Tus datos alimentan nuestra base de clientes.",
+      auth_reg_tab: "Crear cuenta", auth_login_tab: "Iniciar sesión", auth_name: "Nombre completo", auth_email: "Correo", auth_phone: "Teléfono / WhatsApp",
+      auth_company: "Empresa (opcional)", auth_interest: "¿Qué te interesa?", auth_pass: "Contraseña",
+      auth_int_web: "Web / software", auth_int_maker: "Fabricación digital", auth_int_iot: "Electrónica / IoT", auth_int_consult: "Diseño / consultoría", auth_int_other: "Otro / varios",
+      auth_legal: "Al registrarte aceptas que CDH Maker almacene tus datos como cliente para contacto comercial y seguimiento de proyectos.",
+      auth_reg_btn: "Crear mi cuenta", auth_login_btn: "Entrar",
+      lock_serv_t: "Servicios exclusivos para clientes", lock_serv_p: "Crea tu cuenta gratis para ver el detalle de servicios y solicitar cotizaciones. Tus datos forman parte de nuestra base de clientes.",
+      lock_contact_t: "Contacto solo para clientes", lock_contact_p: "Regístrate para escribirnos. No mostramos datos de contacto al público: así protegemos nuestra privacidad y construimos nuestra base de clientes.",
+      foot_contact_cta: "Acceder a contacto",
+      foot_tag: "Si lo puedes imaginar,<br>lo podemos construir.", foot_nav_h: "Navegación", foot_contact_h: "Contacto", foot_why: "¿Por qué CDH Maker?", foot_copy: "CDH Maker. Hecho con 💜 en Colombia.", foot_backtop: "Volver arriba ↑",
     },
 
     en: {
@@ -62,7 +100,7 @@
       menu_label: "Open menu", theme_label: "Toggle light/dark theme", lang_label: "Change language",
       hero_typed: ["Engineering", "Digital fabrication", "Software development", "Electronics & IoT", "Artificial Intelligence", "Maker culture"],
       hero_h1: "From <span class='grad-text'>design</span> to <span class='grad-text'>prototype</span>,<br>from idea to <span class='grad-text-2'>product</span>.",
-      hero_sub: "I'm <strong>Henry Taborda</strong>, engineer and maker. At <strong>CDH Maker</strong> I turn ideas into real solutions: software development, digital fabrication, electronics, IoT and technical consulting.",
+      hero_sub: "We are <strong>CDH Maker</strong>, and here we turn ideas into real solutions: software development, digital fabrication, electronics, IoT and technical consulting.",
       hero_cta1: "Let's work together", hero_cta2: "See my work",
       stat1_l: "service lines", stat2_l: "projects built", stat3_l: "response time", stat4_l: "maker passion",
       serv_k: "// Services", serv_t: "What can I do for you?", serv_s: "An end-to-end portfolio: from the code to the physical object.",
@@ -90,12 +128,23 @@
       pj_taxi_t: "TaxiYa — Taxi dispatch", pj_taxi_p: "Platform for taxi companies to operate without costly calls or data plans: passenger, driver and dispatch apps in real time.",
       pj_inc_t: "IncubApp — Industrial operations", pj_inc_p: "Multi-company SaaS for hatcheries and farms: photo rounds, work orders, sales, logistics and management with AI.",
       live: "View live →", cta_t: "Your project could be here", cta_p: "Got an idea in software, electronics or digital fabrication? Let's make it real.", cta_btn: "Let's talk →",
-      about_k: "// About", about_t: "Henry Taborda — CDH Maker",
-      about_p1: "I'm passionate about technology and maker culture. I combine engineering, digital fabrication and software development to solve real problems: prototype fast, iterate and deliver solutions that work.",
-      about_p2: "I believe in the power of <em>learning by doing</em> and that technology should be within everyone's reach — that's why I also share knowledge through workshops and training.",
-      term_role: "Engineer &amp; Maker", term_loc: "Medellín, Colombia", term_quote: "\"If you can imagine it,<br>&nbsp;&nbsp;&nbsp;we can build it.\"", term_status: "● Available for projects",
-      contact_k: "// Contact", contact_t: "Got a project in mind?", contact_s: "Tell me your idea and let's find the best way to make it happen.", contact_note: "Usually a reply in under 24 hours.",
-      foot_tag: "If you can imagine it,<br>we can build it.", foot_nav_h: "Navigation", foot_contact_h: "Contact", foot_why: "Why CDH Maker?", foot_copy: "CDH Maker — Henry Taborda. Made with 💜 in Colombia.", foot_backtop: "Back to top ↑",
+      about_k: "// About", about_t: "CDH Maker",
+      about_p1: "We are passionate about technology and maker culture. We combine engineering, digital fabrication, and software development to solve real problems: prototyping fast, iterating, and delivering working solutions.",
+      about_p2: "We believe in the power of <em>learning by doing</em> and that technology should be accessible to everyone: that's why we also share knowledge through workshops and training.",
+      term_role: "Engineering &amp; Development", term_loc: "Medellín, Colombia", term_quote: "\"If you can imagine it,<br>&nbsp;&nbsp;&nbsp;we can build it.\"", term_status: "● Available for projects",
+      contact_k: "// Contact", contact_t: "Got a project in mind?", contact_s: "Tell us your idea and let's find the best way to make it happen.", contact_note: "Usually a reply in under 24 hours.",
+      contact_email_label: "Email", contact_privacy: "Channels unlock after you sign in. We don't publish phone or email on the page.",
+      hero_privacy: "Browse the portfolio freely. For services and contact, create your client account.",
+      auth_nav: "Create account", auth_logout: "Log out", auth_title: "Client area", auth_sub: "Create an account to access services and contact. Your details become part of our client database.",
+      auth_reg_tab: "Create account", auth_login_tab: "Sign in", auth_name: "Full name", auth_email: "Email", auth_phone: "Phone / WhatsApp",
+      auth_company: "Company (optional)", auth_interest: "What are you interested in?", auth_pass: "Password",
+      auth_int_web: "Web / software", auth_int_maker: "Digital fabrication", auth_int_iot: "Electronics / IoT", auth_int_consult: "Design / consulting", auth_int_other: "Other / several",
+      auth_legal: "By registering you agree that CDH Maker stores your details as a client for commercial contact and project follow-up.",
+      auth_reg_btn: "Create my account", auth_login_btn: "Sign in",
+      lock_serv_t: "Services for clients only", lock_serv_p: "Create a free account to see service details and request quotes. Your data becomes part of our client database.",
+      lock_contact_t: "Contact for clients only", lock_contact_p: "Register to reach us. We don't show contact details publicly — that protects our privacy and builds our client list.",
+      foot_contact_cta: "Access contact",
+      foot_tag: "If you can imagine it,<br>we can build it.", foot_nav_h: "Navigation", foot_contact_h: "Contact", foot_why: "Why CDH Maker?", foot_copy: "CDH Maker. Made with 💜 in Colombia.", foot_backtop: "Back to top ↑",
     },
 
     zh: {
@@ -534,64 +583,82 @@
     bn: "বিনামূল্যে PrivacyCheck ব্যবহার করুন", ru: "Использовать PrivacyCheck бесплатно",
     fr: "Utiliser PrivacyCheck gratuitement", id: "Gunakan PrivacyCheck gratis",
   };
+  // Fusionar los bloques auxiliares (PC_CTA y EXTRA) dentro del diccionario maestro
   for (const l in PC_CTA) if (I18N[l]) I18N[l].pc_cta = PC_CTA[l];
   for (const l in EXTRA) if (I18N[l]) Object.assign(I18N[l], EXTRA[l]);
 
+  // Idiomas que se escriben de derecha a izquierda (activan dir="rtl")
   const RTL = ["ar"];
 
+  // Aplica un idioma a toda la página (el corazón del sistema i18n)
   function apply(lang) {
-    const dict = I18N[lang] || I18N.es;
+    const dict = I18N[lang] || I18N.es; // idioma no soportado → español
+    // 1. Textos normales: reemplaza el contenido de cada elemento marcado
     document.querySelectorAll("[data-i18n]").forEach((el) => {
       const key = el.getAttribute("data-i18n");
-      if (!(key in dict)) return;
+      if (!(key in dict)) return; // clave sin traducción: se deja el texto original
+      // data-i18n-html permite traducciones con etiquetas (<strong>, <br>…)
       if (el.hasAttribute("data-i18n-html")) el.innerHTML = dict[key];
       else el.textContent = dict[key];
     });
+    // 2. Atributos de accesibilidad (aria-label) también traducidos
     document.querySelectorAll("[data-i18n-aria]").forEach((el) => {
       const key = el.getAttribute("data-i18n-aria");
       if (key in dict) el.setAttribute("aria-label", dict[key]);
     });
+    // 3. Título de la pestaña del navegador
     if (dict.meta_title) document.title = dict.meta_title;
+    // 4. Atributos del documento: idioma y dirección de escritura
     const html = document.documentElement;
     html.setAttribute("lang", lang);
     html.setAttribute("dir", RTL.includes(lang) ? "rtl" : "ltr");
+    // 5. Publica las palabras del texto rotativo del hero (las usa script.js)
     window.CDH_TYPED = dict.hero_typed;
-    try { localStorage.setItem("cdh-lang", lang); } catch (e) {}
+    // 6. Recuerda la elección para futuras visitas
+    try { localStorage.setItem("cdh-lang", lang); } catch (e) { }
+    // 7. Notifica al resto de scripts (chatbot, auth, hero) para re-renderizar
     window.dispatchEvent(new CustomEvent("cdh:langchange", { detail: { lang } }));
   }
 
+  // Decide el idioma inicial de la visita (en orden de prioridad)
   function initialLang() {
+    // 1º: parámetro explícito en la URL (?lang=en) — ideal para compartir enlaces
     try {
       const p = new URLSearchParams(location.search).get("lang");
       if (p && I18N[p]) return p;
-    } catch (e) {}
+    } catch (e) { }
+    // 2º: idioma guardado de una visita anterior
     let saved;
-    try { saved = localStorage.getItem("cdh-lang"); } catch (e) {}
+    try { saved = localStorage.getItem("cdh-lang"); } catch (e) { }
     if (saved && I18N[saved]) return saved;
+    // 3º: idioma del navegador del visitante (si está soportado)
     const nav = (navigator.language || "es").slice(0, 2).toLowerCase();
-    return I18N[nav] ? nav : "es";
+    return I18N[nav] ? nav : "es"; // 4º: español por defecto
   }
 
-  // Construir el selector de idioma
+  // Construye el selector de idioma del nav con una opción por cada LANGS
   function buildSelector() {
     const sel = document.getElementById("langSelect");
-    if (!sel) return;
+    if (!sel) return; // páginas sin selector (ej: perfil) simplemente no lo montan
     LANGS.forEach((l) => {
       const o = document.createElement("option");
-      o.value = l.code;
-      o.textContent = l.flag + "  " + l.name;
+      o.value = l.code;                       // código ISO ("es", "en"…)
+      o.textContent = l.flag + "  " + l.name; // bandera + nombre nativo
       sel.appendChild(o);
     });
+    // Cambio manual del usuario → aplicar el idioma elegido de inmediato
     sel.addEventListener("change", () => apply(sel.value));
     return sel;
   }
 
+  // Arranque: montar el selector, decidir idioma inicial y aplicarlo
   document.addEventListener("DOMContentLoaded", () => {
     const sel = buildSelector();
     const lang = initialLang();
-    if (sel) sel.value = lang;
+    if (sel) sel.value = lang; // sincronizar el selector con el idioma aplicado
     apply(lang);
   });
 
+  // API pública para otros scripts (cambiar idioma programáticamente)
   window.CDH_I18N = { apply, LANGS };
 })();

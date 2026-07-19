@@ -1,10 +1,32 @@
-// CDH Maker — "Maker", asesor comercial del sitio (natural y bilingüe)
-(function () {
-  const WA_NUMBER = "573245769748";
+/* ═══════════════════════════════════════════════════════════════════════════
+   CDH MAKER — chatbot.js
+   "Maker": asesor comercial virtual del sitio (natural y bilingüe ES/EN).
+   Chatbot basado en reglas, sin servicios externos: detecta la intención del
+   visitante por palabras clave puntuadas, responde con textos naturales y
+   guía la conversación hacia la cotización por WhatsApp (solo con sesión).
+   Funciona 100% en el navegador: no envía las conversaciones a ningún servidor.
+   ───────────────────────────────────────────────────────────────────────────
+   Autor:    Ing. Henry Taborda — CDH Maker (Medellín, Colombia)
+   Contacto: cdhmaker@gmail.com
+   Última actualización: 2026-07-19
+   ═══════════════════════════════════════════════════════════════════════════ */
 
+// IIFE: módulo autocontenido, sin variables globales
+(function () {
   // ---------- Utilidades ----------
+  // norm: minúsculas + sin tildes (para comparar texto del usuario con las claves)
+  // isAuthed: consulta a auth.js si hay sesión iniciada
+  // waLink: pide a auth.js la URL de WhatsApp (solo existe si hay sesión)
+  // pick: elige un elemento al azar (da variedad a los saludos/respuestas)
+  // esc: escapa '<' para prevenir inyección de HTML en mensajes del usuario
   const norm = (s) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
-  const waLink = (msg) => `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+  const isAuthed = () => !!(window.CDH_AUTH && window.CDH_AUTH.isLoggedIn && window.CDH_AUTH.isLoggedIn());
+  const waLink = (msg) => {
+    if (window.CDH_AUTH && window.CDH_AUTH.CONTACT && window.CDH_AUTH.CONTACT.buildWa) {
+      return window.CDH_AUTH.CONTACT.buildWa(msg) || "#";
+    }
+    return "#";
+  };
   const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
   const esc = (s) => s.replace(/</g, "&lt;");
 
@@ -12,6 +34,11 @@
   const lang = () => ((document.documentElement.lang || "es").startsWith("es") ? "es" : "en");
 
   // ---------- Textos por idioma ----------
+  // Diccionario COMPLETO de todo lo que "Maker" puede decir, en español (es)
+  // e inglés (en): saludos, menús de opciones rápidas, fichas de cada servicio
+  // (web / maker / iot / consultoría), respuestas de precio, tiempos, garantía,
+  // pagos, materiales, horario, portafolio y despedidas.
+  // Para cambiar CUALQUIER texto del chat, edítalo aquí (bloque es: y bloque en:)
   const TEXT = {
     es: {
       header_sub: "Asesor de CDH Maker · en línea",
@@ -63,10 +90,12 @@
       price_cta: "Si me cuentas brevemente qué necesitas, te dejo el mensaje listo para enviar. O escríbele directo:",
       time: "Depende del proyecto: una pieza 3D o un corte láser puede estar <b>en días</b>; una página web sencilla, <b>en 1–2 semanas</b>; sistemas más grandes se van entregando <b>por etapas</b>, para que veas avances desde el inicio.",
       time_cta: "¿Te cotizo el tuyo? Es gratis:",
-      contact: 'Puedes hablar directo con Henry: 📱 WhatsApp <b>324 576 9748</b> o ✉️ <a href="mailto:cdhmaker@gmail.com">cdhmaker@gmail.com</a>. Suele responder en menos de 24 horas.',
-      contact_wa_msg: "Hola Henry, vengo de tu página web y quiero hablar contigo.",
+      contact: "Si ya tienes cuenta de cliente, te dejo el acceso directo a WhatsApp (sin mostrar datos públicos). Suele responder en menos de 24 horas.",
+      contact_guest: "Para hablar con Henry o cotizar, primero <b>crea tu cuenta de cliente</b>. Así protegemos el contacto y formamos nuestra base de clientes. No publicamos número ni correo en la web.",
+      contact_wa_msg: "Hola Henry, vengo de tu página web (cliente registrado) y quiero hablar contigo.",
       open_wa: "Abrir WhatsApp",
-      who: "CDH Maker es el taller de <b>Henry Taborda</b>, ingeniero y maker de Medellín 🇨🇴. De aquí han salido proyectos como <b>EvaIA</b> (asistente de IA local), <b>TaxiYa</b>, <b>IncubApp</b> y <b>PrivacyCheck</b>. La filosofía es simple: <i>si lo puedes imaginar, lo podemos construir</i>.",
+      create_account: "Crear cuenta",
+      who: "Somos <b>CDH Maker</b> y aquí trabajamos desde Medellín 🇨🇴 para convertir ideas en soluciones reales. De aquí han salido proyectos como <b>EvaIA</b> (asistente de IA local), <b>TaxiYa</b>, <b>IncubApp</b> y <b>PrivacyCheck</b>. La filosofía es simple: <i>si lo puedes imaginar, lo podemos construir</i>.",
       thanks: ["¡Con gusto! 😊 ¿Algo más en lo que te pueda ayudar?", "¡Para eso estamos! ¿Quieres ver algo más?"],
       bye: ["¡Que te vaya muy bien! Aquí estaré cuando quieras retomar tu proyecto. 👋", "¡Gracias por pasar! Cuando la idea madure, ya sabes dónde encontrarnos. 👋"],
       yes: "¡Perfecto! Cuéntame un poco más o elige una opción:",
@@ -87,7 +116,7 @@
       pago: "El pago se acuerda <b>por etapas</b>: defines el alcance con Henry en la cotización y avanzas por hitos, viendo resultados antes de cada pago. Los medios de pago se coordinan directamente con él según tu caso (Colombia o exterior).",
       materiales: "Trabajamos impresión 3D <b>FDM y resina</b>, corte y grabado <b>láser</b> (MDF, acrílico y más) y <b>CNC</b>. El material ideal depende del uso de la pieza: resistencia, flexibilidad, detalle o estética — cuéntame qué necesitas hacer y te oriento.",
       privacycheck: "<b>PrivacyCheck</b> es nuestra plataforma de autodiagnóstico de cumplimiento de la Ley 1581 (protección de datos personales en Colombia): registras tu empresa, respondes el cuestionario y obtienes puntaje, brechas y plan de acción con IA. Puedes verla en la sección de proyectos de esta página.",
-      horario: "Puedes escribir <b>a cualquier hora</b> por WhatsApp o correo — Henry responde usualmente en menos de 24 horas, de lunes a sábado. Este chat está disponible 24/7. 😉",
+      horario: "Con una cuenta de cliente puedes escribir <b>a cualquier hora</b> — Henry responde usualmente en menos de 24 horas, de lunes a sábado. Este chat está disponible 24/7. 😉",
       portafolio: 'Con gusto. En la sección <a href="#proyectos">Proyectos</a> puedes ver trabajo real: <b>EvaIA</b> (asistente de IA), <b>TaxiYa</b> (central de taxis), <b>IncubApp</b> (SaaS industrial), <b>A Tiempo Logística</b> y <b>PrivacyCheck</b>, varios con demo en vivo. ¿Alguno se parece a lo que necesitas?',
       good_morning: "¡Buenos días! ☀️", good_afternoon: "¡Buenas tardes!", good_evening: "¡Buenas noches! 🌙",
     },
@@ -139,10 +168,12 @@
       price_cta: "Tell me briefly what you need and I'll prepare the message. Or write to him directly:",
       time: "It depends on the project: a 3D part or laser cut can be ready <b>in days</b>; a simple website, <b>in 1–2 weeks</b>; bigger systems are delivered <b>in stages</b>, so you see progress from day one.",
       time_cta: "Want a quote for yours? It's free:",
-      contact: 'You can talk directly to Henry: 📱 WhatsApp <b>+57 324 576 9748</b> or ✉️ <a href="mailto:cdhmaker@gmail.com">cdhmaker@gmail.com</a>. He usually replies within 24 hours.',
-      contact_wa_msg: "Hi Henry, I come from your website and I'd like to talk to you.",
+      contact: "If you already have a client account, here's direct WhatsApp access (no public contact details shown). He usually replies within 24 hours.",
+      contact_guest: "To talk to Henry or get a quote, first <b>create your client account</b>. That protects our contact info and builds our client database. We don't publish phone or email on the site.",
+      contact_wa_msg: "Hi Henry, I come from your website (registered client) and I'd like to talk to you.",
       open_wa: "Open WhatsApp",
-      who: "CDH Maker is the workshop of <b>Henry Taborda</b>, engineer and maker from Medellín, Colombia 🇨🇴. Projects like <b>EvaIA</b>, <b>TaxiYa</b>, <b>IncubApp</b> and <b>PrivacyCheck</b> were born here. The philosophy is simple: <i>if you can imagine it, we can build it</i>.",
+      create_account: "Create account",
+      who: "We are <b>CDH Maker</b>, and here we build from Medellín, Colombia 🇨🇴. Projects like <b>EvaIA</b>, <b>TaxiYa</b>, <b>IncubApp</b> and <b>PrivacyCheck</b> were born here. The philosophy is simple: <i>if you can imagine it, we can build it</i>.",
       thanks: ["My pleasure! 😊 Anything else I can help with?", "Anytime! Want to see anything else?"],
       bye: ["Take care! I'll be here whenever you want to pick up your project. 👋"],
       yes: "Great! Tell me a bit more or pick an option:",
@@ -162,13 +193,18 @@
       pago: "Payment is agreed <b>in stages</b>: you define the scope with Henry in the quote and advance by milestones, seeing results before each payment. Payment methods are coordinated directly with him (Colombia or abroad).",
       materiales: "We work with <b>FDM and resin</b> 3D printing, <b>laser</b> cutting/engraving (MDF, acrylic and more) and <b>CNC</b>. The right material depends on the part's use — tell me what you need and I'll guide you.",
       privacycheck: "<b>PrivacyCheck</b> is our self-assessment platform for Colombia's data protection law (Ley 1581): register your company, answer the questionnaire and get a score, gaps and an AI action plan. You can see it in the projects section of this page.",
-      horario: "You can write <b>anytime</b> via WhatsApp or email — Henry usually replies within 24 hours, Monday to Saturday. This chat is available 24/7. 😉",
+      horario: "With a client account you can write <b>anytime</b> — Henry usually replies within 24 hours, Monday to Saturday. This chat is available 24/7. 😉",
       portafolio: 'Gladly! In the <a href="#proyectos">Projects</a> section you can see real work: <b>EvaIA</b>, <b>TaxiYa</b>, <b>IncubApp</b>, <b>A Tiempo Logística</b> and <b>PrivacyCheck</b>, several with live demos. Does any of them look like what you need?',
       good_morning: "Good morning! ☀️", good_afternoon: "Good afternoon!", good_evening: "Good evening! 🌙",
     },
   };
 
   // ---------- Detección de intenciones ----------
+  // Motor de comprensión del chatbot: cada intención tiene una lista de
+  // palabras clave (ES + EN). detectIntent() puntúa cada intención según
+  // cuántas claves aparecen en el mensaje (las claves largas valen doble)
+  // y devuelve la de mayor puntaje. Para enseñarle temas nuevos a "Maker",
+  // agrega aquí una entrada { keys: [...], type: "..." } y su respuesta en TEXT
   const INTENTS = [
     { keys: ["precio", "costo", "cuanto vale", "cuanto cuesta", "cotiz", "presupuesto", "tarifa", "price", "cost", "quote", "how much"], type: "precio" },
     { keys: ["caro", "costoso", "barato", "economico", "expensive", "cheap", "afford"], type: "caro" },
@@ -296,10 +332,19 @@
     });
   }
 
+  function authButton(text) {
+    return `<button type="button" class="cdh-wa-btn cdh-auth-btn" data-cdh-open-auth="register">${text}</button>`;
+  }
+
   function waButton(text, msg) {
-    return `<a class="cdh-wa-btn" href="${waLink(msg)}" target="_blank" rel="noopener">
+    if (!isAuthed()) {
+      const T = TEXT[lang()];
+      return authButton(T.create_account || text);
+    }
+    const b64Msg = btoa(unescape(encodeURIComponent(msg || "")));
+    return `<button type="button" class="cdh-wa-btn cdh-wa-trigger" data-wa-msg="${b64Msg}">
       <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.019-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.297-.497.1-.198.05-.371-.025-.52-.074-.149-.668-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/></svg>
-      ${text}</a>`;
+      ${text}</button>`;
   }
 
   function backQuick(T) {
@@ -390,8 +435,13 @@
 
       case "contacto":
       case "humano":
-        await botSay(action.type === "humano" ? T.human : T.contact);
-        await botSay(waButton(T.open_wa, T.contact_wa_msg));
+        if (!isAuthed()) {
+          await botSay(T.contact_guest || T.contact);
+          await botSay(authButton(T.create_account || "Crear cuenta"));
+        } else {
+          await botSay(action.type === "humano" ? T.human : T.contact);
+          await botSay(waButton(T.open_wa, T.contact_wa_msg));
+        }
         setQuick(backQuick(T));
         break;
 
@@ -470,6 +520,38 @@
     if (!t) return;
     input.value = "";
     handleUser(t);
+  });
+
+  // Abrir modal de cuenta o disparar WhatsApp desde botones del chat
+  msgs.addEventListener("click", (e) => {
+    const authBtn = e.target.closest("[data-cdh-open-auth]");
+    if (authBtn) {
+      e.preventDefault();
+      if (window.CDH_AUTH && window.CDH_AUTH.openAuth) {
+        window.CDH_AUTH.openAuth(authBtn.getAttribute("data-cdh-open-auth") || "register");
+      }
+      return;
+    }
+
+    const waBtn = e.target.closest(".cdh-wa-trigger");
+    if (waBtn) {
+      e.preventDefault();
+      if (!isAuthed()) {
+        if (window.CDH_AUTH && window.CDH_AUTH.openAuth) {
+          window.CDH_AUTH.openAuth("register");
+        }
+        return;
+      }
+      const b64Msg = waBtn.getAttribute("data-wa-msg");
+      let msg = "";
+      try {
+        msg = decodeURIComponent(escape(atob(b64Msg || "")));
+      } catch (_) { }
+      const href = waLink(msg);
+      if (href !== "#") {
+        window.open(href, "_blank", "noopener,noreferrer");
+      }
+    }
   });
 
   // Abrir / cerrar

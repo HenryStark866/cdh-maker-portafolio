@@ -1,0 +1,42 @@
+// ═══════════════════════════════════════════════════════════════════════════
+// CDH MAKER — firestore.rules
+// Reglas de seguridad de la base de datos Firestore (colección de clientes).
+// Estas reglas son la VERDADERA capa de seguridad del proyecto: se ejecutan
+// en los servidores de Google y no pueden ser evadidas desde el navegador.
+// Se despliegan con:  firebase deploy --only firestore:rules
+// ───────────────────────────────────────────────────────────────────────────
+// Autor:    Ing. Henry Taborda — CDH Maker (Medellín, Colombia)
+// Contacto: cdhmaker@gmail.com
+// Última actualización: 2026-07-19
+// ═══════════════════════════════════════════════════════════════════════════
+
+rules_version = '2';               // sintaxis moderna de reglas (v2)
+service cloud.firestore {
+  // Ámbito: todos los documentos de la base de datos del proyecto
+  match /databases/{database}/documents {
+
+    // ── Colección "clients" (registros del formulario del sitio) ──────────
+    // Principio: cada usuario solo puede ver y tocar SU propio documento.
+    // El administrador (Ing. Henry Taborda) lee la colección completa desde
+    // la Consola de Firebase, que no pasa por estas reglas.
+    match /clients/{clientId} {
+
+      // CREAR: solo usuarios autenticados y con los campos mínimos válidos
+      // (evita que un anónimo o un script inserte documentos basura)
+      allow create: if request.auth != null
+        && request.resource.data.email is string
+        && request.resource.data.name is string;
+
+      // LEER y ACTUALIZAR: solo el dueño del documento, identificado porque
+      // el id del doc es su uid, o porque el email del doc coincide con el
+      // email verificado de su token de autenticación
+      allow read, update: if request.auth != null
+        && (request.auth.uid == clientId
+            || request.auth.token.email == resource.data.email);
+
+      // BORRAR: nadie desde el cliente (solo el admin desde la Consola).
+      // Protege el historial de clientes contra borrados accidentales o maliciosos
+      allow delete: if false;
+    }
+  }
+}

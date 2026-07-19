@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<!-- ═══════════════════════════════════════════════════════════════════════════
+  CDH MAKER — perfil.html
+  Panel "Mi Perfil" del cliente autenticado.
+
+  Muestra los datos del cliente (leídos de la sesión en localStorage, misma
+  clave que auth.js), sus herramientas (PrivacyCheck, cotizaciones, soporte)
+  y, SOLO para los correos de administrador, el panel de herramientas de
+  desarrollador (CRM, Consola Firebase, vista de visitante).
+  Si no hay sesión válida, redirige de inmediato a index.html.
+  ───────────────────────────────────────────────────────────────────────────
+  Autor:    Ing. Henry Taborda — CDH Maker (Medellín, Colombia)
+  Contacto: cdhmaker@gmail.com
+  Última actualización: 2026-07-19
+  ═══════════════════════════════════════════════════════════════════════════ -->
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Mi Perfil — CDH Maker</title>
+  <link rel="stylesheet" href="styles.css?v=15" />
+  <style>
+    body {
+      padding: 40px 20px; max-width: 960px; margin: 0 auto;
+      background: var(--bg); color: var(--text);
+    }
+    .header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 40px;
+    }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--text-dim); text-decoration: none; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .back-btn:hover { color: var(--accent); }
+    h1 { font-family: var(--font-display); margin-bottom: 8px; }
+    
+    .dashboard-grid {
+      display: grid; grid-template-columns: 1fr; gap: 24px;
+    }
+    @media (min-width: 768px) {
+      .dashboard-grid { grid-template-columns: 1fr 1fr; }
+      .admin-panel { grid-column: 1 / -1; }
+    }
+
+    .panel {
+      background: var(--glass); border: 1px solid var(--border);
+      border-radius: 16px; padding: 24px;
+      backdrop-filter: blur(12px); box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+    }
+    .panel h2 {
+      font-family: var(--font-display); color: var(--accent); font-size: 1.2rem;
+      margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 8px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    
+    .info-list { list-style: none; padding: 0; margin: 0; }
+    .info-list li {
+      margin-bottom: 12px; display: flex; flex-direction: column; gap: 4px;
+    }
+    .info-list strong { color: var(--text-dim); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+    .info-list span { font-size: 1.05rem; }
+
+    .tool-list { display: flex; flex-direction: column; gap: 12px; }
+    .tool-btn {
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 16px; border-radius: 12px; text-decoration: none; color: var(--text);
+      transition: all 0.2s;
+    }
+    .tool-btn:hover {
+      border-color: var(--accent); background: rgba(34, 211, 238, 0.05);
+      transform: translateX(4px);
+    }
+    .tool-btn .icon-title { display: flex; align-items: center; gap: 12px; font-weight: 600; }
+    
+    /* Panel de Administrador */
+    .admin-panel {
+      border-color: var(--accent-2);
+      background: linear-gradient(135deg, rgba(249, 115, 22, 0.05), transparent);
+    }
+    .admin-panel h2 { color: var(--accent-2); border-color: rgba(249, 115, 22, 0.2); }
+    
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <a href="index.html" class="back-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="m15 18-6-6 6-6"/></svg>
+      Volver al Portafolio
+    </a>
+    <button type="button" class="btn btn-ghost" id="logoutBtn">Cerrar Sesión</button>
+  </div>
+
+  <h1>Mi Perfil</h1>
+  <p style="color: var(--text-dim); margin-bottom: 30px;">Gestiona tu información y accede a las herramientas exclusivas para clientes.</p>
+
+  <div class="dashboard-grid">
+    <!-- Panel de Datos del Cliente -->
+    <div class="panel">
+      <h2>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Mis Datos
+      </h2>
+      <ul class="info-list" id="profileInfo">
+        <li><strong>Nombre</strong> <span id="pName">Cargando...</span></li>
+        <li><strong>Email</strong> <span id="pEmail">Cargando...</span></li>
+        <li><strong>Empresa / Proyecto</strong> <span id="pCompany">-</span></li>
+        <li><strong>Teléfono</strong> <span id="pPhone">-</span></li>
+      </ul>
+      <button class="btn btn-small" style="margin-top: 16px; width: 100%; justify-content: center;" onclick="alert('La edición de perfil estará disponible pronto.')">Editar información</button>
+    </div>
+
+    <!-- Panel de Herramientas de Cliente -->
+    <div class="panel">
+      <h2>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+        Mis Herramientas
+      </h2>
+      <div class="tool-list">
+        <a href="https://privacycheck-co.vercel.app" target="_blank" rel="noopener noreferrer" class="tool-btn">
+          <div class="icon-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" width="24" height="24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            PrivacyCheck Auditor
+          </div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+        <a href="#" class="tool-btn" onclick="alert('Aún no tienes cotizaciones activas.'); return false;">
+          <div class="icon-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" width="24" height="24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            Mis Cotizaciones y Facturas
+          </div>
+          <span style="font-size: 0.8rem; color: var(--text-dim); background: var(--surface); padding: 4px 8px; border-radius: 4px;">0 Activas</span>
+        </a>
+        <a href="#" class="tool-btn" onclick="alert('Área de soporte en construcción.'); return false;">
+          <div class="icon-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" width="24" height="24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Soporte Técnico
+          </div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Panel de Administrador (Oculto por defecto) -->
+    <div class="panel admin-panel" id="adminPanel" style="display: none;">
+      <h2>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Herramientas de Desarrollador (Admin)
+      </h2>
+      <p style="color: var(--text-dim); margin-bottom: 20px; font-size: 0.9rem;">Estas herramientas solo son visibles para ti como administrador del sistema CDH Maker.</p>
+      
+      <div class="tool-list" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+        <a href="admin-clientes.html" class="tool-btn">
+          <div class="icon-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="2" width="24" height="24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Base de Datos CRM
+          </div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+        <a href="https://console.firebase.google.com/project/cdh-maker-portafolio/overview" target="_blank" rel="noopener noreferrer" class="tool-btn">
+          <div class="icon-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="2" width="24" height="24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            Consola Firebase
+          </div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+        <a href="#" class="tool-btn" onclick="simulateGuest(); return false;">
+          <div class="icon-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-2)" stroke-width="2" width="24" height="24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Simular vista Visitante
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cargamos theme.js para que el color aplique rápido -->
+  <script src="theme.js"></script>
+  <!-- Cargamos el script de auth pero no el de UI completo para evitar conflictos con modales -->
+  <script>
+    // Misma clave y expiración que auth.js (LS_SESSION, 30 días)
+    const LS_SESSION = "cdh_client_session_v1";
+    const LS_LOGOUT_FLAG = "cdh_logout_pending_v1";
+    const SESSION_MAX_AGE = 1000 * 60 * 60 * 24 * 30;
+
+    let s = null;
+    try { s = JSON.parse(localStorage.getItem(LS_SESSION) || "null"); } catch (_) { }
+
+    const sessionValid = !!(s && s.email && s.at && Date.now() - s.at < SESSION_MAX_AGE);
+
+    if (!sessionValid) {
+      // Si no hay sesión válida, regresarlo al home (replace evita bucle con "atrás")
+      window.location.replace("index.html");
+    } else {
+      // Rellenar datos
+      document.getElementById("pName").textContent = s.name || "Usuario";
+      document.getElementById("pEmail").textContent = s.email;
+      if (s.company) document.getElementById("pCompany").textContent = s.company;
+      if (s.phone) document.getElementById("pPhone").textContent = s.phone;
+
+      // Admin: solo correos exactos autorizados
+      const ADMIN_EMAILS = ["henrytaborda57@gmail.com", "cdhmaker@gmail.com"];
+      if (ADMIN_EMAILS.includes(String(s.email).trim().toLowerCase())) {
+        document.getElementById("adminPanel").style.display = "block";
+      }
+    }
+
+    // Cierra la sesión local y avisa a auth.js para que también cierre Firebase Auth
+    function endSession() {
+      localStorage.removeItem(LS_SESSION);
+      localStorage.setItem(LS_LOGOUT_FLAG, "1");
+      window.location.replace("index.html");
+    }
+
+    // Botón de cerrar sesión
+    document.getElementById("logoutBtn").addEventListener("click", endSession);
+
+    // Simular visitante
+    function simulateGuest() {
+      if (confirm("Se cerrará la sesión actual para ver el sitio como visitante. ¿Continuar?")) {
+        endSession();
+      }
+    }
+  </script>
+</body>
+</html>

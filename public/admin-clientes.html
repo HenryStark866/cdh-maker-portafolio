@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<!-- ═══════════════════════════════════════════════════════════════════════════
+  CDH MAKER — admin-clientes.html
+  Panel privado de administración: base de clientes (CRM) registrada en el
+  navegador. Protegido por clave (solo se compara su hash SHA-256; la clave
+  nunca aparece en el código fuente). Permite ver los registros y exportarlos
+  a CSV. Cada alta de cliente también llega por correo (FormSubmit) y queda
+  en Firestore cuando está activo.
+  URL: /admin-clientes  ·  No indexable (noindex + cabecera X-Robots-Tag)
+  ───────────────────────────────────────────────────────────────────────────
+  Autor:    Ing. Henry Taborda — CDH Maker (Medellín, Colombia)
+  Contacto: cdhmaker@gmail.com
+  Última actualización: 2026-07-19
+  ═══════════════════════════════════════════════════════════════════════════ -->
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>CDH Maker — Base de clientes (admin)</title>
+  <link rel="stylesheet" href="styles.css?v=15" />
+  <style>
+    body { padding: 40px 20px; max-width: 960px; margin: 0 auto; }
+    h1 { font-family: var(--font-display); margin-bottom: 8px; }
+    .sub { color: var(--text-dim); margin-bottom: 24px; }
+    .gate, .panel {
+      background: var(--glass); border: 1px solid var(--border);
+      border-radius: 16px; padding: 24px;
+    }
+    .gate input {
+      width: 100%; max-width: 320px; margin: 12px 0;
+      padding: 12px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--surface); color: var(--text); font-size: 1rem;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { color: var(--accent); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; }
+    .toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+    .empty { color: var(--text-dim); padding: 20px 0; }
+    .err { color: #fca5a5; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <h1>Base de clientes</h1>
+  <p class="sub">Panel privado de CDH Maker. Los registros del sitio se guardan aquí (local + notificación por correo) y en Firestore cuando esté activo.</p>
+
+  <div id="gate" class="gate">
+    <p>Ingresa la clave de administración para ver la base de clientes de este navegador / sesión.</p>
+    <input id="adminKey" type="password" placeholder="Clave admin" autocomplete="current-password" />
+    <div>
+      <button id="unlockBtn" class="btn btn-primary" type="button">Entrar</button>
+    </div>
+    <p id="gateErr" class="err" hidden>Clave incorrecta.</p>
+  </div>
+
+  <div id="panel" class="panel" hidden>
+    <div class="toolbar">
+      <button id="exportBtn" class="btn btn-primary" type="button">Exportar CSV</button>
+      <button id="refreshBtn" class="btn btn-ghost" type="button">Actualizar</button>
+      <a class="btn btn-ghost" href="/">← Volver al sitio</a>
+    </div>
+    <div id="tableWrap"></div>
+  </div>
+
+  <script>
+    // Solo se guarda el hash SHA-256 de la clave (la clave nunca aparece en el código fuente).
+    // Para cambiarla: genera el nuevo hash con
+    //   node -e "console.log(require('crypto').createHash('sha256').update('TU_NUEVA_CLAVE').digest('hex'))"
+    const ADMIN_KEY_HASH = "e1005b611b4d5832447d3ad3c120bf4cb056a161b04ee00875b6c71996e261fb";
+    const LS_CRM = "cdh_clients_crm_v1";
+
+    // Calcula el hash SHA-256 de un texto y lo devuelve en hexadecimal (WebCrypto nativo)
+    async function sha256Hex(text) {
+      const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+      return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
+    }
+
+    // Referencias a los elementos de la página
+    const gate = document.getElementById("gate");           // pantalla de clave
+    const panel = document.getElementById("panel");         // panel con la tabla
+    const tableWrap = document.getElementById("tableWrap"); // contenedor de la tabla
+    const gateErr = document.getElementById("gateErr");     // mensaje "clave incorrecta"
+
+    // Lee la lista de clientes del CRM local (misma clave que usa auth.js)
+    function loadClients() {
+      try { return JSON.parse(localStorage.getItem(LS_CRM) || "[]"); }
+      catch { return []; } // JSON corrupto → lista vacía (no rompe el panel)
+    }
+
+    // Pinta la tabla de clientes, ordenada del registro más reciente al más antiguo
+    function render() {
+      const list = loadClients().slice().sort((a, b) =>
+        String(b.createdAt || "").localeCompare(String(a.createdAt || ""))
+      );
+      if (!list.length) {
+        tableWrap.innerHTML = '<p class="empty">Aún no hay clientes registrados en este navegador. Cada registro en el sitio también te llega por correo.</p>';
+        return;
+      }
+      const rows = list.map((c) => `
+        <tr>
+          <td>${esc(c.name || "")}</td>
+          <td>${esc(c.email || "")}</td>
+          <td>${esc(c.phone || "")}</td>
+          <td>${esc(c.company || "—")}</td>
+          <td>${esc(c.interest || "—")}</td>
+          <td>${esc((c.createdAt || "").replace("T", " ").slice(0, 19))}</td>
+        </tr>`).join("");
+      tableWrap.innerHTML = `
+        <table>
+          <thead><tr>
+            <th>Nombre</th><th>Email</th><th>Teléfono</th>
+            <th>Empresa</th><th>Interés</th><th>Registro</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>`;
+    }
+
+    // Escapa caracteres HTML: evita inyección si un cliente escribió <script> en su nombre
+    function esc(s) {
+      return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    }
+
+    // Genera y descarga un archivo CSV con todos los clientes registrados
+    function exportCsv() {
+      const list = loadClients();
+      const header = ["name","email","phone","company","interest","createdAt"];
+      // Cada valor va entre comillas y las comillas internas se duplican (formato CSV estándar)
+      const lines = [header.join(",")].concat(
+        list.map((c) => header.map((k) => `"${String(c[k] || "").replace(/"/g, '""')}"`).join(","))
+      );
+      // Descarga vía Blob: crea el archivo en memoria y simula el clic en un enlace
+      const blob = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "cdh-clientes.csv";
+      a.click();
+      URL.revokeObjectURL(a.href); // libera la memoria del Blob
+    }
+
+    // Verifica la clave ingresada: compara su hash con el almacenado y,
+    // si coincide, oculta la pantalla de clave y muestra el panel
+    async function tryUnlock() {
+      const v = document.getElementById("adminKey").value;
+      const hash = await sha256Hex(v);
+      if (hash !== ADMIN_KEY_HASH) {
+        gateErr.hidden = false; // clave incorrecta: mostrar el error
+        return;
+      }
+      gateErr.hidden = true;
+      gate.hidden = true;   // ocultar la puerta de acceso
+      panel.hidden = false; // mostrar el panel de clientes
+      render();             // pintar la tabla
+    }
+    // Desbloqueo con el botón "Entrar" o con la tecla Enter en el campo de clave
+    document.getElementById("unlockBtn").addEventListener("click", tryUnlock);
+    document.getElementById("adminKey").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") tryUnlock();
+    });
+    document.getElementById("exportBtn").addEventListener("click", exportCsv);
+    document.getElementById("refreshBtn").addEventListener("click", render);
+  </script>
+</body>
+</html>
