@@ -23,8 +23,13 @@
   }
 
   // Aplicar tema inicial cuanto antes (evita parpadeo)
-  const initial = saved() || (systemPrefersLight() ? "light" : "dark");
-  set(initial, false);
+  let urlTheme = null;
+  try {
+    const p = new URLSearchParams(location.search).get("theme");
+    if (p === "light" || p === "dark") urlTheme = p;
+  } catch (e) {}
+  const initial = urlTheme || saved() || (systemPrefersLight() ? "light" : "dark");
+  set(initial, !!urlTheme);
 
   document.addEventListener("DOMContentLoaded", () => {
     const btn = document.getElementById("themeToggle");
