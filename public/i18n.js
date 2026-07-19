@@ -459,6 +459,10 @@
   }
 
   function initialLang() {
+    try {
+      const p = new URLSearchParams(location.search).get("lang");
+      if (p && I18N[p]) return p;
+    } catch (e) {}
     let saved;
     try { saved = localStorage.getItem("cdh-lang"); } catch (e) {}
     if (saved && I18N[saved]) return saved;
