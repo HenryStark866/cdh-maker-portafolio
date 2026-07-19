@@ -166,6 +166,12 @@ h2 { font-size: clamp(1.7rem, 3.5vw, 2.4rem); margin-bottom: 10px; }
 .project-media:hover img { transform: scale(1.05); }
 .project-media--contain img { object-fit: contain; padding: 18px; }
 .project-body { padding: 22px 24px 26px; }
+.project-link {
+  display: inline-block; margin-top: 12px; color: var(--accent-2);
+  font-family: var(--font-display); font-size: 0.88rem; font-weight: 600;
+  text-decoration: none; transition: transform 0.2s;
+}
+.project-link:hover { transform: translateX(4px); }
 .project-cta {
   display: flex; align-items: center;
   border-style: dashed; background: transparent;
