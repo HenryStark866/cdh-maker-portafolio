@@ -176,7 +176,11 @@ h2 { font-size: clamp(1.7rem, 3.5vw, 2.4rem); margin-bottom: 10px; }
   border-radius: 12px; margin-bottom: 18px; color: var(--accent);
   background: rgba(34, 211, 238, 0.1); border: 1px solid rgba(34, 211, 238, 0.25);
 }
-.card-icon svg { width: 24px; height: 24px; }
+.card-icon svg {
+  width: 24px; height: 24px;
+  filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.6));
+}
+.card:hover .card-icon svg { filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.9)); }
 .card h3 { font-size: 1.15rem; margin-bottom: 10px; }
 .card p { color: var(--text-dim); font-size: 0.95rem; margin-bottom: 14px; }
 .card ul { list-style: none; }
@@ -323,6 +327,7 @@ h2 { font-size: clamp(1.7rem, 3.5vw, 2.4rem); margin-bottom: 10px; }
   color: var(--btn-fg); font-weight: 700; font-family: var(--font-display);
   display: grid; place-items: center;
 }
+.cdh-chat-avatar svg { width: 20px; height: 20px; }
 .cdh-chat-header strong { display: block; font-family: var(--font-display); }
 .cdh-chat-header span { font-size: 0.75rem; color: var(--accent-2); }
 #cdh-chat-close {
@@ -466,10 +471,20 @@ h2 { font-size: clamp(1.7rem, 3.5vw, 2.4rem); margin-bottom: 10px; }
 }
 .why-item:hover { transform: translateY(-5px); }
 .why-icon {
-  font-size: 1.8rem; width: 54px; height: 54px; display: grid; place-items: center;
-  border-radius: 14px; margin-bottom: 16px;
-  background: linear-gradient(135deg, rgba(34, 211, 238, 0.15), rgba(94, 234, 212, 0.1));
-  border: 1px solid var(--border);
+  width: 54px; height: 54px; display: grid; place-items: center;
+  border-radius: 14px; margin-bottom: 16px; color: var(--accent);
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.14), rgba(94, 234, 212, 0.08));
+  border: 1px solid rgba(34, 211, 238, 0.3);
+  box-shadow: inset 0 0 18px rgba(34, 211, 238, 0.08);
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+.why-icon svg {
+  width: 26px; height: 26px;
+  filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.65));
+}
+.why-item:hover .why-icon {
+  box-shadow: inset 0 0 22px rgba(34, 211, 238, 0.16), 0 0 24px rgba(34, 211, 238, 0.35);
+  transform: scale(1.06);
 }
 .why-item h3 { font-size: 1.05rem; margin-bottom: 8px; }
 .why-item p { color: var(--text-dim); font-size: 0.92rem; }
@@ -509,6 +524,8 @@ h2 { font-size: clamp(1.7rem, 3.5vw, 2.4rem); margin-bottom: 10px; }
   font-size: 0.92rem; margin-bottom: 9px; transition: color 0.2s;
 }
 .footer-grid a:hover { color: var(--accent); }
+.footer-loc { display: flex !important; align-items: center; gap: 6px; }
+.loc-pin { width: 15px; height: 15px; color: var(--accent); flex-shrink: 0; }
 .footer-tagline { color: var(--text-dim); margin-top: 14px; font-style: italic; }
 @media (max-width: 700px) { .footer-grid { grid-template-columns: 1fr; gap: 26px; } }
 
@@ -535,9 +552,10 @@ h2 { font-size: clamp(1.7rem, 3.5vw, 2.4rem); margin-bottom: 10px; }
 .theme-toggle {
   width: 38px; height: 38px; border-radius: 9px; cursor: pointer;
   background: var(--surface-2); border: 1px solid var(--border);
-  font-size: 1rem; line-height: 1; display: grid; place-items: center;
+  color: var(--accent); line-height: 1; display: grid; place-items: center;
   transition: border-color 0.2s, transform 0.2s;
 }
+.theme-toggle svg { filter: drop-shadow(0 0 5px rgba(34, 211, 238, 0.55)); }
 .theme-toggle:hover { border-color: var(--accent); transform: scale(1.06); }
 
 /* ===== Soporte RTL (árabe) ===== */
