@@ -11,12 +11,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=8" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230e0a1c'/%3E%3Ctext x='50' y='66' font-size='44' text-anchor='middle' fill='%23a78bfa' font-family='Arial' font-weight='bold'%3EC%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css?v=9" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2306232e'/%3E%3Ctext x='50' y='66' font-size='44' text-anchor='middle' fill='%2322d3ee' font-family='Arial' font-weight='bold'%3EC%3C/text%3E%3C/svg%3E" />
+  <script src="theme.js"></script>
 </head>
 <body>
 
-  <!-- ===== FONDO METAVERSO ===== -->
+  <!-- ===== FONDO OCÉANO ===== -->
   <canvas id="metaverse" aria-hidden="true"></canvas>
 
   <!-- ===== NAV ===== -->
@@ -29,40 +30,42 @@
         CDH<span class="accent">Maker</span>
       </a>
       <nav class="nav-links" id="navLinks">
-        <a href="#servicios">Servicios</a>
-        <a href="#proceso">Proceso</a>
-        <a href="#proyectos">Proyectos</a>
-        <a href="#sobre">Sobre mí</a>
-        <a href="#contacto" class="btn btn-small">Contacto</a>
+        <a href="#servicios" data-i18n="nav_serv">Servicios</a>
+        <a href="#proceso" data-i18n="nav_proc">Proceso</a>
+        <a href="#proyectos" data-i18n="nav_proj">Proyectos</a>
+        <a href="#sobre" data-i18n="nav_about">Sobre mí</a>
+        <a href="#contacto" class="btn btn-small" data-i18n="nav_contact">Contacto</a>
       </nav>
-      <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-      </button>
+      <div class="nav-controls">
+        <select id="langSelect" class="lang-select" data-i18n-aria="lang_label" aria-label="Cambiar idioma"></select>
+        <button id="themeToggle" class="theme-toggle" data-i18n-aria="theme_label" aria-label="Cambiar tema claro/oscuro">☀️</button>
+        <button class="nav-toggle" id="navToggle" data-i18n-aria="menu_label" aria-label="Abrir menú">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </button>
+      </div>
     </div>
   </header>
 
   <!-- ===== HERO ===== -->
   <section class="hero">
-    <div class="hero-grid-bg" aria-hidden="true"></div>
     <div class="orb orb-1" aria-hidden="true"></div>
     <div class="orb orb-2" aria-hidden="true"></div>
-    <div class="orb orb-3" aria-hidden="true"></div>
     <div class="container hero-inner">
       <p class="hero-kicker">// <span id="typed">Ingeniería</span><span class="typed-cursor">▌</span></p>
-      <h1>Del <span class="grad-text">diseño</span> al <span class="grad-text">prototipo</span>,<br />de la idea al <span class="grad-text-2">producto</span>.</h1>
-      <p class="hero-sub">
+      <h1 data-i18n="hero_h1" data-i18n-html>Del <span class="grad-text">diseño</span> al <span class="grad-text">prototipo</span>,<br />de la idea al <span class="grad-text-2">producto</span>.</h1>
+      <p class="hero-sub" data-i18n="hero_sub" data-i18n-html>
         Soy <strong>Henry Taborda</strong>, ingeniero y maker. En <strong>CDH Maker</strong> convierto ideas en
         soluciones reales: desarrollo de software, fabricación digital, electrónica, IoT y consultoría técnica.
       </p>
       <div class="hero-cta">
-        <a href="#contacto" class="btn btn-primary btn-glow">🚀 Trabajemos juntos</a>
-        <a href="#proyectos" class="btn btn-ghost">Ver mi trabajo</a>
+        <a href="#contacto" class="btn btn-primary btn-glow" data-i18n="hero_cta1">🚀 Trabajemos juntos</a>
+        <a href="#proyectos" class="btn btn-ghost" data-i18n="hero_cta2">Ver mi trabajo</a>
       </div>
       <div class="hero-stats">
-        <div><strong><span class="count" data-count="4">0</span></strong><span>líneas de servicio</span></div>
-        <div><strong><span class="count" data-count="10">0</span>+</strong><span>proyectos construidos</span></div>
-        <div><strong>&lt;<span class="count" data-count="24">0</span>h</strong><span>tiempo de respuesta</span></div>
-        <div><strong><span class="count" data-count="100">0</span>%</strong><span>pasión maker</span></div>
+        <div><strong><span class="count" data-count="4">0</span></strong><span data-i18n="stat1_l">líneas de servicio</span></div>
+        <div><strong><span class="count" data-count="10">0</span>+</strong><span data-i18n="stat2_l">proyectos construidos</span></div>
+        <div><strong>&lt;<span class="count" data-count="24">0</span>h</strong><span data-i18n="stat3_l">tiempo de respuesta</span></div>
+        <div><strong><span class="count" data-count="100">0</span>%</strong><span data-i18n="stat4_l">pasión maker</span></div>
       </div>
     </div>
   </section>
@@ -78,21 +81,21 @@
   <!-- ===== SERVICIOS ===== -->
   <section class="section" id="servicios">
     <div class="container">
-      <p class="section-kicker">// Servicios</p>
-      <h2>¿Qué puedo hacer por ti?</h2>
-      <p class="section-sub">Un portafolio integral: desde el código hasta el objeto físico.</p>
+      <p class="section-kicker" data-i18n="serv_k">// Servicios</p>
+      <h2 data-i18n="serv_t">¿Qué puedo hacer por ti?</h2>
+      <p class="section-sub" data-i18n="serv_s">Un portafolio integral: desde el código hasta el objeto físico.</p>
 
       <div class="cards">
         <article class="card">
           <div class="card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m8 6-6 6 6 6"/><path d="m16 6 6 6-6 6"/><path d="m14 4-4 16"/></svg>
           </div>
-          <h3>Desarrollo web y software</h3>
-          <p>Páginas web, aplicaciones y sistemas a la medida. Sitios modernos, rápidos y pensados para hacer crecer tu negocio o proyecto.</p>
+          <h3 data-i18n="s1_t">Desarrollo web y software</h3>
+          <p data-i18n="s1_p">Páginas web, aplicaciones y sistemas a la medida. Sitios modernos, rápidos y pensados para hacer crecer tu negocio o proyecto.</p>
           <ul>
-            <li>Sitios web y landing pages</li>
-            <li>Aplicaciones web a la medida</li>
-            <li>Automatización de procesos</li>
+            <li data-i18n="s1_a">Sitios web y landing pages</li>
+            <li data-i18n="s1_b">Aplicaciones web a la medida</li>
+            <li data-i18n="s1_c">Automatización de procesos</li>
           </ul>
         </article>
 
@@ -100,12 +103,12 @@
           <div class="card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9l4-6z"/><path d="M11 3 8 9l4 12 4-12-3-6"/><path d="M2 9h20"/></svg>
           </div>
-          <h3>Fabricación digital / Maker</h3>
-          <p>Prototipado y fabricación con tecnologías digitales: de tu idea o plano a la pieza terminada.</p>
+          <h3 data-i18n="s2_t">Fabricación digital / Maker</h3>
+          <p data-i18n="s2_p">Prototipado y fabricación con tecnologías digitales: de tu idea o plano a la pieza terminada.</p>
           <ul>
-            <li>Impresión 3D (FDM / resina)</li>
-            <li>Corte y grabado láser</li>
-            <li>Mecanizado CNC y prototipado</li>
+            <li data-i18n="s2_a">Impresión 3D (FDM / resina)</li>
+            <li data-i18n="s2_b">Corte y grabado láser</li>
+            <li data-i18n="s2_c">Mecanizado CNC y prototipado</li>
           </ul>
         </article>
 
@@ -113,12 +116,12 @@
           <div class="card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/></svg>
           </div>
-          <h3>Electrónica e IoT</h3>
-          <p>Sistemas electrónicos y conectados: sensórica, automatización y monitoreo remoto para hogares, industria y agro.</p>
+          <h3 data-i18n="s3_t">Electrónica e IoT</h3>
+          <p data-i18n="s3_p">Sistemas electrónicos y conectados: sensórica, automatización y monitoreo remoto para hogares, industria y agro.</p>
           <ul>
-            <li>Sistemas embebidos (Arduino, ESP32, Raspberry Pi)</li>
-            <li>Domótica y automatización</li>
-            <li>Monitoreo con sensores e IoT</li>
+            <li data-i18n="s3_a">Sistemas embebidos (Arduino, ESP32, Raspberry Pi)</li>
+            <li data-i18n="s3_b">Domótica y automatización</li>
+            <li data-i18n="s3_c">Monitoreo con sensores e IoT</li>
           </ul>
         </article>
 
@@ -126,12 +129,12 @@
           <div class="card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
           </div>
-          <h3>Diseño y consultoría técnica</h3>
-          <p>Acompañamiento experto para materializar tu proyecto: diseño, asesoría y formación.</p>
+          <h3 data-i18n="s4_t">Diseño y consultoría técnica</h3>
+          <p data-i18n="s4_p">Acompañamiento experto para materializar tu proyecto: diseño, asesoría y formación.</p>
           <ul>
-            <li>Diseño CAD 2D/3D</li>
-            <li>Asesorías y consultoría de proyectos</li>
-            <li>Capacitaciones y talleres maker</li>
+            <li data-i18n="s4_a">Diseño CAD 2D/3D</li>
+            <li data-i18n="s4_b">Asesorías y consultoría de proyectos</li>
+            <li data-i18n="s4_c">Capacitaciones y talleres maker</li>
           </ul>
         </article>
       </div>
@@ -141,29 +144,29 @@
   <!-- ===== POR QUÉ ===== -->
   <section class="section" id="porque">
     <div class="container">
-      <p class="section-kicker">// ¿Por qué CDH Maker?</p>
-      <h2>Una sola persona, un <span class="grad-text">taller completo</span></h2>
-      <p class="section-sub">Lo que hace diferente trabajar conmigo.</p>
+      <p class="section-kicker" data-i18n="why_k">// ¿Por qué CDH Maker?</p>
+      <h2 data-i18n="why_t" data-i18n-html>Una sola persona, un <span class="grad-text">taller completo</span></h2>
+      <p class="section-sub" data-i18n="why_s">Lo que hace diferente trabajar conmigo.</p>
       <div class="why-grid">
         <div class="why-item">
           <div class="why-icon">🧩</div>
-          <h3>Todo bajo un mismo techo</h3>
-          <p>Software, electrónica y fabricación en un solo lugar: no necesitas coordinar tres proveedores distintos.</p>
+          <h3 data-i18n="w1_t">Todo bajo un mismo techo</h3>
+          <p data-i18n="w1_p">Software, electrónica y fabricación en un solo lugar: no necesitas coordinar tres proveedores distintos.</p>
         </div>
         <div class="why-item">
           <div class="why-icon">⚡</div>
-          <h3>Prototipado rápido</h3>
-          <p>Filosofía maker: construir, probar y mejorar. Ves avances reales desde los primeros días.</p>
+          <h3 data-i18n="w2_t">Prototipado rápido</h3>
+          <p data-i18n="w2_p">Filosofía maker: construir, probar y mejorar. Ves avances reales desde los primeros días.</p>
         </div>
         <div class="why-item">
           <div class="why-icon">🤝</div>
-          <h3>Trato directo y honesto</h3>
-          <p>Hablas directamente con quien construye tu proyecto. Cotización gratis y sin letra pequeña.</p>
+          <h3 data-i18n="w3_t">Trato directo y honesto</h3>
+          <p data-i18n="w3_p">Hablas directamente con quien construye tu proyecto. Cotización gratis y sin letra pequeña.</p>
         </div>
         <div class="why-item">
           <div class="why-icon">🚀</div>
-          <h3>Tecnología de punta</h3>
-          <p>IA, IoT y nube aplicadas a problemas reales — las mismas herramientas de mis propios proyectos.</p>
+          <h3 data-i18n="w4_t">Tecnología de punta</h3>
+          <p data-i18n="w4_p">IA, IoT y nube aplicadas a problemas reales — las mismas herramientas de mis propios proyectos.</p>
         </div>
       </div>
     </div>
@@ -172,14 +175,14 @@
   <!-- ===== PROCESO ===== -->
   <section class="section section-alt" id="proceso">
     <div class="container">
-      <p class="section-kicker">// Proceso</p>
-      <h2>Cómo trabajo</h2>
-      <p class="section-sub">Un flujo claro, de principio a fin.</p>
+      <p class="section-kicker" data-i18n="proc_k">// Proceso</p>
+      <h2 data-i18n="proc_t">Cómo trabajo</h2>
+      <p class="section-sub" data-i18n="proc_s">Un flujo claro, de principio a fin.</p>
       <div class="steps">
-        <div class="step"><span class="step-num">01</span><h3>Escucha</h3><p>Entendemos tu necesidad, el contexto y los objetivos del proyecto.</p></div>
-        <div class="step"><span class="step-num">02</span><h3>Diseño</h3><p>Propuesta técnica y de diseño: bocetos, CAD, arquitectura de software.</p></div>
-        <div class="step"><span class="step-num">03</span><h3>Construcción</h3><p>Desarrollo, fabricación y pruebas iterativas con tu retroalimentación.</p></div>
-        <div class="step"><span class="step-num">04</span><h3>Entrega</h3><p>Producto funcionando, documentación y acompañamiento posterior.</p></div>
+        <div class="step"><span class="step-num">01</span><h3 data-i18n="pr1_t">Escucha</h3><p data-i18n="pr1_p">Entendemos tu necesidad, el contexto y los objetivos del proyecto.</p></div>
+        <div class="step"><span class="step-num">02</span><h3 data-i18n="pr2_t">Diseño</h3><p data-i18n="pr2_p">Propuesta técnica y de diseño: bocetos, CAD, arquitectura de software.</p></div>
+        <div class="step"><span class="step-num">03</span><h3 data-i18n="pr3_t">Construcción</h3><p data-i18n="pr3_p">Desarrollo, fabricación y pruebas iterativas con tu retroalimentación.</p></div>
+        <div class="step"><span class="step-num">04</span><h3 data-i18n="pr4_t">Entrega</h3><p data-i18n="pr4_p">Producto funcionando, documentación y acompañamiento posterior.</p></div>
       </div>
     </div>
   </section>
@@ -187,92 +190,91 @@
   <!-- ===== PROYECTOS ===== -->
   <section class="section" id="proyectos">
     <div class="container">
-      <p class="section-kicker">// Proyectos</p>
-      <h2>Trabajo destacado</h2>
-      <p class="section-sub">Proyectos reales que he creado e implementado. Haz clic en las imágenes para verlas completas.</p>
+      <p class="section-kicker" data-i18n="proj_k">// Proyectos</p>
+      <h2 data-i18n="proj_t">Trabajo destacado</h2>
+      <p class="section-sub" data-i18n="proj_s">Proyectos reales que he creado e implementado. Haz clic para verlos.</p>
 
       <article class="project project-featured">
         <video controls preload="metadata" poster="media/privacycheck-poster.jpg">
           <source src="media/privacycheck-demo.mp4" type="video/mp4" />
-          Tu navegador no soporta video HTML5.
         </video>
         <div class="project-body">
-          <div class="project-tag">Demo en video</div>
-          <h3>PrivacyCheck — Cumplimiento Ley 1581 en acción</h3>
-          <p>Demo real de la plataforma: registro de entidades, consulta al RNBD de la SIC, cuestionario de autodiagnóstico con puntaje ponderado, simulador "¿qué pasaría si...?" e interpretación con IA. Desarrollada con Next.js y desplegada en la nube.</p>
+          <div class="project-tag" data-i18n="tag_video">Demo en video</div>
+          <h3 data-i18n="pj_featured_t">PrivacyCheck — Cumplimiento Ley 1581 en acción</h3>
+          <p data-i18n="pj_featured_p">Demo real de la plataforma: registro de entidades, consulta al RNBD, autodiagnóstico con puntaje, simulador y análisis con IA. Next.js, en la nube.</p>
         </div>
       </article>
 
       <div class="projects">
         <article class="project project-with-media">
           <a class="project-media" href="media/evaia-avatar.png" target="_blank" rel="noopener">
-            <img src="media/evaia-avatar.png" alt="Avatar holográfico de EvaIA, asistente de inteligencia artificial" loading="lazy" />
+            <img src="media/evaia-avatar.png" alt="EvaIA" loading="lazy" />
           </a>
           <div class="project-body">
-            <div class="project-tag">Inteligencia Artificial</div>
-            <h3>EvaIA — Asistente de IA local</h3>
-            <p>Asistente de inteligencia artificial que corre 100% en local: reconocimiento de voz, respuesta hablada, visión por cámara, memoria en base de datos y avatar animado propio.</p>
+            <div class="project-tag" data-i18n="tag_ai">Inteligencia Artificial</div>
+            <h3 data-i18n="pj_eva_t">EvaIA — Asistente de IA local</h3>
+            <p data-i18n="pj_eva_p">Asistente de IA que corre 100% en local: voz, respuesta hablada, visión por cámara, memoria en base de datos y avatar animado propio.</p>
           </div>
         </article>
         <article class="project project-with-media">
           <a class="project-media" href="media/evaia-ide.png" target="_blank" rel="noopener">
-            <img src="media/evaia-ide.png" alt="Entorno de desarrollo de EvaIA con su avatar animado en pantalla" loading="lazy" />
+            <img src="media/evaia-ide.png" alt="EvaIA IDE" loading="lazy" />
           </a>
           <div class="project-body">
-            <div class="project-tag">Software</div>
-            <h3>Desarrollo a la medida, en acción</h3>
-            <p>Construcción de EvaIA en Python: integración de voz con Windows, visión artificial, Docker y base de datos — iterando hasta que todo funciona sin fricción.</p>
+            <div class="project-tag" data-i18n="tag_sw">Software</div>
+            <h3 data-i18n="pj_dev_t">Desarrollo a la medida, en acción</h3>
+            <p data-i18n="pj_dev_p">Construcción de EvaIA en Python: voz en Windows, visión artificial, Docker y base de datos — iterando hasta que todo funciona.</p>
           </div>
         </article>
         <article class="project project-with-media">
           <a class="project-media project-media--contain" href="media/sintaxis-ti.png" target="_blank" rel="noopener">
-            <img src="media/sintaxis-ti.png" alt="Logo de Sintaxis TI" loading="lazy" />
+            <img src="media/sintaxis-ti.png" alt="Sintaxis TI" loading="lazy" />
           </a>
           <div class="project-body">
-            <div class="project-tag">Web</div>
-            <h3>Autodiagnóstico Ley 1581 — Reto CAVALTEC</h3>
-            <p>Plataforma web de autodiagnóstico de cumplimiento en protección de datos personales (Ley 1581 de 2012), desarrollada con el equipo Sintaxis TI para el reto CAVALTEC.</p>
+            <div class="project-tag" data-i18n="tag_web">Web</div>
+            <h3 data-i18n="pj_cav_t">Autodiagnóstico Ley 1581 — Reto CAVALTEC</h3>
+            <p data-i18n="pj_cav_p">Plataforma web de autodiagnóstico de cumplimiento en protección de datos (Ley 1581), con el equipo Sintaxis TI para el reto CAVALTEC.</p>
           </div>
         </article>
         <article class="project project-with-media">
           <a class="project-media" href="https://atiempo-logistica.vercel.app" target="_blank" rel="noopener">
-            <img src="media/atiempo-logistica.jpg" alt="Plataforma web de A Tiempo Logística con rastreo de guías" loading="lazy" />
+            <img src="media/atiempo-logistica.jpg" alt="A Tiempo Logística" loading="lazy" />
           </a>
           <div class="project-body">
-            <div class="project-tag">Web · SaaS</div>
-            <h3>A Tiempo Logística — Última milla</h3>
-            <p>Plataforma SaaS de logística de última milla para e-commerce en Medellín: rastreo de guías, CEDI, rutas, recaudo contraentrega y trazabilidad punta a punta. Next.js + Supabase.</p>
-            <a class="project-link" href="https://atiempo-logistica.vercel.app" target="_blank" rel="noopener">Ver en vivo →</a>
+            <div class="project-tag" data-i18n="tag_saas">Web · SaaS</div>
+            <h3 data-i18n="pj_at_t">A Tiempo Logística — Última milla</h3>
+            <p data-i18n="pj_at_p">Plataforma SaaS de logística de última milla para e-commerce en Medellín: rastreo de guías, CEDI, rutas, recaudo contraentrega y trazabilidad punta a punta. Next.js + Supabase.</p>
+            <a class="project-link" href="https://atiempo-logistica.vercel.app" target="_blank" rel="noopener" data-i18n="live">Ver en vivo →</a>
           </div>
         </article>
         <article class="project project-with-media">
           <a class="project-media" href="https://taxiya.vercel.app" target="_blank" rel="noopener">
-            <img src="media/taxiya.jpg" alt="App TaxiYa con acceso para pasajero, conductor y central" loading="lazy" />
+            <img src="media/taxiya.jpg" alt="TaxiYa" loading="lazy" />
           </a>
           <div class="project-body">
-            <div class="project-tag">Web · SaaS</div>
-            <h3>TaxiYa — Central de taxis</h3>
-            <p>Plataforma para que empresas de taxis operen sin llamadas ni planes de datos costosos: apps para pasajero, conductor y central, con despacho en tiempo real. Producto de CDH Maker.</p>
-            <a class="project-link" href="https://taxiya.vercel.app" target="_blank" rel="noopener">Ver en vivo →</a>
+            <div class="project-tag" data-i18n="tag_saas">Web · SaaS</div>
+            <h3 data-i18n="pj_taxi_t">TaxiYa — Central de taxis</h3>
+            <p data-i18n="pj_taxi_p">Plataforma para que empresas de taxis operen sin llamadas ni planes de datos costosos: apps para pasajero, conductor y central, con despacho en tiempo real. Producto de CDH Maker.</p>
+            <a class="project-link" href="https://taxiya.vercel.app" target="_blank" rel="noopener" data-i18n="live">Ver en vivo →</a>
           </div>
         </article>
         <article class="project project-with-media">
           <a class="project-media" href="https://incubant-app.vercel.app" target="_blank" rel="noopener">
-            <img src="media/incubapp.jpg" alt="Acceso a IncubApp, SaaS multi-empresa de operación industrial" loading="lazy" />
+            <img src="media/incubapp.jpg" alt="IncubApp" loading="lazy" />
           </a>
           <div class="project-body">
-            <div class="project-tag">Web · SaaS · IA</div>
-            <h3>IncubApp — Operación industrial</h3>
-            <p>SaaS multi-empresa para plantas de incubación y granjas: rondas con foto, órdenes de trabajo, ventas, logística, sanidad y gerencia en tiempo real, con IA. Producto de CDH Maker.</p>
-            <a class="project-link" href="https://incubant-app.vercel.app" target="_blank" rel="noopener">Ver en vivo →</a>
+            <div class="project-tag" data-i18n="tag_saas_ai">Web · SaaS · IA</div>
+            <h3 data-i18n="pj_inc_t">IncubApp — Operación industrial</h3>
+            <p data-i18n="pj_inc_p">SaaS multi-empresa para plantas de incubación y granjas: rondas con foto, órdenes de trabajo, ventas, logística, sanidad y gerencia en tiempo real, con IA. Producto de CDH Maker.</p>
+            <a class="project-link" href="https://incubant-app.vercel.app" target="_blank" rel="noopener" data-i18n="live">Ver en vivo →</a>
           </div>
         </article>
         <article class="project project-cta">
           <div class="project-body">
-            <div class="project-tag">Tu idea</div>
-            <h3>Tu proyecto podría estar aquí</h3>
-            <p>¿Tienes una idea de software, electrónica o fabricación digital? Hagámosla realidad.</p>
-            <a href="#contacto" class="btn btn-ghost">Conversemos →</a>
+            <div class="project-tag" data-i18n="tag_idea">Tu idea</div>
+            <h3 data-i18n="cta_t">Tu proyecto podría estar aquí</h3>
+            <p data-i18n="cta_p">¿Tienes una idea de software, electrónica o fabricación digital? Hagámosla realidad.</p>
+            <a href="#contacto" class="btn btn-ghost" data-i18n="cta_btn">Conversemos →</a>
           </div>
         </article>
       </div>
@@ -283,14 +285,14 @@
   <section class="section section-alt" id="sobre">
     <div class="container about">
       <div>
-        <p class="section-kicker">// Sobre mí</p>
-        <h2>Henry Taborda — CDH Maker</h2>
-        <p>
+        <p class="section-kicker" data-i18n="about_k">// Sobre mí</p>
+        <h2 data-i18n="about_t">Henry Taborda — CDH Maker</h2>
+        <p data-i18n="about_p1">
           Soy un apasionado por la tecnología y la cultura maker. Combino la ingeniería, la fabricación
           digital y el desarrollo de software para resolver problemas reales, con un enfoque práctico:
           prototipar rápido, iterar y entregar soluciones que funcionan.
         </p>
-        <p>
+        <p data-i18n="about_p2" data-i18n-html>
           Creo en el poder de <em>aprender haciendo</em> y en que la tecnología debe estar al alcance de
           todos: por eso también comparto conocimiento a través de talleres y capacitaciones.
         </p>
@@ -307,13 +309,12 @@
 <span class="t-accent">henry@cdhmaker</span>
 
 $ cat perfil.txt
-> Ingeniero &amp; Maker
-> Medellín, Colombia
-> "Si lo puedes imaginar,
-   lo podemos construir."
+&gt; <span data-i18n="term_role" data-i18n-html>Ingeniero &amp; Maker</span>
+&gt; <span data-i18n="term_loc">Medellín, Colombia</span>
+&gt; <span data-i18n="term_quote" data-i18n-html>"Si lo puedes imaginar,<br>&nbsp;&nbsp;&nbsp;lo podemos construir."</span>
 
 $ estado
-<span class="t-ok">● Disponible para proyectos</span></code></pre>
+<span class="t-ok" data-i18n="term_status">● Disponible para proyectos</span></code></pre>
         </div>
       </div>
     </div>
@@ -322,9 +323,9 @@ $ estado
   <!-- ===== CONTACTO ===== -->
   <section class="section" id="contacto">
     <div class="container contact">
-      <p class="section-kicker">// Contacto</p>
-      <h2>¿Tienes un proyecto en mente?</h2>
-      <p class="section-sub">Cuéntame tu idea y busquemos la mejor forma de hacerla realidad.</p>
+      <p class="section-kicker" data-i18n="contact_k">// Contacto</p>
+      <h2 data-i18n="contact_t">¿Tienes un proyecto en mente?</h2>
+      <p class="section-sub" data-i18n="contact_s">Cuéntame tu idea y busquemos la mejor forma de hacerla realidad.</p>
       <div class="contact-actions">
         <a class="btn btn-whatsapp" href="https://wa.me/573245769748?text=Hola%20Henry%2C%20vengo%20de%20tu%20p%C3%A1gina%20web%20y%20quiero%20informaci%C3%B3n%20sobre%20tus%20servicios." target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.019-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.297-.497.1-.198.05-.371-.025-.52-.074-.149-.668-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/></svg>
@@ -335,7 +336,7 @@ $ estado
           cdhmaker@gmail.com
         </a>
       </div>
-      <p class="contact-note">Respuesta usualmente en menos de 24 horas.</p>
+      <p class="contact-note" data-i18n="contact_note">Respuesta usualmente en menos de 24 horas.</p>
     </div>
   </section>
 
@@ -349,34 +350,35 @@ $ estado
           </span>
           CDH<span class="accent">Maker</span>
         </a>
-        <p class="footer-tagline">Si lo puedes imaginar,<br />lo podemos construir.</p>
+        <p class="footer-tagline" data-i18n="foot_tag" data-i18n-html>Si lo puedes imaginar,<br />lo podemos construir.</p>
       </div>
       <div>
-        <h4>Navegación</h4>
-        <a href="#servicios">Servicios</a>
-        <a href="#porque">¿Por qué CDH Maker?</a>
-        <a href="#proyectos">Proyectos</a>
-        <a href="#sobre">Sobre mí</a>
+        <h4 data-i18n="foot_nav_h">Navegación</h4>
+        <a href="#servicios" data-i18n="nav_serv">Servicios</a>
+        <a href="#porque" data-i18n="foot_why">¿Por qué CDH Maker?</a>
+        <a href="#proyectos" data-i18n="nav_proj">Proyectos</a>
+        <a href="#sobre" data-i18n="nav_about">Sobre mí</a>
       </div>
       <div>
-        <h4>Contacto</h4>
+        <h4 data-i18n="foot_contact_h">Contacto</h4>
         <a href="https://wa.me/573245769748?text=Hola%20Henry%2C%20vengo%20de%20tu%20p%C3%A1gina%20web." target="_blank" rel="noopener">WhatsApp: 324 576 9748</a>
         <a href="mailto:cdhmaker@gmail.com">cdhmaker@gmail.com</a>
         <a href="https://github.com/HenryStark866" target="_blank" rel="noopener">GitHub</a>
-        <span class="footer-loc">📍 Medellín, Colombia</span>
+        <span class="footer-loc">📍 <span data-i18n="term_loc">Medellín, Colombia</span></span>
       </div>
     </div>
     <div class="container footer-inner">
-      <p>© <span id="year"></span> CDH Maker — Henry Taborda. Hecho con 💜 en Colombia.</p>
-      <a href="#top">Volver arriba ↑</a>
+      <p>© <span id="year"></span> <span data-i18n="foot_copy">CDH Maker — Henry Taborda. Hecho con 💜 en Colombia.</span></p>
+      <a href="#top" data-i18n="foot_backtop">Volver arriba ↑</a>
     </div>
   </footer>
 
   <button id="to-top" aria-label="Volver arriba">↑</button>
   <div id="scroll-progress" aria-hidden="true"></div>
 
-  <script src="metaverse.js?v=1"></script>
-  <script src="script.js?v=3"></script>
+  <script src="metaverse.js?v=2"></script>
+  <script src="i18n.js?v=1"></script>
+  <script src="script.js?v=4"></script>
   <script src="chatbot.js?v=3"></script>
 </body>
 </html>

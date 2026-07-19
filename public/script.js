@@ -28,31 +28,37 @@ const observer = new IntersectionObserver(
 );
 revealTargets.forEach((el) => observer.observe(el));
 
-// Texto rotativo del hero (efecto máquina de escribir)
+// Texto rotativo del hero (efecto máquina de escribir), multi-idioma
 const typedEl = document.getElementById("typed");
 if (typedEl && !reducedMotion) {
-  const WORDS = [
-    "Ingeniería",
-    "Fabricación digital",
-    "Desarrollo de software",
-    "Electrónica e IoT",
-    "Inteligencia Artificial",
-    "Cultura maker",
+  const DEFAULT_WORDS = [
+    "Ingeniería", "Fabricación digital", "Desarrollo de software",
+    "Electrónica e IoT", "Inteligencia Artificial", "Cultura maker",
   ];
-  let wi = 0, ci = 0, deleting = false;
-  (function type() {
-    const word = WORDS[wi];
+  let wi = 0, ci = 0, deleting = false, pending = null;
+  const words = () => (window.CDH_TYPED && window.CDH_TYPED.length ? window.CDH_TYPED : DEFAULT_WORDS);
+  function type() {
+    const list = words();
+    if (wi >= list.length) wi = 0;
+    const word = list[wi];
     typedEl.textContent = word.slice(0, ci);
     if (!deleting) {
-      if (ci++ < word.length) return setTimeout(type, 65);
+      if (ci++ < word.length) return (pending = setTimeout(type, 65));
       deleting = true;
-      return setTimeout(type, 1600);
+      return (pending = setTimeout(type, 1600));
     }
-    if (ci-- > 0) return setTimeout(type, 30);
+    if (ci-- > 0) return (pending = setTimeout(type, 30));
     deleting = false;
-    wi = (wi + 1) % WORDS.length;
-    setTimeout(type, 350);
-  })();
+    wi = (wi + 1) % list.length;
+    pending = setTimeout(type, 350);
+  }
+  // Al cambiar idioma, reiniciar limpiamente la palabra actual
+  window.addEventListener("cdh:langchange", () => {
+    clearTimeout(pending);
+    ci = 0; deleting = false; wi = 0;
+    type();
+  });
+  type();
 }
 
 // Contadores animados de estadísticas
