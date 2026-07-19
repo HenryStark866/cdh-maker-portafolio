@@ -83,6 +83,13 @@
       ask_direct: "Preguntarle a Henry",
       wa_generic: "Hola Henry, vengo de tu página web. Tengo una consulta: ",
       wa_quote_generic: "Hola Henry, vengo de tu página y quiero una cotización: ",
+      garantia: "Toda entrega incluye pruebas, documentación y <b>acompañamiento posterior</b>: si algo no queda como esperabas, lo ajustamos. La idea es que el proyecto funcione, no solo entregarlo. Y si ya tienes algo nuestro que necesita mantenimiento, escríbenos y lo revisamos.",
+      pago: "El pago se acuerda <b>por etapas</b>: defines el alcance con Henry en la cotización y avanzas por hitos, viendo resultados antes de cada pago. Los medios de pago se coordinan directamente con él según tu caso (Colombia o exterior).",
+      materiales: "Trabajamos impresión 3D <b>FDM y resina</b>, corte y grabado <b>láser</b> (MDF, acrílico y más) y <b>CNC</b>. El material ideal depende del uso de la pieza: resistencia, flexibilidad, detalle o estética — cuéntame qué necesitas hacer y te oriento.",
+      privacycheck: "<b>PrivacyCheck</b> es nuestra plataforma de autodiagnóstico de cumplimiento de la Ley 1581 (protección de datos personales en Colombia): registras tu empresa, respondes el cuestionario y obtienes puntaje, brechas y plan de acción con IA. Puedes verla en la sección de proyectos de esta página.",
+      horario: "Puedes escribir <b>a cualquier hora</b> por WhatsApp o correo — Henry responde usualmente en menos de 24 horas, de lunes a sábado. Este chat está disponible 24/7. 😉",
+      portafolio: 'Con gusto. En la sección <a href="#proyectos">Proyectos</a> puedes ver trabajo real: <b>EvaIA</b> (asistente de IA), <b>TaxiYa</b> (central de taxis), <b>IncubApp</b> (SaaS industrial), <b>A Tiempo Logística</b> y <b>PrivacyCheck</b>, varios con demo en vivo. ¿Alguno se parece a lo que necesitas?',
+      good_morning: "¡Buenos días! ☀️", good_afternoon: "¡Buenas tardes!", good_evening: "¡Buenas noches! 🌙",
     },
     en: {
       header_sub: "CDH Maker advisor · online",
@@ -151,6 +158,13 @@
       ask_direct: "Ask Henry",
       wa_generic: "Hi Henry, I come from your website. I have a question: ",
       wa_quote_generic: "Hi Henry, I come from your website and I'd like a quote: ",
+      garantia: "Every delivery includes testing, documentation and <b>follow-up support</b>: if something isn't as expected, we fix it. And if you already have something of ours that needs maintenance, just write to us.",
+      pago: "Payment is agreed <b>in stages</b>: you define the scope with Henry in the quote and advance by milestones, seeing results before each payment. Payment methods are coordinated directly with him (Colombia or abroad).",
+      materiales: "We work with <b>FDM and resin</b> 3D printing, <b>laser</b> cutting/engraving (MDF, acrylic and more) and <b>CNC</b>. The right material depends on the part's use — tell me what you need and I'll guide you.",
+      privacycheck: "<b>PrivacyCheck</b> is our self-assessment platform for Colombia's data protection law (Ley 1581): register your company, answer the questionnaire and get a score, gaps and an AI action plan. You can see it in the projects section of this page.",
+      horario: "You can write <b>anytime</b> via WhatsApp or email — Henry usually replies within 24 hours, Monday to Saturday. This chat is available 24/7. 😉",
+      portafolio: 'Gladly! In the <a href="#proyectos">Projects</a> section you can see real work: <b>EvaIA</b>, <b>TaxiYa</b>, <b>IncubApp</b>, <b>A Tiempo Logística</b> and <b>PrivacyCheck</b>, several with live demos. Does any of them look like what you need?',
+      good_morning: "Good morning! ☀️", good_afternoon: "Good afternoon!", good_evening: "Good evening! 🌙",
     },
   };
 
@@ -166,6 +180,12 @@
     { keys: ["persona", "humano", "alguien real", "human", "person", "real"], type: "humano" },
     { keys: ["donde", "ubicacion", "ciudad", "pais", "envio", "where", "location", "ship"], type: "donde" },
     { keys: ["whatsapp", "contacto", "telefono", "numero", "hablar", "henry", "llamar", "correo", "email", "contact", "phone", "call", "talk"], type: "contacto" },
+    { keys: ["garantia", "soporte", "mantenimiento", "falla", "arregl", "warranty", "support", "broken"], type: "garantia" },
+    { keys: ["pago", "pagar", "transferencia", "efectivo", "tarjeta", "anticipo", "payment", "pay ", "deposit"], type: "pago" },
+    { keys: ["material", "pla", "petg", "abs", "tpu", "acrilico", "mdf", "madera", "metal", "resin", "wood", "acrylic"], type: "materiales" },
+    { keys: ["privacycheck", "privacy check", "ley 1581", "habeas data", "proteccion de datos", "data protection"], type: "privacycheck" },
+    { keys: ["horario", "atienden", "abierto", "disponible", "hours", "schedule", "available", "open"], type: "horario" },
+    { keys: ["portafolio", "proyectos", "trabajos", "ejemplos", "evaia", "taxiya", "incubapp", "portfolio", "examples", "work"], type: "portafolio" },
     { keys: ["hola", "buenas", "buenos dias", "buenas tardes", "buenas noches", "hey", "saludos", "hello", "hi ", "good morning"], type: "saludo" },
     { keys: ["gracias", "genial", "perfecto", "excelente", "thank", "great", "awesome", "cool"], type: "gracias" },
     { keys: ["adios", "chao", "hasta luego", "nos vemos", "bye", "goodbye", "see you"], type: "bye" },
@@ -175,12 +195,16 @@
   ];
 
   function detectIntent(text) {
-    const t = " " + norm(text) + " ";
+    const t = " " + norm(text).replace(/[¿?¡!.,;]/g, " ").replace(/\s+/g, " ") + " ";
     let best = null, bestScore = 0;
     for (const intent of INTENTS) {
       let score = 0;
       for (const k of intent.keys) {
-        if (t.includes(norm(k))) score += k.length > 4 ? 2 : 1; // frases largas pesan más
+        const nk = norm(k);
+        // Palabras cortas exigen coincidencia de palabra completa
+        // (evita que "si" coincida dentro de "sitio", "no" dentro de "nosotros", etc.)
+        const hit = nk.length <= 3 ? t.includes(" " + nk.trim() + " ") : t.includes(nk);
+        if (hit) score += nk.length > 4 ? 2 : 1;
       }
       if (score > bestScore) { best = intent; bestScore = score; }
     }
@@ -300,9 +324,45 @@
     }
 
     switch (action.type) {
-      case "saludo":
-        await botSay(greeted ? pick(T.re_greeting) : pick(T.greeting));
+      case "saludo": {
+        const h = new Date().getHours();
+        const hi = h < 12 ? T.good_morning : h < 19 ? T.good_afternoon : T.good_evening;
+        await botSay(greeted ? pick(T.re_greeting) : hi + " " + pick(T.greeting));
         greeted = true;
+        setQuick(T.menu);
+        break;
+      }
+
+      case "garantia":
+        await botSay(T.garantia);
+        setQuick([{ label: T.quote_wa, action: { type: "wa" } }, ...backQuick(T)]);
+        break;
+
+      case "pago":
+        await botSay(T.pago);
+        setQuick([{ label: T.quote_wa, action: { type: "wa" } }, ...backQuick(T)]);
+        break;
+
+      case "materiales":
+        lastService = "maker";
+        askedProject = true;
+        await botSay(T.materiales);
+        setQuick([{ label: T.quote_wa, action: { type: "wa" } }, ...backQuick(T)]);
+        break;
+
+      case "privacycheck":
+        await botSay(T.privacycheck);
+        await botSay(`<a class="cdh-wa-btn" href="https://privacycheck-co.vercel.app" target="_blank" rel="noopener">PrivacyCheck →</a>`);
+        setQuick(backQuick(T));
+        break;
+
+      case "horario":
+        await botSay(T.horario);
+        setQuick(T.menu);
+        break;
+
+      case "portafolio":
+        await botSay(T.portafolio);
         setQuick(T.menu);
         break;
 
@@ -423,7 +483,9 @@
       started = true;
       greeted = true;
       const T = TEXT[lang()];
-      botSay(pick(T.greeting)).then(() => setQuick(T.menu));
+      const h = new Date().getHours();
+      const hi = h < 12 ? T.good_morning : h < 19 ? T.good_afternoon : T.good_evening;
+      botSay(hi + " " + pick(T.greeting)).then(() => setQuick(T.menu));
     }
     input.focus();
   }
@@ -436,7 +498,9 @@
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && !panel.hidden) closeChat();
   });
-  document.addEventListener("click", (e) => {
+  // pointerdown (no click): se dispara ANTES de que las respuestas rápidas
+  // se eliminen del DOM, evitando que un clic interno parezca externo.
+  document.addEventListener("pointerdown", (e) => {
     if (!panel.hidden && !root.contains(e.target)) closeChat();
   });
 

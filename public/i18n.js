@@ -528,6 +528,13 @@
       pj_dev_p: "Begini cara kami bekerja: analisis, desain, membangun, dan iterasi sampai semuanya berfungsi — kode bersih, pengujian, dan deploy cloud.",
     },
   };
+  const PC_CTA = {
+    es: "Usar PrivacyCheck gratis", en: "Use PrivacyCheck for free", zh: "免费使用 PrivacyCheck",
+    hi: "PrivacyCheck मुफ़्त में इस्तेमाल करें", ar: "استخدم PrivacyCheck مجاناً", pt: "Usar o PrivacyCheck grátis",
+    bn: "বিনামূল্যে PrivacyCheck ব্যবহার করুন", ru: "Использовать PrivacyCheck бесплатно",
+    fr: "Utiliser PrivacyCheck gratuitement", id: "Gunakan PrivacyCheck gratis",
+  };
+  for (const l in PC_CTA) if (I18N[l]) I18N[l].pc_cta = PC_CTA[l];
   for (const l in EXTRA) if (I18N[l]) Object.assign(I18N[l], EXTRA[l]);
 
   const RTL = ["ar"];
