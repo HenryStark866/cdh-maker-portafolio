@@ -17,7 +17,7 @@ Funcionalidades principales:
 |---|---|
 | Página principal del portafolio | `public/index.html` |
 | Estilos y sistema de temas claro/oscuro | `public/styles.css` + `public/theme.js` |
-| Fondo animado atómico/molecular | `public/metaverse.js` |
+| Fondo animado: construcción LEGO de los productos | `public/metaverse.js` |
 | Interacciones (scroll, animaciones, FAQ…) | `public/script.js` |
 | Internacionalización (10 idiomas) | `public/i18n.js` |
 | Cuentas de cliente + CRM + contacto protegido | `public/auth.js` |
@@ -63,7 +63,7 @@ El orden **importa** y no debe cambiarse sin revisar dependencias:
 1. `theme.js` (en `<head>`) — aplica el tema antes del primer render (evita parpadeo).
 2. `security.js` (en `<head>`) — activa la protección lo antes posible.
 3. SDK compat de Firebase (app, auth, firestore) — desde CDN de Google.
-4. `metaverse.js` — fondo animado.
+4. `metaverse.js` — fondo animado: construye ladrillo a ladrillo (estilo LEGO) la silueta de cada producto (PrivacyCheck, EvaIA, A Tiempo, TaxiYa, IncubApp y el engranaje CDH Maker), alternando el costado de la pantalla; conserva el degradado oceánico, la retícula, ambos temas y `prefers-reduced-motion`.
 5. `i18n.js` — idiomas (publica `window.CDH_I18N` y `window.CDH_TYPED`).
 6. `auth.js` — cuentas (publica `window.CDH_AUTH`; requiere que Firebase ya esté cargado).
 7. `script.js` — interacciones generales.
