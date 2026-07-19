@@ -435,6 +435,101 @@
     },
   };
 
+  // Claves añadidas (FAQ, accesibilidad, tarjeta de desarrollo sin código real)
+  const EXTRA = {
+    es: {
+      skip: "Saltar al contenido",
+      faq_k: "// Preguntas frecuentes", faq_t: "Lo que todos quieren saber", faq_s: "Respuestas claras antes de empezar.",
+      faq1_q: "¿Cuánto cuesta un proyecto?", faq1_a: "Cada proyecto es único, por eso la cotización es personalizada y gratuita: describes tu idea, la revisamos y recibes precio y tiempos en menos de 24 horas, sin compromiso.",
+      faq2_q: "¿Cómo es el proceso de trabajo y pago?", faq2_a: "Trabajamos por etapas con entregas parciales: ves avances reales desde los primeros días y el pago se divide por hitos. Sin sorpresas ni letra pequeña.",
+      faq3_q: "¿Atienden clientes fuera de Medellín?", faq3_a: "Sí. El software se entrega en la nube para cualquier parte del mundo, y las piezas físicas (3D, láser, CNC) se envían por mensajería a todo Colombia.",
+      faq4_q: "¿Qué pasa después de la entrega?", faq4_a: "Recibes documentación y acompañamiento posterior: resolvemos dudas, ajustamos detalles y te dejamos todo funcionando. La relación no termina con la entrega.",
+      pj_dev_p: "Así trabajamos: análisis, diseño, construcción e iteración hasta que todo funciona — código limpio, pruebas y despliegue en la nube.",
+    },
+    en: {
+      skip: "Skip to content",
+      faq_k: "// Frequently asked questions", faq_t: "What everyone wants to know", faq_s: "Clear answers before you start.",
+      faq1_q: "How much does a project cost?", faq1_a: "Every project is unique, so quotes are personalized and free: describe your idea and receive price and timing in under 24 hours, no strings attached.",
+      faq2_q: "How do work and payment happen?", faq2_a: "We work in stages with partial deliveries: you see real progress from day one and payment is split by milestones. No surprises, no fine print.",
+      faq3_q: "Do you serve clients outside Medellín?", faq3_a: "Yes. Software is delivered in the cloud anywhere in the world, and physical parts (3D, laser, CNC) ship by courier across Colombia.",
+      faq4_q: "What happens after delivery?", faq4_a: "You get documentation and follow-up support: we answer questions and fine-tune details until everything runs smoothly.",
+      pj_dev_p: "How we work: analysis, design, build and iteration until everything works — clean code, testing and cloud deployment.",
+    },
+    zh: {
+      skip: "跳到内容",
+      faq_k: "// 常见问题", faq_t: "大家都想知道的", faq_s: "开始之前的清晰解答。",
+      faq1_q: "一个项目要多少钱？", faq1_a: "每个项目都是独一无二的，因此报价是免费且个性化的：描述您的想法，24小时内即可收到价格和工期，无需任何承诺。",
+      faq2_q: "工作和付款流程是怎样的？", faq2_a: "我们分阶段工作、分期交付：从最初几天就能看到真实进展，付款按里程碑划分，没有意外费用。",
+      faq3_q: "你们服务麦德林以外的客户吗？", faq3_a: "是的。软件通过云端交付到世界任何地方，实体零件（3D、激光、CNC）可快递至哥伦比亚全国。",
+      faq4_q: "交付之后会怎样？", faq4_a: "您将获得文档和后续支持：我们解答疑问、调整细节，直到一切正常运行。",
+      pj_dev_p: "我们的工作方式：分析、设计、构建和迭代，直到一切正常——干净的代码、测试和云端部署。",
+    },
+    hi: {
+      skip: "सामग्री पर जाएं",
+      faq_k: "// अक्सर पूछे जाने वाले प्रश्न", faq_t: "जो हर कोई जानना चाहता है", faq_s: "शुरू करने से पहले स्पष्ट जवाब।",
+      faq1_q: "एक प्रोजेक्ट की लागत कितनी है?", faq1_a: "हर प्रोजेक्ट अनोखा है, इसलिए कोटेशन व्यक्तिगत और निःशुल्क है: अपना विचार बताएं और 24 घंटे में कीमत और समय पाएं, बिना किसी बाध्यता के।",
+      faq2_q: "काम और भुगतान की प्रक्रिया कैसी है?", faq2_a: "हम चरणों में काम करते हैं: पहले दिनों से ही वास्तविक प्रगति दिखती है और भुगतान माइलस्टोन में बंटा होता है।",
+      faq3_q: "क्या आप मेडेयीन के बाहर के ग्राहकों को सेवा देते हैं?", faq3_a: "हाँ। सॉफ़्टवेयर क्लाउड से दुनिया में कहीं भी पहुँचता है, और भौतिक पुर्ज़े कूरियर से पूरे कोलंबिया में भेजे जाते हैं।",
+      faq4_q: "डिलीवरी के बाद क्या होता है?", faq4_a: "आपको दस्तावेज़ और निरंतर सहायता मिलती है: सब कुछ सुचारू रूप से चलने तक हम साथ रहते हैं।",
+      pj_dev_p: "हम ऐसे काम करते हैं: विश्लेषण, डिज़ाइन, निर्माण और सुधार जब तक सब कुछ न चले — साफ़ कोड, परीक्षण और क्लाउड परिनियोजन।",
+    },
+    ar: {
+      skip: "تخطي إلى المحتوى",
+      faq_k: "// الأسئلة الشائعة", faq_t: "ما يريد الجميع معرفته", faq_s: "إجابات واضحة قبل البدء.",
+      faq1_q: "كم تكلفة المشروع؟", faq1_a: "كل مشروع فريد، لذلك عرض السعر مخصص ومجاني: صف فكرتك وستتلقى السعر والمدة خلال أقل من 24 ساعة دون أي التزام.",
+      faq2_q: "كيف تتم عملية العمل والدفع؟", faq2_a: "نعمل على مراحل بتسليمات جزئية: ترى تقدماً حقيقياً من الأيام الأولى، والدفع مقسّم حسب المراحل. لا مفاجآت.",
+      faq3_q: "هل تخدمون عملاء خارج ميديلين؟", faq3_a: "نعم. البرمجيات تُسلَّم عبر السحابة إلى أي مكان في العالم، والقطع المادية تُشحن بالبريد داخل كولومبيا.",
+      faq4_q: "ماذا يحدث بعد التسليم؟", faq4_a: "تحصل على التوثيق والمتابعة اللاحقة: نجيب عن أسئلتك ونضبط التفاصيل حتى يعمل كل شيء.",
+      pj_dev_p: "هكذا نعمل: تحليل وتصميم وبناء وتكرار حتى يعمل كل شيء — كود نظيف واختبارات ونشر سحابي.",
+    },
+    pt: {
+      skip: "Pular para o conteúdo",
+      faq_k: "// Perguntas frequentes", faq_t: "O que todos querem saber", faq_s: "Respostas claras antes de começar.",
+      faq1_q: "Quanto custa um projeto?", faq1_a: "Cada projeto é único, por isso o orçamento é personalizado e gratuito: descreva sua ideia e receba preço e prazos em menos de 24 horas, sem compromisso.",
+      faq2_q: "Como funciona o processo de trabalho e pagamento?", faq2_a: "Trabalhamos por etapas com entregas parciais: você vê avanços reais desde os primeiros dias e o pagamento é dividido por marcos.",
+      faq3_q: "Atendem clientes fora de Medellín?", faq3_a: "Sim. O software é entregue na nuvem para qualquer lugar do mundo, e as peças físicas são enviadas por courier em toda a Colômbia.",
+      faq4_q: "O que acontece após a entrega?", faq4_a: "Você recebe documentação e acompanhamento: tiramos dúvidas e ajustamos detalhes até tudo funcionar.",
+      pj_dev_p: "Assim trabalhamos: análise, design, construção e iteração até tudo funcionar — código limpo, testes e deploy na nuvem.",
+    },
+    bn: {
+      skip: "মূল বিষয়ে যান",
+      faq_k: "// সাধারণ প্রশ্ন", faq_t: "সবাই যা জানতে চায়", faq_s: "শুরুর আগে পরিষ্কার উত্তর।",
+      faq1_q: "একটি প্রজেক্টের খরচ কত?", faq1_a: "প্রতিটি প্রজেক্ট আলাদা, তাই কোটেশন ব্যক্তিগত ও বিনামূল্যে: আপনার ধারণা বলুন, ২৪ ঘণ্টার মধ্যে দাম ও সময় পাবেন, কোনো বাধ্যবাধকতা ছাড়াই।",
+      faq2_q: "কাজ ও পেমেন্ট প্রক্রিয়া কেমন?", faq2_a: "আমরা ধাপে ধাপে কাজ করি: প্রথম দিন থেকেই বাস্তব অগ্রগতি দেখবেন, পেমেন্ট মাইলফলক অনুযায়ী ভাগ করা।",
+      faq3_q: "মেদেয়িনের বাইরের ক্লায়েন্টদের সেবা দেন?", faq3_a: "হ্যাঁ। সফটওয়্যার ক্লাউডে বিশ্বের যেকোনো জায়গায় পৌঁছায়, আর ভৌত যন্ত্রাংশ কুরিয়ারে সারা কলম্বিয়ায়।",
+      faq4_q: "ডেলিভারির পরে কী হয়?", faq4_a: "ডকুমেন্টেশন ও পরবর্তী সহায়তা পাবেন: সব ঠিকঠাক চলা পর্যন্ত আমরা পাশে থাকি।",
+      pj_dev_p: "আমরা এভাবে কাজ করি: বিশ্লেষণ, ডিজাইন, নির্মাণ ও পুনরাবৃত্তি — পরিচ্ছন্ন কোড, টেস্টিং ও ক্লাউড ডিপ্লয়।",
+    },
+    ru: {
+      skip: "Перейти к содержанию",
+      faq_k: "// Частые вопросы", faq_t: "То, что все хотят знать", faq_s: "Ясные ответы перед стартом.",
+      faq1_q: "Сколько стоит проект?", faq1_a: "Каждый проект уникален, поэтому расчёт индивидуален и бесплатен: опишите идею — и менее чем за 24 часа получите цену и сроки без обязательств.",
+      faq2_q: "Как устроены работа и оплата?", faq2_a: "Работаем поэтапно с промежуточными результатами: реальный прогресс с первых дней, оплата по вехам. Без сюрпризов.",
+      faq3_q: "Работаете ли вы с клиентами вне Медельина?", faq3_a: "Да. Программное обеспечение доставляется через облако в любую точку мира, а физические детали — курьером по всей Колумбии.",
+      faq4_q: "Что происходит после сдачи?", faq4_a: "Вы получаете документацию и сопровождение: отвечаем на вопросы и доводим всё до идеала.",
+      pj_dev_p: "Так мы работаем: анализ, проектирование, сборка и итерации, пока всё не заработает — чистый код, тесты и облачный деплой.",
+    },
+    fr: {
+      skip: "Aller au contenu",
+      faq_k: "// Questions fréquentes", faq_t: "Ce que tout le monde veut savoir", faq_s: "Des réponses claires avant de commencer.",
+      faq1_q: "Combien coûte un projet ?", faq1_a: "Chaque projet est unique : le devis est personnalisé et gratuit. Décrivez votre idée et recevez prix et délais en moins de 24 heures, sans engagement.",
+      faq2_q: "Comment se déroulent le travail et le paiement ?", faq2_a: "Nous travaillons par étapes avec des livraisons partielles : des progrès réels dès les premiers jours et un paiement par jalons.",
+      faq3_q: "Travaillez-vous avec des clients hors de Medellín ?", faq3_a: "Oui. Le logiciel est livré dans le cloud partout dans le monde, et les pièces physiques sont expédiées dans toute la Colombie.",
+      faq4_q: "Que se passe-t-il après la livraison ?", faq4_a: "Vous recevez la documentation et un accompagnement : nous répondons à vos questions jusqu'à ce que tout fonctionne.",
+      pj_dev_p: "Notre façon de travailler : analyse, conception, construction et itération jusqu'à ce que tout fonctionne — code propre, tests et déploiement cloud.",
+    },
+    id: {
+      skip: "Lewati ke konten",
+      faq_k: "// Pertanyaan umum", faq_t: "Yang ingin diketahui semua orang", faq_s: "Jawaban jelas sebelum memulai.",
+      faq1_q: "Berapa biaya sebuah proyek?", faq1_a: "Setiap proyek unik, jadi penawaran bersifat personal dan gratis: jelaskan ide Anda dan terima harga serta waktu dalam kurang dari 24 jam, tanpa kewajiban.",
+      faq2_q: "Bagaimana proses kerja dan pembayaran?", faq2_a: "Kami bekerja bertahap dengan pengiriman parsial: kemajuan nyata sejak hari pertama dan pembayaran per milestone.",
+      faq3_q: "Apakah melayani klien di luar Medellín?", faq3_a: "Ya. Perangkat lunak dikirim lewat cloud ke mana saja, dan suku cadang fisik dikirim kurir ke seluruh Kolombia.",
+      faq4_q: "Apa yang terjadi setelah serah terima?", faq4_a: "Anda menerima dokumentasi dan pendampingan: kami menjawab pertanyaan hingga semuanya berjalan.",
+      pj_dev_p: "Begini cara kami bekerja: analisis, desain, membangun, dan iterasi sampai semuanya berfungsi — kode bersih, pengujian, dan deploy cloud.",
+    },
+  };
+  for (const l in EXTRA) if (I18N[l]) Object.assign(I18N[l], EXTRA[l]);
+
   const RTL = ["ar"];
 
   function apply(lang) {

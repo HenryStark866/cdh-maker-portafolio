@@ -8,17 +8,20 @@
   let W = 0, H = 0;
   const DPR = Math.min(window.devicePixelRatio || 1, 2);
 
-  // Paletas por tema (agua profunda / agua iluminada)
+  // Paletas por tema (agua profunda / agua iluminada), con color de abismo
+  // hacia el que se funde el agua a medida que el visitante "bucea" (scroll)
   const THEMES = {
     dark: {
-      top: "#06232e", bottom: "#03101a",
+      top: [6, 35, 46], bottom: [3, 16, 26],
+      abyssTop: [2, 12, 20], abyssBottom: [1, 5, 10],
       bubble: [125, 211, 231],   // cian agua
       bubble2: [129, 140, 248],  // bioluminiscencia índigo
       plankton: [94, 234, 212],  // aqua
       ray: "255, 255, 255", rayAlpha: 0.05,
     },
     light: {
-      top: "#dff3f8", bottom: "#a8d8e6",
+      top: [223, 243, 248], bottom: [168, 216, 230],
+      abyssTop: [150, 200, 220], abyssBottom: [96, 160, 190],
       bubble: [14, 116, 144],
       bubble2: [37, 99, 168],
       plankton: [13, 148, 136],
@@ -26,6 +29,15 @@
     },
   };
   let T = THEMES.dark;
+
+  const lerp = (a, b, t) => Math.round(a + (b - a) * t);
+  const mix = (c1, c2, t) => `rgb(${lerp(c1[0], c2[0], t)},${lerp(c1[1], c2[1], t)},${lerp(c1[2], c2[2], t)})`;
+
+  // Profundidad de inmersión (0 en superficie → 1 en el fondo de la página)
+  function depth() {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    return max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+  }
 
   function theme() {
     const t = document.documentElement.getAttribute("data-theme") || "dark";
@@ -83,15 +95,53 @@
     lastScroll = y;
   }, { passive: true });
 
+  // Ráfaga de burbujas al hacer clic/tocar: el agua responde al visitante
+  let bursts = [];
+  window.addEventListener("pointerdown", (e) => {
+    if (reduced) return;
+    const n = 7 + Math.floor(Math.random() * 5);
+    for (let i = 0; i < n; i++) {
+      bursts.push({
+        x: e.clientX + rand(-6, 6), y: e.clientY + rand(-6, 6),
+        r: rand(1.5, 5), sp: rand(0.8, 2.2), drift: rand(-0.5, 0.5),
+        life: 1, decay: rand(0.006, 0.014),
+        c: Math.random() < 0.7 ? T.bubble : T.bubble2,
+      });
+    }
+    if (bursts.length > 160) bursts = bursts.slice(-160);
+  }, { passive: true });
+
+  function drawBursts() {
+    for (let i = bursts.length - 1; i >= 0; i--) {
+      const b = bursts[i];
+      b.y -= b.sp; b.x += b.drift; b.life -= b.decay;
+      if (b.life <= 0 || b.y < -10) { bursts.splice(i, 1); continue; }
+      const [r, g, bl] = b.c;
+      ctx.beginPath();
+      ctx.arc(b.x, b.y, b.r, 0, 6.2832);
+      ctx.strokeStyle = `rgba(${r},${g},${bl},${0.55 * b.life})`;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(b.x - b.r * 0.3, b.y - b.r * 0.3, b.r * 0.25, 0, 6.2832);
+      ctx.fillStyle = `rgba(255,255,255,${0.5 * b.life})`;
+      ctx.fill();
+    }
+  }
+
   function drawBackground() {
+    const d = depth();
     const g = ctx.createLinearGradient(0, 0, 0, H);
-    g.addColorStop(0, T.top);
-    g.addColorStop(1, T.bottom);
+    g.addColorStop(0, mix(T.top, T.abyssTop, d));
+    g.addColorStop(1, mix(T.bottom, T.abyssBottom, d));
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, W, H);
   }
 
   function drawRays(time) {
+    // La luz del sol se desvanece con la profundidad
+    const rayA = T.rayAlpha * (1 - depth() * 0.85);
+    if (rayA <= 0.004) return;
     ctx.globalCompositeOperation = "lighter";
     for (const r of rays) {
       const cx = (r.x + Math.sin(time * r.sp + r.ph) * 0.05) * W;
@@ -104,7 +154,7 @@
       ctx.lineTo(cx - botW + skew, H + 20);
       ctx.closePath();
       const lg = ctx.createLinearGradient(0, 0, 0, H);
-      lg.addColorStop(0, `rgba(${T.ray}, ${T.rayAlpha})`);
+      lg.addColorStop(0, `rgba(${T.ray}, ${rayA})`);
       lg.addColorStop(1, `rgba(${T.ray}, 0)`);
       ctx.fillStyle = lg;
       ctx.fill();
@@ -159,6 +209,8 @@
       ctx.fillStyle = `rgba(255,255,255,${bu.a * 0.6})`;
       ctx.fill();
     }
+
+    drawBursts();
 
     if (running) requestAnimationFrame(frame);
   }

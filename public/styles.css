@@ -567,6 +567,98 @@ h2 { font-size: clamp(1.7rem, 3.5vw, 2.4rem); margin-bottom: 10px; }
 [dir="rtl"] .cdh-msg.user { align-self: flex-start; }
 [dir="rtl"] .cdh-msg.bot { align-self: flex-end; }
 
+/* ===== Terminal animada (Desarrollo a la medida) ===== */
+.code-sim-wrap { display: block; cursor: default; }
+.code-sim { height: 100%; display: flex; flex-direction: column; background: #050d14; }
+.code-sim-bar {
+  display: flex; align-items: center; gap: 7px; padding: 10px 14px;
+  border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+.code-sim-bar span { width: 10px; height: 10px; border-radius: 50%; background: var(--border); }
+.code-sim-bar span:first-child { background: #f87171; }
+.code-sim-bar span:nth-child(2) { background: #fbbf24; }
+.code-sim-bar span:nth-child(3) { background: #34d399; }
+.code-sim-bar em {
+  margin-left: auto; font-style: normal; font-family: var(--font-display);
+  font-size: 0.7rem; color: var(--text-dim); letter-spacing: 1px;
+}
+.code-sim pre {
+  flex: 1; margin: 0; padding: 14px 16px; overflow: hidden;
+  font-family: "Consolas", "SF Mono", monospace; font-size: 0.78rem; line-height: 1.55;
+  color: #9fd8e8; white-space: pre-wrap; word-break: break-word;
+}
+.code-sim .tk-kw { color: #22d3ee; }
+.code-sim .tk-fn { color: #5eead2; }
+.code-sim .tk-str { color: #a5f3b4; }
+.code-sim .tk-ok { color: #34d399; }
+.code-caret { color: var(--accent-2); animation: cursor-blink 0.9s step-end infinite; }
+
+/* ===== FAQ ===== */
+.faq-list { max-width: 760px; display: grid; gap: 12px; }
+.faq-item {
+  background: rgba(10, 30, 41, 0.72); backdrop-filter: blur(8px);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; transition: border-color 0.25s;
+}
+[data-theme="light"] .faq-item { background: rgba(255, 255, 255, 0.72); }
+.faq-item[open] { border-color: var(--accent); }
+.faq-item summary {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  padding: 18px 20px; cursor: pointer; list-style: none;
+  font-family: var(--font-display); font-weight: 600; font-size: 0.98rem;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary:hover { color: var(--accent); }
+.faq-chev {
+  flex-shrink: 0; width: 9px; height: 9px;
+  border-right: 2px solid var(--accent); border-bottom: 2px solid var(--accent);
+  transform: rotate(45deg); transition: transform 0.25s;
+}
+.faq-item[open] .faq-chev { transform: rotate(225deg); }
+.faq-item p { padding: 0 20px 18px; color: var(--text-dim); font-size: 0.93rem; }
+
+/* ===== HUD de profundidad ===== */
+#depth-hud {
+  position: fixed; bottom: 24px; left: 22px; z-index: 98;
+  display: flex; align-items: center; gap: 7px;
+  padding: 7px 13px; border-radius: 999px;
+  background: rgba(10, 30, 41, 0.6); backdrop-filter: blur(8px);
+  border: 1px solid var(--border); color: var(--accent);
+  font-family: var(--font-display); font-size: 0.78rem; letter-spacing: 1px;
+  opacity: 0; transform: translateY(8px); transition: opacity 0.3s, transform 0.3s;
+  pointer-events: none;
+}
+[data-theme="light"] #depth-hud { background: rgba(255, 255, 255, 0.6); }
+#depth-hud.show { opacity: 1; transform: none; }
+#depth-hud svg { width: 13px; height: 13px; }
+
+/* ===== Resplandor del cursor ===== */
+#cursor-glow {
+  position: fixed; top: 0; left: 0; width: 340px; height: 340px;
+  margin: -170px 0 0 -170px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.10), transparent 65%);
+  pointer-events: none; z-index: 1; opacity: 0;
+  transition: opacity 0.4s;
+}
+[data-theme="light"] #cursor-glow { background: radial-gradient(circle, rgba(255, 255, 255, 0.35), transparent 65%); }
+@media (hover: none) { #cursor-glow, #depth-hud { display: none; } }
+
+/* ===== Tilt 3D en tarjetas ===== */
+.cards, .projects, .why-grid { perspective: 1100px; }
+.card, .project, .why-item { transform-style: preserve-3d; will-change: transform; }
+
+/* ===== Accesibilidad ===== */
+.skip-link {
+  position: fixed; top: -60px; left: 16px; z-index: 300;
+  background: var(--accent); color: var(--btn-fg); font-family: var(--font-display);
+  padding: 10px 18px; border-radius: 0 0 10px 10px; text-decoration: none;
+  transition: top 0.2s;
+}
+.skip-link:focus { top: 0; }
+a:focus-visible, button:focus-visible, select:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px;
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 760px) {
   .nav-links {

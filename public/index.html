@@ -8,14 +8,33 @@
   <meta property="og:title" content="CDH Maker — Ingeniería, Fabricación Digital y Desarrollo" />
   <meta property="og:description" content="Soluciones de ingeniería: software, prototipado, electrónica e IoT, diseño y consultoría técnica." />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://cdh-maker-portafolio.web.app/" />
+  <meta property="og:image" content="https://cdh-maker-portafolio.web.app/media/og.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://cdh-maker-portafolio.web.app/media/og.jpg" />
+  <meta name="theme-color" content="#06232e" />
+  <link rel="manifest" href="manifest.json" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=10" />
+  <link rel="stylesheet" href="styles.css?v=11" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2306232e'/%3E%3Ctext x='50' y='66' font-size='44' text-anchor='middle' fill='%2322d3ee' font-family='Arial' font-weight='bold'%3EC%3C/text%3E%3C/svg%3E" />
   <script src="theme.js?v=3"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@graph":[
+    {"@type":"ProfessionalService","name":"CDH Maker","description":"Desarrollo web y software, fabricación digital (impresión 3D, corte láser, CNC), electrónica e IoT, diseño CAD y consultoría técnica.","url":"https://cdh-maker-portafolio.web.app/","email":"cdhmaker@gmail.com","telephone":"+573245769748","address":{"@type":"PostalAddress","addressLocality":"Medellín","addressCountry":"CO"},"founder":{"@type":"Person","name":"Henry Taborda"}},
+    {"@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"¿Cuánto cuesta un proyecto?","acceptedAnswer":{"@type":"Answer","text":"Cada proyecto es único, por eso la cotización es personalizada y gratuita: recibes precio y tiempos en menos de 24 horas, sin compromiso."}},
+      {"@type":"Question","name":"¿Cómo es el proceso de trabajo y pago?","acceptedAnswer":{"@type":"Answer","text":"Trabajamos por etapas con entregas parciales y pago por hitos. Sin sorpresas ni letra pequeña."}},
+      {"@type":"Question","name":"¿Atienden clientes fuera de Medellín?","acceptedAnswer":{"@type":"Answer","text":"Sí. El software se entrega en la nube y las piezas físicas se envían por mensajería a todo Colombia."}},
+      {"@type":"Question","name":"¿Qué pasa después de la entrega?","acceptedAnswer":{"@type":"Answer","text":"Recibes documentación y acompañamiento posterior hasta dejarlo todo funcionando."}}
+    ]}
+  ]}
+  </script>
 </head>
 <body>
+
+  <a href="#servicios" class="skip-link" data-i18n="skip">Saltar al contenido</a>
 
   <!-- ===== FONDO OCÉANO ===== -->
   <canvas id="metaverse" aria-hidden="true"></canvas>
@@ -225,13 +244,16 @@
           </div>
         </article>
         <article class="project project-with-media">
-          <a class="project-media" href="media/evaia-ide.png" target="_blank" rel="noopener">
-            <img src="media/evaia-ide.png" alt="EvaIA IDE" loading="lazy" />
-          </a>
+          <div class="project-media code-sim-wrap" aria-hidden="true">
+            <div class="code-sim">
+              <div class="code-sim-bar"><span></span><span></span><span></span><em>cdh-maker · build</em></div>
+              <pre id="codeSim"><code></code><span class="code-caret">▌</span></pre>
+            </div>
+          </div>
           <div class="project-body">
             <div class="project-tag" data-i18n="tag_sw">Software</div>
             <h3 data-i18n="pj_dev_t">Desarrollo a la medida, en acción</h3>
-            <p data-i18n="pj_dev_p">Construcción de EvaIA en Python: voz en Windows, visión artificial, Docker y base de datos — iterando hasta que todo funciona.</p>
+            <p data-i18n="pj_dev_p">Así trabajamos: análisis, diseño, construcción e iteración hasta que todo funciona — código limpio, pruebas y despliegue en la nube.</p>
           </div>
         </article>
         <article class="project project-with-media">
@@ -328,6 +350,33 @@ $ estado
     </div>
   </section>
 
+  <!-- ===== FAQ ===== -->
+  <section class="section section-alt" id="faq">
+    <div class="container">
+      <p class="section-kicker" data-i18n="faq_k">// Preguntas frecuentes</p>
+      <h2 data-i18n="faq_t">Lo que todos quieren saber</h2>
+      <p class="section-sub" data-i18n="faq_s">Respuestas claras antes de empezar.</p>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary><span data-i18n="faq1_q">¿Cuánto cuesta un proyecto?</span><i class="faq-chev"></i></summary>
+          <p data-i18n="faq1_a">Cada proyecto es único, por eso la cotización es personalizada y gratuita: describes tu idea, la revisamos y recibes precio y tiempos en menos de 24 horas, sin compromiso.</p>
+        </details>
+        <details class="faq-item">
+          <summary><span data-i18n="faq2_q">¿Cómo es el proceso de trabajo y pago?</span><i class="faq-chev"></i></summary>
+          <p data-i18n="faq2_a">Trabajamos por etapas con entregas parciales: ves avances reales desde los primeros días y el pago se divide por hitos. Sin sorpresas ni letra pequeña.</p>
+        </details>
+        <details class="faq-item">
+          <summary><span data-i18n="faq3_q">¿Atienden clientes fuera de Medellín?</span><i class="faq-chev"></i></summary>
+          <p data-i18n="faq3_a">Sí. El software se entrega en la nube para cualquier parte del mundo, y las piezas físicas (3D, láser, CNC) se envían por mensajería a todo Colombia.</p>
+        </details>
+        <details class="faq-item">
+          <summary><span data-i18n="faq4_q">¿Qué pasa después de la entrega?</span><i class="faq-chev"></i></summary>
+          <p data-i18n="faq4_a">Recibes documentación y acompañamiento posterior: resolvemos dudas, ajustamos detalles y te dejamos todo funcionando. La relación no termina con la entrega.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
   <!-- ===== CONTACTO ===== -->
   <section class="section" id="contacto">
     <div class="container contact">
@@ -383,10 +432,12 @@ $ estado
 
   <button id="to-top" aria-label="Volver arriba">↑</button>
   <div id="scroll-progress" aria-hidden="true"></div>
+  <div id="depth-hud" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="m7 17 5 5 5-5"/></svg><span id="depth-val">0 m</span></div>
+  <div id="cursor-glow" aria-hidden="true"></div>
 
-  <script src="metaverse.js?v=2"></script>
-  <script src="i18n.js?v=3"></script>
-  <script src="script.js?v=4"></script>
+  <script src="metaverse.js?v=3"></script>
+  <script src="i18n.js?v=4"></script>
+  <script src="script.js?v=5"></script>
   <script src="chatbot.js?v=4"></script>
 </body>
 </html>

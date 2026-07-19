@@ -1,0 +1,13 @@
+{
+  "name": "CDH Maker — Ingeniería y Fabricación Digital",
+  "short_name": "CDH Maker",
+  "description": "Desarrollo web y software, fabricación digital, electrónica e IoT, diseño y consultoría técnica.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#06232e",
+  "theme_color": "#06232e",
+  "lang": "es",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
