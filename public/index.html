@@ -44,7 +44,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=15" />
+  <link rel="stylesheet" href="styles.css?v=16" />
   <link rel="icon" type="image/svg+xml" href="icon.svg" />
   <script src="theme.js?v=4"></script>
   <script src="security.js?v=4"></script>
@@ -797,16 +797,87 @@ $ estado
   <footer class="footer">
     <div class="container footer-grid">
       <div>
-        <a href="#top" class="logo">
-          <span class="logo-mark">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-              stroke-linejoin="round">
-              <path d="M12 2 3 7v10l9 5 9-5V7l-9-5z" />
-              <path d="M12 22V12" />
-              <path d="M3 7l9 5 9-5" />
-            </svg>
-          </span>
-          CDH<span class="accent">Maker</span>
+        <!-- Logo completo de la marca, armado pieza a pieza cada vez que el
+             visitante llega al footer (script.js le añade la clase .play).
+             Reutiliza las clases l-* definidas en el logo del nav. -->
+        <a href="#top" class="footer-logo-link" aria-label="CDH Maker — volver arriba">
+          <svg id="footerLogo" class="footer-logo" viewBox="0 0 280 118" aria-hidden="true">
+            <g transform="translate(10, 20)">
+              <!-- Letras C · D · H (la estructura llega primero) -->
+              <g class="fl-piece" style="--i:0; --fx:-70px; --fy:0px; --fr:-6deg">
+                <path class="l-base" d="M 60 15 L 25 15 A 15 15 0 0 0 10 30 L 10 45 A 15 15 0 0 0 25 60 L 60 60" />
+              </g>
+              <g class="fl-piece" style="--i:1; --fx:0px; --fy:-70px; --fr:4deg">
+                <path class="l-base" d="M 75 15 L 105 15 A 22.5 22.5 0 0 1 127.5 37.5 A 22.5 22.5 0 0 1 105 60 L 75 60 Z" />
+              </g>
+              <g class="fl-piece" style="--i:2; --fx:70px; --fy:0px; --fr:6deg">
+                <path class="l-base" d="M 145 15 L 145 60 M 145 37.5 L 195 37.5 M 195 15 L 195 60" />
+              </g>
+              <!-- Circuitería de cada letra (el alma tecnológica) -->
+              <g class="fl-piece" style="--i:3; --fx:-30px; --fy:-24px; --fr:0deg">
+                <path class="l-circ" d="M 60 15 L 25 15 A 15 15 0 0 0 10 30 L 10 35 L 25 35 L 25 25" />
+                <circle class="l-acc" cx="25" cy="25" r="2.5" />
+                <path class="l-circ" d="M 10 50 L 10 45 A 15 15 0 0 1 25 60 L 50 60 L 50 45" />
+                <circle class="l-acc" cx="50" cy="45" r="2.5" />
+                <circle class="l-acc" cx="10" cy="50" r="2.5" />
+              </g>
+              <g class="fl-piece" style="--i:4; --fx:0px; --fy:36px; --fr:0deg">
+                <path class="l-circ" d="M 75 60 L 105 60 A 22.5 22.5 0 0 0 127.5 37.5 L 115 37.5 L 115 50" />
+                <circle class="l-acc" cx="115" cy="50" r="2.5" />
+                <path class="l-circ" d="M 75 15 L 75 40 L 90 40 L 90 25" />
+                <circle class="l-acc" cx="90" cy="25" r="2.5" />
+                <circle class="l-acc" cx="75" cy="15" r="2.5" />
+              </g>
+              <g class="fl-piece" style="--i:5; --fx:30px; --fy:-24px; --fr:0deg">
+                <path class="l-circ" d="M 145 60 L 145 37.5 L 170 37.5 L 170 50" />
+                <circle class="l-acc" cx="170" cy="50" r="2.5" />
+                <path class="l-circ" d="M 195 60 L 195 37.5 L 180 37.5 L 180 20" />
+                <circle class="l-acc" cx="180" cy="20" r="2.5" />
+              </g>
+              <!-- Chip 3D (aterriza sobre la D) -->
+              <g class="fl-piece" style="--i:6; --fx:0px; --fy:-46px; --fr:-8deg">
+                <g transform="translate(95, -18)">
+                  <polygon class="l-chip" points="15,0 30,8 15,16 0,8" />
+                  <polygon class="l-chip" points="0,8 15,16 15,22 0,14" />
+                  <polygon class="l-chip" points="30,8 15,16 15,22 30,14" />
+                  <line class="l-chip" x1="5" y1="18" x2="5" y2="28" />
+                  <circle class="l-acc" cx="5" cy="28" r="2" />
+                  <line class="l-chip" x1="15" y1="23" x2="15" y2="33" />
+                  <circle class="l-acc" cx="15" cy="33" r="2" />
+                  <line class="l-chip" x1="25" y1="18" x2="25" y2="28" />
+                  <circle class="l-acc" cx="25" cy="28" r="2" />
+                </g>
+              </g>
+              <!-- Antenas del ecualizador, una por una -->
+              <g transform="translate(150, -5)">
+                <g class="fl-piece" style="--i:7; --fx:0px; --fy:-30px; --fr:0deg">
+                  <line class="l-base" style="stroke-width:4;stroke-linecap:round;" x1="5" y1="20" x2="5" y2="0" />
+                  <circle class="l-main" cx="5" cy="-2" r="3.5" />
+                </g>
+                <g class="fl-piece" style="--i:8; --fx:0px; --fy:-38px; --fr:0deg">
+                  <line class="l-base" style="stroke-width:4;stroke-linecap:round;" x1="20" y1="20" x2="20" y2="-10" />
+                  <circle class="l-main" cx="20" cy="-12" r="3.5" />
+                </g>
+                <g class="fl-piece" style="--i:9; --fx:0px; --fy:-34px; --fr:0deg">
+                  <line class="l-base" style="stroke-width:4;stroke-linecap:round;" x1="35" y1="20" x2="35" y2="-5" />
+                  <circle class="l-main" cx="35" cy="-7" r="3.5" />
+                </g>
+                <g class="fl-piece" style="--i:10; --fx:0px; --fy:-42px; --fr:0deg">
+                  <line class="l-base" style="stroke-width:4;stroke-linecap:round;" x1="50" y1="20" x2="50" y2="5" />
+                  <circle class="l-main" cx="50" cy="3" r="3.5" />
+                </g>
+              </g>
+            </g>
+            <!-- La firma llega de última (más abajo que en el nav: aire a este tamaño) -->
+            <g transform="translate(14, 108)" font-family="'Space Grotesk', 'Inter', sans-serif" font-weight="700">
+              <g class="fl-piece" style="--i:11; --fx:0px; --fy:26px; --fr:0deg">
+                <text x="0" y="0" font-size="28" class="l-main" letter-spacing="1">Maker</text>
+              </g>
+              <g class="fl-piece" style="--i:12; --fx:0px; --fy:26px; --fr:0deg">
+                <text x="96" y="0" font-size="28" class="l-acc" letter-spacing="1">IT</text>
+              </g>
+            </g>
+          </svg>
         </a>
         <p class="footer-tagline" data-i18n="foot_tag" data-i18n-html>Si lo puedes imaginar,<br />lo podemos construir.
         </p>
@@ -828,6 +899,12 @@ $ estado
             <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z" />
             <circle cx="12" cy="10" r="3" />
           </svg> <span data-i18n="term_loc">Medellín, Colombia</span></span>
+      </div>
+      <div>
+        <h4 data-i18n="foot_allies_h">Nuestros aliados</h4>
+        <!-- Aliados: para agregar uno nuevo, duplica una línea <a> de este
+             bloque (pasos completos en MANUAL-TECNICO.md, sección "Aliados") -->
+        <a href="https://www.galacticaima.com" target="_blank" rel="noopener">Galactic AIMA</a>
       </div>
     </div>
     <div class="container footer-inner">
@@ -920,9 +997,9 @@ $ estado
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
   <script src="metaverse.js?v=7"></script>
-  <script src="i18n.js?v=7"></script>
+  <script src="i18n.js?v=8"></script>
   <script src="auth.js?v=5"></script>
-  <script src="script.js?v=8"></script>
+  <script src="script.js?v=9"></script>
   <script src="chatbot.js?v=8"></script>
 </body>
 

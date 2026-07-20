@@ -194,7 +194,25 @@ firebase deploy --only hosting
 
 Requisitos: Node.js + Firebase CLI (`npm i -g firebase-tools`) con sesión de la cuenta cdhmaker@gmail.com (`firebase login`).
 
-## 12. Guías rápidas de mantenimiento
+## 12. Aliados del footer ("Nuestros aliados")
+
+La columna **Nuestros aliados** del footer se mantiene directamente en el código. Para agregar uno nuevo:
+
+1. Abre `public/index.html` y busca el comentario `<!-- Aliados: ... -->` (es la columna cuyo título lleva `data-i18n="foot_allies_h"`).
+2. Debajo del último aliado, duplica la línea `<a>` y cambia la URL y el nombre:
+
+   ```html
+   <a href="https://www.galacticaima.com" target="_blank" rel="noopener">Galactic AIMA</a>
+   <a href="https://sitio-del-aliado.com" target="_blank" rel="noopener">Nombre del Aliado</a>
+   ```
+
+   Conserva siempre `target="_blank" rel="noopener"` (abre en pestaña nueva de forma segura).
+3. El nombre del aliado es una marca propia: **no se traduce** (por eso el `<a>` no lleva `data-i18n`). El título de la columna sí está traducido a los 10 idiomas en `i18n.js`, bajo la clave `foot_allies_h`.
+4. Guarda y despliega: `firebase deploy --only hosting`. Como `index.html` se sirve sin caché (§10), el cambio se ve de inmediato y **no** hace falta subir versiones de `.js`/`.css` si solo tocaste esta lista.
+
+Nota: si algún día prefieres logos en vez de texto, sube la imagen a `public/media/` y sustituye el texto del `<a>` por `<img src="media/logo-aliado.png" alt="Nombre del Aliado" />`.
+
+## 13. Guías rápidas de mantenimiento
 
 | Quiero… | Dónde |
 |---|---|
@@ -202,13 +220,14 @@ Requisitos: Node.js + Firebase CLI (`npm i -g firebase-tools`) con sesión de la
 | Cambiar textos del chatbot | `chatbot.js` → objeto `TEXT` (bloques es/en) |
 | Enseñar un tema nuevo al chatbot | `chatbot.js` → `INTENTS` + respuesta en `TEXT` |
 | Añadir un proyecto al portafolio | `index.html` sección Proyectos + imagen en `media/` + claves en `i18n.js` |
+| Agregar un aliado al footer | `index.html` columna "Nuestros aliados" (pasos completos en §12) |
 | Cambiar colores / tema | `styles.css` → variables `:root` (dark y light) |
 | Autorizar otro email como admin | `perfil.html` → array `ADMIN_EMAILS` |
 | Cambiar la clave del panel CRM | `admin-clientes.html` → `ADMIN_KEY_HASH` (ver §6) |
 | Cambiar número o correo de contacto | `auth.js` → funciones de `CONTACT` (recuerda ofuscar con Shift+3) |
 | Ver todos los clientes registrados | Consola Firebase → Firestore → `clients` (o `/admin-clientes` local) |
 
-## 13. Solución de problemas
+## 14. Solución de problemas
 
 | Síntoma | Causa probable | Solución |
 |---|---|---|

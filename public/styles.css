@@ -856,8 +856,37 @@ body.auth-open { overflow: hidden; }
 
 /* Footer ampliado */
 .footer-grid {
-  display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 36px;
+  display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 36px;
   padding: 44px 24px 28px;
+}
+
+/* ===== Logo animado del footer =====
+   El logo completo de la marca se arma pieza a pieza cada vez que el visitante
+   llega al footer: script.js añade .play al entrar en pantalla y la retira al
+   salir (el regreso al estado oculto es instantáneo, sin transición, para que
+   la próxima visita vuelva a disfrutar el armado desde cero). */
+.footer-logo-link {
+  display: inline-block; width: min(340px, 100%);
+  color: var(--text); text-decoration: none;
+}
+.footer-logo { width: 100%; height: auto; display: block; overflow: visible; }
+.footer-logo .fl-piece {
+  opacity: 0;
+  /* Cada pieza define en línea su punto de partida (--fx/--fy) y giro (--fr) */
+  transform: translate(var(--fx, 0px), var(--fy, -40px)) rotate(var(--fr, 0deg));
+  transform-box: fill-box; transform-origin: center;
+  transition: none; /* reset instantáneo al salir del footer */
+  will-change: transform, opacity;
+}
+.footer-logo.play .fl-piece {
+  opacity: 1; transform: translate(0, 0) rotate(0deg);
+  /* Curva con leve sobrepaso: la pieza "encaja" con un asentamiento fino */
+  transition: transform 0.65s cubic-bezier(0.22, 1.25, 0.32, 1), opacity 0.4s ease;
+  /* Llegada escalonada: una pieza cada 110 ms según su orden (--i) */
+  transition-delay: calc(var(--i) * 110ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  .footer-logo .fl-piece { opacity: 1; transform: none; transition: none; }
 }
 .footer-grid h4 {
   font-family: var(--font-display); font-size: 0.85rem; letter-spacing: 1.5px;

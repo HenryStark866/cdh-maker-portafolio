@@ -291,3 +291,17 @@ if (depthHud && depthVal) {
     depthHud.classList.toggle("show", scrollY > 300);
   }, { passive: true });
 }
+
+// ── Logo del footer: se arma pieza a pieza en cada visita ─────────────────────
+// Al entrar el logo en pantalla se añade .play (las piezas llegan escalonadas,
+// transición definida en styles.css); al salir se retira, de modo que el
+// armado se repite cada vez que el visitante vuelve al footer.
+const footerLogo = document.getElementById("footerLogo");
+if (footerLogo) {
+  const logoObs = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      footerLogo.classList.toggle("play", entry.isIntersecting);
+    });
+  }, { threshold: 0.35 }); // exige un 35% del logo visible para arrancar
+  logoObs.observe(footerLogo);
+}

@@ -91,7 +91,7 @@
       lock_serv_t: "Servicios exclusivos para clientes", lock_serv_p: "Crea tu cuenta gratis para ver el detalle de servicios y solicitar cotizaciones. Tus datos forman parte de nuestra base de clientes.",
       lock_contact_t: "Contacto solo para clientes", lock_contact_p: "Regístrate para escribirnos. No mostramos datos de contacto al público: así protegemos nuestra privacidad y construimos nuestra base de clientes.",
       foot_contact_cta: "Acceder a contacto",
-      foot_tag: "Si lo puedes imaginar,<br>lo podemos construir.", foot_nav_h: "Navegación", foot_contact_h: "Contacto", foot_why: "¿Por qué CDH Maker?", foot_copy: "CDH Maker. Hecho con 💜 en Colombia.", foot_backtop: "Volver arriba ↑",
+      foot_tag: "Si lo puedes imaginar,<br>lo podemos construir.", foot_nav_h: "Navegación", foot_contact_h: "Contacto", foot_allies_h: "Nuestros aliados", foot_why: "¿Por qué CDH Maker?", foot_copy: "CDH Maker. Hecho con 💜 en Colombia.", foot_backtop: "Volver arriba ↑",
     },
 
     en: {
@@ -144,7 +144,7 @@
       lock_serv_t: "Services for clients only", lock_serv_p: "Create a free account to see service details and request quotes. Your data becomes part of our client database.",
       lock_contact_t: "Contact for clients only", lock_contact_p: "Register to reach us. We don't show contact details publicly — that protects our privacy and builds our client list.",
       foot_contact_cta: "Access contact",
-      foot_tag: "If you can imagine it,<br>we can build it.", foot_nav_h: "Navigation", foot_contact_h: "Contact", foot_why: "Why CDH Maker?", foot_copy: "CDH Maker. Made with 💜 in Colombia.", foot_backtop: "Back to top ↑",
+      foot_tag: "If you can imagine it,<br>we can build it.", foot_nav_h: "Navigation", foot_contact_h: "Contact", foot_allies_h: "Our partners", foot_why: "Why CDH Maker?", foot_copy: "CDH Maker. Made with 💜 in Colombia.", foot_backtop: "Back to top ↑",
     },
 
     zh: {
@@ -186,7 +186,7 @@
       about_p2: "我相信<em>在实践中学习</em>的力量，也相信技术应人人可及——因此我也通过工作坊与培训分享知识。",
       term_role: "工程师 &amp; 创客", term_loc: "麦德林，哥伦比亚", term_quote: "“只要你能想象，<br>&nbsp;&nbsp;&nbsp;我们就能实现。”", term_status: "● 可承接项目",
       contact_k: "// 联系", contact_t: "有项目想法吗？", contact_s: "告诉我你的想法，我们一起找到最好的实现方式。", contact_note: "通常 24 小时内回复。",
-      foot_tag: "只要你能想象，<br>我们就能实现。", foot_nav_h: "导航", foot_contact_h: "联系", foot_why: "为什么选择 CDH Maker？", foot_copy: "CDH Maker — Henry Taborda。用 💜 于哥伦比亚打造。", foot_backtop: "回到顶部 ↑",
+      foot_tag: "只要你能想象，<br>我们就能实现。", foot_nav_h: "导航", foot_contact_h: "联系", foot_allies_h: "合作伙伴", foot_why: "为什么选择 CDH Maker？", foot_copy: "CDH Maker — Henry Taborda。用 💜 于哥伦比亚打造。", foot_backtop: "回到顶部 ↑",
     },
 
     hi: {
@@ -228,7 +228,7 @@
       about_p2: "मैं <em>करके सीखने</em> की शक्ति में विश्वास करता हूँ और मानता हूँ कि तकनीक सबकी पहुँच में हो—इसलिए मैं कार्यशालाओं और प्रशिक्षण से ज्ञान भी साझा करता हूँ।",
       term_role: "इंजीनियर &amp; मेकर", term_loc: "मेडेलिन, कोलंबिया", term_quote: "\"यदि आप कल्पना कर सकते हैं,<br>&nbsp;&nbsp;&nbsp;हम उसे बना सकते हैं।\"", term_status: "● परियोजनाओं के लिए उपलब्ध",
       contact_k: "// संपर्क", contact_t: "कोई परियोजना मन में है?", contact_s: "अपना विचार बताइए और मिलकर उसे साकार करने का सबसे अच्छा तरीका खोजें।", contact_note: "आमतौर पर 24 घंटे के भीतर उत्तर।",
-      foot_tag: "यदि आप कल्पना कर सकते हैं,<br>हम उसे बना सकते हैं।", foot_nav_h: "नेविगेशन", foot_contact_h: "संपर्क", foot_why: "CDH Maker क्यों?", foot_copy: "CDH Maker — Henry Taborda. कोलंबिया में 💜 से बनाया।", foot_backtop: "ऊपर जाएँ ↑",
+      foot_tag: "यदि आप कल्पना कर सकते हैं,<br>हम उसे बना सकते हैं।", foot_nav_h: "नेविगेशन", foot_contact_h: "संपर्क", foot_allies_h: "हमारे सहयोगी", foot_why: "CDH Maker क्यों?", foot_copy: "CDH Maker — Henry Taborda. कोलंबिया में 💜 से बनाया।", foot_backtop: "ऊपर जाएँ ↑",
     },
 
     ar: {
@@ -270,7 +270,7 @@
       about_p2: "أؤمن بقوة <em>التعلّم بالممارسة</em> وبأن التقنية يجب أن تكون في متناول الجميع — لذلك أشارك المعرفة عبر ورش العمل والتدريب.",
       term_role: "مهندس &amp; صانع", term_loc: "ميديلين، كولومبيا", term_quote: "«إن استطعت تخيّله،<br>&nbsp;&nbsp;&nbsp;نستطيع بناءه.»", term_status: "● متاح للمشاريع",
       contact_k: "// تواصل", contact_t: "لديك مشروع في بالك؟", contact_s: "أخبرني بفكرتك ولنجد أفضل طريقة لتحقيقها.", contact_note: "عادةً الرد خلال أقل من 24 ساعة.",
-      foot_tag: "إن استطعت تخيّله،<br>نستطيع بناءه.", foot_nav_h: "التنقّل", foot_contact_h: "تواصل", foot_why: "لماذا CDH Maker؟", foot_copy: "CDH Maker — Henry Taborda. صُنع بـ 💜 في كولومبيا.", foot_backtop: "إلى الأعلى ↑",
+      foot_tag: "إن استطعت تخيّله،<br>نستطيع بناءه.", foot_nav_h: "التنقّل", foot_contact_h: "تواصل", foot_allies_h: "شركاؤنا", foot_why: "لماذا CDH Maker؟", foot_copy: "CDH Maker — Henry Taborda. صُنع بـ 💜 في كولومبيا.", foot_backtop: "إلى الأعلى ↑",
     },
 
     pt: {
@@ -312,7 +312,7 @@
       about_p2: "Acredito no poder de <em>aprender fazendo</em> e que a tecnologia deve estar ao alcance de todos — por isso também compartilho conhecimento com oficinas e formações.",
       term_role: "Engenheiro &amp; Maker", term_loc: "Medellín, Colômbia", term_quote: "\"Se você pode imaginar,<br>&nbsp;&nbsp;&nbsp;nós podemos construir.\"", term_status: "● Disponível para projetos",
       contact_k: "// Contato", contact_t: "Tem um projeto em mente?", contact_s: "Conte-me sua ideia e vamos achar a melhor forma de realizá-la.", contact_note: "Normalmente respondo em menos de 24 horas.",
-      foot_tag: "Se você pode imaginar,<br>nós podemos construir.", foot_nav_h: "Navegação", foot_contact_h: "Contato", foot_why: "Por que CDH Maker?", foot_copy: "CDH Maker — Henry Taborda. Feito com 💜 na Colômbia.", foot_backtop: "Voltar ao topo ↑",
+      foot_tag: "Se você pode imaginar,<br>nós podemos construir.", foot_nav_h: "Navegação", foot_contact_h: "Contato", foot_allies_h: "Nossos parceiros", foot_why: "Por que CDH Maker?", foot_copy: "CDH Maker — Henry Taborda. Feito com 💜 na Colômbia.", foot_backtop: "Voltar ao topo ↑",
     },
 
     bn: {
@@ -354,7 +354,7 @@
       about_p2: "আমি <em>করে শেখা</em>র শক্তিতে বিশ্বাস করি এবং মনে করি প্রযুক্তি সবার নাগালে থাকা উচিত—তাই কর্মশালা ও প্রশিক্ষণের মাধ্যমে জ্ঞানও ভাগ করি।",
       term_role: "প্রকৌশলী &amp; মেকার", term_loc: "মেদেয়িন, কলম্বিয়া", term_quote: "\"আপনি কল্পনা করতে পারলে,<br>&nbsp;&nbsp;&nbsp;আমরা তা বানাতে পারি।\"", term_status: "● প্রকল্পের জন্য উপলব্ধ",
       contact_k: "// যোগাযোগ", contact_t: "মনে কোনো প্রকল্প আছে?", contact_s: "আপনার ভাবনা বলুন, একসাথে সেরা উপায় খুঁজি।", contact_note: "সাধারণত ২৪ ঘণ্টার মধ্যে উত্তর।",
-      foot_tag: "আপনি কল্পনা করতে পারলে,<br>আমরা তা বানাতে পারি।", foot_nav_h: "নেভিগেশন", foot_contact_h: "যোগাযোগ", foot_why: "কেন CDH Maker?", foot_copy: "CDH Maker — Henry Taborda. কলম্বিয়ায় 💜 দিয়ে তৈরি।", foot_backtop: "উপরে ফিরুন ↑",
+      foot_tag: "আপনি কল্পনা করতে পারলে,<br>আমরা তা বানাতে পারি।", foot_nav_h: "নেভিগেশন", foot_contact_h: "যোগাযোগ", foot_allies_h: "আমাদের অংশীদার", foot_why: "কেন CDH Maker?", foot_copy: "CDH Maker — Henry Taborda. কলম্বিয়ায় 💜 দিয়ে তৈরি।", foot_backtop: "উপরে ফিরুন ↑",
     },
 
     ru: {
@@ -396,7 +396,7 @@
       about_p2: "Я верю в силу <em>обучения через практику</em> и в то, что технологии должны быть доступны каждому — поэтому делюсь знаниями через воркшопы и обучение.",
       term_role: "Инженер &amp; Мейкер", term_loc: "Медельин, Колумбия", term_quote: "«Если можешь представить —<br>&nbsp;&nbsp;&nbsp;мы сможем построить.»", term_status: "● Открыт для проектов",
       contact_k: "// Контакт", contact_t: "Есть проект на примете?", contact_s: "Расскажите вашу идею — найдём лучший способ её воплотить.", contact_note: "Обычно отвечаю в течение 24 часов.",
-      foot_tag: "Если можешь представить —<br>мы сможем построить.", foot_nav_h: "Навигация", foot_contact_h: "Контакт", foot_why: "Почему CDH Maker?", foot_copy: "CDH Maker — Henry Taborda. Сделано с 💜 в Колумбии.", foot_backtop: "Наверх ↑",
+      foot_tag: "Если можешь представить —<br>мы сможем построить.", foot_nav_h: "Навигация", foot_contact_h: "Контакт", foot_allies_h: "Наши партнёры", foot_why: "Почему CDH Maker?", foot_copy: "CDH Maker — Henry Taborda. Сделано с 💜 в Колумбии.", foot_backtop: "Наверх ↑",
     },
 
     fr: {
@@ -438,7 +438,7 @@
       about_p2: "Je crois au pouvoir d'<em>apprendre en faisant</em> et que la technologie doit être accessible à tous — c'est pourquoi je partage aussi mon savoir via ateliers et formations.",
       term_role: "Ingénieur &amp; Maker", term_loc: "Medellín, Colombie", term_quote: "« Si vous pouvez l'imaginer,<br>&nbsp;&nbsp;&nbsp;nous pouvons le construire. »", term_status: "● Disponible pour des projets",
       contact_k: "// Contact", contact_t: "Un projet en tête ?", contact_s: "Parlez-moi de votre idée et trouvons la meilleure façon de la réaliser.", contact_note: "Réponse généralement en moins de 24 heures.",
-      foot_tag: "Si vous pouvez l'imaginer,<br>nous pouvons le construire.", foot_nav_h: "Navigation", foot_contact_h: "Contact", foot_why: "Pourquoi CDH Maker ?", foot_copy: "CDH Maker — Henry Taborda. Fait avec 💜 en Colombie.", foot_backtop: "Haut de page ↑",
+      foot_tag: "Si vous pouvez l'imaginer,<br>nous pouvons le construire.", foot_nav_h: "Navigation", foot_contact_h: "Contact", foot_allies_h: "Nos partenaires", foot_why: "Pourquoi CDH Maker ?", foot_copy: "CDH Maker — Henry Taborda. Fait avec 💜 en Colombie.", foot_backtop: "Haut de page ↑",
     },
 
     id: {
@@ -480,7 +480,7 @@
       about_p2: "Saya percaya pada kekuatan <em>belajar sambil melakukan</em> dan bahwa teknologi harus dapat dijangkau semua orang — karena itu saya juga berbagi ilmu lewat workshop dan pelatihan.",
       term_role: "Insinyur &amp; Maker", term_loc: "Medellín, Kolombia", term_quote: "\"Jika Anda bisa membayangkannya,<br>&nbsp;&nbsp;&nbsp;kami bisa membangunnya.\"", term_status: "● Tersedia untuk proyek",
       contact_k: "// Kontak", contact_t: "Punya proyek dalam pikiran?", contact_s: "Ceritakan ide Anda dan mari cari cara terbaik mewujudkannya.", contact_note: "Biasanya dibalas dalam kurang dari 24 jam.",
-      foot_tag: "Jika Anda bisa membayangkannya,<br>kami bisa membangunnya.", foot_nav_h: "Navigasi", foot_contact_h: "Kontak", foot_why: "Mengapa CDH Maker?", foot_copy: "CDH Maker — Henry Taborda. Dibuat dengan 💜 di Kolombia.", foot_backtop: "Ke atas ↑",
+      foot_tag: "Jika Anda bisa membayangkannya,<br>kami bisa membangunnya.", foot_nav_h: "Navigasi", foot_contact_h: "Kontak", foot_allies_h: "Mitra kami", foot_why: "Mengapa CDH Maker?", foot_copy: "CDH Maker — Henry Taborda. Dibuat dengan 💜 di Kolombia.", foot_backtop: "Ke atas ↑",
     },
   };
 
