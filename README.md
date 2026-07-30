@@ -33,13 +33,29 @@ firebase deploy --only firestore:rules,hosting
 - Exporta CSV de los clientes registrados en ese navegador.
 - Cada alta también llega por correo.
 
+## Experiencia del sitio
+
+- **Fondo animado**: canvas de seis capas (malla en perspectiva, red neuronal con paquetes
+  de datos, partículas 3D y HUD holográfico). Se adapta al tema y respeta *reducir movimiento*.
+- **Asesor "Maker" con voz propia**: responde hablando al instante con la síntesis del
+  navegador — sin API, sin costo y sin que las conversaciones salgan del equipo del visitante.
+  El altavoz de la cabecera del chat activa o silencia la voz.
+- **Carga liviana**: el SDK de Firebase (~300 KB) solo se descarga si el visitante abre el
+  área de clientes; imágenes en WebP y el video del anuncio se pide recién al desplegarlo.
+
 ## Estructura
 
 ```
 public/               # Sitio estático (HTML, CSS, JS)
-  auth.js             # Registro / login / CRM
+  auth.js             # Registro / login / CRM (Firebase bajo demanda)
+  voice.js            # Voz del asesor (Web Speech API)
+  chatbot.js          # Asesor "Maker"
+  metaverse.js        # Fondo animado
   security.js         # Protección anti-inspección
   admin-clientes.html # Panel privado de clientes
+  robots.txt          # Rastreo (excluye perfil y admin)
+  sitemap.xml         # Mapa del sitio
+_originales-media/    # Copias sin comprimir del material (no se publican)
 firebase.json         # Hosting + cabeceras de seguridad
 firestore.rules       # Reglas de la base de clientes
 ```

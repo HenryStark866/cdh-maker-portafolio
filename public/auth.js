@@ -67,6 +67,7 @@
   const LS_SESSION = "cdh_client_session_v1";     // sesión activa del cliente
   const LS_CRM = "cdh_clients_crm_v1";            // base de clientes local (CRM)
   const LS_LOGOUT_FLAG = "cdh_logout_pending_v1"; // seteado por perfil.html al cerrar sesión
+  const LS_FB_USED = "cdh_fb_used_v1";            // este navegador ya usó Firebase alguna vez
 
   // ── Estado del módulo ───────────────────────────────────────────────────────
   let currentUser = null;    // perfil del usuario con sesión activa (o null)
@@ -253,6 +254,7 @@
   // Crea una cuenta nueva. Valida los campos, intenta Firebase Auth y siempre
   // deja una copia en el vault local. Devuelve el perfil creado.
   async function register({ name, email, phone, company, interest, password }) {
+    await ensureFirebase(); // el SDK puede no haberse descargado todavía
     // Normalización de entradas (quita espacios, email en minúsculas)
     name = (name || "").trim();
     email = (email || "").trim().toLowerCase();
@@ -308,6 +310,7 @@
   // Inicia sesión. Intenta primero Firebase Auth; si no aplica, verifica
   // contra el vault local comparando hashes PBKDF2
   async function login({ email, password }) {
+    await ensureFirebase(); // el SDK puede no haberse descargado todavía
     email = (email || "").trim().toLowerCase();
     password = password || "";
     if (!email || !password) throw new Error(t("err_fields", "Completa correo y contraseña."));
@@ -402,6 +405,7 @@
   function openAuth(mode) {
     const modal = document.getElementById("authModal");
     if (!modal) return;
+    ensureFirebase();                          // ir bajando el SDK mientras escribe
     modal.hidden = false;                      // mostrar el modal
     document.body.classList.add("auth-open");  // bloquea el scroll del fondo
     setAuthTab(mode === "login" ? "login" : "register");
@@ -639,6 +643,47 @@
     window.addEventListener("cdh:langchange", () => applyAuthUI());
   }
 
+  // ---------- Carga diferida del SDK de Firebase ----------
+  // El SDK pesa ~300 KB y la mayoría de visitantes nunca crea cuenta, así que
+  // ya no viaja en el HTML: se descarga cuando de verdad hace falta.
+  //   · Al abrir el modal de cuenta (el visitante va a registrarse o entrar).
+  //   · En segundo plano, si este navegador ya usó Firebase alguna vez
+  //     (marca LS_FB_USED), para restaurar la sesión multi-dispositivo.
+  // Mientras tanto el sitio funciona igual con el vault local.
+  const FB_SDK = [
+    "https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js",
+    "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js",
+    "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js",
+  ];
+  let fbPromise = null; // una sola carga por sesión, aunque se pida varias veces
+
+  function cargarScript(src) {
+    return new Promise((resolve, reject) => {
+      const s = document.createElement("script");
+      s.src = src;
+      s.async = false; // preserva el orden: app → auth → firestore
+      s.onload = resolve;
+      s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  }
+
+  // Devuelve una promesa que se resuelve cuando Firebase está listo (o cuando
+  // se confirma que no se pudo cargar: el flujo local sigue funcionando).
+  function ensureFirebase() {
+    if (fbPromise) return fbPromise;
+    fbPromise = (async () => {
+      try {
+        for (const src of FB_SDK) await cargarScript(src);
+        initFirebase();
+      } catch (_) {
+        firebaseReady = false; // CDN bloqueado o sin red → modo local
+      }
+      return firebaseReady;
+    })();
+    return fbPromise;
+  }
+
   // ---------- Inicialización de Firebase (opcional, mejora multi-dispositivo) ----------
   function initFirebase() {
     // Si el SDK no cargó (CDN bloqueado, sin red), el sitio sigue con el vault local
@@ -658,6 +703,9 @@
           }
           return;
         }
+        // Deja constancia de que este navegador sí usa Firebase: en las
+        // próximas visitas el SDK se precargará en segundo plano.
+        if (user) { try { localStorage.setItem(LS_FB_USED, "1"); } catch (_) { } }
         // Usuario recordado por Firebase y sin sesión local → restaurarla
         if (user && !currentUser) {
           const vault = readVault();
@@ -680,9 +728,21 @@
   // ── Secuencia de arranque del módulo ────────────────────────────────────────
   function boot() {
     loadSession();  // 1. restaurar sesión local si existe y no expiró
-    initFirebase(); // 2. conectar con Firebase (si el SDK está presente)
-    wireUI();       // 3. conectar eventos de la interfaz
-    applyAuthUI();  // 4. pintar el estado inicial (invitado o autenticado)
+    wireUI();       // 2. conectar eventos de la interfaz
+    applyAuthUI();  // 3. pintar el estado inicial (invitado o autenticado)
+
+    // 4. Firebase solo para quien lo necesita: si este navegador ya tuvo
+    //    cuenta, se baja el SDK en un hueco libre (sin estorbar al render).
+    //    Para el resto de visitantes se carga recién al abrir el modal.
+    let yaUsado = false;
+    try {
+      yaUsado = !!localStorage.getItem(LS_FB_USED) || !!localStorage.getItem(LS_SESSION);
+    } catch (_) { }
+    if (yaUsado) {
+      const arranca = () => ensureFirebase();
+      if ("requestIdleCallback" in window) requestIdleCallback(arranca, { timeout: 3000 });
+      else setTimeout(arranca, 1500);
+    }
   }
 
   // Ejecutar boot cuando el DOM esté listo (o ya, si ya lo está)

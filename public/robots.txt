@@ -1,0 +1,11 @@
+# CDH Maker — reglas para rastreadores
+# El portafolio es público; el panel de clientes y el perfil, no.
+
+User-agent: *
+Allow: /
+Disallow: /admin-clientes
+Disallow: /admin-clientes.html
+Disallow: /perfil
+Disallow: /perfil.html
+
+Sitemap: https://cdh-maker-portafolio.web.app/sitemap.xml

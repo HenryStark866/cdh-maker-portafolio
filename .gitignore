@@ -3,3 +3,7 @@ firebase-debug.log
 node_modules/
 .DS_Store
 Thumbs.db
+
+# Copias sin comprimir del material audiovisual: pesan mucho y las versiones
+# previas ya viven en el historial (git show <commit>:public/media/<archivo>)
+_originales-media/

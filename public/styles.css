@@ -52,8 +52,11 @@
   --border: #bfdfe6;
   --text: #072028;
   --text-dim: #3f606b;
-  --accent: #0891b2;
-  --accent-2: #0d9488;
+  /* Un paso más oscuros que el cian/teal del tema oscuro: sobre fondo claro
+     los tonos anteriores (#0891b2 / #0d9488) daban 3.4:1 y no llegaban al
+     mínimo AA de 4.5:1 para texto normal. Estos rondan 5:1. */
+  --accent: #0e7490;
+  --accent-2: #0f766e;
   --page-bg: #cfeaf1;
   --nav-bg: rgba(240, 250, 252, 0.82);
   --glass: rgba(255, 255, 255, 0.74);
@@ -674,11 +677,50 @@ body.auth-open { overflow: hidden; }
 .cdh-chat-avatar svg { width: 20px; height: 20px; }
 .cdh-chat-header strong { display: block; font-family: var(--font-display); }
 .cdh-chat-header span { font-size: 0.75rem; color: var(--accent-2); }
+/* El bloque de nombre/estado empuja los botones al extremo derecho */
+.cdh-chat-header > div:not(.cdh-chat-avatar) { margin-right: auto; }
 #cdh-chat-close {
-  margin-left: auto; background: none; border: none; color: var(--text-dim);
+  background: none; border: none; color: var(--text-dim);
   font-size: 1rem; cursor: pointer; padding: 4px 8px;
 }
 #cdh-chat-close:hover { color: var(--text); }
+
+/* ── Botón de voz del asesor ───────────────────────────────────────────────
+   Alterna entre altavoz encendido y silenciado. Mientras el asesor habla,
+   una pequeña onda de barras se anima dentro del propio botón. */
+.cdh-voice-btn {
+  position: relative; background: none; border: none; cursor: pointer;
+  color: var(--accent); padding: 4px 6px; line-height: 0;
+  border-radius: 8px; transition: color 0.2s, background 0.2s;
+}
+.cdh-voice-btn:hover { background: color-mix(in srgb, var(--accent) 14%, transparent); }
+.cdh-voice-btn svg { width: 18px; height: 18px; }
+.cdh-voice-btn .cdh-ico-off { display: none; }
+.cdh-voice-btn.off { color: var(--text-dim); }
+.cdh-voice-btn.off .cdh-ico-on { display: none; }
+.cdh-voice-btn.off .cdh-ico-off { display: inline; }
+
+/* Onda de audio: solo visible mientras hay habla en curso */
+.cdh-voice-wave {
+  position: absolute; inset: 0; display: none;
+  align-items: center; justify-content: center; gap: 2px;
+  background: var(--surface-2); border-radius: 8px;
+}
+.cdh-voice-btn.speaking .cdh-voice-wave { display: flex; }
+.cdh-voice-wave i {
+  display: block; width: 2px; height: 6px; border-radius: 2px;
+  background: var(--accent); animation: cdh-wave 0.9s ease-in-out infinite;
+}
+.cdh-voice-wave i:nth-child(2) { animation-delay: 0.15s; }
+.cdh-voice-wave i:nth-child(3) { animation-delay: 0.3s; }
+.cdh-voice-wave i:nth-child(4) { animation-delay: 0.45s; }
+@keyframes cdh-wave {
+  0%, 100% { height: 5px; opacity: 0.6; }
+  50%      { height: 15px; opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cdh-voice-wave i { animation: none; height: 10px; }
+}
 .cdh-chat-msgs { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
 .cdh-msg {
   max-width: 85%; padding: 10px 14px; border-radius: 14px;

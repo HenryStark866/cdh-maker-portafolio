@@ -37,6 +37,7 @@ PORTAFOLIO HCT/
 ├── firestore.rules        # Reglas de acceso a Firestore (colección clients)
 ├── README.md              # Resumen del proyecto
 ├── MANUAL-TECNICO.md      # Este documento
+├── _originales-media/     # Copias sin comprimir (NO se publican: fuera de public/)
 └── public/                # TODO lo que se publica en el hosting
     ├── index.html         # Página principal
     ├── perfil.html        # Panel del cliente autenticado
@@ -44,14 +45,18 @@ PORTAFOLIO HCT/
     ├── styles.css         # Estilos completos (temas con variables CSS)
     ├── theme.js           # Alternancia claro/oscuro (localStorage: cdh-theme)
     ├── security.js        # Capa anti-inspección (solo en producción)
-    ├── metaverse.js       # Canvas de fondo animado
+    ├── metaverse.js       # Canvas de fondo animado (núcleo tecnológico)
     ├── script.js          # Interacciones de index.html
     ├── i18n.js            # Traducciones y motor de idiomas
     ├── auth.js            # Autenticación, sesión, CRM y contacto ofuscado
+    ├── voice.js           # Voz del asesor (Web Speech API) → window.CDH_VOICE
     ├── chatbot.js         # Chatbot de reglas "Maker"
+    ├── ads.js             # Widget de anuncio flotante (video diferido)
     ├── icon.svg           # Ícono del sitio (favicon + PWA)
     ├── manifest.json      # Manifiesto PWA
-    └── media/             # Imágenes y video de proyectos
+    ├── robots.txt         # Reglas de rastreo (excluye perfil y admin)
+    ├── sitemap.xml        # Mapa del sitio con alternates es/en
+    └── media/             # Imágenes (WebP + original) y video de proyectos
 ```
 
 > **Nota:** `firebase.json`, `.firebaserc` y `manifest.json` son JSON puro y **no admiten comentarios**; su documentación vive en este manual.
@@ -62,12 +67,23 @@ El orden **importa** y no debe cambiarse sin revisar dependencias:
 
 1. `theme.js` (en `<head>`) — aplica el tema antes del primer render (evita parpadeo).
 2. `security.js` (en `<head>`) — activa la protección lo antes posible.
-3. SDK compat de Firebase (app, auth, firestore) — desde CDN de Google.
-4. `metaverse.js` — fondo animado: construye ladrillo a ladrillo (estilo LEGO) la silueta de cada producto (PrivacyCheck, EvaIA, A Tiempo, TaxiYa, IncubApp y el engranaje CDH Maker), alternando el costado de la pantalla; conserva el degradado oceánico, la retícula, ambos temas y `prefers-reduced-motion`.
-5. `i18n.js` — idiomas (publica `window.CDH_I18N` y `window.CDH_TYPED`).
-6. `auth.js` — cuentas (publica `window.CDH_AUTH`; requiere que Firebase ya esté cargado).
-7. `script.js` — interacciones generales.
-8. `chatbot.js` — chatbot (usa `window.CDH_AUTH` para el gating de WhatsApp).
+3. `metaverse.js` — fondo animado "núcleo tecnológico": seis capas compuestas en un
+   canvas 2D (atmósfera con halo, malla en perspectiva hacia el horizonte, campo de
+   partículas 3D con paralaje, red neuronal de nodos, paquetes de datos que viajan por
+   las aristas y HUD holográfico con barrido de escaneo). Respeta ambos temas,
+   `prefers-reduced-motion`, DPR y se pausa con la pestaña oculta.
+4. `i18n.js` — idiomas (publica `window.CDH_I18N` y `window.CDH_TYPED`).
+5. `auth.js` — cuentas (publica `window.CDH_AUTH`). **Ya no requiere que Firebase esté
+   cargado de antemano**: el SDK se descarga bajo demanda (ver §4.5).
+6. `script.js` — interacciones generales.
+7. `voice.js` — voz del asesor (publica `window.CDH_VOICE`); debe ir **antes** de
+   `chatbot.js`, que la usa para leer cada respuesta.
+8. `chatbot.js` — chatbot (usa `window.CDH_AUTH` para el gating de WhatsApp y
+   `window.CDH_VOICE` para hablar).
+9. `ads.js` — widget de anuncio flotante.
+
+> El SDK de Firebase **ya no se carga desde el HTML**. Eran ~300 KB en cada visita y la
+> mayoría de visitantes nunca crea cuenta.
 
 ### Comunicación entre módulos (eventos personalizados)
 
@@ -117,6 +133,27 @@ El orden **importa** y no debe cambiarse sin revisar dependencias:
 
 El número de WhatsApp y el correo están **ofuscados con Shift-3** (cada carácter desplazado +3) y solo se decodifican al hacer clic **con sesión iniciada**. Los `href` visibles siempre son `#` para que el dato no aparezca ni al pasar el mouse. Un bot que rastree el HTML nunca ve el número ni el correo en claro.
 
+### 4.5 Carga diferida del SDK de Firebase
+
+El SDK compat (app + auth + firestore) pesa unos **300 KB** y solo hace falta para quien
+tiene cuenta. Desde julio de 2026 no viaja en el HTML: lo inyecta `auth.js` mediante
+`ensureFirebase()`, que garantiza una sola descarga por sesión.
+
+Se dispara en tres momentos:
+
+| Momento | Motivo |
+|---|---|
+| `openAuth()` | El visitante abrió el área de clientes: va a registrarse o entrar |
+| `register()` / `login()` | Ambas son `async` y hacen `await ensureFirebase()` antes de operar |
+| `boot()`, en tiempo libre | Solo si `cdh_fb_used_v1` o `cdh_client_session_v1` existen |
+
+`cdh_fb_used_v1` se escribe la primera vez que Firebase reporta un usuario, para que en
+las visitas siguientes el SDK se precargue con `requestIdleCallback` y la sesión
+multi-dispositivo se restaure sola.
+
+**Si el CDN falla o no hay red**, `firebaseReady` queda en `false` y todo el flujo sigue
+funcionando contra el vault local, igual que antes.
+
 ## 5. Panel del cliente (perfil.html)
 
 - Lee la sesión de `cdh_client_session_v1`; si no existe o expiró → redirige a index.
@@ -164,8 +201,38 @@ node -e "console.log(require('crypto').createHash('sha256').update('TU_NUEVA_CLA
 
 - **Motor de reglas 100% en el navegador** — sin APIs externas, las conversaciones no salen del equipo del visitante.
 - `INTENTS`: lista de intenciones con palabras clave ES+EN. `detectIntent()` puntúa coincidencias (claves largas ×2; claves cortas exigen palabra completa).
+- **Tolerancia a erratas**: si ninguna clave coincide literalmente, `detectIntent()` compara
+  cada palabra del mensaje con las claves usando el coeficiente de Dice sobre bigramas
+  (umbral 0.82). Así "cuanto vale una *pagian* web" o "tienen *garantiaa*" se entienden.
+- **Naturalidad**: `humanize()` antepone conectores variados ("Claro,", "Mira,", "Te
+  cuento:") a parte de las respuestas, nunca dos veces el mismo seguido, nunca sobre frases
+  que ya arrancan con un conector ni sobre respuestas cortas o que empiezan con un botón.
+- Si el visitante tiene sesión, el saludo usa su **nombre de pila** (`nombreCliente()`).
 - `TEXT`: todas las respuestas en es/en. Para cambiar cualquier texto del bot, se edita ahí.
 - Los botones de "Cotizar por WhatsApp" pasan por `CDH_AUTH` → solo funcionan con sesión.
+
+### 9.1 Voz del asesor (voice.js)
+
+Cada respuesta se lee en voz alta con la **Web Speech API**: el audio se sintetiza en el
+dispositivo del visitante, suena al instante, no cuesta nada y no viaja ningún dato.
+
+- `botSay()` llama a `CDH_VOICE.speak(html)` justo después de pintar el mensaje.
+- **Selección de voz**: `pickVoice()` puntúa las voces del sistema por cercanía regional
+  (es-CO → es-MX → … → es-ES) y por calidad, premiando las neuronales (nombres con
+  *Natural*, *Neural*, *Online*, *Premium*…).
+- **Limpieza**: `toPlainText()` quita etiquetas, botones, URLs, correos y emojis.
+- **Troceo**: `splitSentences()` parte en frases de ≤180 caracteres, porque varios motores
+  cortan el audio si reciben todo de una vez.
+- **Watchdog**: Chrome suspende la síntesis a los ~14 s; un `pause()/resume()` cada 9 s lo evita.
+- **Preferencia**: botón de altavoz en la cabecera del chat; el estado se guarda en
+  `cdh_voice_on` (por defecto **encendido**). La voz se corta al cerrar el chat, al cambiar
+  de idioma, al ocultar la pestaña y cuando el visitante escribe.
+
+> **Calidad de la voz:** depende de las voces instaladas en el sistema del visitante, no del
+> código. Windows trae por defecto voces SAPI antiguas (Sabina, Raul) que suenan robóticas.
+> Microsoft Edge expone voces neuronales *Online (Natural)* que el selector detecta y
+> prefiere automáticamente. En Windows 11 se instalan más desde
+> *Configuración → Accesibilidad → Narrador → Agregar voces naturales*.
 
 ## 10. Caché y versionado de archivos
 

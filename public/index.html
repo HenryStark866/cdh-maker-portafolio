@@ -38,13 +38,24 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://cdh-maker-portafolio.web.app/media/og.jpg" />
   <meta name="theme-color" content="#06232e" />
+  <link rel="canonical" href="https://cdh-maker-portafolio.web.app/" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="author" content="Ing. Henry Taborda — CDH Maker" />
+  <meta property="og:site_name" content="CDH Maker" />
+  <meta property="og:locale" content="es_CO" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="CDH Maker — ingeniería, fabricación digital y desarrollo" />
+  <meta name="twitter:title" content="CDH Maker — Ingeniería, Fabricación Digital y Desarrollo" />
+  <meta name="twitter:description"
+    content="Soluciones de ingeniería: software, prototipado, electrónica e IoT, diseño y consultoría técnica." />
   <link rel="manifest" href="manifest.json" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=17" />
+  <link rel="stylesheet" href="styles.css?v=19" />
   <link rel="icon" type="image/svg+xml" href="icon.svg" />
   <script src="theme.js?v=4"></script>
   <script src="security.js?v=4"></script>
@@ -564,7 +575,8 @@
       <p class="section-sub" data-i18n="proj_s">Proyectos reales que he creado e implementado. Haz clic para verlos.</p>
 
       <article class="project project-featured">
-        <video controls preload="metadata" poster="media/privacycheck-poster.jpg">
+        <video controls preload="metadata" poster="media/privacycheck-poster.webp"
+          width="1280" height="720">
           <source src="media/privacycheck-demo.mp4" type="video/mp4" />
         </video>
         <div class="project-body">
@@ -582,8 +594,13 @@
 
       <div class="projects">
         <article class="project project-with-media">
-          <a class="project-media" href="media/evaia-avatar.png" target="_blank" rel="noopener">
-            <img src="media/evaia-avatar.png" alt="EvaIA" loading="lazy" />
+          <a class="project-media" href="media/evaia-avatar.png" target="_blank" rel="noopener"
+            aria-label="Ver la imagen de EvaIA en tamaño completo (se abre en una pestaña nueva)">
+            <picture>
+              <source srcset="media/evaia-avatar.webp" type="image/webp" />
+              <img src="media/evaia-avatar.png" alt="EvaIA" loading="lazy" decoding="async"
+                width="640" height="640" />
+            </picture>
           </a>
           <div class="project-body">
             <div class="project-tag" data-i18n="tag_ai">Inteligencia Artificial</div>
@@ -607,8 +624,13 @@
           </div>
         </article>
         <article class="project project-with-media">
-          <a class="project-media project-media--contain" href="media/sintaxis-ti.png" target="_blank" rel="noopener">
-            <img src="media/sintaxis-ti.png" alt="Sintaxis TI" loading="lazy" />
+          <a class="project-media project-media--contain" href="media/sintaxis-ti.png" target="_blank" rel="noopener"
+            aria-label="Ver la imagen de Sintaxis TI en tamaño completo (se abre en una pestaña nueva)">
+            <picture>
+              <source srcset="media/sintaxis-ti.webp" type="image/webp" />
+              <img src="media/sintaxis-ti.png" alt="Sintaxis TI" loading="lazy" decoding="async"
+                width="500" height="500" />
+            </picture>
           </a>
           <div class="project-body">
             <div class="project-tag" data-i18n="tag_web">Web</div>
@@ -618,8 +640,13 @@
           </div>
         </article>
         <article class="project project-with-media">
-          <a class="project-media" href="https://atiempo-logistica.vercel.app" target="_blank" rel="noopener">
-            <img src="media/atiempo-logistica.jpg" alt="A Tiempo Logística" loading="lazy" />
+          <a class="project-media" href="https://atiempo-logistica.vercel.app" target="_blank" rel="noopener"
+            aria-label="Abrir la demo de A Tiempo Logística (se abre en una pestaña nueva)">
+            <picture>
+              <source srcset="media/atiempo-logistica.webp" type="image/webp" />
+              <img src="media/atiempo-logistica.jpg" alt="A Tiempo Logística" loading="lazy" decoding="async"
+                width="1000" height="625" />
+            </picture>
           </a>
           <div class="project-body">
             <div class="project-tag" data-i18n="tag_saas">Web · SaaS</div>
@@ -631,8 +658,13 @@
           </div>
         </article>
         <article class="project project-with-media">
-          <a class="project-media" href="https://taxiya.vercel.app" target="_blank" rel="noopener">
-            <img src="media/taxiya.jpg" alt="TaxiYa" loading="lazy" />
+          <a class="project-media" href="https://taxiya.vercel.app" target="_blank" rel="noopener"
+            aria-label="Abrir la demo de TaxiYa (se abre en una pestaña nueva)">
+            <picture>
+              <source srcset="media/taxiya.webp" type="image/webp" />
+              <img src="media/taxiya.jpg" alt="TaxiYa" loading="lazy" decoding="async"
+                width="1000" height="625" />
+            </picture>
           </a>
           <div class="project-body">
             <div class="project-tag" data-i18n="tag_saas">Web · SaaS</div>
@@ -644,8 +676,13 @@
           </div>
         </article>
         <article class="project project-with-media">
-          <a class="project-media" href="https://incubant-app.vercel.app" target="_blank" rel="noopener">
-            <img src="media/incubapp.jpg" alt="IncubApp" loading="lazy" />
+          <a class="project-media" href="https://incubant-app.vercel.app" target="_blank" rel="noopener"
+            aria-label="Abrir la demo de IncubApp (se abre en una pestaña nueva)">
+            <picture>
+              <source srcset="media/incubapp.webp" type="image/webp" />
+              <img src="media/incubapp.jpg" alt="IncubApp" loading="lazy" decoding="async"
+                width="1000" height="625" />
+            </picture>
           </a>
           <div class="project-body">
             <div class="project-tag" data-i18n="tag_saas_ai">Web · SaaS · IA</div>
@@ -993,15 +1030,16 @@ $ estado
   </div>
 
   <!-- Firebase (Auth + Firestore) — se activa cuando esté habilitado en la consola -->
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
-  <script src="metaverse.js?v=7"></script>
+  <!-- El SDK de Firebase ya no viaja aquí: auth.js lo descarga solo cuando
+       el visitante abre el área de clientes (o si este navegador ya tuvo
+       cuenta). Son ~300 KB que la mayoría de visitas nunca necesita. -->
+  <script src="metaverse.js?v=9"></script>
   <script src="i18n.js?v=8"></script>
-  <script src="auth.js?v=5"></script>
+  <script src="auth.js?v=6"></script>
   <script src="script.js?v=9"></script>
-  <script src="chatbot.js?v=8"></script>
-  <script src="ads.js?v=2"></script>
+  <script src="voice.js?v=1"></script>
+  <script src="chatbot.js?v=9"></script>
+  <script src="ads.js?v=3"></script>
 </body>
 
 </html>

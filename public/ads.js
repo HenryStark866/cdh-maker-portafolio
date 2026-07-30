@@ -6,7 +6,7 @@
     {
       id: "ad-video-1",
       src: "media/ad-video.mp4",
-      poster: "media/ad-poster.jpg",
+      poster: "media/ad-poster.webp",
       title: "CDH Maker",
       caption: "Ingeniería, IA y fabricación digital — hecho realidad.",
     },
@@ -52,7 +52,11 @@
           <button type="button" class="cdh-ad-min" aria-label="${t.minimize}">–</button>
         </div>
         <div class="cdh-ad-media">
-          <video id="cdh-ad-video" src="${ad.src}" poster="${ad.poster}" autoplay muted loop playsinline preload="auto"></video>
+          <!-- El src se asigna por JS solo cuando la tarjeta está desplegada:
+               así el video (varios MB) no se descarga si el widget arranca
+               minimizado, que es lo habitual en móvil. -->
+          <video id="cdh-ad-video" data-src="${ad.src}" poster="${ad.poster}"
+            muted loop playsinline preload="none" width="720" height="406"></video>
           <button type="button" class="cdh-ad-mute" aria-label="${t.mute}">${ICON_MUTE}</button>
         </div>
         <div class="cdh-ad-body">
@@ -75,8 +79,16 @@
     function applyState(minimized, persist) {
       card.hidden = minimized;
       pill.hidden = !minimized;
-      if (minimized) { try { video.pause(); } catch (e) {} }
-      else { video.play().catch(() => {}); }
+      if (minimized) {
+        try { video.pause(); } catch (e) {}
+      } else {
+        // Primera vez que se despliega: recién ahí se pide el archivo
+        if (!video.src && video.dataset.src) {
+          video.src = video.dataset.src;
+          video.preload = "auto";
+        }
+        video.play().catch(() => {});
+      }
       if (persist) setMinimized(minimized);
     }
 

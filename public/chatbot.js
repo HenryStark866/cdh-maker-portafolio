@@ -45,6 +45,10 @@
       placeholder: "Escribe tu mensaje…",
       open_label: "Abrir chat de asistencia",
       close_label: "Cerrar chat",
+      chat_label: "Chat con Maker, asesor de CDH Maker",
+      voice_on: "Activar voz del asesor",
+      voice_off: "Silenciar voz del asesor",
+      voice_ready: "Listo, ya me escuchas. Cuéntame en qué proyecto andas.",
       greeting: [
         "¡Hola! 👋 Soy <b>Maker</b>, el asesor de <b>CDH Maker</b>. Cuéntame, ¿qué te trae por aquí? ¿Una idea, un proyecto, o solo estás explorando?",
         "¡Hola, bienvenido! 👋 Soy <b>Maker</b>. Aquí construimos de todo: software, piezas 3D, electrónica… ¿Qué tienes en mente?",
@@ -125,6 +129,10 @@
       placeholder: "Type your message…",
       open_label: "Open support chat",
       close_label: "Close chat",
+      chat_label: "Chat with Maker, CDH Maker advisor",
+      voice_on: "Turn on advisor voice",
+      voice_off: "Mute advisor voice",
+      voice_ready: "Great, you can hear me now. Tell me about your project.",
       greeting: [
         "Hi there! 👋 I'm <b>Maker</b>, the CDH Maker advisor. Tell me — an idea, a project, or just exploring?",
         "Welcome! 👋 I'm <b>Maker</b>. We build all sorts of things here: software, 3D parts, electronics… What's on your mind?",
@@ -230,9 +238,42 @@
     { keys: ["no ", "nope", "todavia no", "not yet"], type: "no" },
   ];
 
+  // Similitud de dos palabras por bigramas (coeficiente de Dice, 0..1).
+  // Sirve para entender a quien escribe rápido: "pagian" ≈ "pagina",
+  // "coitzacion" ≈ "cotizacion". Es barato y no necesita diccionario.
+  function dice(a, b) {
+    if (a === b) return 1;
+    if (a.length < 3 || b.length < 3) return 0;
+    const pares = (s) => {
+      const out = [];
+      for (let i = 0; i < s.length - 1; i++) out.push(s.slice(i, i + 2));
+      return out;
+    };
+    const pa = pares(a), pb = pares(b);
+    let comunes = 0;
+    const usados = new Array(pb.length).fill(false);
+    for (const p of pa) {
+      const j = pb.findIndex((q, i) => !usados[i] && q === p);
+      if (j !== -1) { usados[j] = true; comunes++; }
+    }
+    return (2 * comunes) / (pa.length + pb.length);
+  }
+
+  // ¿Alguna palabra del mensaje se parece lo bastante a la clave?
+  function tokenParecido(tokens, clave) {
+    for (const tk of tokens) {
+      if (Math.abs(tk.length - clave.length) > 3) continue; // descarte rápido
+      if (dice(tk, clave) >= 0.82) return true;
+    }
+    return false;
+  }
+
   function detectIntent(text) {
-    const t = " " + norm(text).replace(/[¿?¡!.,;]/g, " ").replace(/\s+/g, " ") + " ";
+    const limpio = norm(text).replace(/[¿?¡!.,;]/g, " ").replace(/\s+/g, " ").trim();
+    const t = " " + limpio + " ";
+    const tokens = limpio.split(" ").filter((w) => w.length > 2);
     let best = null, bestScore = 0;
+
     for (const intent of INTENTS) {
       let score = 0;
       for (const k of intent.keys) {
@@ -240,7 +281,13 @@
         // Palabras cortas exigen coincidencia de palabra completa
         // (evita que "si" coincida dentro de "sitio", "no" dentro de "nosotros", etc.)
         const hit = nk.length <= 3 ? t.includes(" " + nk.trim() + " ") : t.includes(nk);
-        if (hit) score += nk.length > 4 ? 2 : 1;
+        if (hit) {
+          score += nk.length > 4 ? 2 : 1;
+        } else if (nk.length >= 5 && !nk.includes(" ") && tokenParecido(tokens, nk)) {
+          // Coincidencia aproximada: vale menos que la exacta, pero rescata
+          // mensajes con erratas que antes caían en el fallback genérico
+          score += 1;
+        }
       }
       if (score > bestScore) { best = intent; bestScore = score; }
     }
@@ -251,6 +298,55 @@
   let lastService = null;
   let askedProject = false;
   let greeted = false;
+  let lastConnector = "";   // evita repetir el mismo arranque dos veces seguidas
+  let turnos = 0;           // mensajes que lleva el visitante en esta charla
+
+  // Nombre de pila del cliente con sesión (para tutearlo por su nombre)
+  function nombreCliente() {
+    try {
+      const u = window.CDH_AUTH && window.CDH_AUTH.getUser && window.CDH_AUTH.getUser();
+      if (!u || !u.name) return "";
+      const pila = String(u.name).trim().split(/\s+/)[0];
+      // Solo si parece un nombre de verdad (nada de correos ni números)
+      return /^[a-záéíóúñü]{2,15}$/i.test(pila) ? pila.charAt(0).toUpperCase() + pila.slice(1).toLowerCase() : "";
+    } catch (_) { return ""; }
+  }
+
+  // Arranques de frase que hacen que el asesor no suene a máquina.
+  // Se aplican de vez en cuando, nunca dos veces el mismo seguido y nunca
+  // sobre respuestas que ya empiezan con un botón o un bloque HTML.
+  const CONNECTORS = {
+    es: ["Claro, ", "Mira, ", "Te cuento: ", "Perfecto. ", "Buena pregunta. ", "Con gusto. ", "Listo, "],
+    en: ["Sure, ", "Look, ", "Here goes: ", "Perfect. ", "Good question. ", "Gladly. ", "Alright, "],
+  };
+
+  // Arranques que ya cumplen la función de conector: si la respuesta empieza
+  // por uno de estos, añadir otro sonaría redundante ("Te cuento: buena pregunta…")
+  const YA_CONECTADA = /^\s*(claro|mira|te cuento|perfecto|buena pregunta|con gusto|listo|genial|excelente|por supuesto|sure|look|here goes|good question|gladly|alright|of course|great)\b/i;
+
+  function humanize(html) {
+    if (typeof html !== "string") return html;
+    // No tocar respuestas que arrancan con marcado de bloque (botones, listas…)
+    if (/^\s*<(button|div|ul|ol|p|table|a\s)/i.test(html)) return html;
+    // Ni las que ya traen su propio arranque conversacional
+    if (YA_CONECTADA.test(html.replace(/^\s*<[^>]+>/, ""))) return html;
+    // Ni las preguntas cortas: un conector delante las vuelve pesadas
+    if (html.length < 60) return html;
+    // Solo en parte de los turnos: si sale siempre, vuelve a sonar a plantilla
+    if (Math.random() > 0.45) return html;
+    const lista = CONNECTORS[lang()] || CONNECTORS.es;
+    const opciones = lista.filter((c) => c !== lastConnector);
+    const c = opciones[Math.floor(Math.random() * opciones.length)];
+    lastConnector = c;
+    // Minúscula inicial en la frase original para que el empalme sea correcto
+    const resto = html.replace(/^(\s*)([A-ZÁÉÍÓÚÑ])/, (m, sp, letra) =>
+      // Se respetan siglas y nombres propios frecuentes al inicio
+      /^(CDH|IoT|PrivacyCheck|EvaIA|TaxiYa|IncubApp|Henry|A Tiempo)/.test(html.trim())
+        ? m
+        : sp + letra.toLowerCase()
+    );
+    return c + resto;
+  }
 
   // ---------- UI ----------
   const root = document.createElement("div");
@@ -260,7 +356,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       <span class="cdh-fab-badge">1</span>
     </button>
-    <div id="cdh-chat-panel" hidden>
+    <div id="cdh-chat-panel" role="dialog" aria-modal="false" aria-label="Chat con Maker, asesor de CDH Maker" hidden>
       <div class="cdh-chat-header">
         <div class="cdh-chat-avatar">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v10l9 5 9-5V7l-9-5z"/><path d="M12 22V12"/><path d="M3 7l9 5 9-5"/></svg>
@@ -269,10 +365,17 @@
           <strong>Maker</strong>
           <span id="cdh-chat-sub">Asesor de CDH Maker · en línea</span>
         </div>
+        <button id="cdh-chat-voice" class="cdh-voice-btn" aria-label="Silenciar voz" aria-pressed="true" hidden>
+          <svg class="cdh-ico-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+          <svg class="cdh-ico-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="m23 9-6 6"/><path d="m17 9 6 6"/></svg>
+          <span class="cdh-voice-wave" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        </button>
         <button id="cdh-chat-close" aria-label="Cerrar chat">✕</button>
       </div>
-      <div class="cdh-chat-msgs" id="cdh-chat-msgs"></div>
-      <div class="cdh-chat-quick" id="cdh-chat-quick"></div>
+      <!-- role="log" + aria-live: cada respuesta nueva se anuncia sola en
+           lectores de pantalla, sin robar el foco de donde esté el visitante -->
+      <div class="cdh-chat-msgs" id="cdh-chat-msgs" role="log" aria-live="polite" aria-relevant="additions"></div>
+      <div class="cdh-chat-quick" id="cdh-chat-quick" aria-label="Respuestas rápidas"></div>
       <form class="cdh-chat-input" id="cdh-chat-form">
         <input type="text" id="cdh-chat-text" placeholder="Escribe tu mensaje…" autocomplete="off" maxlength="300" />
         <button type="submit" aria-label="Enviar">
@@ -296,6 +399,8 @@
     input.placeholder = T.placeholder;
     fab.setAttribute("aria-label", T.open_label);
     document.getElementById("cdh-chat-close").setAttribute("aria-label", T.close_label);
+    panel.setAttribute("aria-label", T.chat_label);
+    quick.setAttribute("aria-label", lang() === "en" ? "Quick replies" : "Respuestas rápidas");
   }
   window.addEventListener("cdh:langchange", syncUiLang);
 
@@ -308,7 +413,8 @@
     return div;
   }
 
-  function botSay(html, extraDelay) {
+  function botSay(rawHtml, extraDelay) {
+    const html = humanize(rawHtml);
     return new Promise((res) => {
       const typing = addMsg('<span class="cdh-typing"><i></i><i></i><i></i></span>', "bot");
       // Retardo proporcional al largo del texto: se siente más humano
@@ -316,6 +422,8 @@
       setTimeout(() => {
         typing.innerHTML = html;
         msgs.scrollTop = msgs.scrollHeight;
+        // El asesor lee en voz alta lo que acaba de escribir (si hay audio activo)
+        if (window.CDH_VOICE) window.CDH_VOICE.speak(html);
         res();
       }, delay);
     });
@@ -504,6 +612,9 @@
   function handleUser(text, forcedAction) {
     addMsg(esc(text), "user");
     quick.innerHTML = "";
+    turnos++;
+    // Si el visitante escribe mientras el asesor habla, se calla y escucha
+    if (window.CDH_VOICE) window.CDH_VOICE.stop();
     let action = forcedAction || detectIntent(text) || { type: "fallback" };
     // Si ya pedimos la descripción y el texto es sustancioso, capturarlo
     // aunque contenga palabras de servicio (afinando el servicio detectado).
@@ -567,13 +678,50 @@
       const T = TEXT[lang()];
       const h = new Date().getHours();
       const hi = h < 12 ? T.good_morning : h < 19 ? T.good_afternoon : T.good_evening;
-      botSay(hi + " " + pick(T.greeting)).then(() => setQuick(T.menu));
+      // Si el visitante ya tiene cuenta, se le saluda por su nombre
+      const quien = nombreCliente();
+      const saludo = quien ? hi.replace(/!/, ", " + quien + "!") : hi;
+      botSay(saludo + " " + pick(T.greeting)).then(() => setQuick(T.menu));
     }
     input.focus();
   }
   function closeChat() {
     panel.hidden = true;
     fab.classList.remove("open");
+    if (window.CDH_VOICE) window.CDH_VOICE.stop(); // que no siga hablando a solas
+  }
+
+  // ---------- Voz del asesor ----------
+  // El botón solo aparece si el navegador sabe sintetizar habla.
+  const voiceBtn = document.getElementById("cdh-chat-voice");
+  if (window.CDH_VOICE && window.CDH_VOICE.supported()) {
+    voiceBtn.hidden = false;
+
+    function syncVoiceBtn() {
+      const on = window.CDH_VOICE.isEnabled();
+      const T = TEXT[lang()];
+      voiceBtn.classList.toggle("off", !on);
+      voiceBtn.setAttribute("aria-pressed", String(on));
+      voiceBtn.setAttribute("aria-label", on ? (T.voice_off || "Silenciar voz") : (T.voice_on || "Activar voz"));
+      voiceBtn.title = voiceBtn.getAttribute("aria-label");
+    }
+
+    voiceBtn.addEventListener("click", () => {
+      const on = window.CDH_VOICE.toggle();
+      syncVoiceBtn();
+      // Confirmación hablada al encender: se oye qué voz quedó puesta
+      if (on) {
+        const T = TEXT[lang()];
+        window.CDH_VOICE.speak(T.voice_ready || "Listo, ya puedes escucharme.");
+      }
+    });
+
+    // La onda del botón se anima solo mientras hay audio sonando
+    window.addEventListener("cdh:voicestate", (e) => {
+      voiceBtn.classList.toggle("speaking", !!(e.detail && e.detail.speaking));
+    });
+    window.addEventListener("cdh:langchange", syncVoiceBtn);
+    syncVoiceBtn();
   }
   fab.addEventListener("click", () => (panel.hidden ? openChat() : closeChat()));
   document.getElementById("cdh-chat-close").addEventListener("click", closeChat);
