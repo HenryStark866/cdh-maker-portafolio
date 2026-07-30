@@ -42,6 +42,8 @@ firebase deploy --only firestore:rules,hosting
   El altavoz de la cabecera del chat activa o silencia la voz.
 - **Carga liviana**: el SDK de Firebase (~300 KB) solo se descarga si el visitante abre el
   área de clientes; imágenes en WebP y el video del anuncio se pide recién al desplegarlo.
+- **10 idiomas sin peso muerto**: cada diccionario es un archivo aparte y solo se baja el
+  que se usa. Quien entra en español no descarga ninguno (103 KB → 8,8 KB).
 
 ## Estructura
 
@@ -51,6 +53,8 @@ public/               # Sitio estático (HTML, CSS, JS)
   voice.js            # Voz del asesor (Web Speech API)
   chatbot.js          # Asesor "Maker"
   metaverse.js        # Fondo animado
+  i18n.js             # Motor de idiomas
+  i18n/               # Un diccionario por idioma (carga bajo demanda)
   security.js         # Protección anti-inspección
   admin-clientes.html # Panel privado de clientes
   robots.txt          # Rastreo (excluye perfil y admin)

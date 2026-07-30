@@ -47,7 +47,10 @@ PORTAFOLIO HCT/
     ├── security.js        # Capa anti-inspección (solo en producción)
     ├── metaverse.js       # Canvas de fondo animado (núcleo tecnológico)
     ├── script.js          # Interacciones de index.html
-    ├── i18n.js            # Traducciones y motor de idiomas
+    ├── i18n.js            # Motor de idiomas (los diccionarios van aparte)
+    ├── i18n/              # Un diccionario por idioma, cargado bajo demanda
+    │   ├── es.js  en.js  zh.js  hi.js  ar.js
+    │   └── pt.js  bn.js  ru.js  fr.js  id.js
     ├── auth.js            # Autenticación, sesión, CRM y contacto ofuscado
     ├── voice.js           # Voz del asesor (Web Speech API) → window.CDH_VOICE
     ├── chatbot.js         # Chatbot de reglas "Maker"
@@ -190,12 +193,55 @@ node -e "console.log(require('crypto').createHash('sha256').update('TU_NUEVA_CLA
 - **Cabeceras HTTP** (firebase.json): `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy`, `Permissions-Policy` (cámara/micrófono/geolocalización deshabilitados).
 - Las claves de `FB_CONFIG` en auth.js son **públicas por diseño** de Firebase; no son un secreto (la protección la dan las reglas).
 
-## 8. Internacionalización (i18n.js)
+## 8. Internacionalización (i18n.js + i18n/)
 
 - 10 idiomas: es, en, zh, hi, ar, pt, bn, ru, fr, id. El árabe activa `dir="rtl"`.
 - Todo texto traducible lleva `data-i18n="clave"` en el HTML (o `data-i18n-aria` para aria-labels, `data-i18n-html` si la traducción contiene etiquetas).
 - Idioma inicial: `?lang=` en URL → localStorage → idioma del navegador → español.
 - El chatbot solo es bilingüe (ES/EN): responde en inglés para cualquier idioma no-español.
+
+### 8.1 Diccionarios separados y carga bajo demanda
+
+`i18n.js` es **solo el motor** (8,8 KB). Los diccionarios viven uno por archivo en
+`public/i18n/<código>.js` y se descargan únicamente cuando alguien usa ese idioma.
+
+| Escenario | Se descarga | Antes |
+|---|---|---|
+| Visita en español (lo habitual) | **nada** — 8,8 KB de motor | 103,4 KB |
+| Visita en inglés | en.js (9,9 KB) → 18,7 KB | 103,4 KB |
+| Peor caso (bengalí, 15,3 KB) | 24,1 KB | 103,4 KB |
+
+**Por qué el español no descarga nada:** el HTML ya está escrito en español, así que no
+hay nada que reemplazar. El motor lleva incrustado `ES_MINIMO`, que solo contiene
+`hero_typed` (las palabras del texto rotativo, que no existen en el DOM). En cuanto el
+visitante cambia a otro idioma se marca `domTraducido = true`; a partir de ahí volver al
+español **sí** descarga `es.js`, porque hace falta el diccionario completo para restaurar
+los textos que se sobrescribieron.
+
+Cada archivo se registra solo:
+
+```js
+window.CDH_I18N_DICT = window.CDH_I18N_DICT || {};
+window.CDH_I18N_DICT["fr"] = { …claves… };
+```
+
+`apply(lang)` **devuelve una promesa** (antes era síncrona). Si la descarga falla —sin red
+o archivo caído— se conserva el idioma que el visitante ya está viendo, el selector vuelve
+a su valor anterior y se avisa por consola; la página nunca queda a medio traducir.
+
+### 8.2 Editar o añadir traducciones
+
+- **Corregir un texto:** abre `public/i18n/<código>.js`, busca la clave y edítala. Sube
+  `DICT_V` en `i18n.js` para invalidar la caché de los navegadores.
+- **Añadir un idioma:** agrégalo a `LANGS` en `i18n.js` y crea `public/i18n/<código>.js`
+  copiando la estructura de otro. No hay que tocar nada más.
+
+> **Cobertura desigual (pendiente):** 28 claves existen solo en `es` y `en` — todo el
+> bloque del área de clientes (`auth_*`), los avisos de contenido bloqueado (`lock_*`),
+> `contact_privacy`, `hero_privacy` y `foot_contact_cta`. Viene así desde antes de separar
+> los archivos. Como `apply()` ignora las claves ausentes, un visitante en chino o ruso ve
+> esa parte en español, sin errores. Para completarlo basta añadir esas claves a los ocho
+> diccionarios restantes.
 
 ## 9. Chatbot "Maker" (chatbot.js)
 
@@ -240,11 +286,15 @@ dispositivo del visitante, suena al instante, no cuesta nada y no viaja ningún 
 Por eso **cada vez que edites un .js o .css debes subir su versión** en las etiquetas de los HTML:
 
 ```html
-<script src="auth.js?v=5"></script>   <!-- v=4 → v=5 al editar auth.js -->
-<link rel="stylesheet" href="styles.css?v=15" />
+<script src="auth.js?v=6"></script>   <!-- v=5 → v=6 al editar auth.js -->
+<link rel="stylesheet" href="styles.css?v=19" />
 ```
 
 Si no lo haces, los visitantes recientes verán la versión vieja hasta 1 hora.
+
+**Excepción — los diccionarios de idioma.** Los archivos de `public/i18n/` no se enlazan
+desde el HTML: los pide `i18n.js` en tiempo de ejecución. Su versión se controla con la
+constante `DICT_V` dentro de `i18n.js`; súbela cuando corrijas cualquier traducción.
 
 ## 11. Desarrollo local y despliegue
 
