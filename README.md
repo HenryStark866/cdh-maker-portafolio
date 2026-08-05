@@ -51,7 +51,8 @@ firebase deploy --only firestore:rules,hosting
 public/               # Sitio estático (HTML, CSS, JS)
   auth.js             # Registro / login / CRM (Firebase bajo demanda)
   voice.js            # Voz del asesor (Web Speech API)
-  chatbot.js          # Asesor "Maker"
+  chatbot.js          # Asesor "Maker" (motor conversacional)
+  chatbot-kb.js       # Base de conocimiento de Maker (carga bajo demanda)
   metaverse.js        # Fondo animado
   i18n.js             # Motor de idiomas
   i18n/               # Un diccionario por idioma (carga bajo demanda)

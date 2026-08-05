@@ -53,7 +53,8 @@ PORTAFOLIO HCT/
     │   └── pt.js  bn.js  ru.js  fr.js  id.js
     ├── auth.js            # Autenticación, sesión, CRM y contacto ofuscado
     ├── voice.js           # Voz del asesor (Web Speech API) → window.CDH_VOICE
-    ├── chatbot.js         # Chatbot de reglas "Maker"
+    ├── chatbot.js         # Chatbot de reglas "Maker" (motor conversacional)
+    ├── chatbot-kb.js      # Base de conocimiento del chatbot (cargada bajo demanda)
     ├── ads.js             # Widget de anuncio flotante (video diferido)
     ├── icon.svg           # Ícono del sitio (favicon + PWA)
     ├── manifest.json      # Manifiesto PWA
