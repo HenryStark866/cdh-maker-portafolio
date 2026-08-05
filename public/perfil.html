@@ -20,6 +20,10 @@
   <meta name="robots" content="noindex, nofollow" />
   <title>Mi Perfil — CDH Maker</title>
   <link rel="stylesheet" href="styles.css?v=15" />
+  <!-- theme.js va en el <head>, antes de pintar: el CSS define el claro con
+       :root[data-theme="light"], así que si el script llega al final del body
+       la página se pinta en oscuro y salta al claro (parpadeo en cada visita). -->
+  <script src="theme.js?v=5"></script>
   <style>
     body {
       padding: 40px 20px; max-width: 960px; margin: 0 auto;
@@ -178,8 +182,6 @@
     </div>
   </div>
 
-  <!-- Cargamos theme.js para que el color aplique rápido -->
-  <script src="theme.js"></script>
   <!-- Cargamos el script de auth pero no el de UI completo para evitar conflictos con modales -->
   <script>
     // Misma clave y expiración que auth.js (LS_SESSION, 30 días)

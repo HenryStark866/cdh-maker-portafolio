@@ -31,8 +31,10 @@
 
   // Dimensiones lógicas del canvas (en píxeles CSS)
   let W = 0, H = 0;
-  // Densidad de píxeles (máx. 2 para no derrochar GPU en pantallas 3x/4x)
-  const DPR = Math.min(window.devicePixelRatio || 1, 2);
+  // Densidad de píxeles (máx. 2 para no derrochar GPU en pantallas 3x/4x).
+  // Se recalcula en cada resize(): al hacer zoom o mover la ventana a otro
+  // monitor cambia devicePixelRatio, y si se congela el canvas queda borroso.
+  let DPR = Math.min(window.devicePixelRatio || 1, 2);
   // Equipos modestos: menos densidad de partículas y aristas
   const LOW_POWER =
     (navigator.hardwareConcurrency || 4) <= 4 ||
@@ -454,14 +456,27 @@
   }
 
   // ── Bucle de animación (un frame por refresco de pantalla) ──────────────────
+  // rafId guarda el frame pendiente. Sin él, cada vez que el visitante volvía
+  // a la pestaña se encolaba un bucle NUEVO sin cancelar el anterior: dos idas
+  // y vueltas = tres bucles pintando a la vez, y solo se limpiaba recargando.
   let running = true;
+  let rafId = 0;
   function frame(time) {
+    rafId = 0;
     render(time);
-    if (running) requestAnimationFrame(frame);
+    if (running) rafId = requestAnimationFrame(frame);
+  }
+  // Arranque idempotente: si ya hay un frame encolado, no se encola otro
+  function start() {
+    if (!rafId && running && !reduced) rafId = requestAnimationFrame(frame);
+  }
+  function stop() {
+    if (rafId) { cancelAnimationFrame(rafId); rafId = 0; }
   }
 
   // Ajusta el tamaño real del canvas al de la ventana (con soporte de DPR)
   function resize() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);   // puede haber cambiado (zoom, otro monitor)
     W = canvas.clientWidth; H = canvas.clientHeight;   // tamaño CSS
     canvas.width = W * DPR; canvas.height = H * DPR;   // tamaño físico (nítido en retina)
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);            // escala el sistema de coordenadas
@@ -474,7 +489,7 @@
   // Pausar la animación cuando la pestaña no está visible (ahorra batería/CPU)
   document.addEventListener("visibilitychange", () => {
     running = !document.hidden;
-    if (running && !reduced) requestAnimationFrame(frame);
+    if (running) start(); else stop();
   });
   // Al cambiar el tema: recargar la paleta (los colores se leen en cada frame)
   window.addEventListener("cdh:themechange", () => { theme(); if (reduced) render(0); });
@@ -491,6 +506,6 @@
     running = false;
     render(0);
   } else {
-    requestAnimationFrame(frame);
+    start();
   }
 })();

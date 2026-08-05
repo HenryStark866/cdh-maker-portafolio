@@ -85,6 +85,15 @@
     return dict[key] || fallback;
   }
 
+  // ---------- Acceso protegido a localStorage ----------
+  // En modo privado, con cookies bloqueadas o con la cuota llena, cualquier
+  // acceso a localStorage LANZA. Sin estas envolturas, una sola escritura
+  // fallida tumbaba el registro y el login enteros; ahora la sesión sigue
+  // viva en memoria (currentUser) aunque no se pueda persistir.
+  function lsGet(k) { try { return localStorage.getItem(k); } catch (_) { return null; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, v); return true; } catch (_) { return false; } }
+  function lsDel(k) { try { localStorage.removeItem(k); } catch (_) { } }
+
   // ---------- Criptografía (PBKDF2 local para el vault) ----------
   // Convierte un ArrayBuffer a texto Base64 (para poder guardarlo en localStorage)
   function bufToB64(buf) {
@@ -125,26 +134,26 @@
   // Lee el vault: objeto { email → registroDeUsuario }
   function readVault() {
     try {
-      return JSON.parse(localStorage.getItem(LS_USERS) || "{}");
+      return JSON.parse(lsGet(LS_USERS) || "{}");
     } catch {
       return {}; // JSON corrupto → vault vacío (no rompe el sitio)
     }
   }
   // Persiste el vault completo
   function writeVault(v) {
-    localStorage.setItem(LS_USERS, JSON.stringify(v));
+    lsSet(LS_USERS, JSON.stringify(v));
   }
   // Lee la lista del CRM local (array de clientes)
   function readCrm() {
     try {
-      return JSON.parse(localStorage.getItem(LS_CRM) || "[]");
+      return JSON.parse(lsGet(LS_CRM) || "[]");
     } catch {
       return [];
     }
   }
   // Persiste la lista del CRM
   function writeCrm(list) {
-    localStorage.setItem(LS_CRM, JSON.stringify(list));
+    lsSet(LS_CRM, JSON.stringify(list));
   }
 
   // ── Gestión de sesión ───────────────────────────────────────────────────────
@@ -153,7 +162,7 @@
     currentUser = user;
     if (user) {
       // Serializa el perfil + marca de tiempo `at` (para calcular expiración)
-      localStorage.setItem(
+      lsSet(
         LS_SESSION,
         JSON.stringify({
           uid: user.uid,
@@ -166,7 +175,7 @@
         })
       );
     } else {
-      localStorage.removeItem(LS_SESSION); // logout: eliminar la sesión
+      lsDel(LS_SESSION); // logout: eliminar la sesión
     }
     applyAuthUI(); // refleja el nuevo estado en la interfaz
     // Notifica a otros scripts (ej: el chatbot saluda distinto si hay sesión)
@@ -177,7 +186,7 @@
   // Solo es válida si tiene email, marca de tiempo y menos de 30 días
   function loadSession() {
     try {
-      const s = JSON.parse(localStorage.getItem(LS_SESSION) || "null");
+      const s = JSON.parse(lsGet(LS_SESSION) || "null");
       if (s && s.email && s.at && Date.now() - s.at < 1000 * 60 * 60 * 24 * 30) {
         currentUser = s;
       }
@@ -299,11 +308,14 @@
     vault[email] = { uid, name, email, phone, company, interest, hash, salt, createdAt: Date.now() };
     writeVault(vault);
 
-    // Persistir el perfil (CRM + Firestore), notificar por correo y abrir sesión
+    // Abrir la sesión PRIMERO: guardar en Firestore y avisar por correo son
+    // "fire and forget" (así lo dice el comentario de notifyNewClient), pero
+    // al esperarlas con await el registro se quedaba colgado sin red hasta
+    // que venciera el timeout del navegador. El vault local ya está escrito.
     const profile = { uid, name, email, phone, company, interest };
-    await saveClientCloud(profile);
-    await notifyNewClient(profile);
     saveSession(profile);
+    saveClientCloud(profile).catch(() => { });
+    notifyNewClient(profile).catch(() => { });
     return profile;
   }
 
@@ -366,9 +378,19 @@
 
   // Cierra la sesión en Firebase (si aplica) y borra la sesión local
   function logout() {
+    // Se marca la salida ANTES de nada: el SDK de Firebase se descarga en
+    // diferido, así que durante 1-3 s de cada carga fbAuth todavía es null.
+    // Si el visitante pulsaba "Salir" en esa ventana (o el CDN estaba caído),
+    // la sesión de Firebase sobrevivía y onAuthStateChanged la resucitaba.
+    // El consumidor de esta marca ya existe en initFirebase().
+    try {
+      localStorage.setItem(LS_LOGOUT_FLAG, "1");
+      localStorage.removeItem(LS_FB_USED);
+    } catch (_) { }
     if (fbAuth) {
       try {
-        fbAuth.signOut();
+        const r = fbAuth.signOut();
+        if (r && r.catch) r.catch(() => { });
       } catch (_) { }
     }
     saveSession(null);
@@ -696,8 +718,8 @@
       // Firebase recuerda la sesión entre visitas: este observador la restaura
       fbAuth.onAuthStateChanged((user) => {
         // Logout pedido desde perfil.html: cerrar también Firebase Auth y no restaurar sesión
-        if (localStorage.getItem(LS_LOGOUT_FLAG)) {
-          localStorage.removeItem(LS_LOGOUT_FLAG);
+        if (lsGet(LS_LOGOUT_FLAG)) {
+          lsDel(LS_LOGOUT_FLAG);
           if (user) {
             try { fbAuth.signOut(); } catch (_) { }
           }
@@ -705,7 +727,7 @@
         }
         // Deja constancia de que este navegador sí usa Firebase: en las
         // próximas visitas el SDK se precargará en segundo plano.
-        if (user) { try { localStorage.setItem(LS_FB_USED, "1"); } catch (_) { } }
+        if (user) lsSet(LS_FB_USED, "1");
         // Usuario recordado por Firebase y sin sesión local → restaurarla
         if (user && !currentUser) {
           const vault = readVault();

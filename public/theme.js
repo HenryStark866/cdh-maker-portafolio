@@ -34,12 +34,25 @@
 
   // Iconos SVG inline del botón de alternancia.
   // Regla de UX: estando en oscuro se muestra el SOL (invita a pasar a claro) y viceversa
+  // Sin width/height: así aplica la regla `.nav-icon svg { width:20px }` de
+  // styles.css y el icono queda alineado con los demás del menú lateral.
   const ICONS = {
     // Icono de sol (se muestra cuando el tema activo es oscuro)
-    sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="17" height="17"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>',
+    sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>',
     // Icono de luna (se muestra cuando el tema activo es claro)
-    moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="17" height="17"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
+    moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
   };
+
+  // Pinta el icono DENTRO de <span class="nav-icon">, nunca sobre el botón
+  // entero: antes un btn.innerHTML borraba también <span class="nav-label">Tema</span>,
+  // así que la etiqueta desaparecía para siempre al primer clic (y en móvil,
+  // donde los labels sí se ven, el botón quedaba mudo).
+  function pintarIcono(theme) {
+    const btn = document.getElementById("themeToggle");
+    if (!btn) return; // páginas sin botón de tema
+    const caja = btn.querySelector(".nav-icon") || btn;
+    caja.innerHTML = theme === "light" ? ICONS.moon : ICONS.sun;
+  }
 
   // Aplica un tema al documento.
   //   theme:   "light" | "dark"
@@ -50,8 +63,7 @@
     // 2. Persiste la elección si corresponde (try/catch por localStorage bloqueado)
     if (persist) { try { localStorage.setItem(KEY, theme); } catch (e) {} }
     // 3. Actualiza el icono del botón de alternancia si ya existe en el DOM
-    const btn = document.getElementById("themeToggle");
-    if (btn) btn.innerHTML = theme === "light" ? ICONS.moon : ICONS.sun;
+    pintarIcono(theme);
     // 4. Notifica al resto de scripts (ej: metaverse.js re-colorea el fondo animado)
     window.dispatchEvent(new CustomEvent("cdh:themechange", { detail: { theme } }));
   }
@@ -74,7 +86,7 @@
     const btn = document.getElementById("themeToggle");
     if (!btn) return; // páginas sin botón (ej: perfil.html) simplemente no lo conectan
     // Pinta el icono correcto según el tema ya aplicado
-    btn.innerHTML = current() === "light" ? ICONS.moon : ICONS.sun;
+    pintarIcono(current());
     // Al hacer clic: alterna claro ↔ oscuro y persiste la elección
     btn.addEventListener("click", () => set(current() === "light" ? "dark" : "light", true));
   });

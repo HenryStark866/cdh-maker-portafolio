@@ -72,7 +72,7 @@
     if (cache[code]) return Promise.resolve(cache[code]);
     if (pendientes[code]) return pendientes[code];
 
-    pendientes[code] = new Promise((resolve, reject) => {
+    const p = new Promise((resolve, reject) => {
       const s = document.createElement("script");
       s.src = "i18n/" + code + ".js?v=" + DICT_V;
       s.async = true;
@@ -80,9 +80,13 @@
         const dict = (window.CDH_I18N_DICT || {})[code];
         dict ? resolve(dict) : reject(new Error("diccionario vacío: " + code));
       };
-      s.onerror = () => reject(new Error("no se pudo cargar el idioma " + code));
+      s.onerror = () => { s.remove(); reject(new Error("no se pudo cargar el idioma " + code)); };
       document.head.appendChild(s);
     });
+    // Si falla, se BORRA la entrada: antes la promesa rechazada quedaba
+    // cacheada y ese idioma ya no se podía cargar en toda la visita, ni
+    // reintentándolo, porque el return de arriba devolvía el mismo rechazo.
+    pendientes[code] = p.catch((err) => { delete pendientes[code]; throw err; });
     return pendientes[code];
   }
 
@@ -181,8 +185,13 @@
   document.addEventListener("DOMContentLoaded", () => {
     const sel = buildSelector();
     const lang = initialLang();
-    if (sel) sel.value = lang; // sincronizar el selector con el idioma aplicado
-    apply(lang);
+    if (sel) sel.value = lang;
+    // El selector se sincroniza con el idioma REALMENTE aplicado: si la
+    // descarga del diccionario falla, la página sigue en español y el
+    // selector no debe quedar anunciando un idioma que no está en pantalla.
+    apply(lang).then((ok) => {
+      if (sel) sel.value = ok || document.documentElement.lang || "es";
+    });
   });
 
   // API pública para otros scripts (cambiar idioma programáticamente)
