@@ -37,9 +37,7 @@ firebase deploy --only firestore:rules,hosting
 
 - **Fondo animado**: canvas de seis capas (malla en perspectiva, red neuronal con paquetes
   de datos, partículas 3D y HUD holográfico). Se adapta al tema y respeta *reducir movimiento*.
-- **Asesor "Maker" con voz propia**: responde hablando al instante con la síntesis del
-  navegador — sin API, sin costo y sin que las conversaciones salgan del equipo del visitante.
-  El altavoz de la cabecera del chat activa o silencia la voz.
+- **Asesor "Maker" (100% texto con memoria avanzada)**: recuerda el contexto de la conversación (servicio elegido, productos de interés, detalles técnicos y alcance) durante toda la sesión. Construye enlaces de cotización personalizados para WhatsApp con todo el requerimiento acumulado.
 - **Carga liviana**: el SDK de Firebase (~300 KB) solo se descarga si el visitante abre el
   área de clientes; imágenes en WebP y el video del anuncio se pide recién al desplegarlo.
 - **10 idiomas sin peso muerto**: cada diccionario es un archivo aparte y solo se baja el
@@ -50,8 +48,7 @@ firebase deploy --only firestore:rules,hosting
 ```
 public/               # Sitio estático (HTML, CSS, JS)
   auth.js             # Registro / login / CRM (Firebase bajo demanda)
-  voice.js            # Voz del asesor (Web Speech API)
-  chatbot.js          # Asesor "Maker" (motor conversacional)
+  chatbot.js          # Asesor "Maker" (motor conversacional 100% texto con memoria)
   chatbot-kb.js       # Base de conocimiento de Maker (carga bajo demanda)
   metaverse.js        # Fondo animado
   i18n.js             # Motor de idiomas

@@ -1,13 +1,14 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    CDH MAKER — chatbot.js
-   "Maker": asesor comercial virtual del sitio (natural, bilingüe y multilenguaje: 10 idiomas).
+   "Maker": asesor comercial virtual de CDH Maker.
    
-   Motor conversacional del chatbot: consulta la base de conocimiento en
-   `chatbot-kb.js` (cargada bajo demanda al abrir el chat), detecta intenciones por
-   palabras clave puntuadas + similitud de Dice (erratas), responde con textos
-   naturales y guía la conversación hacia la cotización por WhatsApp.
-
-   Funciona 100% en el navegador: no envía las conversaciones a ningún servidor.
+   Motor conversacional 100% texto con MEMORIA AVANZADA de contexto:
+   - Registra y recuerda los servicios, productos y detalles específicos de la
+     idea descrita por el visitante durante toda la sesión.
+   - Conecta de forma inteligente las dudas (precios, tiempos, garantía) con el
+     contexto acumulado del proyecto.
+   - Construye enlaces de WhatsApp enriquecidos con todo el resumen del proyecto.
+   - Soporte multilenguaje fluido para 10 idiomas.
    ───────────────────────────────────────────────────────────────────────────
    Autor:    Ing. Henry Taborda — CDH Maker (Medellín, Colombia)
    Contacto: cdhmaker@gmail.com
@@ -45,8 +46,111 @@
     }
   }
 
-  // Idioma activo de la página (por defecto "es")
   const lang = () => (document.documentElement.lang || "es").toLowerCase();
+
+  // ---------- MEMORIA CONVERSACIONAL AVANZADA ----------
+  const memory = {
+    service: null,         // 'web' | 'maker' | 'iot' | 'consultoria'
+    serviceName: null,     // Nombre traducido del servicio
+    product: null,         // 'privacycheck' | 'evaia' | 'taxiya' | 'incubapp' | 'atiempo' | 'cavaltec'
+    details: [],           // Fragmentos relevantes descritos por el usuario
+    techMentioned: [],     // Tecnologías detectadas (Next.js, 3D, Arduino, etc.)
+    topicsDiscussed: new Set(),
+    turnCount: 0,
+    askedProject: false,
+    greeted: false,
+
+    rememberService(svcKey, name) {
+      if (svcKey) {
+        this.service = svcKey;
+        if (name) this.serviceName = name;
+        this.save();
+      }
+    },
+    rememberProduct(prodKey) {
+      if (prodKey) {
+        this.product = prodKey;
+        this.save();
+      }
+    },
+    rememberDetail(txt) {
+      if (typeof txt === "string" && txt.trim().length > 10) {
+        const clean = txt.trim().replace(/\s+/g, " ");
+        // Evitar duplicar fragmentos muy similares
+        if (!this.details.some((d) => d.toLowerCase() === clean.toLowerCase())) {
+          this.details.push(clean);
+          if (this.details.length > 5) this.details.shift(); // Mantener los últimos 5
+        }
+        this.save();
+      }
+    },
+    rememberTopic(topic) {
+      if (topic) {
+        this.topicsDiscussed.add(topic);
+        this.save();
+      }
+    },
+    getSummary() {
+      const parts = [];
+      if (this.serviceName) {
+        parts.push(this.serviceName);
+      } else if (this.product) {
+        parts.push("Proyecto " + this.product);
+      }
+      if (this.details.length) {
+        parts.push(this.details.slice(-2).join(" / "));
+      }
+      return parts.join(" — ");
+    },
+    buildWaMessage(baseMsg, extraInput) {
+      let msg = baseMsg || "";
+      const summary = this.getSummary();
+      if (summary && !msg.includes(summary)) {
+        msg += summary;
+      }
+      if (extraInput && extraInput.trim().length > 8) {
+        const cleanInput = extraInput.trim();
+        if (!msg.includes(cleanInput)) {
+          msg += (msg.endsWith(":") || msg.endsWith(" ") ? "" : " — ") + cleanInput;
+        }
+      }
+      return msg;
+    },
+    save() {
+      try {
+        const data = {
+          service: this.service,
+          serviceName: this.serviceName,
+          product: this.product,
+          details: this.details,
+          techMentioned: this.techMentioned,
+          topicsDiscussed: Array.from(this.topicsDiscussed),
+          turnCount: this.turnCount,
+          askedProject: this.askedProject,
+        };
+        sessionStorage.setItem("cdh_maker_memory", JSON.stringify(data));
+      } catch (_) {}
+    },
+    load() {
+      try {
+        const raw = sessionStorage.getItem("cdh_maker_memory");
+        if (raw) {
+          const data = JSON.parse(raw);
+          this.service = data.service || null;
+          this.serviceName = data.serviceName || null;
+          this.product = data.product || null;
+          this.details = Array.isArray(data.details) ? data.details : [];
+          this.techMentioned = Array.isArray(data.techMentioned) ? data.techMentioned : [];
+          this.topicsDiscussed = new Set(Array.isArray(data.topicsDiscussed) ? data.topicsDiscussed : []);
+          this.turnCount = data.turnCount || 0;
+          this.askedProject = !!data.askedProject;
+        }
+      } catch (_) {}
+    }
+  };
+
+  // Cargar memoria existente en la sesión
+  memory.load();
 
   // ---------- Carga bajo demanda de la Base de Conocimiento ----------
   let kbPromise = null;
@@ -64,7 +168,6 @@
     return kbPromise;
   }
 
-  // Obtiene el diccionario KB para el idioma actual (fallback a 'es' o 'en')
   function getLangKB() {
     if (!window.CDH_KB || !window.CDH_KB.L) return null;
     const l = lang();
@@ -129,13 +232,6 @@
     return best;
   }
 
-  // ---------- Estado conversacional ----------
-  let lastService = null;
-  let askedProject = false;
-  let greeted = false;
-  let lastConnector = "";
-  let turnos = 0;
-
   function nombreCliente() {
     try {
       const u = window.CDH_AUTH && window.CDH_AUTH.getUser && window.CDH_AUTH.getUser();
@@ -145,6 +241,7 @@
     } catch (_) { return ""; }
   }
 
+  let lastConnector = "";
   const CONNECTORS = {
     es: ["Claro, ", "Mira, ", "Te cuento: ", "Perfecto. ", "Buena pregunta. ", "Con gusto. ", "Listo, "],
     en: ["Sure, ", "Look, ", "Here goes: ", "Perfect. ", "Good question. ", "Gladly. ", "Alright, "],
@@ -171,7 +268,7 @@
     return c + resto;
   }
 
-  // ---------- Construcción de la UI ----------
+  // ---------- UI Solo Texto ----------
   const root = document.createElement("div");
   root.id = "cdh-chat";
   root.innerHTML = `
@@ -188,11 +285,6 @@
           <strong>Maker</strong>
           <span id="cdh-chat-sub">Asesor de CDH Maker · en línea</span>
         </div>
-        <button id="cdh-chat-voice" class="cdh-voice-btn" aria-label="Silenciar voz" aria-pressed="true" hidden>
-          <svg class="cdh-ico-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
-          <svg class="cdh-ico-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="m23 9-6 6"/><path d="m17 9 6 6"/></svg>
-          <span class="cdh-voice-wave" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-        </button>
         <button id="cdh-chat-close" aria-label="Cerrar chat">✕</button>
       </div>
       <div class="cdh-chat-msgs" id="cdh-chat-msgs" role="log" aria-live="polite" aria-relevant="additions"></div>
@@ -246,7 +338,6 @@
       setTimeout(() => {
         typing.innerHTML = html;
         msgs.scrollTop = msgs.scrollHeight;
-        if (window.CDH_VOICE) window.CDH_VOICE.speak(html);
         res();
       }, delay);
     });
@@ -315,8 +406,8 @@
 
     if (action.type === "svc") {
       const s = (lKB && lKB.svc && lKB.svc[action.svc]) || esSvc[action.svc];
-      lastService = action.svc;
-      askedProject = true;
+      memory.rememberService(action.svc, s ? s.name : action.svc);
+      memory.askedProject = true;
       if (s) {
         await botSay(s.pitch);
         await botSay(s.hook);
@@ -330,43 +421,66 @@
     }
 
     const topicKey = action.topic || action.type;
+    memory.rememberTopic(topicKey);
 
+    // Enriquecer respuestas usando la memoria de contexto acumulada
     switch (topicKey) {
       case "saludo": {
         const h = new Date().getHours();
         const hi = h < 12 ? (t.good_morning || "¡Buenos días! ☀️") : h < 19 ? (t.good_afternoon || "¡Buenas tardes!") : (t.good_evening || "¡Buenas noches! 🌙");
         const greetingList = t.greeting || esT.greeting || ["¡Hola!"];
         const reGreetingList = t.re_greeting || esT.re_greeting || ["¡Hola de nuevo!"];
-        await botSay(greeted ? pick(reGreetingList) : hi + " " + pick(greetingList));
-        greeted = true;
+        
+        let intro = memory.greeted ? pick(reGreetingList) : hi + " " + pick(greetingList);
+        if (memory.getSummary()) {
+          intro += `<br><small style="opacity:0.85;">(Tengo guardado tu interés en <b>${memory.getSummary()}</b>)</small>`;
+        }
+        await botSay(intro);
+        memory.greeted = true;
         setQuick(getMenuOptions(lKB));
         break;
       }
 
       case "precio": {
-        const s = (lastService && lKB && lKB.svc && lKB.svc[lastService]) || (lastService && esSvc[lastService]);
-        askedProject = true;
-        await botSay(pick(t.precio || esT.precio || "La cotización es personalizada y gratis."));
-        const msg = s ? s.wa : (wa.quote || "Hola Henry, quiero una cotización: ");
-        await botSay((t.price_cta || "Si me cuentas qué necesitas, te dejo el mensaje listo:") + "<br>" + waButton(btn.quote || "Cotizar por WhatsApp", msg));
+        const activeSvcKey = memory.service;
+        const s = (activeSvcKey && lKB && lKB.svc && lKB.svc[activeSvcKey]) || (activeSvcKey && esSvc[activeSvcKey]);
+        memory.askedProject = true;
+        
+        let answerText = pick(t.precio || esT.precio || "La cotización es personalizada y gratis.");
+        if (memory.getSummary()) {
+          answerText = `Para tu proyecto de <b>${memory.getSummary()}</b>, ` + answerText.toLowerCase();
+        }
+        await botSay(answerText);
+        
+        const baseMsg = s ? s.wa : (wa.quote || "Hola Henry, quiero una cotización: ");
+        const finalMsg = memory.buildWaMessage(baseMsg, rawText);
+        await botSay((t.price_cta || "Te dejo el mensaje listo con tu proyecto:") + "<br>" + waButton(btn.quote || "Cotizar por WhatsApp", finalMsg));
         setQuick(backQuick(btn));
         break;
       }
 
       case "caro": {
-        const s = (lastService && lKB && lKB.svc && lKB.svc[lastService]) || (lastService && esSvc[lastService]);
+        const activeSvcKey = memory.service;
+        const s = (activeSvcKey && lKB && lKB.svc && lKB.svc[activeSvcKey]) || (activeSvcKey && esSvc[activeSvcKey]);
         await botSay(getTextVal(t.caro || esT.caro));
-        const msg = s ? s.wa : (wa.quote || "Hola Henry, quiero una cotización: ");
-        await botSay(waButton(btn.quote || "Cotizar por WhatsApp", msg));
+        const baseMsg = s ? s.wa : (wa.quote || "Hola Henry, quiero una cotización: ");
+        const finalMsg = memory.buildWaMessage(baseMsg, rawText);
+        await botSay(waButton(btn.quote || "Cotizar por WhatsApp", finalMsg));
         setQuick(backQuick(btn));
         break;
       }
 
       case "tiempo": {
-        const s = (lastService && lKB && lKB.svc && lKB.svc[lastService]) || (lastService && esSvc[lastService]);
-        await botSay(getTextVal(t.tiempo || esT.tiempo));
-        const msg = s ? s.wa : (wa.quote || "Hola Henry, quiero una cotización: ");
-        await botSay((t.time_cta || "¿Te cotizo el tuyo? Es gratis:") + "<br>" + waButton(btn.quote || "Cotizar por WhatsApp", msg));
+        const activeSvcKey = memory.service;
+        const s = (activeSvcKey && lKB && lKB.svc && lKB.svc[activeSvcKey]) || (activeSvcKey && esSvc[activeSvcKey]);
+        let answerText = getTextVal(t.tiempo || esT.tiempo);
+        if (memory.serviceName) {
+          answerText = `En <b>${memory.serviceName}</b>: ` + answerText;
+        }
+        await botSay(answerText);
+        const baseMsg = s ? s.wa : (wa.quote || "Hola Henry, quiero una cotización: ");
+        const finalMsg = memory.buildWaMessage(baseMsg, rawText);
+        await botSay((t.time_cta || "¿Te cotizo el tuyo? Es gratis:") + "<br>" + waButton(btn.quote || "Cotizar por WhatsApp", finalMsg));
         setQuick(backQuick(btn));
         break;
       }
@@ -378,7 +492,9 @@
           await botSay(authButton(btn.create_account || "Crear cuenta gratis"));
         } else {
           await botSay(getTextVal(topicKey === "humano" ? (t.humano || esT.humano) : (t.contacto || esT.contacto)));
-          await botSay(waButton(btn.open_wa || "Abrir WhatsApp", wa.contact || "Hola Henry, quiero hablar contigo."));
+          const baseContactMsg = wa.contact || "Hola Henry, quiero hablar contigo sobre mi proyecto.";
+          const finalMsg = memory.buildWaMessage(baseContactMsg, rawText);
+          await botSay(waButton(btn.open_wa || "Abrir WhatsApp", finalMsg));
         }
         setQuick(backQuick(btn));
         break;
@@ -390,14 +506,21 @@
         break;
 
       case "wa": {
-        const s = (lastService && lKB && lKB.svc && lKB.svc[lastService]) || (lastService && esSvc[lastService]);
-        const msg = s ? s.wa : (wa.quote || "Hola Henry, quiero una cotización: ");
-        await botSay(waButton(btn.open_wa || "Abrir WhatsApp", msg));
+        const activeSvcKey = memory.service;
+        const s = (activeSvcKey && lKB && lKB.svc && lKB.svc[activeSvcKey]) || (activeSvcKey && esSvc[activeSvcKey]);
+        const baseMsg = s ? s.wa : (wa.quote || "Hola Henry, quiero una cotización: ");
+        const finalMsg = memory.buildWaMessage(baseMsg, rawText);
+        await botSay(waButton(btn.open_wa || "Abrir WhatsApp", finalMsg));
         setQuick(backQuick(btn));
         break;
       }
 
       default: {
+        // Verificar si es un producto directo
+        if (["privacycheck", "evaia", "taxiya", "incubapp", "atiempo", "cavaltec"].includes(topicKey)) {
+          memory.rememberProduct(topicKey);
+        }
+
         const topicVal = t[topicKey] || esT[topicKey];
         if (topicVal) {
           if (typeof topicVal === "object" && !Array.isArray(topicVal) && topicVal.url && topicVal.cta) {
@@ -408,17 +531,26 @@
           }
           setQuick(backQuick(btn));
         } else {
-          if (askedProject && rawText && rawText.trim().length > 12) {
-            const s = (lastService && lKB && lKB.svc && lKB.svc[lastService]) || (lastService && esSvc[lastService]);
+          // Captura de detalle de proyecto con memoria acumulativa
+          if (rawText && rawText.trim().length > 8) {
+            memory.rememberDetail(rawText);
+          }
+
+          if (memory.askedProject && rawText && rawText.trim().length > 10) {
+            const activeSvcKey = memory.service;
+            const s = (activeSvcKey && lKB && lKB.svc && lKB.svc[activeSvcKey]) || (activeSvcKey && esSvc[activeSvcKey]);
             const base = s ? s.wa : (wa.quote || "Hola Henry, quiero una cotización: ");
-            const capturedList = t.captured || esT.captured || ["¡Suena muy bien! 🙌 Te dejé el mensaje listo:"];
+            const finalWaMsg = memory.buildWaMessage(base, rawText);
+            
+            const capturedList = t.captured || esT.captured || ["¡Suena muy bien! 🙌 Te dejé el mensaje listo para WhatsApp:"];
             await botSay(pick(capturedList));
-            await botSay(waButton(btn.send_project || "Enviar mi proyecto por WhatsApp", base + rawText));
+            await botSay(waButton(btn.send_project || "Enviar mi proyecto por WhatsApp", finalWaMsg));
             setQuick(backQuick(btn));
           } else {
             const fallbackList = t.fallback || esT.fallback || ["Para una respuesta exacta, lo mejor es consultarle a Henry:"];
             const genericWa = wa.generic || "Hola Henry, tengo una consulta: ";
-            await botSay(pick(fallbackList) + "<br>" + waButton(btn.ask_direct || "Preguntarle a Henry", genericWa + (rawText || "")));
+            const finalWaMsg = memory.buildWaMessage(genericWa, rawText);
+            await botSay(pick(fallbackList) + "<br>" + waButton(btn.ask_direct || "Preguntarle a Henry", finalWaMsg));
             setQuick(getMenuOptions(lKB));
           }
         }
@@ -429,8 +561,11 @@
   function handleUser(text, forcedAction) {
     addMsg(esc(text), "user");
     quick.innerHTML = "";
-    turnos++;
-    if (window.CDH_VOICE) window.CDH_VOICE.stop();
+    memory.turnCount++;
+
+    if (text && text.trim().length > 10) {
+      memory.rememberDetail(text);
+    }
 
     ensureKB().then(() => {
       let matched = detectIntent(text);
@@ -438,10 +573,11 @@
 
       if (action.svc) {
         action.type = "svc";
+        memory.rememberService(action.svc);
       }
 
-      if (!forcedAction && askedProject && text.trim().length > 12 && action.type === "svc") {
-        lastService = action.svc;
+      if (!forcedAction && memory.askedProject && text.trim().length > 10 && action.type === "svc") {
+        memory.rememberService(action.svc);
         action = { type: "fallback" };
       }
       respond(action, text);
@@ -484,7 +620,6 @@
     }
   });
 
-  let started = false;
   function openChat() {
     panel.hidden = false;
     fab.classList.add("open");
@@ -493,9 +628,8 @@
 
     ensureKB().then(() => {
       syncUiLang();
-      if (!started) {
-        started = true;
-        greeted = true;
+      if (!memory.greeted) {
+        memory.greeted = true;
         const lKB = getLangKB();
         const t = (lKB && lKB.t) || {};
         const esT = (window.CDH_KB && window.CDH_KB.L && window.CDH_KB.L.es && window.CDH_KB.L.es.t) || {};
@@ -504,7 +638,12 @@
         const quien = nombreCliente();
         const saludo = quien ? hi.replace(/!/, ", " + quien + "!") : hi;
         const greetingList = t.greeting || esT.greeting || ["¡Hola!"];
-        botSay(saludo + " " + pick(greetingList)).then(() => setQuick(getMenuOptions(lKB)));
+        
+        let initialSay = saludo + " " + pick(greetingList);
+        if (memory.getSummary()) {
+          initialSay += `<br><small style="opacity:0.85;">(Recuerdo que te interesaba <b>${memory.getSummary()}</b>)</small>`;
+        }
+        botSay(initialSay).then(() => setQuick(getMenuOptions(lKB)));
       }
       input.focus();
     });
@@ -513,38 +652,6 @@
   function closeChat() {
     panel.hidden = true;
     fab.classList.remove("open");
-    if (window.CDH_VOICE) window.CDH_VOICE.stop();
-  }
-
-  const voiceBtn = document.getElementById("cdh-chat-voice");
-  if (window.CDH_VOICE && window.CDH_VOICE.supported()) {
-    voiceBtn.hidden = false;
-
-    function syncVoiceBtn() {
-      const on = window.CDH_VOICE.isEnabled();
-      const lKB = getLangKB();
-      const ui = (lKB && lKB.ui) || {};
-      voiceBtn.classList.toggle("off", !on);
-      voiceBtn.setAttribute("aria-pressed", String(on));
-      voiceBtn.setAttribute("aria-label", on ? (ui.voice_off || "Silenciar voz") : (ui.voice_on || "Activar voz"));
-      voiceBtn.title = voiceBtn.getAttribute("aria-label");
-    }
-
-    voiceBtn.addEventListener("click", () => {
-      const on = window.CDH_VOICE.toggle();
-      syncVoiceBtn();
-      if (on) {
-        const lKB = getLangKB();
-        const ui = (lKB && lKB.ui) || {};
-        window.CDH_VOICE.speak(ui.voice_ready || "Listo, ya puedes escucharme.");
-      }
-    });
-
-    window.addEventListener("cdh:voicestate", (e) => {
-      voiceBtn.classList.toggle("speaking", !!(e.detail && e.detail.speaking));
-    });
-    window.addEventListener("cdh:langchange", syncVoiceBtn);
-    syncVoiceBtn();
   }
 
   fab.addEventListener("click", () => (panel.hidden ? openChat() : closeChat()));

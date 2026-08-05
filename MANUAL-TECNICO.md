@@ -80,11 +80,8 @@ El orden **importa** y no debe cambiarse sin revisar dependencias:
 5. `auth.js` — cuentas (publica `window.CDH_AUTH`). **Ya no requiere que Firebase esté
    cargado de antemano**: el SDK se descarga bajo demanda (ver §4.5).
 6. `script.js` — interacciones generales.
-7. `voice.js` — voz del asesor (publica `window.CDH_VOICE`); debe ir **antes** de
-   `chatbot.js`, que la usa para leer cada respuesta.
-8. `chatbot.js` — chatbot (usa `window.CDH_AUTH` para el gating de WhatsApp y
-   `window.CDH_VOICE` para hablar).
-9. `ads.js` — widget de anuncio flotante.
+7. `chatbot.js` — chatbot 100% texto con memoria conversacional avanzada (mantiene el contexto del proyecto y la sesión, conectando a `chatbot-kb.js`).
+8. `ads.js` — widget de anuncio flotante.
 
 > El SDK de Firebase **ya no se carga desde el HTML**. Eran ~300 KB en cada visita y la
 > mayoría de visitantes nunca crea cuenta.
