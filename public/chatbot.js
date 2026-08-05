@@ -29,6 +29,22 @@
   const pick = (arr) => (Array.isArray(arr) && arr.length ? arr[Math.floor(Math.random() * arr.length)] : arr);
   const esc = (s) => String(s || "").replace(/</g, "&lt;");
 
+  function safeBtoa(str) {
+    try {
+      return btoa(unescape(encodeURIComponent(str || "")));
+    } catch (_) {
+      return "";
+    }
+  }
+
+  function safeAtob(b64) {
+    try {
+      return decodeURIComponent(escape(atob(b64 || "")));
+    } catch (_) {
+      return "";
+    }
+  }
+
   // Idioma activo de la página (por defecto "es")
   const lang = () => (document.documentElement.lang || "es").toLowerCase();
 
@@ -39,7 +55,7 @@
     if (kbPromise) return kbPromise;
     kbPromise = new Promise((resolve) => {
       const s = document.createElement("script");
-      s.src = "chatbot-kb.js?v=1";
+      s.src = "chatbot-kb.js?v=2";
       s.async = true;
       s.onload = () => resolve(window.CDH_KB || null);
       s.onerror = () => resolve(null);
@@ -211,6 +227,7 @@
     if (quick && ui.quick) quick.setAttribute("aria-label", ui.quick);
   }
   window.addEventListener("cdh:langchange", syncUiLang);
+  window.addEventListener("cdh:authchange", syncUiLang);
 
   function addMsg(html, who) {
     const div = document.createElement("div");
@@ -256,7 +273,7 @@
       const createAcc = (lKB && lKB.btn && lKB.btn.create_account) || "Crear cuenta gratis";
       return authButton(createAcc);
     }
-    const b64Msg = btoa(unescape(encodeURIComponent(msg || "")));
+    const b64Msg = safeBtoa(msg || "");
     return `<button type="button" class="cdh-wa-btn cdh-wa-trigger" data-wa-msg="${b64Msg}">
       <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.019-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.297-.497.1-.198.05-.371-.025-.52-.074-.149-.668-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/></svg>
       ${text}</button>`;
@@ -269,11 +286,12 @@
   function getMenuOptions(lKB) {
     const btn = (lKB && lKB.btn) || {};
     const svc = (lKB && lKB.svc) || {};
+    const esSvc = (window.CDH_KB && window.CDH_KB.L && window.CDH_KB.L.es && window.CDH_KB.L.es.svc) || {};
     return [
-      { label: (svc.web && svc.web.name) || "Web y software", action: { type: "svc", svc: "web" } },
-      { label: (svc.maker && svc.maker.name) || "Impresión 3D · Láser · CNC", action: { type: "svc", svc: "maker" } },
-      { label: (svc.iot && svc.iot.name) || "Electrónica e IoT", action: { type: "svc", svc: "iot" } },
-      { label: (svc.consultoria && svc.consultoria.name) || "Diseño y asesorías", action: { type: "svc", svc: "consultoria" } },
+      { label: (svc.web && svc.web.name) || (esSvc.web && esSvc.web.name) || "Web y software", action: { type: "svc", svc: "web" } },
+      { label: (svc.maker && svc.maker.name) || (esSvc.maker && esSvc.maker.name) || "Impresión 3D · Láser · CNC", action: { type: "svc", svc: "maker" } },
+      { label: (svc.iot && svc.iot.name) || (esSvc.iot && esSvc.iot.name) || "Electrónica e IoT", action: { type: "svc", svc: "iot" } },
+      { label: (svc.consultoria && svc.consultoria.name) || (esSvc.consultoria && esSvc.consultoria.name) || "Diseño y asesorías", action: { type: "svc", svc: "consultoria" } },
       { label: btn.talk_henry || "Hablar con Henry", action: { type: "topic", topic: "contacto" } },
     ];
   }
@@ -293,9 +311,10 @@
     const t = (lKB && lKB.t) || {};
     const wa = (lKB && lKB.wa) || {};
     const esT = (window.CDH_KB && window.CDH_KB.L && window.CDH_KB.L.es && window.CDH_KB.L.es.t) || {};
+    const esSvc = (window.CDH_KB && window.CDH_KB.L && window.CDH_KB.L.es && window.CDH_KB.L.es.svc) || {};
 
     if (action.type === "svc") {
-      const s = lKB && lKB.svc && lKB.svc[action.svc];
+      const s = (lKB && lKB.svc && lKB.svc[action.svc]) || esSvc[action.svc];
       lastService = action.svc;
       askedProject = true;
       if (s) {
@@ -325,7 +344,7 @@
       }
 
       case "precio": {
-        const s = lastService && lKB && lKB.svc ? lKB.svc[lastService] : null;
+        const s = (lastService && lKB && lKB.svc && lKB.svc[lastService]) || (lastService && esSvc[lastService]);
         askedProject = true;
         await botSay(pick(t.precio || esT.precio || "La cotización es personalizada y gratis."));
         const msg = s ? s.wa : (wa.quote || "Hola Henry, quiero una cotización: ");
@@ -335,7 +354,7 @@
       }
 
       case "caro": {
-        const s = lastService && lKB && lKB.svc ? lKB.svc[lastService] : null;
+        const s = (lastService && lKB && lKB.svc && lKB.svc[lastService]) || (lastService && esSvc[lastService]);
         await botSay(getTextVal(t.caro || esT.caro));
         const msg = s ? s.wa : (wa.quote || "Hola Henry, quiero una cotización: ");
         await botSay(waButton(btn.quote || "Cotizar por WhatsApp", msg));
@@ -344,7 +363,7 @@
       }
 
       case "tiempo": {
-        const s = lastService && lKB && lKB.svc ? lKB.svc[lastService] : null;
+        const s = (lastService && lKB && lKB.svc && lKB.svc[lastService]) || (lastService && esSvc[lastService]);
         await botSay(getTextVal(t.tiempo || esT.tiempo));
         const msg = s ? s.wa : (wa.quote || "Hola Henry, quiero una cotización: ");
         await botSay((t.time_cta || "¿Te cotizo el tuyo? Es gratis:") + "<br>" + waButton(btn.quote || "Cotizar por WhatsApp", msg));
@@ -371,7 +390,7 @@
         break;
 
       case "wa": {
-        const s = lastService && lKB && lKB.svc ? lKB.svc[lastService] : null;
+        const s = (lastService && lKB && lKB.svc && lKB.svc[lastService]) || (lastService && esSvc[lastService]);
         const msg = s ? s.wa : (wa.quote || "Hola Henry, quiero una cotización: ");
         await botSay(waButton(btn.open_wa || "Abrir WhatsApp", msg));
         setQuick(backQuick(btn));
@@ -389,9 +408,8 @@
           }
           setQuick(backQuick(btn));
         } else {
-          // Fallback / Captura de proyecto
           if (askedProject && rawText && rawText.trim().length > 12) {
-            const s = lastService && lKB && lKB.svc ? lKB.svc[lastService] : null;
+            const s = (lastService && lKB && lKB.svc && lKB.svc[lastService]) || (lastService && esSvc[lastService]);
             const base = s ? s.wa : (wa.quote || "Hola Henry, quiero una cotización: ");
             const capturedList = t.captured || esT.captured || ["¡Suena muy bien! 🙌 Te dejé el mensaje listo:"];
             await botSay(pick(capturedList));
@@ -458,10 +476,7 @@
         return;
       }
       const b64Msg = waBtn.getAttribute("data-wa-msg");
-      let msg = "";
-      try {
-        msg = decodeURIComponent(escape(atob(b64Msg || "")));
-      } catch (_) { }
+      const msg = safeAtob(b64Msg);
       const href = waLink(msg);
       if (href !== "#") {
         window.open(href, "_blank", "noopener,noreferrer");

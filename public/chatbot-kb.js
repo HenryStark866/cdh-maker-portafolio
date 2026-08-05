@@ -913,5 +913,134 @@ window.CDH_KB = (function () {
     },
   };
 
+  // ═════════════════════════ PORTUGUÊS ════════════════════════════
+  L.pt = {
+    ui: { sub: "Consultor CDH Maker · online", placeholder: "Digite sua mensagem…", open: "Abrir chat de suporte", close: "Fechar chat", chat: "Conversa com Maker, consultor CDH Maker", quick: "Respostas rápidas", voice_on: "Ativar voz", voice_off: "Silenciar voz", voice_ready: "Pronto, você já pode me ouvir." },
+    btn: { back: "Ver outros serviços", menu: "Ver os serviços", quote: "Solicitar orçamento no WhatsApp", how_long: "Quanto tempo demora?", how_much: "Quanto custa?", open_wa: "Abrir WhatsApp", create_account: "Criar conta gratuita", send_project: "Enviar meu projeto pelo WhatsApp", ask_direct: "Perguntar ao Henry", talk_henry: "Falar com Henry", more: "Conte-me mais", process: "Como trabalham?", projects: "Ver projetos", visit: "Abrir projeto" },
+    wa: { generic: "Olá Henry, venho do seu site. Tenho uma dúvida: ", quote: "Olá Henry, venho do seu site e gostaria de um orçamento: ", contact: "Olá Henry, venho do seu site (cliente registrado) e gostaria de falar com você." },
+    svc: {
+      web: { name: "Web & Software", pitch: "Ótima escolha. Um site ou sistema bem feito trabalha para você 24 horas por dia. Criamos <b>sites, lojas virtuais e software sob medida</b>.", hook: "O que você precisa exatamente? Um site, loja ou sistema interno?", wa: "Olá Henry, quero cotar um projeto de desenvolvimento web/software: " },
+      maker: { name: "Impressão 3D · Laser · CNC", pitch: "Transformamos ideias e projetos em <b>peças reais</b>: impressão 3D (FDM e resina), corte a laser e usinagem CNC.", hook: "O que você quer fabricar? Se tiver fotos ou arquivos (STL, DXF, STEP), descreva para cotarmos.", wa: "Olá Henry, quero cotar fabricação digital (3D/laser/CNC): " },
+      iot: { name: "Eletrônica & IoT", pitch: "Automatizamos casas, lavouras e indústrias com <b>Arduino, ESP32 e Raspberry Pi</b>: sensores e sistemas sob medida.", hook: "O que gostaria de automatizar ou monitorar?", wa: "Olá Henry, quero cotar um projeto de eletrônica/IoT: " },
+      consultoria: { name: "Design & Consultoria", pitch: "Oferecemos <b>design CAD 2D/3D, consultoria técnica e workshops</b>.", hook: "Procura design de peças, consultoria ou treinamento?", wa: "Olá Henry, tenho interesse em design CAD / consultoria: " }
+    },
+    t: {
+      greeting: ["Sou o <b>Maker</b>, o consultor da <b>CDH Maker</b>. Como posso ajudar com seu projeto?"], re_greeting: ["Olá novamente! 😄 Como posso ajudar?"], good_morning: "Bom dia! ☀️", good_afternoon: "Boa tarde!", good_evening: "Boa noite! 🌙", comoestas: ["Muito bem, obrigado por perguntar! 😊 Pronto para te ajudar."], bot: "Sou o <b>assistente virtual</b> da CDH Maker. As informações são reais e você pode falar com o <b>Henry</b> a qualquer momento.", thanks: ["Com prazer! 😊 Algo mais?"], bye: ["Até logo! 👋"], yes: "Perfeito! Conte-me mais:", no_worries: "Sem problemas, explore nossos serviços:", quien: "Somos a <b>CDH Maker</b>, trabalhando de Medellín, Colômbia 🇨🇴 criando software, peças 3D e IoT.", henry: "Por trás da CDH Maker está o <b>Eng. Henry Taborda</b>, que projeta, programa e fabrica.", precio: ["O <b>orçamento é personalizado e gratuito</b> em menos de 24 horas."], price_cta: "Conte-me o que precisa e deixo a mensagem pronta:", tiempo: "Peças 3D em <b>dias</b>; sites em <b>1 a 2 semanas</b>.", time_cta: "Quer um orçamento grátis?", pago: "Pagamento <b>por etapas</b> segundo o progresso.", garantia: "Toda entrega inclui testes e suporte pós-venda.", materiales: "Impressão 3D FDM/resina, laser (MDF, acrílico) e CNC.", horario: "Com uma conta de cliente pode escrever a qualquer hora.", contacto: "Acesso direto ao WhatsApp do Henry para clientes cadastrados.", contact_guest: "Para falar com Henry, crie sua <b>conta de cliente gratuita</b>.", humano: "O <b>Henry</b> vai te atender diretamente:", captured: ["Deixei a mensagem pronta para você enviar ao Henry:"], fallback: ["Para uma resposta exata, pergunte diretamente ao Henry:"]
+    }
+  };
+
+  // ═════════════════════════ FRANÇAIS ════════════════════════════
+  L.fr = {
+    ui: { sub: "Conseiller CDH Maker · en ligne", placeholder: "Écrivez votre message…", open: "Ouvrir le chat de support", close: "Fermer le chat", chat: "Discussion avec Maker", quick: "Réponses rapides", voice_on: "Activer la voix", voice_off: "Couper le son", voice_ready: "C'est bon, vous pouvez m'entendre." },
+    btn: { back: "Voir les autres services", menu: "Voir les services", quote: "Demander un devis sur WhatsApp", how_long: "Combien de temps ça prend ?", how_much: "Combien ça coûte ?", open_wa: "Ouvrir WhatsApp", create_account: "Créer un compte gratuit", send_project: "Envoyer mon projet", ask_direct: "Demander à Henry", talk_henry: "Parler avec Henry", more: "En savoir plus", process: "Processus", projects: "Voir les projets", visit: "Ouvrir le projet" },
+    wa: { generic: "Bonjour Henry, j'ai une question : ", quote: "Bonjour Henry, je souhaite un devis : ", contact: "Bonjour Henry, je suis client inscrit et souhaite vous parler." },
+    svc: {
+      web: { name: "Web & Logiciel", pitch: "Nous créons des <b>sites web, boutiques en ligne et logiciels sur mesure</b>.", hook: "De quoi avez-vous besoin exactement ?", wa: "Bonjour Henry, je souhaite un devis web/logiciel : " },
+      maker: { name: "Impression 3D · Laser · CNC", pitch: "Nous transformons vos idées en <b>pièces réelles</b> : impression 3D, découpe laser et CNC.", hook: "Que souhaitez-vous fabriquer ?", wa: "Bonjour Henry, je souhaite un devis 3D/laser/CNC : " },
+      iot: { name: "Électronique & IoT", pitch: "Nous automatisons avec <b>Arduino, ESP32 et Raspberry Pi</b>.", hook: "Que souhaitez-vous automatiser ?", wa: "Bonjour Henry, je souhaite un devis IoT : " },
+      consultoria: { name: "Design & Conseil", pitch: "Nous proposons du <b>design CAD 2D/3D et du conseil technique</b>.", hook: "Recherchez-vous la conception d'une pièce ou du conseil ?", wa: "Bonjour Henry, je suis intéressé par du design CAD / conseil : " }
+    },
+    t: {
+      greeting: ["Je suis <b>Maker</b>, le conseiller de <b>CDH Maker</b>. Parlez-moi de votre projet !"], re_greeting: ["Re-bonjour ! 😄 Comment puis-je vous aider ?"], good_morning: "Bonjour ! ☀️", good_afternoon: "Bon après-midi !", good_evening: "Bonsoir ! 🌙", comoestas: ["Très bien, merci ! 😊 Prêt à vous aider."], bot: "Je suis l'<b>assistant virtuel</b> de CDH Maker. Vous pouvez contacter <b>Henry</b> directement à tout moment.", thanks: ["Avec plaisir ! 😊"], bye: ["Au revoir ! 👋"], yes: "Parfait ! Dites-m'en plus :", no_worries: "Découvrez nos services :", quien: "Nous sommes <b>CDH Maker</b> (Medellín, Colombie 🇨🇴) : logiciels, fabrication numérique et IoT.", henry: "Derrière CDH Maker se trouve l'ingénieur <b>Henry Taborda</b>.", precio: ["Le <b>devis est personnalisé et gratuit</b> sous 24h."], price_cta: "Décrivez votre projet :", tiempo: "Pièces 3D en <b>quelques jours</b>, sites web en <b>1 à 2 semaines</b>.", time_cta: "Un devis gratuit ?", pago: "Paiement <b>par étapes</b>.", garantia: "Tests, documentation et suivi inclus.", materiales: "Impression 3D FDM/résine, découpe laser et CNC.", horario: "Écrivez à tout moment avec votre compte client.", contacto: "Accès WhatsApp direct pour les clients inscrits.", contact_guest: "Créez votre <b>compte client gratuit</b> pour contacter Henry.", humano: "<b>Henry</b> vous répondra directement :", captured: ["Voici votre message prêt pour Henry :"], fallback: ["Pour une réponse exacte, demandez à Henry :"]
+    }
+  };
+
+  // ═════════════════════════ RUSSIAN ════════════════════════════
+  L.ru = {
+    ui: { sub: "Консультант CDH Maker · онлайн", placeholder: "Введите сообщение…", open: "Открыть чат", close: "Закрыть чат", chat: "Чат с Maker", quick: "Быстрые ответы", voice_on: "Включить голос", voice_off: "Выключить звук", voice_ready: "Отлично, теперь вы меня слышите." },
+    btn: { back: "Другие услуги", menu: "Посмотреть услуги", quote: "Расчет в WhatsApp", how_long: "Сколько времени?", how_much: "Сколько стоит?", open_wa: "Открыть WhatsApp", create_account: "Создать аккаунт", send_project: "Отправить проект", ask_direct: "Спросить Генри", talk_henry: "Связаться с Генри", more: "Подробнее", process: "Как работаете?", projects: "Проекты", visit: "Открыть" },
+    wa: { generic: "Здравствуйте, Генри! У меня вопрос: ", quote: "Здравствуйте, Генри! Хочу получить расчет: ", contact: "Здравствуйте, Генри! Я зарегистрированный клиент." },
+    svc: {
+      web: { name: "Веб и ПО", pitch: "Мы создаем <b>сайты, интернет-магазины и индивидуальное ПО</b>.", hook: "Что именно вам нужно?", wa: "Здравствуйте! Хочу рассчитать веб-проект: " },
+      maker: { name: "3D-печать · Лазер · ЧПУ", pitch: "Превращаем идеи в <b>готовые детали</b>: 3D-печать, лазерная резка и ЧПУ.", hook: "Что вы хотите изготовить?", wa: "Здравствуйте! Хочу рассчитать 3D-печать/лазер/ЧПУ: " },
+      iot: { name: "Электроника и IoT", pitch: "Автоматизируем процессы с <b>Arduino, ESP32 и Raspberry Pi</b>.", hook: "Что вы хотите автоматизировать?", wa: "Здравствуйте! Хочу рассчитать проект по IoT: " },
+      consultoria: { name: "Дизайн и Консалтинг", pitch: "Предлагаем <b>2D/3D CAD проектирование и консультации</b>.", hook: "Вам нужно спроектировать деталь или нужна консультация?", wa: "Здравствуйте! Меня интересует CAD-дизайн: " }
+    },
+    t: {
+      greeting: ["Я <b>Maker</b>, консультант <b>CDH Maker</b>. Расскажите о вашей идее!"], re_greeting: ["Здравствуйте снова! Чем могу помочь?"], good_morning: "Доброе утро! ☀️", good_afternoon: "Добрый день!", good_evening: "Добрый вечер! 🌙", comoestas: ["Отлично, готов помочь!"], bot: "Я <b>виртуальный ассистент</b>. Вы можете написат лично <b>Генри</b>.", thanks: ["С удовольствием! 😊"], bye: ["До свидания! 👋"], yes: "Отлично! Расскажите подробнее:", no_worries: "Изучайте наши услуги:", quien: "Мы <b>CDH Maker</b> из Колумбии 🇨🇴: ПО, 3D-печать и IoT.", henry: "Основатель — инженер <b>Генри Таборда</b>.", precio: ["Расчет <b>индивидуальный и бесплатный</b> за 24 часа."], price_cta: "Опишите проект:", tiempo: "3D-детали за <b>несколько дней</b>, сайты за <b>1-2 недели</b>.", time_cta: "Рассчитать бесплатно?", pago: "Оплата <b>поэтапно</b>.", garantia: "Тестирование, документация и поддержка.", materiales: "FDM/смола, лазер (МДФ, акрил) и ЧПУ.", horario: "Пишите в любое время с аккаунтом клиента.", contacto: "Прямой доступ в WhatsApp для клиентов.", contact_guest: "Создайте <b>бесплатный аккаунт</b> для связи с Генри.", humano: "<b>Генри</b> ответит вам лично:", captured: ["Сообщение для Генри готово:"], fallback: ["Лучше спросить напрямую у Генри:"]
+    }
+  };
+
+  // ═════════════════════════ CHINESE ════════════════════════════
+  L.zh = {
+    ui: { sub: "CDH Maker 在线顾问", placeholder: "输入您的消息…", open: "打开客服聊天", close: "关闭聊天", chat: "与 Maker 聊天", quick: "快速回复", voice_on: "开启语音", voice_off: "静音", voice_ready: "好的，现在您可以听到我的声音了。" },
+    btn: { back: "查看其他服务", menu: "查看所有服务", quote: "通过 WhatsApp 获取报价", how_long: "需要多长时间？", how_much: "需要多少费用？", open_wa: "打开 WhatsApp", create_account: "免费注册账号", send_project: "发送项目需求", ask_direct: "直接咨询 Henry", talk_henry: "与 Henry 交谈", more: "了解更多", process: "合作流程", projects: "查看案例", visit: "打开项目" },
+    wa: { generic: "你好 Henry，我想咨询一个问题：", quote: "你好 Henry，希望获取项目报价：", contact: "你好 Henry，我是已注册客户，希望与你联系。" },
+    svc: {
+      web: { name: "网页与软件开发", pitch: "我们开发<b>网站、在线商城及定制化软件</b>。", hook: "您具体需要哪种类型的软件/网站？", wa: "你好 Henry，我想咨询网页/软件开发报价：" },
+      maker: { name: "3D打印 · 激光切割 · CNC", pitch: "我们将您的想法转化为<b>实体零件</b>：3D打印、激光切割与CNC加工。", hook: "您想制作什么零件？", wa: "你好 Henry，我想咨询 3D打印/激光/CNC 报价：" },
+      iot: { name: "电子工程与物联网", pitch: "基于 <b>Arduino、ESP32 和 Raspberry Pi</b> 的智能控制系统。", hook: "您希望实现什么自动化功能？", wa: "你好 Henry，我想咨询物联网项目报价：" },
+      consultoria: { name: "CAD设计与技术咨询", pitch: "提供 <b>2D/3D CAD建模设计与技术咨询</b>。", hook: "您需要建模设计还是技术评估？", wa: "你好 Henry，我对 CAD设计/咨询 感兴趣：" }
+    },
+    t: {
+      greeting: ["我是 <b>CDH Maker</b> 顾问 <b>Maker</b>。请问您有什么项目想法？"], re_greeting: ["您好！😄 有什么我可以帮您的？"], good_morning: "早上好！☀️", good_afternoon: "下午好！", good_evening: "晚上好！🌙", comoestas: ["我很好，随时为您服务！"], bot: "我是<b>虚拟助手</b>。您可以随时联系创始人 <b>Henry</b>。", thanks: ["不客气！😊"], bye: ["再见！👋"], yes: "太棒了！请告诉我更多细节：", no_worries: "欢迎浏览我们的服务：", quien: "我们是来自哥伦比亚麦德林的 <b>CDH Maker</b> 🇨🇴。", henry: "创始人是工程师 <b>Henry Taborda</b>。", precio: ["<b>项目报价完全免费</b>，24小时内答复。"], price_cta: "告诉我您的需求：", tiempo: "3D打印仅需<b>数天</b>，基础网站约 <b>1-2 周</b>。", time_cta: "评估工期（免费）：", pago: "按阶段与里程碑付款。", garantia: "包含测试、文档与售后支持。", materiales: "FDM/树脂3D打印、亚克力/木板激光切割及CNC。", horario: "注册客户可随时留言。", contacto: "已注册客户可直接在 WhatsApp 联系 Henry。", contact_guest: "请先<b>免费注册客户账号</b>。", humano: "<b>Henry</b> 将直接为您服务：", captured: ["已为您准备好发给 Henry 的消息："], fallback: ["建议直接咨询 Henry："]
+    }
+  };
+
+  // ═════════════════════════ HINDI ════════════════════════════
+  L.hi = {
+    ui: { sub: "CDH Maker सलाहकार · ऑनलाइन", placeholder: "अपना संदेश लिखें…", open: "चैट खोलें", close: "चैट बंद करें", chat: "Maker के साथ चैट", quick: "त्वरित उत्तर", voice_on: "आवाज चालू करें", voice_off: "म्यूट करें", voice_ready: "अब आप मुझे सुन सकते हैं।" },
+    btn: { back: "अन्य सेवाएं", menu: "सेवाएं देखें", quote: "WhatsApp पर कोटेशन पाएं", how_long: "कितना समय लगेगा?", how_much: "कितना खर्च आएगा?", open_wa: "WhatsApp खोलें", create_account: "मुफ्त खाता बनाएं", send_project: "प्रोजेक्ट भेजें", ask_direct: "Henry से पूछें", talk_henry: "Henry से बात करें", more: "और जानें", process: "प्रक्रिया", projects: "प्रोजेक्ट देखें", visit: "खोलें" },
+    wa: { generic: "नमस्ते Henry, मेरा एक सवाल है: ", quote: "नमस्ते Henry, मुझे कोटेशन चाहिए: ", contact: "नमस्ते Henry, मैं एक पंजीकृत ग्राहक हूं।" },
+    svc: {
+      web: { name: "वेब और सॉफ्टवेयर", pitch: "हम <b>वेबसाइटें, ऑनलाइन स्टोर और कस्टम सॉफ्टवेयर</b> बनाते हैं।", hook: "आपको वास्तव में क्या चाहिए?", wa: "नमस्ते Henry, मुझे वेब/सॉफ्टवेयर प्रोजेक्ट का कोटेशन चाहिए: " },
+      maker: { name: "3D प्रिंटिंग · लेजर · CNC", pitch: "हम विचारों को <b>असली पुर्जों</b> में बदलते हैं: 3D प्रिंटिंग, लेजर कटिंग और CNC।", hook: "आप क्या बनाना चाहते हैं?", wa: "नमस्ते Henry, मुझे 3D/लेजर/CNC का कोटेशन चाहिए: " },
+      iot: { name: "इलेक्ट्रॉनिक्स और IoT", pitch: "हम <b>Arduino, ESP32 और Raspberry Pi</b> के साथ स्वचालन करते हैं।", hook: "आप क्या ऑटोमेट करना चाहते हैं?", wa: "नमस्ते Henry, मुझे IoT प्रोजेक्ट का कोटेशन चाहिए: " },
+      consultoria: { name: "डिज़ाइन और परामर्श", pitch: "हम <b>2D/3D CAD डिज़ाइन और परामर्श</b> प्रदान करते हैं।", hook: "क्या आपको पुर्जे का डिज़ाइन चाहिए?", wa: "नमस्ते Henry, मुझे CAD डिज़ाइन/परामर्श में रुचि है: " }
+    },
+    t: {
+      greeting: ["मैं <b>Maker</b> हूँ, <b>CDH Maker</b> का सलाहकार। आपका क्या विचार है?"], re_greeting: ["नमस्ते! 😄 मैं आपकी क्या मदद कर सकता हूँ?"], good_morning: "शुभ प्रभात! ☀️", good_afternoon: "शुभ दोपहर!", good_evening: "शुभ संध्या! 🌙", comoestas: ["मैं ठीक हूँ, धन्यवाद!"], bot: "मैं एक <b>वर्चुअल असिस्टेंट</b> हूँ। आप <b>Henry</b> से सीधे बात कर सकते हैं।", thanks: ["सहर्ष! 😊"], bye: ["अलविदा! 👋"], yes: "बहुत बढ़िया! विवरण बताएं:", no_worries: "हमारी सेवाएं देखें:", quien: "हम <b>CDH Maker</b> (कोलंबिया 🇨🇴) हैं: सॉफ्टवेयर, 3D प्रिंटिंग और IoT।", henry: "संस्थापक इंजीनियर <b>Henry Taborda</b> हैं।", precio: ["<b>कोटेशन पूरी तरह मुफ्त है</b> (24 घंटे के भीतर)।"], price_cta: "अपनी ज़रूरत बताएं:", tiempo: "3D पुर्जे <b>कुछ दिनों में</b>, वेबसाइट <b>1-2 हफ्तों में</b>।", time_cta: "मुफ्त कोटेशन चाहिए?", pago: "चरणों में भुगतान।", garantia: "परीक्षण, दस्तावेज और सहायता शामिल।", materiales: "FDM/रेजिन 3D प्रिंटिंग, लेजर और CNC।", horario: "ग्राहक खाते से कभी भी लिखें।", contacto: "पंजीकृत ग्राहकों के लिए सीधा WhatsApp संपर्क।", contact_guest: "Henry से बात करने के लिए <b>मुफ्त खाता बनाएं</b>।", humano: "<b>Henry</b> आपकी व्यक्तिगत रूप से मदद करेंगे:", captured: ["Henry के लिए संदेश तैयार है:"], fallback: ["सटीक उत्तर के लिए सीधे Henry से पूछें:"]
+    }
+  };
+
+  // ═════════════════════════ ARABIC ════════════════════════════
+  L.ar = {
+    ui: { sub: "مستشار CDH Maker · متصل", placeholder: "اكتب رسالتك…", open: "فتح المحادثة", close: "إغلاق المحادثة", chat: "محادثة مع Maker", quick: "ردود سريعة", voice_on: "تفعيل الصوت", voice_off: "كتم الصوت", voice_ready: "رائع، يمكنك سماعي الآن." },
+    btn: { back: "خدمات أخرى", menu: "عرض الخدمات", quote: "طلب عرض سعر عبر WhatsApp", how_long: "كم يستغرق من الوقت؟", how_much: "كم التكلفة؟", open_wa: "فتح WhatsApp", create_account: "إنشاء حساب مجاني", send_project: "إرسال مشروعي", ask_direct: "سؤال هنري", talk_henry: "التحدث مع هنري", more: "معرفة المزيد", process: "طريقة العمل", projects: "عرض المشاريع", visit: "فتح" },
+    wa: { generic: "مرحباً هنري، لدي استفسار: ", quote: "مرحباً هنري، أرغب في الحصول على عرض سعر: ", contact: "مرحباً هنري، أنا عميل مسجل وأود التحدث معك." },
+    svc: {
+      web: { name: "الويب والبرمجيات", pitch: "نقوم بإنشاء <b>مواقع إلكترونية ومتاجر وبرمجيات مخصصة</b>.", hook: "ما الذي تحتاجه بالضبط؟", wa: "مرحباً هنري، أرغب في عرض سعر لمشروع برمجيات: " },
+      maker: { name: "طباعة ثلاثية الأبعاد · ليزر · CNC", pitch: "نحول الأفكار إلى <b>قطع حقيقية</b>: طباعة ثلاثية الأبعاد، قص بالليزر و CNC.", hook: "ما الذي تريد تصنيعه؟", wa: "مرحباً هنري، أرغب في عرض سعر للتصنيع الرقمي: " },
+      iot: { name: "الإلكترونيات والإنترنت الأشياء", pitch: "نقوم بأتمتة الأنظمة باستخدام <b>Arduino و ESP32 و Raspberry Pi</b>.", hook: "ما الذي ترغب في أتمتته؟", wa: "مرحباً هنري، أرغب في عرض سعر لمشروع إلكترونيات: " },
+      consultoria: { name: "التصميم والاستشارات", pitch: "نقدم <b>تصميم CAD واستشارات تقنية</b>.", hook: "هل تطلب تصميم قطعة أم استشارة؟", wa: "مرحباً هنري، أنا مهتم بتصميم CAD/استشارات: " }
+    },
+    t: {
+      greeting: ["أنا <b>Maker</b> مستشار <b>CDH Maker</b>. ما هي فكرتك أو مشروعك؟"], re_greeting: ["مرحباً مجدداً! 😄 كيف يمكنني مساعدتك؟"], good_morning: "صباح الخير! ☀️", good_afternoon: "مساء الخير!", good_evening: "مساء الخير! 🌙", comoestas: ["بخير والحمد لله! جاهز لمساعدتك."], bot: "أنا <b>مساعد افتراضي</b>. يمكنك التواصل مع المهندس <b>هنري</b> مباشرة.", thanks: ["بكل سرور! 😊"], bye: ["إلى اللقاء! 👋"], yes: "ممتاز! أخبرني بالمزيد:", no_worries: "تصفح خدماتنا براحتك:", quien: "نحن <b>CDH Maker</b> من كولومبيا 🇨🇴: برمجيات، تصنيع رقمي وإلكترونيات.", henry: "المؤسس هو المهندس <b>هنري تابوردا</b>.", precio: ["<b>عرض السعر مخصص ومجاني</b> خلال 24 ساعة."], price_cta: "صف مشروعك وسأجهز لك الرسالة:", tiempo: "قطع الطباعة خلال <b>أيام</b>، والمواقع خلال <b>1-2 أسابيع</b>.", time_cta: "هل تريد عرض سعر مجاني؟", pago: "الدفع <b>على مراحل</b>.", garantia: "اختبارات وتوثيق ودعم بعد التسليم.", materiales: "طباعة FDM/Resin، قص ليزر و CNC.", horario: "يمكنك الكتابة في أي وقت بحساب العميل.", contacto: "وصول مباشر إلى WhatsApp للعملاء المسجلين.", contact_guest: "للتحدث مع هنري، أنشئ <b>حساب عميل مجاني</b>.", humano: "<b>هنري</b> سيجيبك شخصياً:", captured: ["الرسالة جاهزة للإرسال إلى هنري:"], fallback: ["للإجابة الدقيقة يفضل سؤال هنري مباشرة:"]
+    }
+  };
+
+  // ═════════════════════════ BENGALI ════════════════════════════
+  L.bn = {
+    ui: { sub: "CDH Maker পরামর্শদাতা · অনলাইন", placeholder: "আপনার বার্তা লিখুন…", open: "চ্যাট খুলুন", close: "চ্যাট বন্ধ করুন", chat: "Maker এর সাথে চ্যাট", quick: "দ্রুত উত্তর", voice_on: "ভয়েস চালু করুন", voice_off: "মিউট করুন", voice_ready: "এখন আপনি আমাকে শুনতে পাচ্ছেন।" },
+    btn: { back: "অন্যান্য সেবা", menu: "সেবা দেখুন", quote: "WhatsApp এ মূল্য জানুন", how_long: "কত সময় লাগবে?", how_much: "কত খরচ হবে?", open_wa: "WhatsApp খুলুন", create_account: "বিনামূল্যে অ্যাকাউন্ট খুলুন", send_project: "প্রজেক্ট পাঠান", ask_direct: "Henry কে জিজ্ঞাসা করুন", talk_henry: "Henry এর সাথে কথা বলুন", more: "আরও জানুন", process: "পদ্ধতি", projects: "প্রজেক্ট দেখুন", visit: "খুলুন" },
+    wa: { generic: "হ্যালো Henry, আমার একটি প্রশ্ন আছে: ", quote: "হ্যালো Henry, আমি মূল্য জানতে চাই: ", contact: "হ্যালো Henry, আমি একজন নিবন্ধিত ক্লায়েন্ট।" },
+    svc: {
+      web: { name: "ওয়েব ও সফটওয়্যার", pitch: "আমরা <b>ওয়েবসাইট, অনলাইন শপ এবং কাস্টম সফটওয়্যার</b> তৈরি করি।", hook: "আপনার ঠিক কী প্রয়োজন?", wa: "হ্যালো Henry, আমি ওয়েব/সফটওয়্যার প্রজেক্টের দাম জানতে চাই: " },
+      maker: { name: "3D প্রিন্টিং · লেজার · CNC", pitch: "আমরা ব্লুপ্রিন্টকে <b>বাস্তব যন্ত্রাংশে</b> রূপান্তর করি।", hook: "আপনি কী তৈরি করতে চান?", wa: "হ্যালো Henry, আমি 3D/লেজার/CNC প্রজেক্টের দাম জানতে চাই: " },
+      iot: { name: "ইলেকট্রনিক্স ও IoT", pitch: "আমরা <b>Arduino, ESP32 এবং Raspberry Pi</b> দিয়ে অটোমেশন করি।", hook: "আপনি কী অটোমেট করতে চান?", wa: "হ্যালো Henry, আমি IoT প্রজেক্টের দাম জানতে চাই: " },
+      consultoria: { name: "ডিজাইন ও পরামর্শ", pitch: "আমরা <b>2D/3D CAD ডিজাইন ও কারিগরি পরামর্শ</b> প্রদান করি।", hook: "আপনার কি পার্টস ডিজাইন প্রয়োজন?", wa: "হ্যালো Henry, আমি CAD ডিজাইন/পরামর্শের জন্য আগ্রহী: " }
+    },
+    t: {
+      greeting: ["আমি <b>Maker</b>, <b>CDH Maker</b> এর পরামর্শদাতা। আপনার প্রজেক্টটি কেমন?"], re_greeting: ["হ্যালো! 😄 কীভাবে সাহায্য করতে পারি?"], good_morning: "শুভ সকাল! ☀️", good_afternoon: "শুভ অপরাহ্ন!", good_evening: "শুভ সন্ধ্যা! 🌙", comoestas: ["আমি ভালো আছি! সাহায্য করতে প্রস্তুত।"], bot: "আমি একজন <b>ভার্চুয়াল সহকারী</b>। আপনি ইঞ্জিনিয়ার <b>Henry</b> এর সাথে সরাসরি কথা বলতে পারেন।", thanks: ["ধন্যবাদ! 😊"], bye: ["বিদায়! 👋"], yes: "দুর্দান্ত! আরও বিস্তারিত বলুন:", no_worries: "আমাদের সেবাগুলো দেখুন:", quien: "আমরা কোলম্বিয়ার <b>CDH Maker</b> 🇨🇴: সফটওয়্যার, 3D প্রিন্টিং ও IoT।", henry: "প্রতিষ্ঠাতা ইঞ্জিনিয়ার <b>Henry Taborda</b>।", precio: ["<b>মূল্য নির্ধারণ সম্পূর্ণ বিনামূল্যে</b> (২৪ ঘণ্টার মধ্যে)।"], price_cta: "আপনার প্রয়োজন জানান:", tiempo: "3D প্রিন্টিং <b>কয়েক দিনে</b>, ওয়েবসাইট <b>১-২ সপ্তাহে</b>।", time_cta: "বিনামূল্যে মূল্য জানতে চান?", pago: "ধাপে ধাপে পেমেন্ট।", garantia: "টেস্টিং, ডকুমেন্টেশন ও সাপোর্ট অন্তর্ভুক্ত।", materiales: "FDM/Resin 3D প্রিন্টিং, লেজার ও CNC।", horario: "ক্লায়েন্ট অ্যাকাউন্ট দিয়ে যেকোনো সময় লিখুন।", contacto: "নিবন্ধিত ক্লায়েন্টদের জন্য সরাসরি WhatsApp সংযোগ।", contact_guest: "Henry এর সাথে কথা বলতে <b>বিনামূল্যে অ্যাকাউন্ট খুলুন</b>।", humano: "<b>Henry</b> আপনাকে সরাসরি উত্তর দেবেন:", captured: ["Henry এর জন্য বার্তা প্রস্তুত:"], fallback: ["সঠিক উত্তরের জন্য Henry কে সরাসরি জিজ্ঞাসা করুন:"]
+    }
+  };
+
+  // ═════════════════════════ INDONESIAN ════════════════════════════
+  L.id = {
+    ui: { sub: "Konsultan CDH Maker · online", placeholder: "Ketik pesan Anda…", open: "Buka obrolan", close: "Tutup obrolan", chat: "Obrolan dengan Maker", quick: "Balasan cepat", voice_on: "Aktifkan suara", voice_off: "Bisu", voice_ready: "Bagus, sekarang Anda bisa mendengar saya." },
+    btn: { back: "Layanan lainnya", menu: "Lihat layanan", quote: "Minta penawaran di WhatsApp", how_long: "Berapa lama waktunya?", how_much: "Berapa biayanya?", open_wa: "Buka WhatsApp", create_account: "Buat akun gratis", send_project: "Kirim proyek saya", ask_direct: "Tanya Henry", talk_henry: "Bicara dengan Henry", more: "Pelajari lebih lanjut", process: "Proses kerja", projects: "Lihat proyek", visit: "Buka proyek" },
+    wa: { generic: "Halo Henry, saya punya pertanyaan: ", quote: "Halo Henry, saya ingin minta penawaran harga: ", contact: "Halo Henry, saya klien terdaftar dan ingin berbicara." },
+    svc: {
+      web: { name: "Web & Perangkat Lunak", pitch: "Kami membuat <b>situs web, toko online, dan perangkat lunak kustom</b>.", hook: "Apa yang persisnya Anda butuhkan?", wa: "Halo Henry, saya ingin penawaran proyek web/software: " },
+      maker: { name: "Cetak 3D · Laser · CNC", pitch: "Kami mengubah ide menjadi <b>suku cadang nyata</b>: cetak 3D, potong laser & CNC.", hook: "Apa yang ingin Anda buat?", wa: "Halo Henry, saya ingin penawaran manufaktur digital: " },
+      iot: { name: "Elektronika & IoT", pitch: "Kami mengotomatiskan dengan <b>Arduino, ESP32, dan Raspberry Pi</b>.", hook: "Apa yang ingin Anda otomatisasi?", wa: "Halo Henry, saya ingin penawaran proyek IoT: " },
+      consultoria: { name: "Desain & Konsultasi", pitch: "Kami menawarkan <b>desain CAD 2D/3D dan konsultasi teknis</b>.", hook: "Apakah Anda butuh desain komponen atau konsultasi?", wa: "Halo Henry, saya tertarik dengan desain CAD / konsultasi: " }
+    },
+    t: {
+      greeting: ["Saya <b>Maker</b>, konsultan dari <b>CDH Maker</b>. Ada ide proyek apa hari ini?"], re_greeting: ["Halo lagi! 😄 Ada yang bisa dibantu?"], good_morning: "Selamat pagi! ☀️", good_afternoon: "Selamat siang!", good_evening: "Selamat malam! 🌙", comoestas: ["Sangat baik, terima kasih! Ready membantu."], bot: "Saya <b>asisten virtual</b>. Anda bisa berbicara dengan <b>Henry</b> kapan saja.", thanks: ["Dengan senang hati! 😊"], bye: ["Sampai jumpa! 👋"], yes: "Bagus! Ceritakan lebih lanjut:", no_worries: "Silakan jelajahi layanan kami:", quien: "Kami <b>CDH Maker</b> dari Kolombia 🇨🇴: perangkat lunak, cetak 3D & IoT.", henry: "Pendirinya adalah insinyur <b>Henry Taborda</b>.", precio: ["<b>Penawaran harga gratis</b> dalam waktu 24 jam."], price_cta: "Tuliskan kebutuhan Anda:", tiempo: "Komponen 3D dalam <b>beberapa hari</b>, situs web <b>1-2 minggu</b>.", time_cta: "Ingin penawaran harga gratis?", pago: "Pembayaran <b>bertahap</b>.", garantia: "Pengujian, dokumentasi & dukungan pasca-penjualan.", materiales: "Cetak 3D FDM/resin, potong laser & CNC.", horario: "Dengan akun klien Anda bisa menulis kapan saja.", contacto: "Akses WhatsApp langsung untuk klien terdaftar.", contact_guest: "Untuk berbicara dengan Henry, buat <b>akun klien gratis</b> terlebih dahulu.", humano: "<b>Henry</b> akan melayani Anda secara langsung:", captured: ["Pesan Anda siap dikirim ke Henry:"], fallback: ["Untuk jawaban tepat, sebaiknya langsung tanya ke Henry:"]
+    }
+  };
+
   return { intents, L, URL };
 })();
+
