@@ -23,7 +23,7 @@
    ───────────────────────────────────────────────────────────────────────────
    Autor:    Ing. Henry Taborda — CDH Maker (Medellín, Colombia)
    Contacto: cdhmaker@gmail.com
-   Última actualización: 2026-07-30
+   Última actualización: 2026-09-05
    ═══════════════════════════════════════════════════════════════════════════ */
 
 // IIFE: módulo autocontenido
@@ -48,7 +48,7 @@
 
   // Versión de los diccionarios: subirla invalida la caché del navegador
   // cuando se corrige una traducción (ver §10 del manual técnico).
-  const DICT_V = 1;
+  const DICT_V = 2;
 
   // Lo único que el español necesita cuando el HTML ya está en español:
   // las palabras del texto rotativo del hero, que no viven en el DOM.

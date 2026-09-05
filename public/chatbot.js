@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   CDH MAKER — chatbot.js  v13
+   CDH MAKER — chatbot.js  v14
    "Maker": asesor comercial virtual. Motor 100% texto, sin voz.
 
    Diseño conversacional:
@@ -18,9 +18,7 @@
 
   // ---------- Utilidades ----------
   const norm = (s) => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
-  const isAuthed = () => !!(window.CDH_AUTH && window.CDH_AUTH.isLoggedIn && window.CDH_AUTH.isLoggedIn());
-  const waLink  = (msg) => (window.CDH_AUTH && window.CDH_AUTH.CONTACT && window.CDH_AUTH.CONTACT.buildWa)
-    ? window.CDH_AUTH.CONTACT.buildWa(msg) || "#" : "#";
+  const waLink  = (msg) => (window.CDH_CONTACT && window.CDH_CONTACT.waUrl) ? window.CDH_CONTACT.waUrl(msg) : "#";
   const pick  = (arr) => Array.isArray(arr) && arr.length ? arr[Math.floor(Math.random() * arr.length)] : (arr || "");
   const esc   = (s)   => String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   const lang  = ()    => (document.documentElement.lang || "es").toLowerCase();
@@ -145,7 +143,7 @@
     if (kbPromise) return kbPromise;
     kbPromise = new Promise((resolve) => {
       const s = document.createElement("script");
-      s.src = "chatbot-kb.js?v=4";
+      s.src = "chatbot-kb.js?v=5";
       s.async = true;
       s.onload  = () => resolve(window.CDH_KB || null);
       s.onerror = () => { s.remove(); resolve(null); };
@@ -340,15 +338,7 @@
     });
   }
 
-  function authButton(text) {
-    return `<button type="button" class="cdh-wa-btn cdh-auth-btn" data-cdh-open-auth="register">${text}</button>`;
-  }
-
   function waButton(text, msg) {
-    if (!isAuthed()) {
-      const lKB = getLangKB();
-      return authButton((lKB && lKB.btn && lKB.btn.create_account) || "Crear cuenta gratis");
-    }
     const b64 = safeBtoa(msg || "");
     return `<button type="button" class="cdh-wa-btn cdh-wa-trigger" data-wa-msg="${b64}">
       <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.019-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.297-.497.1-.198.05-.371-.025-.52-.074-.149-.668-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/></svg>
@@ -536,14 +526,9 @@
 
       case "contacto":
       case "humano": {
-        if (!isAuthed()) {
-          await botSay(getTextVal(t.contact_guest || esT.contact_guest));
-          await botSay(authButton(btn.create_account || "Crear cuenta gratis"));
-        } else {
-          await botSay(getTextVal(topicKey === "humano" ? (t.humano || esT.humano) : (t.contacto || esT.contacto)));
-          const base = wa.contact || "Hola Henry, vengo de tu página y quiero hablar contigo.";
-          await botSay(waButton(btn.open_wa || "Abrir WhatsApp", memory.buildWaMessage(base, null)));
-        }
+        await botSay(getTextVal(topicKey === "humano" ? (t.humano || esT.humano) : (t.contacto || esT.contacto)));
+        const base = wa.contact || "Hola Henry, vengo de tu página y quiero hablar contigo.";
+        await botSay(waButton(btn.open_wa || "Abrir WhatsApp", memory.buildWaMessage(base, null)));
         setQuick(backQuick(btn));
         break;
       }
@@ -652,17 +637,9 @@
   });
 
   msgs.addEventListener("click", (e) => {
-    const authBtn = e.target.closest("[data-cdh-open-auth]");
-    if (authBtn) {
-      e.preventDefault();
-      if (window.CDH_AUTH && window.CDH_AUTH.openAuth)
-        window.CDH_AUTH.openAuth(authBtn.getAttribute("data-cdh-open-auth") || "register");
-      return;
-    }
     const waBtn = e.target.closest(".cdh-wa-trigger");
     if (waBtn) {
       e.preventDefault();
-      if (!isAuthed()) { if (window.CDH_AUTH && window.CDH_AUTH.openAuth) window.CDH_AUTH.openAuth("register"); return; }
       const msg  = safeAtob(waBtn.getAttribute("data-wa-msg"));
       const href = waLink(msg);
       if (href !== "#") window.open(href, "_blank", "noopener,noreferrer");
