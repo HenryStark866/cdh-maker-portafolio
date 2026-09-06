@@ -63,6 +63,6 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", wire);
   else wire();
 
-  // API pública: la usa chatbot.js para armar el botón de WhatsApp del chat
+  // API pública: la usa chat-widget.js para armar el enlace de WhatsApp
   window.CDH_CONTACT = { waUrl, mailUrl };
 })();
