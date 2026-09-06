@@ -101,7 +101,24 @@
     pill.addEventListener("click", () => applyState(false, true));
 
     applyState(isMinimized(), false);
-    setTimeout(() => root.classList.add("show"), 20);
+
+    // El widget es de posición fija: si aparece apenas carga la página,
+    // se monta encima del propio contenido del hero (le pasó al mensaje
+    // de "sin registros ni cuentas" en móvil). Por eso se revela solo
+    // cuando el visitante ya bajó de esa zona, nunca en la primera vista.
+    const REVEAL_AFTER_SCROLL = 400;
+    function reveal() { root.classList.add("show"); }
+    if (window.scrollY > REVEAL_AFTER_SCROLL) {
+      setTimeout(reveal, 20);
+    } else {
+      const onScroll = () => {
+        if (window.scrollY > REVEAL_AFTER_SCROLL) {
+          window.removeEventListener("scroll", onScroll);
+          reveal();
+        }
+      };
+      window.addEventListener("scroll", onScroll, { passive: true });
+    }
   }
 
   function schedule() {
