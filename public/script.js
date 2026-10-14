@@ -40,7 +40,7 @@ navLinks.querySelectorAll("a").forEach((a) =>
 );
 
 // ── Resaltar sección activa en el sidebar según el scroll ─────────────────────
-const navSections = ["servicios", "proceso", "proyectos", "sobre", "contacto"];
+const navSections = ["servicios", "proceso", "proyectos", "herramientas", "sobre", "contacto"];
 const navItems = navLinks.querySelectorAll("a.nav-item");
 // IntersectionObserver: notifica cuándo cada sección entra en pantalla
 const sectionObserver = new IntersectionObserver(

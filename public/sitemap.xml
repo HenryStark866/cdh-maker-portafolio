@@ -1,16 +1,157 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- CDH Maker — mapa del sitio.
-     Una sola página pública con secciones ancladas; el panel de clientes y el
-     perfil quedan fuera a propósito (ver robots.txt). -->
+<!-- CDH Maker — mapa del sitio. GENERADO por tools/build-i18n.mjs: no editar.
+     Una página por idioma; el panel de clientes y el perfil quedan fuera a
+     propósito (ver robots.txt). -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://cdh-maker-portafolio.web.app/</loc>
-    <lastmod>2026-07-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="es" href="https://cdh-maker-portafolio.web.app/?lang=es" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://cdh-maker-portafolio.web.app/?lang=en" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdh-maker-portafolio.web.app/" />
+    <loc>https://cdhmaker.com/</loc>
+    <lastmod>2026-10-14</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/en" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://cdhmaker.com/zh" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://cdhmaker.com/hi" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://cdhmaker.com/ar" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://cdhmaker.com/pt" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://cdhmaker.com/bn" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/" />
+  </url>
+  <url>
+    <loc>https://cdhmaker.com/en</loc>
+    <lastmod>2026-10-14</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/en" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://cdhmaker.com/zh" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://cdhmaker.com/hi" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://cdhmaker.com/ar" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://cdhmaker.com/pt" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://cdhmaker.com/bn" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/" />
+  </url>
+  <url>
+    <loc>https://cdhmaker.com/zh</loc>
+    <lastmod>2026-10-14</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/en" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://cdhmaker.com/zh" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://cdhmaker.com/hi" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://cdhmaker.com/ar" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://cdhmaker.com/pt" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://cdhmaker.com/bn" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/" />
+  </url>
+  <url>
+    <loc>https://cdhmaker.com/hi</loc>
+    <lastmod>2026-10-14</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/en" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://cdhmaker.com/zh" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://cdhmaker.com/hi" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://cdhmaker.com/ar" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://cdhmaker.com/pt" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://cdhmaker.com/bn" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/" />
+  </url>
+  <url>
+    <loc>https://cdhmaker.com/ar</loc>
+    <lastmod>2026-10-14</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/en" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://cdhmaker.com/zh" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://cdhmaker.com/hi" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://cdhmaker.com/ar" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://cdhmaker.com/pt" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://cdhmaker.com/bn" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/" />
+  </url>
+  <url>
+    <loc>https://cdhmaker.com/pt</loc>
+    <lastmod>2026-10-14</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/en" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://cdhmaker.com/zh" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://cdhmaker.com/hi" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://cdhmaker.com/ar" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://cdhmaker.com/pt" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://cdhmaker.com/bn" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/" />
+  </url>
+  <url>
+    <loc>https://cdhmaker.com/bn</loc>
+    <lastmod>2026-10-14</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/en" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://cdhmaker.com/zh" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://cdhmaker.com/hi" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://cdhmaker.com/ar" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://cdhmaker.com/pt" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://cdhmaker.com/bn" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/" />
+  </url>
+  <url>
+    <loc>https://cdhmaker.com/ru</loc>
+    <lastmod>2026-10-14</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/en" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://cdhmaker.com/zh" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://cdhmaker.com/hi" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://cdhmaker.com/ar" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://cdhmaker.com/pt" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://cdhmaker.com/bn" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/" />
+  </url>
+  <url>
+    <loc>https://cdhmaker.com/fr</loc>
+    <lastmod>2026-10-14</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/en" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://cdhmaker.com/zh" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://cdhmaker.com/hi" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://cdhmaker.com/ar" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://cdhmaker.com/pt" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://cdhmaker.com/bn" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/" />
+  </url>
+  <url>
+    <loc>https://cdhmaker.com/id</loc>
+    <lastmod>2026-10-14</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/en" />
+    <xhtml:link rel="alternate" hreflang="zh" href="https://cdhmaker.com/zh" />
+    <xhtml:link rel="alternate" hreflang="hi" href="https://cdhmaker.com/hi" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://cdhmaker.com/ar" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://cdhmaker.com/pt" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://cdhmaker.com/bn" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr" />
+    <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/" />
   </url>
 </urlset>

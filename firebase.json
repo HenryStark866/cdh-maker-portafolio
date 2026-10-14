@@ -5,7 +5,15 @@
   "hosting": {
     "public": "public",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "predeploy": ["node tools/build-i18n.mjs"],
     "cleanUrls": true,
+    "redirects": [
+      {
+        "regex": "^/(?P<lang>en|zh|hi|ar|pt|bn|ru|fr|id)/$",
+        "destination": "/:lang",
+        "type": 301
+      }
+    ],
     "headers": [
       {
         "source": "**/*.html",
@@ -28,6 +36,16 @@
         ]
       },
       {
+        "source": "/@(en|zh|hi|ar|pt|bn|ru|fr|id)",
+        "headers": [
+          { "key": "Cache-Control", "value": "no-cache" },
+          { "key": "X-Content-Type-Options", "value": "nosniff" },
+          { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+          { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+          { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+        ]
+      },
+      {
         "source": "/perfil",
         "headers": [
           { "key": "Cache-Control", "value": "no-cache" },
@@ -40,6 +58,10 @@
       {
         "source": "**/*.@(css|js)",
         "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600" }]
+      },
+      {
+        "source": "**/*.@(jpg|jpeg|png|webp|svg|mp4)",
+        "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }]
       },
       {
         "source": "admin-clientes.html",

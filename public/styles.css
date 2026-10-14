@@ -380,6 +380,119 @@ body { padding-left: var(--sidebar-w); }
 .project h3 { font-size: 1.1rem; margin-bottom: 8px; }
 .project p { color: var(--text-dim); font-size: 0.93rem; }
 
+/* ===== Herramientas ===== */
+.tools-cards { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.tool-card {
+  display: block; width: 100%; text-align: left; cursor: pointer;
+  font-family: var(--font-body); color: var(--text);
+}
+.tool-card-cta {
+  display: inline-block; color: var(--accent-2); font-family: var(--font-display);
+  font-size: 0.88rem; font-weight: 600;
+}
+
+/* Contenedor común de los modales de herramientas (cotizador / visor 3D) */
+body.tool-modal-open { overflow: hidden; }
+.tool-modal {
+  position: fixed; inset: 0; z-index: 400;
+  display: grid; place-items: center; padding: 20px;
+  background: rgba(3, 16, 26, 0.72); backdrop-filter: blur(8px);
+}
+.tool-modal[hidden] { display: none !important; }
+.tool-modal-card {
+  position: relative; width: min(560px, 100%);
+  max-height: min(88vh, 780px); overflow: auto;
+  background: var(--bg-alt); border: 1px solid var(--border); border-radius: 18px;
+  padding: 28px 26px 26px; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+}
+.tool-modal-close {
+  position: absolute; top: 14px; right: 16px; z-index: 1;
+  background: transparent; border: none; color: var(--text-dim);
+  font-size: 1.5rem; line-height: 1; cursor: pointer;
+}
+.tool-modal-close:hover { color: var(--accent); }
+.tool-modal-body h2 { font-size: 1.3rem; margin-bottom: 4px; padding-right: 24px; }
+.tool-modal-body > p.tool-sub { color: var(--text-dim); font-size: 0.88rem; margin-bottom: 20px; }
+
+/* ── Cotizador: progreso, opciones, campos, resultado ─────────────────── */
+.est-progress { display: flex; gap: 6px; margin-bottom: 20px; }
+.est-progress span {
+  height: 4px; flex: 1; border-radius: 2px; background: var(--border);
+  transition: background 0.3s;
+}
+.est-progress span.done { background: var(--accent); }
+.est-back {
+  display: inline-flex; align-items: center; gap: 6px; margin-bottom: 14px;
+  background: none; border: none; color: var(--text-dim); font-size: 0.85rem;
+  cursor: pointer; font-family: var(--font-body); padding: 0;
+}
+.est-back:hover { color: var(--accent); }
+.est-q { font-size: 1.05rem; font-weight: 600; margin-bottom: 14px; }
+.est-options { display: grid; gap: 10px; margin-bottom: 8px; }
+.est-options.grid-2 { grid-template-columns: 1fr 1fr; }
+.est-option {
+  display: flex; align-items: center; gap: 12px; text-align: left;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 14px 16px; cursor: pointer; color: var(--text);
+  font-family: var(--font-body); font-size: 0.92rem; transition: border-color 0.2s, background 0.2s;
+}
+.est-option:hover { border-color: var(--accent); background: var(--surface-2); }
+.est-option svg { width: 22px; height: 22px; color: var(--accent); flex-shrink: 0; }
+.est-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.est-field label { font-size: 0.82rem; color: var(--text-dim); font-weight: 500; }
+.est-field input[type="number"], .est-field input[type="text"], .est-field select {
+  width: 100%; box-sizing: border-box;
+  background: var(--surface); color: var(--text); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 12px; font-size: 0.95rem; font-family: var(--font-body);
+  outline: none; transition: border-color 0.2s;
+}
+.est-field input:focus, .est-field select:focus { border-color: var(--accent); }
+.est-field input[type="range"] { width: 100%; accent-color: var(--accent); }
+.est-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.est-row .est-field { margin-bottom: 0; }
+.est-result {
+  background: var(--surface); border: 1px solid var(--accent); border-radius: 14px;
+  padding: 18px 20px; margin: 6px 0 18px;
+}
+.est-result-num { font-family: var(--font-display); font-size: 1.6rem; color: var(--accent); font-weight: 700; }
+.est-result p { color: var(--text-dim); font-size: 0.88rem; margin-top: 6px; }
+.est-result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+.est-stat { background: var(--surface-2); border-radius: 10px; padding: 10px 12px; }
+.est-stat strong { display: block; font-family: var(--font-display); color: var(--accent-2); font-size: 1.05rem; }
+.est-stat span { font-size: 0.76rem; color: var(--text-dim); }
+.est-disclaimer { font-size: 0.74rem; color: var(--text-dim); opacity: 0.85; line-height: 1.4; margin-bottom: 16px; }
+
+/* ── Visor 3D: dropzone, canvas, estadísticas ─────────────────────────── */
+.viewer-drop {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+  border: 2px dashed var(--border); border-radius: 14px; padding: 40px 20px;
+  text-align: center; cursor: pointer; transition: border-color 0.2s, background 0.2s;
+  color: var(--text-dim);
+}
+.viewer-drop:hover, .viewer-drop.drag { border-color: var(--accent); background: rgba(34, 211, 238, 0.05); }
+.viewer-drop svg { width: 34px; height: 34px; color: var(--accent); }
+.viewer-drop strong { color: var(--text); }
+.viewer-canvas-wrap {
+  position: relative; width: 100%; aspect-ratio: 4 / 3; border-radius: 14px; overflow: hidden;
+  background: #04141c; border: 1px solid var(--border); margin-bottom: 14px;
+}
+.viewer-canvas-wrap canvas { display: block; width: 100%; height: 100%; }
+.viewer-loading {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  color: var(--text-dim); font-size: 0.85rem; background: rgba(4, 20, 28, 0.7);
+}
+.viewer-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.viewer-stats .est-stat { text-align: center; }
+.viewer-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.viewer-filename {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  font-size: 0.85rem; color: var(--text-dim); margin-bottom: 10px;
+}
+.viewer-filename button {
+  background: none; border: none; color: var(--accent-2); cursor: pointer; font-size: 0.8rem;
+  font-family: var(--font-body);
+}
+
 /* ===== Sobre mí ===== */
 .about { display: grid; grid-template-columns: 1.2fr 1fr; gap: 50px; align-items: center; }
 .about p { color: var(--text-dim); margin-bottom: 14px; }
@@ -470,6 +583,13 @@ body { padding-left: var(--sidebar-w); }
   color: var(--text-dim); font-size: 0.88rem;
 }
 .footer a { color: var(--accent); text-decoration: none; }
+/* Fila de idiomas: un enlace real por versión (los rastreadores la siguen) */
+.footer-langs {
+  display: flex; flex-wrap: wrap; gap: 6px 16px; padding-top: 14px; margin-top: 14px;
+  border-top: 1px solid var(--border); font-size: 0.82rem;
+}
+.footer .footer-langs a { color: var(--text-dim); }
+.footer .footer-langs a:hover, .footer .footer-langs a[aria-current="page"] { color: var(--accent); }
 
 /* ===== WhatsApp ===== */
 .btn-whatsapp {
@@ -656,6 +776,33 @@ body { padding-left: var(--sidebar-w); }
 }
 .why-item h3 { font-size: 1.05rem; margin-bottom: 8px; }
 .why-item p { color: var(--text-dim); font-size: 0.92rem; }
+
+/* Sección Soluciones: reutiliza la rejilla de "Por qué" sin íconos */
+.need-item { padding: 24px 22px; border-left: 2px solid rgba(34, 211, 238, 0.35); }
+.needs-cta { margin-top: 28px; color: var(--text-dim); }
+.needs-cta a { color: var(--accent); font-weight: 600; text-decoration: none; }
+.needs-cta a:hover { text-decoration: underline; }
+
+/* Sugerencia de idioma: aparece si el navegador del visitante está en otro
+   idioma disponible (i18n.js). Nunca redirige sola: solo ofrece el enlace. */
+#cdh-lang-suggest {
+  position: fixed; top: 14px; left: 50%; transform: translateX(-50%); z-index: 250;
+  display: flex; align-items: center; gap: 10px; max-width: calc(100vw - 32px);
+  padding: 8px 8px 8px 16px; border-radius: 999px;
+  background: rgba(10, 30, 41, 0.94); backdrop-filter: blur(10px);
+  border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  font-family: var(--font-body); font-size: 0.9rem; color: var(--text);
+}
+[data-theme="light"] #cdh-lang-suggest { background: rgba(255, 255, 255, 0.96); }
+#cdh-lang-suggest a {
+  padding: 6px 14px; border-radius: 999px; text-decoration: none; white-space: nowrap;
+  background: var(--accent); color: var(--btn-fg); font-weight: 600;
+}
+#cdh-lang-suggest button {
+  width: 30px; height: 30px; border-radius: 50%; border: 0; cursor: pointer;
+  background: transparent; color: var(--text-dim); font-size: 1rem; line-height: 1;
+}
+#cdh-lang-suggest button:hover { color: var(--text); }
 
 /* Nav: enlace activo */
 .nav-links a.active { color: var(--accent); }

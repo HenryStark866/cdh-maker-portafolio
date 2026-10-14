@@ -38,8 +38,15 @@ PORTAFOLIO HCT/
 ├── README.md              # Resumen del proyecto
 ├── MANUAL-TECNICO.md      # Este documento
 ├── _originales-media/     # Copias sin comprimir (NO se publican: fuera de public/)
+├── tools/                 # Scripts de build (NO se publican)
+│   ├── build-i18n.mjs     # Genera las páginas por idioma, sitemap.xml y llms.txt (§8.3)
+│   └── indexnow.mjs       # Avisa a Bing/IndexNow tras cada deploy (§11)
 └── public/                # TODO lo que se publica en el hosting
-    ├── index.html         # Página principal
+    ├── index.html         # Página principal en español (FUENTE de las demás)
+    ├── en.html … id.html  # GENERADAS: una por idioma (/en, /zh, /hi, /ar, /pt, /bn, /ru, /fr, /id)
+    ├── 404.html           # Página de "no encontrado" (Firebase la sirve sola)
+    ├── llms.txt           # GENERADO: resumen del negocio para modelos de lenguaje
+    ├── <clave>.txt        # Clave de verificación de IndexNow (32 caracteres hex)
     ├── perfil.html        # Panel del cliente autenticado
     ├── admin-clientes.html# Panel admin (protegido por clave con hash SHA-256)
     ├── styles.css         # Estilos completos (temas con variables CSS)
@@ -58,8 +65,8 @@ PORTAFOLIO HCT/
     ├── ads.js             # Widget de anuncio flotante (video diferido)
     ├── icon.svg           # Ícono del sitio (favicon + PWA)
     ├── manifest.json      # Manifiesto PWA
-    ├── robots.txt         # Reglas de rastreo (excluye perfil y admin)
-    ├── sitemap.xml        # Mapa del sitio con alternates es/en
+    ├── robots.txt         # Reglas de rastreo (bots de IA bienvenidos; excluye perfil y admin)
+    ├── sitemap.xml        # GENERADO: las 10 URLs con sus alternates hreflang
     └── media/             # Imágenes (WebP + original) y video de proyectos
 ```
 
@@ -194,9 +201,21 @@ node -e "console.log(require('crypto').createHash('sha256').update('TU_NUEVA_CLA
 ## 8. Internacionalización (i18n.js + i18n/)
 
 - 10 idiomas: es, en, zh, hi, ar, pt, bn, ru, fr, id. El árabe activa `dir="rtl"`.
-- Todo texto traducible lleva `data-i18n="clave"` en el HTML (o `data-i18n-aria` para aria-labels, `data-i18n-html` si la traducción contiene etiquetas).
-- Idioma inicial: `?lang=` en URL → localStorage → idioma del navegador → español.
-- El chatbot solo es bilingüe (ES/EN): responde en inglés para cualquier idioma no-español.
+- **Cada idioma tiene su propia URL y su propio HTML estático**: `/` (español), `/en`,
+  `/zh`, `/hi`, `/ar`, `/pt`, `/bn`, `/ru`, `/fr`, `/id`. Los generan `tools/build-i18n.mjs`
+  a partir de `index.html` + `i18n/<código>.js` (§8.3). Así los rastreadores de IA, que no
+  ejecutan JavaScript, leen el sitio completo en todos los idiomas.
+- Todo texto traducible lleva `data-i18n="clave"` en el HTML (o `data-i18n-aria` para
+  aria-labels, `data-i18n-alt` para el texto alternativo de imágenes y `data-i18n-html` si
+  la traducción contiene etiquetas).
+- **El idioma lo decide la URL.** El selector del menú lleva a la URL del idioma elegido y
+  guarda la elección (`localStorage: cdh-lang-v2`; cerrar el aviso solo lo silencia). Los enlaces viejos `?lang=xx` se convierten
+  en `/xx`. Si el navegador está en otro idioma disponible aparece un aviso discreto con el
+  enlace (solo tras la primera interacción del visitante): **nunca se redirige solo**, porque
+  Google y los rastreadores de IA lo penalizan. La portada `/` sí lleva a la URL del idioma
+  que el visitante eligió explícitamente antes.
+- El cotizador, el visor 3D, el widget de anuncio y el chat de WhatsApp tienen sus textos en
+  los 10 idiomas dentro de su propio archivo (objetos `C` / `T`).
 
 ### 8.1 Diccionarios separados y carga bajo demanda
 
@@ -227,19 +246,54 @@ window.CDH_I18N_DICT["fr"] = { …claves… };
 o archivo caído— se conserva el idioma que el visitante ya está viendo, el selector vuelve
 a su valor anterior y se avisa por consola; la página nunca queda a medio traducir.
 
+> Con las páginas estáticas, en cada página solo se descarga el diccionario de SU idioma
+> (para el texto rotativo del hero); el español sigue sin descargar nada.
+
 ### 8.2 Editar o añadir traducciones
 
-- **Corregir un texto:** abre `public/i18n/<código>.js`, busca la clave y edítala. Sube
-  `DICT_V` en `i18n.js` para invalidar la caché de los navegadores.
-- **Añadir un idioma:** agrégalo a `LANGS` en `i18n.js` y crea `public/i18n/<código>.js`
-  copiando la estructura de otro. No hay que tocar nada más.
+- **Cambiar un texto en español:** edítalo directamente en `public/index.html` y corre
+  `node tools/build-i18n.mjs`. El HTML manda: el script copia el texto a `i18n/es.js`.
+- **Corregir otro idioma:** abre `public/i18n/<código>.js`, busca la clave, edítala, sube
+  `DICT_V` en `i18n.js` y corre `node tools/build-i18n.mjs`.
+- **Añadir un texto nuevo:** márcalo en `index.html` con `data-i18n="clave_nueva"` y agrega
+  `clave_nueva` a los 9 diccionarios restantes. El build avisa con `⚠ <idioma>: N clave(s)
+  sin traducir` si alguno falta (en esa página el texto queda en español).
+- **Añadir un idioma:** agrégalo a `LANGS` en `i18n.js` **y** en `tools/build-i18n.mjs`,
+  crea `public/i18n/<código>.js` copiando la estructura de otro, agrega su enlace a la fila
+  de idiomas del footer de `index.html` y a la regla de `firebase.json` que le pone
+  cabeceras a `/@(en|zh|…)`.
 
-> **Cobertura desigual (pendiente):** 28 claves existen solo en `es` y `en` — todo el
-> bloque del área de clientes (`auth_*`), los avisos de contenido bloqueado (`lock_*`),
-> `contact_privacy`, `hero_privacy` y `foot_contact_cta`. Viene así desde antes de separar
-> los archivos. Como `apply()` ignora las claves ausentes, un visitante en chino o ruso ve
-> esa parte en español, sin errores. Para completarlo basta añadir esas claves a los ocho
-> diccionarios restantes.
+### 8.3 Páginas por idioma, SEO y visibilidad en asistentes de IA (tools/build-i18n.mjs)
+
+`node tools/build-i18n.mjs` (Node ≥ 18, sin dependencias) hace, en orden:
+
+1. Sincroniza `i18n/es.js` con los textos de `index.html`.
+2. Rellena el bloque `seo:start … seo:end` del `<head>` de cada página: title, description,
+   canonical, los 11 `hreflang` (10 idiomas + `x-default`), Open Graph, Twitter y el JSON-LD.
+   **Ese bloque no se edita a mano**: se regenera en cada build.
+3. Escribe `public/<código>.html` para los 9 idiomas restantes, con el `<body>` traducido.
+4. Regenera `sitemap.xml` y `llms.txt`.
+
+Lo que no depende del idioma vive en el bloque `§CONFIG` del script:
+
+| Constante | Qué es |
+|---|---|
+| `SITE` | Dominio canónico (`https://cdhmaker.com`). Todo apunta aquí aunque el sitio también responda en `cdh-maker-portafolio.web.app`. |
+| `ENTITY` | Nombre, correo, ciudad, idiomas de atención (es, en), fundador y **`sameAs`**: cada perfil público que se cree (Google Business Profile, LinkedIn, Clutch, YouTube…) se agrega aquí para que buscadores e IA lo asocien a la marca. |
+| `PROJECTS` | Proyectos que aparecen en el JSON-LD con su URL. |
+
+Claves de diccionario que solo usa la cabecera: `meta_title`, `meta_desc` (≤ 160
+caracteres) y `person_job`.
+
+**Por qué importa:** ChatGPT, Claude, Perplexity y Copilot no ejecutan JavaScript al leer
+una página: antes de esto solo veían el español. El JSON-LD declara la organización
+(`ProfessionalService`), a Henry Taborda como fundador (`Person`), los servicios
+(`OfferCatalog`), los proyectos y las preguntas frecuentes, en el idioma de cada página.
+`llms.txt` es un resumen en Markdown para modelos de lenguaje (convención de
+llmstxt.org; es barato y opcional, pocos bots lo piden todavía).
+
+`firebase.json` lo corre solo antes de cada deploy (`hosting.predeploy`). Aun así, conviene
+correrlo y **hacer commit** de los archivos generados para que el repo refleje lo publicado.
 
 ## 9. Chatbot "Maker" (chatbot.js)
 
@@ -280,7 +334,9 @@ dispositivo del visitante, suena al instante, no cuesta nada y no viaja ningún 
 
 ## 10. Caché y versionado de archivos
 
-`firebase.json` define: HTML sin caché (`no-cache`), CSS/JS con caché de 1 hora.
+`firebase.json` define: HTML sin caché (`no-cache`), CSS/JS con caché de 1 hora, imágenes
+y videos de `media/` con caché de 7 días (si reemplazas un archivo de `media/` conservando
+el nombre, súbele `?v=` donde se use o cámbiale el nombre).
 Por eso **cada vez que edites un .js o .css debes subir su versión** en las etiquetas de los HTML:
 
 ```html
@@ -305,9 +361,16 @@ firebase deploy --only hosting,firestore:rules
 
 # Solo hosting
 firebase deploy --only hosting
+
+# Después de desplegar: avisar a Bing (ChatGPT, Copilot y DuckDuckGo usan su índice)
+node tools/indexnow.mjs
 ```
 
 Requisitos: Node.js + Firebase CLI (`npm i -g firebase-tools`) con sesión de la cuenta cdhmaker@gmail.com (`firebase login`).
+
+El deploy corre primero `node tools/build-i18n.mjs` (predeploy). En local, `npx serve public`
+sirve `/en`, `/pt`… igual que Firebase (ambos con *clean URLs*); `firebase serve` también.
+Una URL con barra final (`/en/`) se redirige con 301 a `/en`.
 
 ## 12. Aliados del footer ("Nuestros aliados")
 
@@ -331,10 +394,12 @@ Nota: si algún día prefieres logos en vez de texto, sube la imagen a `public/m
 
 | Quiero… | Dónde |
 |---|---|
-| Cambiar un texto del sitio | `i18n.js` (buscar la clave `data-i18n` del elemento) |
+| Cambiar un texto del sitio | Español: `index.html`. Otro idioma: `i18n/<código>.js`. Luego `node tools/build-i18n.mjs` (§8.2) |
+| Cambiar title / description de Google | `i18n/<código>.js` → `meta_title`, `meta_desc` + build |
+| Agregar un perfil (LinkedIn, Google Business…) a los datos para IA | `tools/build-i18n.mjs` → `ENTITY.sameAs` + build |
 | Cambiar textos del chatbot | `chatbot.js` → objeto `TEXT` (bloques es/en) |
 | Enseñar un tema nuevo al chatbot | `chatbot.js` → `INTENTS` + respuesta en `TEXT` |
-| Añadir un proyecto al portafolio | `index.html` sección Proyectos + imagen en `media/` + claves en `i18n.js` |
+| Añadir un proyecto al portafolio | `index.html` sección Proyectos + imagen en `media/` + claves en los 9 `i18n/<código>.js` + entrada en `PROJECTS` de `tools/build-i18n.mjs` + build |
 | Agregar un aliado al footer | `index.html` columna "Nuestros aliados" (pasos completos en §12) |
 | Cambiar colores / tema | `styles.css` → variables `:root` (dark y light) |
 | Autorizar otro email como admin | `perfil.html` → array `ADMIN_EMAILS` |

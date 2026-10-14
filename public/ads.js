@@ -16,12 +16,22 @@
   const ad = ADS[0];
 
   const MIN_KEY = "cdh-ad-minimized-" + ad.id;
+  // Textos en los 10 idiomas del sitio ("mute" es la etiqueta del botón
+  // mientras el video está en silencio, o sea, la acción de activar sonido)
   const T = window.CDH_I18N_ADS || {
-    es: { tag: "Publicidad", minimize: "Minimizar", restore: "Mostrar anuncio", mute: "Activar sonido", unmute: "Silenciar" },
-    en: { tag: "Advertisement", minimize: "Minimize", restore: "Show ad", mute: "Unmute", unmute: "Mute" },
+    es: { tag: "Publicidad", minimize: "Minimizar", restore: "Mostrar anuncio", mute: "Activar sonido", unmute: "Silenciar", caption: "Ingeniería, IA y fabricación digital — hecho realidad." },
+    en: { tag: "Advertisement", minimize: "Minimize", restore: "Show ad", mute: "Unmute", unmute: "Mute", caption: "Engineering, AI and digital fabrication — made real." },
+    zh: { tag: "广告", minimize: "最小化", restore: "显示广告", mute: "开启声音", unmute: "静音", caption: "工程、AI 与数字制造——把想法变为现实。" },
+    hi: { tag: "विज्ञापन", minimize: "छोटा करें", restore: "विज्ञापन दिखाएँ", mute: "आवाज़ चालू करें", unmute: "म्यूट करें", caption: "इंजीनियरिंग, AI और डिजिटल फ़ैब्रिकेशन — हकीकत में।" },
+    ar: { tag: "إعلان", minimize: "تصغير", restore: "عرض الإعلان", mute: "تشغيل الصوت", unmute: "كتم الصوت", caption: "هندسة وذكاء اصطناعي وتصنيع رقمي — أصبحت واقعًا." },
+    pt: { tag: "Publicidade", minimize: "Minimizar", restore: "Mostrar anúncio", mute: "Ativar som", unmute: "Silenciar", caption: "Engenharia, IA e fabricação digital — feitas realidade." },
+    bn: { tag: "বিজ্ঞাপন", minimize: "ছোট করুন", restore: "বিজ্ঞাপন দেখান", mute: "শব্দ চালু করুন", unmute: "নিঃশব্দ করুন", caption: "ইঞ্জিনিয়ারিং, AI ও ডিজিটাল ফ্যাব্রিকেশন — বাস্তবে রূপ পেয়েছে।" },
+    ru: { tag: "Реклама", minimize: "Свернуть", restore: "Показать рекламу", mute: "Включить звук", unmute: "Выключить звук", caption: "Инженерия, ИИ и цифровое производство — воплощённые в жизнь." },
+    fr: { tag: "Publicité", minimize: "Réduire", restore: "Afficher l'annonce", mute: "Activer le son", unmute: "Couper le son", caption: "Ingénierie, IA et fabrication numérique — devenues réalité." },
+    id: { tag: "Iklan", minimize: "Kecilkan", restore: "Tampilkan iklan", mute: "Nyalakan suara", unmute: "Bisukan", caption: "Rekayasa, AI, dan fabrikasi digital — menjadi nyata." },
   };
   function lang() {
-    const l = document.documentElement.lang || "es";
+    const l = (document.documentElement.lang || "es").slice(0, 2);
     return T[l] ? l : "es";
   }
   function isMinimized() {
@@ -61,7 +71,7 @@
         </div>
         <div class="cdh-ad-body">
           <strong>${ad.title}</strong>
-          <span>${ad.caption}</span>
+          <span>${t.caption || ad.caption}</span>
         </div>
       </div>
       <button type="button" class="cdh-ad-pill" aria-label="${t.restore}" hidden>
@@ -76,12 +86,17 @@
     const muteBtn = root.querySelector(".cdh-ad-mute");
     const minBtn = root.querySelector(".cdh-ad-min");
 
+    // El video (2,6 MB) se pide recién cuando el widget es VISIBLE: antes se
+    // descargaba en cada visita de escritorio aunque nadie bajara hasta
+    // revelarlo (era más del 90 % del peso de la página).
+    let revealed = false;
+
     function applyState(minimized, persist) {
       card.hidden = minimized;
       pill.hidden = !minimized;
       if (minimized) {
         try { video.pause(); } catch (e) {}
-      } else {
+      } else if (revealed || persist) { // persist = el visitante lo pidió con un clic
         // Primera vez que se despliega: recién ahí se pide el archivo
         if (!video.src && video.dataset.src) {
           video.src = video.dataset.src;
@@ -107,7 +122,11 @@
     // de "sin registros ni cuentas" en móvil). Por eso se revela solo
     // cuando el visitante ya bajó de esa zona, nunca en la primera vista.
     const REVEAL_AFTER_SCROLL = 400;
-    function reveal() { root.classList.add("show"); }
+    function reveal() {
+      root.classList.add("show");
+      revealed = true;
+      if (!card.hidden) applyState(false, false); // ahora sí: cargar y reproducir
+    }
     if (window.scrollY > REVEAL_AFTER_SCROLL) {
       setTimeout(reveal, 20);
     } else {

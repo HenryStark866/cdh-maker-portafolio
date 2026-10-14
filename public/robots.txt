@@ -1,5 +1,12 @@
 # CDH Maker — reglas para rastreadores
-# El portafolio es público; el panel de clientes y el perfil, no.
+# El portafolio es público en sus 10 idiomas (/, /en, /zh, /hi, /ar, /pt,
+# /bn, /ru, /fr, /id); el panel de clientes y el perfil, no.
+#
+# Los asistentes de IA son bienvenidos: queremos que lean el sitio y lo
+# citen. Se nombran uno por uno solo para dejarlo explícito; las reglas son
+# las mismas que para cualquier otro rastreador. Ojo: un bot con grupo propio
+# ignora el grupo "*" (RFC 9309), por eso los Disallow se repiten abajo.
+# Resumen para modelos de lenguaje: /llms.txt
 
 User-agent: *
 Allow: /
@@ -8,4 +15,37 @@ Disallow: /admin-clientes.html
 Disallow: /perfil
 Disallow: /perfil.html
 
-Sitemap: https://cdh-maker-portafolio.web.app/sitemap.xml
+# Búsqueda y respuestas de IA (deciden si el sitio se puede citar y enlazar)
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Bingbot
+User-agent: Googlebot
+User-agent: Applebot
+User-agent: DuckAssistBot
+User-agent: Meta-WebIndexer
+User-agent: Meta-ExternalFetcher
+User-agent: Amzn-SearchBot
+User-agent: Amzn-User
+User-agent: MistralAI-Index
+User-agent: MistralAI-User
+# Entrenamiento de modelos: para que la marca exista también en lo que los
+# modelos "saben" sin buscar (Google-Extended además alimenta a Gemini)
+User-agent: GPTBot
+User-agent: ClaudeBot
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: Meta-ExternalAgent
+User-agent: Amazonbot
+User-agent: CCBot
+User-agent: MistralAI-Training
+Allow: /
+Disallow: /admin-clientes
+Disallow: /admin-clientes.html
+Disallow: /perfil
+Disallow: /perfil.html
+
+Sitemap: https://cdhmaker.com/sitemap.xml

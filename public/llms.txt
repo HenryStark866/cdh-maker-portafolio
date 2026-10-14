@@ -1,0 +1,80 @@
+# CDH Maker
+
+> CDH Maker is an engineering studio founded by Ing. Henry Taborda in Medellín, Colombia. It builds custom software and SaaS platforms, integrates artificial intelligence, automates processes and delivers digital fabrication (3D printing, laser cutting, CNC machining), electronics and IoT, CAD design and technical consulting. Software, AI and design work is delivered remotely to clients worldwide; physical parts ship anywhere in Colombia. Service in Spanish and English.
+
+- Founder: Ing. Henry Taborda, engineer and maker (GitHub: https://github.com/HenryStark866). Clients talk directly with the person who designs, builds and delivers the project.
+- Location: Medellín, Antioquia, Colombia. Area served: worldwide (remote) and all of Colombia (shipping of physical parts).
+- How to hire: free, no-commitment quote with price and timeline in under 24 hours; work in stages with partial deliveries and milestone payments.
+- Contact: WhatsApp or email from https://cdhmaker.com/en#contacto — email cdhmaker@gmail.com
+- Website: https://cdhmaker.com/ (available in 10 languages). It includes a free instant time estimator and an STL 3D viewer: https://cdhmaker.com/en#herramientas
+
+## Services
+
+- [Web & software development](https://cdhmaker.com/en#servicios): Custom websites, apps and systems. Modern, fast sites built to grow your business or project. (Websites and landing pages; Custom web applications; Process automation)
+- [Digital fabrication / Maker](https://cdhmaker.com/en#servicios): Prototyping and manufacturing with digital tech: from your idea or drawing to the finished part. (3D printing (FDM / resin); Laser cutting and engraving; CNC machining and prototyping)
+- [Electronics & IoT](https://cdhmaker.com/en#servicios): Electronic and connected systems: sensing, automation and remote monitoring for homes, industry and agriculture. (Embedded systems (Arduino, ESP32, Raspberry Pi); Home automation; Sensor and IoT monitoring)
+- [Design & technical consulting](https://cdhmaker.com/en#servicios): Expert guidance to make your project real: design, advice and training. (2D/3D CAD design; Project advice and consulting; Maker training and workshops)
+
+## What clients come for
+
+- A website or online store for your business: Fast, mobile-friendly, search-ready websites: from a landing page to a full platform.
+- A custom system or SaaS: Software to run your company —logistics, sales, inventory, work orders— or your own SaaS product, like TaxiYa, A Tiempo Logística or IncubApp.
+- Integrating artificial intelligence: AI assistants, content generation and analytics built into your operation, with human review where it's needed, as in EvaIA and SIGI (in progress).
+- Automating repetitive processes: Less manual work: forms, reports, notifications and flows between your tools, connected and free of typing errors.
+- A prototype or a physical part: Made-to-order 3D printing (FDM and resin), laser cutting and engraving, and CNC machining in Medellín, shipped anywhere in Colombia.
+- Monitoring or automating with sensors (IoT): Systems built on Arduino, ESP32 and Raspberry Pi for homes, industry and agriculture: measurement, alerts and remote control.
+- Complying with Colombia's data protection law (Ley 1581): Self-assessment and compliance tools for companies in Colombia, such as PrivacyCheck.
+- CAD design, technical advice or training: Fabrication-ready 2D/3D models and drawings, technical project consulting and maker workshops for your team.
+
+## Projects (proof of work)
+
+- [PrivacyCheck](https://privacycheck-co.vercel.app): Real platform demo: entity registration, registry lookup, weighted self-assessment, simulator and AI analysis. Built with Next.js, in the cloud.
+- [A Tiempo Logística](https://atiempo-logistica.vercel.app): Last-mile logistics SaaS platform for e-commerce in Medellín: shipment tracking, warehouse, routes, cash-on-delivery collection and end-to-end traceability. Next.js + Supabase.
+- [TaxiYa](https://taxiya.vercel.app): Platform that lets taxi companies operate without phone calls or costly data plans: passenger, driver and dispatch apps with real-time dispatch. A CDH Maker product.
+- [IncubApp](https://incubant-app.vercel.app): Multi-company SaaS for hatcheries and farms: photo rounds, work orders, sales, logistics, animal health and real-time management, with AI. A CDH Maker product.
+- EvaIA: AI assistant running 100% locally: voice, spoken replies, camera vision, database memory and its own animated avatar.
+- SIGI: System that drafts ideas, scripts and pieces for social media with AI (Gemini) and queues them for review: nothing publishes without my manual approval. FastAPI + Next.js + Supabase — in progress.
+
+## FAQ
+
+- **How much does a project cost?** Every project is unique, so quotes are personalized and free: describe your idea and receive price and timing in under 24 hours, no strings attached.
+- **How do work and payment happen?** We work in stages with partial deliveries: you see real progress from day one and payment is split by milestones. No surprises, no fine print.
+- **Do you serve clients outside Medellín?** Yes. Software is delivered in the cloud anywhere in the world, and physical parts (3D, laser, CNC) ship by courier across Colombia.
+- **What happens after delivery?** You get documentation and follow-up support: we answer questions and fine-tune details until everything runs smoothly.
+- **How long does a project take?** It depends on the scope. As a reference: a landing page takes 1 to 2 weeks, a custom web application 4 to 10, a process automation 2 to 5, an electronics or IoT prototype 1 to 2 weeks, and a CAD design 2 to 5 days. The estimator on this page gives you an estimate for your case.
+- **Can you integrate artificial intelligence into my company or product?** Yes. We build AI assistants, content generation and AI analytics integrated into real systems: for example EvaIA (a local assistant with voice and vision), SIGI (in progress; AI content with human approval) and IncubApp (industrial operations with AI).
+- **What technologies do you use?** Software: JavaScript, Next.js, Python, FastAPI, Supabase, Firebase and AI models such as Gemini. Hardware: Arduino, ESP32 and Raspberry Pi. Fabrication: FDM and resin 3D printing, laser cutting, CNC and 2D/3D CAD design.
+- **Do you offer made-to-order 3D printing, laser cutting or CNC?** Yes, in Medellín with shipping anywhere in Colombia. You can send us your STL file, your drawing or just the idea for us to design, and check your model first in this page's 3D viewer to estimate the printing time.
+- **Who is behind CDH Maker?** CDH Maker is the brand of Ing. Henry Taborda, an engineer and maker in Medellín, Colombia. You talk directly with the person who designs, builds and delivers your project, in Spanish or English.
+
+## En español
+
+Estudio de ingeniería en Medellín, Colombia: software y SaaS a la medida, inteligencia artificial, impresión 3D, corte láser, CNC, electrónica e IoT. Atención remota en todo el mundo.
+
+- [Desarrollo web y software](https://cdhmaker.com/#servicios): Páginas web, aplicaciones y sistemas a la medida. Sitios modernos, rápidos y pensados para hacer crecer tu negocio o proyecto. (Sitios web y landing pages; Aplicaciones web a la medida; Automatización de procesos)
+- [Fabricación digital / Maker](https://cdhmaker.com/#servicios): Prototipado y fabricación con tecnologías digitales: de tu idea o plano a la pieza terminada. (Impresión 3D (FDM / resina); Corte y grabado láser; Mecanizado CNC y prototipado)
+- [Electrónica e IoT](https://cdhmaker.com/#servicios): Sistemas electrónicos y conectados: sensórica, automatización y monitoreo remoto para hogares, industria y agro. (Sistemas embebidos (Arduino, ESP32, Raspberry Pi); Domótica y automatización; Monitoreo con sensores e IoT)
+- [Diseño y consultoría técnica](https://cdhmaker.com/#servicios): Acompañamiento experto para materializar tu proyecto: diseño, asesoría y formación. (Diseño CAD 2D/3D; Asesorías y consultoría de proyectos; Capacitaciones y talleres maker)
+
+- **¿Cuánto cuesta un proyecto?** Cada proyecto es único, por eso la cotización es personalizada y gratuita: describes tu idea, la revisamos y recibes precio y tiempos en menos de 24 horas, sin compromiso.
+- **¿Cómo es el proceso de trabajo y pago?** Trabajamos por etapas con entregas parciales: ves avances reales desde los primeros días y el pago se divide por hitos. Sin sorpresas ni letra pequeña.
+- **¿Atienden clientes fuera de Medellín?** Sí. El software se entrega en la nube para cualquier parte del mundo, y las piezas físicas (3D, láser, CNC) se envían por mensajería a todo Colombia.
+- **¿Qué pasa después de la entrega?** Recibes documentación y acompañamiento posterior: resolvemos dudas, ajustamos detalles y te dejamos todo funcionando. La relación no termina con la entrega.
+- **¿Cuánto tiempo toma un proyecto?** Depende del alcance. Como referencia: una landing page toma de 1 a 2 semanas, una aplicación web a la medida de 4 a 10, una automatización de procesos de 2 a 5, un prototipo electrónico o IoT de 1 a 2 semanas y un diseño CAD de 2 a 5 días. El cotizador de esta página te da un estimado para tu caso.
+- **¿Pueden integrar inteligencia artificial en mi empresa o producto?** Sí. Desarrollamos asistentes de IA, generación de contenido y análisis con IA integrados a sistemas reales: por ejemplo EvaIA (asistente local con voz y visión), SIGI (en construcción; contenido con IA y aprobación humana) e IncubApp (operación industrial con IA).
+- **¿Qué tecnologías usan?** En software: JavaScript, Next.js, Python, FastAPI, Supabase, Firebase y modelos de IA como Gemini. En hardware: Arduino, ESP32 y Raspberry Pi. En fabricación: impresión 3D FDM y de resina, corte láser, CNC y diseño CAD 2D/3D.
+- **¿Hacen impresión 3D, corte láser o CNC por encargo?** Sí, en Medellín y con envíos a toda Colombia. Puedes enviarnos tu archivo STL, tu plano o solo la idea para diseñarla, y revisar antes tu modelo en el visor 3D de esta página para estimar el tiempo de impresión.
+- **¿Quién está detrás de CDH Maker?** CDH Maker es la marca del Ing. Henry Taborda, ingeniero y maker en Medellín, Colombia. Hablas directamente con quien diseña, construye y entrega tu proyecto, en español o en inglés.
+
+## Optional
+
+- [Español](https://cdhmaker.com/)
+- [English](https://cdhmaker.com/en)
+- [中文](https://cdhmaker.com/zh)
+- [हिन्दी](https://cdhmaker.com/hi)
+- [العربية](https://cdhmaker.com/ar)
+- [Português](https://cdhmaker.com/pt)
+- [বাংলা](https://cdhmaker.com/bn)
+- [Русский](https://cdhmaker.com/ru)
+- [Français](https://cdhmaker.com/fr)
+- [Bahasa Indonesia](https://cdhmaker.com/id)

@@ -40,8 +40,10 @@ firebase deploy --only firestore:rules,hosting
 - **Asesor "Maker" (100% texto con memoria avanzada)**: recuerda el contexto de la conversación (servicio elegido, productos de interés, detalles técnicos y alcance) durante toda la sesión. Construye enlaces de cotización personalizados para WhatsApp con todo el requerimiento acumulado.
 - **Carga liviana**: el SDK de Firebase (~300 KB) solo se descarga si el visitante abre el
   área de clientes; imágenes en WebP y el video del anuncio se pide recién al desplegarlo.
-- **10 idiomas sin peso muerto**: cada diccionario es un archivo aparte y solo se baja el
-  que se usa. Quien entra en español no descarga ninguno (103 KB → 8,8 KB).
+- **10 idiomas, cada uno con su URL** (`/`, `/en`, `/pt`, `/fr`…): páginas estáticas
+  generadas por `tools/build-i18n.mjs`, para que buscadores y asistentes de IA (que no
+  ejecutan JavaScript) lean el sitio completo en todos los idiomas, con su JSON-LD,
+  hreflang, `sitemap.xml` y `llms.txt`. Ver MANUAL-TECNICO.md §8.3.
 
 ## Estructura
 
@@ -73,8 +75,11 @@ En `localhost` la capa anti-inspección se desactiva para que puedas trabajar co
 ## Despliegue
 
 ```bash
-firebase deploy --only hosting
+firebase deploy --only hosting   # corre antes node tools/build-i18n.mjs (predeploy)
+node tools/indexnow.mjs          # avisa a Bing de los cambios
 ```
+
+Tras editar `index.html` o un diccionario: `node tools/build-i18n.mjs` y commit de lo generado.
 
 ---
 Hecho con 💜 en Colombia.
