@@ -34,7 +34,7 @@
   // Densidad de píxeles (máx. 2 para no derrochar GPU en pantallas 3x/4x).
   // Se recalcula en cada resize(): al hacer zoom o mover la ventana a otro
   // monitor cambia devicePixelRatio, y si se congela el canvas queda borroso.
-  let DPR = Math.min(window.devicePixelRatio || 1, 2);
+  let DPR = Math.min(window.devicePixelRatio || 1, 1.5);
   // Equipos modestos: menos densidad de partículas y aristas
   const LOW_POWER =
     (navigator.hardwareConcurrency || 4) <= 4 ||
@@ -476,7 +476,7 @@
 
   // Ajusta el tamaño real del canvas al de la ventana (con soporte de DPR)
   function resize() {
-    DPR = Math.min(window.devicePixelRatio || 1, 2);   // puede haber cambiado (zoom, otro monitor)
+    DPR = Math.min(window.devicePixelRatio || 1, 1.5);   // puede haber cambiado (zoom, otro monitor)
     W = canvas.clientWidth; H = canvas.clientHeight;   // tamaño CSS
     canvas.width = W * DPR; canvas.height = H * DPR;   // tamaño físico (nítido en retina)
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);            // escala el sistema de coordenadas
