@@ -34,10 +34,9 @@ que una IA te recomiende. Lo que sí está en tus manos es darles todas las razo
       Copilot y Bing te citan, y con qué preguntas.
 - [ ] **Brave** (search.brave.com/submit-url) — *pide verificación humana; hazlo tú*: envía `https://cdhmaker.com/` y `https://cdhmaker.com/en`.
       Claude busca con Brave.
-- [ ] **GitHub** (la única fuente externa indexada hoy). *Hecho el 2026-10-14: homepage, descripción y
+- [x] **GitHub** (la única fuente externa indexada hoy). *Hecho el 2026-10-14: homepage, descripción y
       topics de `cdh-maker-portafolio`, `IncubApp` (→ incubapp.cdhmaker.com) y `privacycheck-co`, y el README
-      de perfil (`HenryStark866/HenryStark866`). Falta el perfil: corre `gh auth refresh -h github.com -s user`
-      y pídemelo, o edítalo en github.com/settings/profile.*
+      de perfil (`HenryStark866/HenryStark866`). Perfil actualizado (nombre, bio, web, ubicación y empresa).*
   - Cambia el nombre del perfil de "CDH Maker IT" a "Henry Taborda · CDH Maker".
   - Escribe una bio con tus servicios y "Medellín, Colombia".
   - Pon como web `https://cdhmaker.com`.
