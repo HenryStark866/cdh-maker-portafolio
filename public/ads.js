@@ -5,8 +5,8 @@
   const ADS = [
     {
       id: "ad-video-1",
-      src: "media/ad-video.mp4",
-      poster: "media/ad-poster.webp",
+      src: "/media/ad-video.mp4",   // ruta absoluta: también se carga desde /servicios/…
+      poster: "/media/ad-poster.webp",
       title: "CDH Maker",
       caption: "Ingeniería, IA y fabricación digital — hecho realidad.",
     },

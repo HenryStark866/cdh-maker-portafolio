@@ -1,0 +1,145 @@
+/* CDH MAKER — tools/servicios/en.mjs
+   Service pages, English. Same structure as es.mjs (the source): same keys and
+   the same number of items in every list. {placeholders} are filled in by
+   tools/build-i18n.mjs with the times from public/estimator.js. */
+
+export default {
+  common: {
+    crumb_home: "Home",
+    crumb_aria: "Breadcrumb",
+    inc_k: "// What's included",
+    inc_t: "What the service includes",
+    times_k: "// Timelines",
+    times_t: "Reference timelines",
+    times_s: "These are the values used by this site's estimator: non-binding estimates. The exact timeline for your project comes with the quote, free and in under 24 hours.",
+    proj_k: "// Related projects",
+    proj_t: "Real work in this field",
+    proj_s: "Projects we have already built and that you can check out.",
+    faq_t: "Frequently asked questions about this service",
+    more_k: "// Other services",
+    more_t: "You may also be interested in",
+    estimate: "Get my estimate",
+    range: "{min}–{max} {u}",
+    u_weeks: "weeks",
+    u_days: "days",
+  },
+
+  print3d: {
+    meta_title: "3D printing in Medellín: FDM, resin, laser and CNC | CDH Maker",
+    meta_desc: "Custom 3D printing in Medellín, Colombia (FDM and resin), laser cutting, CNC and CAD design. Shipping across Colombia. Free quote in under 24 hours.",
+    name: "3D printing in Medellín",
+    kicker: "// Digital fabrication",
+    h1: "3D printing in Medellín",
+    lead: "We print your parts in FDM or resin, laser cut and engrave, and CNC machine them from an STL file, a drawing or just the idea. Workshop in Medellín, with courier shipping anywhere in Colombia.",
+    inc: [
+      ["FDM 3D printing", "Functional parts and prototypes in PLA, PETG, ABS or TPU, with the infill set for how the part will be used."],
+      ["Resin 3D printing", "For when the part needs fine detail and a smooth surface finish."],
+      ["Laser cutting and engraving", "Flat parts in MDF, acrylic or wood, calculated from thickness and area."],
+      ["CNC machining", "Wood, aluminum, steel or plastic: from straight shapes to detailed parts with curves and engravings."],
+      ["2D/3D CAD design", "If you only have the idea or a sketch, we model the part and leave it ready to manufacture."],
+      ["From prototype to your door", "We iterate with you until the part works and ship it by courier to any city in Colombia."],
+    ],
+    times: [
+      ["CAD design of a part", "{cad}"],
+      ["FDM print speed: effective cm³ per hour, standard quality", "{fdm}"],
+      ["Resin print speed: cm of height per hour", "{resin}"],
+    ],
+    fdm: "≈ {n} cm³/h",
+    resin: "≈ {n} cm/h",
+    tools_t: "Calculate your part before you write to us",
+    tools_p: "The estimator instantly calculates the time, weight and material of your part from its dimensions, material and infill. The 3D viewer opens your STL file in the browser, without uploading it to any server, and sends it straight to the estimator.",
+    faq: [
+      ["What file do I need for 3D printing?", "Ideally an STL file. A drawing or just the idea also works: in that case we design the part in CAD before manufacturing it."],
+      ["Do you ship outside Medellín?", "Yes. Physical parts (3D printing, laser and CNC) are shipped by courier anywhere in Colombia."],
+      ["How much does it cost to 3D print a part?", "It depends on the volume, material, infill and number of parts. The site's estimator gives you an instant estimate of time, weight and material, and the final quote arrives free in under 24 hours, with no commitment."],
+      ["Which materials do you work with?", "For FDM printing: PLA, PETG, ABS and TPU. For detail printing, standard resin. For laser cutting, MDF, acrylic and wood; for CNC, wood, aluminum, steel or plastic."],
+      ["Can I check my model before sending it?", "Yes. This site's 3D viewer opens your STL right in the browser, without uploading it to any server, so you can rotate and inspect it, and passes it to the estimator to see how long it would take to print."],
+    ],
+  },
+
+  software: {
+    meta_title: "Custom software and SaaS in Medellín, Colombia | CDH Maker",
+    meta_desc: "Custom web applications, SaaS platforms, websites and process automation, built in Medellín for clients in Colombia and worldwide. Free quote in 24 h.",
+    name: "Custom software and SaaS",
+    kicker: "// Software development",
+    h1: "Custom software and SaaS in Medellín",
+    lead: "We design and build web applications, SaaS platforms and automations to run your company or launch your own product. You talk directly with the person who codes it, and we deliver it in the cloud for clients in Colombia and any other country.",
+    inc: [
+      ["Custom web applications", "Software to run your company: logistics, sales, inventory and work orders, built around your business logic, not a template's."],
+      ["SaaS platforms", "Your own cloud product, multi-tenant if you need it, like TaxiYa, A Tiempo Logística or IncubApp."],
+      ["Websites and online stores", "Fast, mobile-friendly, search-ready sites: from a landing page to a full platform."],
+      ["Process automation", "Less manual work: forms, reports, notifications and flows between your tools, connected and free of typing errors."],
+      ["Compliance with Colombia's Law 1581", "Self-assessment and data protection compliance tools for companies in Colombia, like PrivacyCheck."],
+      ["Deployment and follow-up", "Clean code, testing and cloud deployment; you get documentation and support after delivery."],
+    ],
+    times: [
+      ["Landing page or informational site", "{landing}"],
+      ["Custom web application", "{app}"],
+      ["Process automation", "{auto}"],
+    ],
+    times_note: "If the interface has to be designed from scratch, the estimator adds one week. Is it urgent? Write to us and we'll see how to prioritize it.",
+    faq: [
+      ["How long does it take to build a web application?", "As a reference, a custom web application takes {app}, a landing page {landing} and a process automation {auto}. We work in stages, so you see real progress from the first days."],
+      ["Which technologies do you use?", "JavaScript, Next.js, Python, FastAPI, Supabase and Firebase, plus AI models like Gemini when the project needs them."],
+      ["Can you build my own SaaS product?", "Yes. TaxiYa and IncubApp are CDH Maker SaaS products, and A Tiempo Logística is a last-mile SaaS platform for e-commerce in Medellín. All three can be seen live."],
+      ["Do you work with companies outside Medellín or Colombia?", "Yes. Software is delivered in the cloud anywhere in the world, and we work in Spanish and English."],
+      ["How is development paid?", "By milestones: the project moves forward in stages with partial deliveries, and payment is split across those stages. The quote is free and arrives in under 24 hours, with no fine print."],
+    ],
+  },
+
+  ai: {
+    meta_title: "Artificial intelligence integration in Medellín | CDH Maker",
+    meta_desc: "AI assistants, AI-generated content with human review and AI analysis integrated into your software. From Medellín, Colombia, for clients worldwide.",
+    name: "Artificial intelligence integration",
+    kicker: "// Artificial intelligence",
+    h1: "Artificial intelligence integration in Medellín",
+    lead: "We integrate artificial intelligence into real systems: assistants with voice and vision, AI-generated content that goes through human review before it is published, and AI analysis inside the software you run on. AI where it adds value, and a person reviewing where it is needed.",
+    inc: [
+      ["AI assistants", "Assistants that converse, answer by voice and understand what a camera sees. They can run 100% locally, like EvaIA."],
+      ["AI content with human approval", "Ideas, scripts and posts generated with AI (Gemini) that wait in a review queue: nothing is published without approval, as in SIGI."],
+      ["AI analysis inside your software", "Diagnostics and analysis built into the platform you already use, like PrivacyCheck's AI analysis."],
+      ["AI in company operations", "Artificial intelligence serving day-to-day operations, as in IncubApp for hatcheries and farms."],
+    ],
+    times: [
+      ["Custom web application with AI", "{app}"],
+      ["Process automation with AI", "{auto}"],
+    ],
+    times_note: "AI is integrated inside an application or an automation, so the estimator's reference timelines for those apply.",
+    faq: [
+      ["Can you integrate artificial intelligence into my company or product?", "Yes. We build AI assistants, content generation and AI analysis integrated into real systems: for example EvaIA (a local assistant with voice and vision), SIGI (in progress; AI content with human approval) and IncubApp (industrial operations with AI)."],
+      ["Does the AI publish or decide on its own?", "It doesn't have to. Where needed, the flow is designed with human review: in SIGI nothing is published without manual approval."],
+      ["Can AI be used without sending data to the cloud?", "Yes, depending on the case. EvaIA runs 100% locally: voice, spoken answers, camera vision and database memory on the same machine."],
+      ["Which AI models do you use?", "Models like Gemini in cloud projects, such as SIGI, and AI that runs locally when the project requires it, such as EvaIA."],
+      ["How long does it take to integrate AI?", "It depends on where it goes: inside a custom web application, {app}; in a process automation, {auto}. The free quote arrives in under 24 hours."],
+    ],
+  },
+
+  iot: {
+    meta_title: "Electronics, IoT and automation in Medellín | CDH Maker",
+    meta_desc: "Electronic prototypes, sensor monitoring, home automation and automation with Arduino, ESP32 and Raspberry Pi for homes, industry and agriculture in Medellín.",
+    name: "Electronics, IoT and automation",
+    kicker: "// Electronics & IoT",
+    h1: "IoT and automation in Medellín",
+    lead: "We design and build connected electronic systems with Arduino, ESP32 and Raspberry Pi: sensors that measure, alerts that notify and remote control for homes, industry and agriculture. From prototype to working product, with the enclosure and the software made in the same studio.",
+    inc: [
+      ["Embedded systems", "Development with Arduino, ESP32 and Raspberry Pi, from proof of concept to a complete working product."],
+      ["Sensor monitoring", "Measurement, alerts and remote monitoring for homes, industry and agriculture."],
+      ["Home and business automation", "Automation of your home or business with remote control, so you depend less on manual work."],
+      ["Custom enclosures and parts", "Electronics need a place to live: the enclosure is designed and made in the same workshop with 3D printing, laser or CNC."],
+      ["The software that goes with it", "The app or cloud that receives the data is built by the same studio: you don't have to coordinate three different suppliers."],
+    ],
+    times: [
+      ["Prototype or proof of concept", "{proto}"],
+      ["Complete working product", "{product}"],
+      ["Home or business automation", "{iotauto}"],
+    ],
+    times_note: "With more than 10 sensors or modules, the estimator adds up to one week.",
+    faq: [
+      ["Which platforms do you work with?", "For hardware, Arduino, ESP32 and Raspberry Pi. For software, JavaScript, Python, Firebase or Supabase, depending on the project."],
+      ["How long does an IoT project take?", "As a reference, a prototype or proof of concept takes {proto}, a complete working product {product} and a home or business automation {iotauto}."],
+      ["Do you work for industry and agriculture, or only homes?", "All three: sensing, automation and remote monitoring systems are designed for homes, industry and agriculture."],
+      ["How much does an electronics or IoT project cost?", "Every project is quoted individually and for free: tell us what you want to measure or automate and you get price and timeline in under 24 hours, with no commitment."],
+      ["What happens after delivery?", "You get documentation and follow-up support: we answer questions, fine-tune details and leave everything working. The relationship doesn't end at delivery."],
+    ],
+  },
+};

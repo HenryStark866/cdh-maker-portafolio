@@ -213,6 +213,10 @@ window.CDH_I18N_DICT["zh"] = {
   "contact_privacy": "为防止垃圾信息，我们不在页面上直接公开电话和邮箱：点击上方按钮即可直接联系，无需注册。",
   "logo_top": "CDH Maker — 回到顶部",
   "foot_needs": "解决方案",
+  "fs_3d": "麦德林 3D 打印",
+  "fs_sw": "定制软件与 SaaS",
+  "fs_ai": "人工智能集成",
+  "fs_iot": "电子、物联网与自动化",
   "foot_faq": "常见问题",
   "foot_contact_cta": "前往联系方式",
   "to_top": "回到顶部"

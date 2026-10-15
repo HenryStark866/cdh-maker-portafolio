@@ -1,0 +1,145 @@
+/* CDH MAKER — tools/servicios/fr.mjs
+   Pages de service, français. Même structure que es.mjs (la source). Les
+   {repères} sont remplis par tools/build-i18n.mjs avec les délais de
+   public/estimator.js. */
+
+export default {
+  common: {
+    crumb_home: "Accueil",
+    crumb_aria: "Fil d'Ariane",
+    inc_k: "// Ce qui est inclus",
+    inc_t: "Ce que comprend le service",
+    times_k: "// Délais",
+    times_t: "Délais de référence",
+    times_s: "Ce sont les valeurs du devis instantané de ce site : des estimations non contractuelles. Le délai exact de votre projet est précisé dans le devis, gratuit et en moins de 24 heures.",
+    proj_k: "// Projets liés",
+    proj_t: "Des réalisations concrètes dans ce domaine",
+    proj_s: "Des projets que nous avons déjà construits et que vous pouvez consulter.",
+    faq_t: "Questions fréquentes sur ce service",
+    more_k: "// Autres services",
+    more_t: "Cela peut aussi vous intéresser",
+    estimate: "Calculer mon estimation",
+    range: "{min}–{max} {u}",
+    u_weeks: "semaines",
+    u_days: "jours",
+  },
+
+  print3d: {
+    meta_title: "Impression 3D à Medellín : FDM, résine, laser et CNC | CDH Maker",
+    meta_desc: "Impression 3D sur commande à Medellín, Colombie (FDM et résine), découpe laser, CNC et conception CAO. Envois dans toute la Colombie. Devis gratuit en 24 h.",
+    name: "Impression 3D à Medellín",
+    kicker: "// Fabrication numérique",
+    h1: "Impression 3D à Medellín",
+    lead: "Nous imprimons vos pièces en FDM ou en résine, nous découpons et gravons au laser et nous usinons en CNC à partir d'un fichier STL, d'un plan ou simplement d'une idée. Atelier à Medellín, avec envoi par messagerie dans toute la Colombie.",
+    inc: [
+      ["Impression 3D FDM", "Pièces fonctionnelles et prototypes en PLA, PETG, ABS ou TPU, avec un remplissage adapté à l'usage de la pièce."],
+      ["Impression 3D résine", "Quand la pièce demande des détails fins et une finition de surface lisse."],
+      ["Découpe et gravure laser", "Pièces planes en MDF, acrylique ou bois, calculées selon l'épaisseur et la surface."],
+      ["Usinage CNC", "Bois, aluminium, acier ou plastique : des formes droites aux pièces détaillées avec courbes et gravures."],
+      ["Conception CAO 2D/3D", "Si vous n'avez que l'idée ou un croquis, nous modélisons la pièce et la préparons pour la fabrication."],
+      ["Du prototype à votre porte", "Nous itérons avec vous jusqu'à ce que la pièce fonctionne et l'envoyons par messagerie dans n'importe quelle ville de Colombie."],
+    ],
+    times: [
+      ["Conception CAO d'une pièce", "{cad}"],
+      ["Vitesse d'impression FDM : cm³ effectifs par heure, en qualité standard", "{fdm}"],
+      ["Vitesse d'impression résine : cm de hauteur par heure", "{resin}"],
+    ],
+    fdm: "≈ {n} cm³/h",
+    resin: "≈ {n} cm/h",
+    tools_t: "Calculez votre pièce avant de nous écrire",
+    tools_p: "Le devis instantané estime immédiatement le temps, le poids et la matière de votre pièce à partir de ses dimensions, du matériau et du remplissage. La visionneuse 3D ouvre votre fichier STL dans le navigateur, sans l'envoyer à aucun serveur, et le transmet directement au devis.",
+    faq: [
+      ["De quel fichier ai-je besoin pour imprimer en 3D ?", "Idéalement un fichier STL. Un plan ou simplement l'idée conviennent aussi : dans ce cas, nous concevons la pièce en CAO avant de la fabriquer."],
+      ["Livrez-vous en dehors de Medellín ?", "Oui. Les pièces physiques (impression 3D, laser et CNC) sont envoyées par messagerie dans toute la Colombie."],
+      ["Combien coûte l'impression 3D d'une pièce ?", "Cela dépend du volume, du matériau, du remplissage et du nombre de pièces. Le devis instantané du site donne immédiatement une estimation du temps, du poids et de la matière, et le devis final arrive gratuitement en moins de 24 heures, sans engagement."],
+      ["Quels matériaux utilisez-vous ?", "En impression FDM : PLA, PETG, ABS et TPU. Pour l'impression de détail, de la résine standard. Pour la découpe laser, MDF, acrylique et bois ; pour la CNC, bois, aluminium, acier ou plastique."],
+      ["Puis-je vérifier mon modèle avant de l'envoyer ?", "Oui. La visionneuse 3D de ce site ouvre votre STL directement dans le navigateur, sans l'envoyer à aucun serveur, pour le faire pivoter et l'inspecter, puis le transmet au devis pour estimer le temps d'impression."],
+    ],
+  },
+
+  software: {
+    meta_title: "Logiciels et SaaS sur mesure à Medellín | CDH Maker",
+    meta_desc: "Applications web, plateformes SaaS, sites web et automatisation de processus sur mesure, depuis Medellín pour la Colombie et le monde. Devis gratuit en 24 h.",
+    name: "Logiciels et SaaS sur mesure",
+    kicker: "// Développement logiciel",
+    h1: "Logiciels et SaaS sur mesure à Medellín",
+    lead: "Nous concevons et développons des applications web, des plateformes SaaS et des automatisations pour faire tourner votre entreprise ou lancer votre propre produit. Vous parlez directement avec la personne qui le programme, et nous livrons dans le cloud pour des clients en Colombie et dans tout autre pays.",
+    inc: [
+      ["Applications web sur mesure", "Des logiciels pour piloter votre entreprise : logistique, ventes, stocks et ordres de travail, avec la logique de votre activité et non celle d'un modèle."],
+      ["Plateformes SaaS", "Votre propre produit dans le cloud, multi-entreprise si besoin, comme TaxiYa, A Tiempo Logística ou IncubApp."],
+      ["Sites web et boutiques en ligne", "Des sites rapides, adaptés au mobile et prêts pour les moteurs de recherche : de la landing page à la plateforme complète."],
+      ["Automatisation des processus", "Moins de travail manuel : formulaires, rapports, notifications et flux entre vos outils, connectés et sans erreurs de saisie."],
+      ["Conformité à la loi colombienne 1581", "Des outils d'autodiagnostic et de conformité en protection des données pour les entreprises en Colombie, comme PrivacyCheck."],
+      ["Déploiement et accompagnement", "Code propre, tests et déploiement dans le cloud ; vous recevez une documentation et un accompagnement après la livraison."],
+    ],
+    times: [
+      ["Landing page ou site vitrine", "{landing}"],
+      ["Application web sur mesure", "{app}"],
+      ["Automatisation des processus", "{auto}"],
+    ],
+    times_note: "Si l'interface doit être conçue à partir de zéro, le devis ajoute une semaine. C'est urgent ? Écrivez-nous et nous verrons comment le prioriser.",
+    faq: [
+      ["Combien de temps faut-il pour développer une application web ?", "À titre indicatif, une application web sur mesure prend {app}, une landing page {landing} et une automatisation de processus {auto}. Nous travaillons par étapes : vous voyez des avancées concrètes dès les premiers jours."],
+      ["Avec quelles technologies travaillez-vous ?", "JavaScript, Next.js, Python, FastAPI, Supabase et Firebase, ainsi que des modèles d'IA comme Gemini lorsque le projet le demande."],
+      ["Pouvez-vous construire mon propre produit SaaS ?", "Oui. TaxiYa et IncubApp sont des produits SaaS de CDH Maker, et A Tiempo Logística est une plateforme SaaS de livraison du dernier kilomètre pour l'e-commerce à Medellín. Les trois sont visibles en ligne."],
+      ["Travaillez-vous avec des entreprises hors de Medellín ou de Colombie ?", "Oui. Le logiciel est livré dans le cloud partout dans le monde, et nous travaillons en espagnol et en anglais."],
+      ["Comment se paie le développement ?", "Par jalons : le projet avance par étapes avec des livraisons partielles et le paiement est réparti sur ces étapes. Le devis est gratuit et arrive en moins de 24 heures, sans petits caractères."],
+    ],
+  },
+
+  ai: {
+    meta_title: "Intégration de l'intelligence artificielle à Medellín | CDH Maker",
+    meta_desc: "Assistants IA, contenu généré par IA avec relecture humaine et analyse par IA intégrés à votre logiciel. Depuis Medellín, pour la Colombie et le monde.",
+    name: "Intégration de l'intelligence artificielle",
+    kicker: "// Intelligence artificielle",
+    h1: "Intégration de l'intelligence artificielle à Medellín",
+    lead: "Nous intégrons l'intelligence artificielle à des systèmes réels : assistants avec voix et vision, contenu généré par IA qui passe par une relecture humaine avant publication, et analyse par IA au cœur du logiciel de votre activité. De l'IA là où elle apporte de la valeur, et une personne qui vérifie là où c'est nécessaire.",
+    inc: [
+      ["Assistants IA", "Des assistants qui conversent, répondent à voix haute et comprennent ce que voit une caméra. Ils peuvent tourner 100 % en local, comme EvaIA."],
+      ["Contenu IA avec validation humaine", "Idées, scripts et publications générés par IA (Gemini) placés dans une file de relecture : rien n'est publié sans validation, comme dans SIGI."],
+      ["Analyse par IA dans votre logiciel", "Diagnostics et analyses intégrés à la plateforme que vous utilisez déjà, comme l'analyse par IA de PrivacyCheck."],
+      ["L'IA dans les opérations de l'entreprise", "L'intelligence artificielle au service des opérations quotidiennes, comme dans IncubApp pour les couvoirs et les élevages."],
+    ],
+    times: [
+      ["Application web sur mesure avec IA", "{app}"],
+      ["Automatisation des processus avec IA", "{auto}"],
+    ],
+    times_note: "L'IA s'intègre dans une application ou une automatisation : les délais de référence du devis instantané sont donc les mêmes.",
+    faq: [
+      ["Pouvez-vous intégrer l'intelligence artificielle dans mon entreprise ou mon produit ?", "Oui. Nous développons des assistants IA, de la génération de contenu et de l'analyse par IA intégrés à des systèmes réels : par exemple EvaIA (assistant local avec voix et vision), SIGI (en construction ; contenu IA avec validation humaine) et IncubApp (opérations industrielles avec IA)."],
+      ["L'IA publie-t-elle ou décide-t-elle seule ?", "Pas nécessairement. Là où c'est utile, le flux est conçu avec une relecture humaine : dans SIGI, rien n'est publié sans validation manuelle."],
+      ["Peut-on utiliser l'IA sans envoyer les données dans le cloud ?", "Oui, selon le cas. EvaIA tourne 100 % en local : voix, réponse parlée, vision par caméra et mémoire en base de données sur la même machine."],
+      ["Quels modèles d'IA utilisez-vous ?", "Des modèles comme Gemini pour les projets dans le cloud, comme SIGI, et une IA qui tourne en local quand le projet l'exige, comme EvaIA."],
+      ["Combien de temps faut-il pour intégrer l'IA ?", "Cela dépend de l'endroit où elle s'intègre : dans une application web sur mesure, {app} ; dans une automatisation de processus, {auto}. Le devis gratuit arrive en moins de 24 heures."],
+    ],
+  },
+
+  iot: {
+    meta_title: "Électronique, IoT et automatisation à Medellín | CDH Maker",
+    meta_desc: "Prototypes électroniques, surveillance par capteurs, domotique et automatisation avec Arduino, ESP32 et Raspberry Pi pour maisons, industrie et agriculture.",
+    name: "Électronique, IoT et automatisation",
+    kicker: "// Électronique et IoT",
+    h1: "IoT et automatisation à Medellín",
+    lead: "Nous concevons et fabriquons des systèmes électroniques connectés avec Arduino, ESP32 et Raspberry Pi : des capteurs qui mesurent, des alertes qui préviennent et un contrôle à distance pour les maisons, l'industrie et l'agriculture. Du prototype au produit fonctionnel, avec le boîtier et le logiciel réalisés dans le même studio.",
+    inc: [
+      ["Systèmes embarqués", "Développement avec Arduino, ESP32 et Raspberry Pi, de la preuve de concept au produit fonctionnel complet."],
+      ["Surveillance par capteurs", "Mesure, alertes et surveillance à distance pour les maisons, l'industrie et l'agriculture."],
+      ["Domotique et automatisation", "Automatisation de la maison ou de l'entreprise avec contrôle à distance, pour dépendre moins du travail manuel."],
+      ["Boîtiers et pièces sur mesure", "L'électronique a besoin d'un logement : le boîtier est conçu et fabriqué dans le même atelier par impression 3D, laser ou CNC."],
+      ["Le logiciel qui l'accompagne", "L'application ou le cloud qui reçoit les données est construit par le même studio : vous n'avez pas à coordonner trois fournisseurs différents."],
+    ],
+    times: [
+      ["Prototype ou preuve de concept", "{proto}"],
+      ["Produit fonctionnel complet", "{product}"],
+      ["Automatisation de la maison ou de l'entreprise", "{iotauto}"],
+    ],
+    times_note: "Au-delà de 10 capteurs ou modules, le devis ajoute jusqu'à une semaine.",
+    faq: [
+      ["Avec quelles plateformes travaillez-vous ?", "Côté matériel, Arduino, ESP32 et Raspberry Pi. Côté logiciel, JavaScript, Python, Firebase ou Supabase, selon le projet."],
+      ["Combien de temps prend un projet IoT ?", "À titre indicatif, un prototype ou une preuve de concept prend {proto}, un produit fonctionnel complet {product} et une automatisation de la maison ou de l'entreprise {iotauto}."],
+      ["Travaillez-vous pour l'industrie et l'agriculture, ou seulement pour les maisons ?", "Pour les trois : les systèmes de mesure, d'automatisation et de surveillance à distance sont conçus pour les maisons, l'industrie et l'agriculture."],
+      ["Combien coûte un projet d'électronique ou d'IoT ?", "Chaque projet fait l'objet d'un devis sur mesure et gratuit : dites-nous ce que vous voulez mesurer ou automatiser et recevez prix et délais en moins de 24 heures, sans engagement."],
+      ["Que se passe-t-il après la livraison ?", "Vous recevez une documentation et un accompagnement : nous répondons à vos questions, ajustons les détails et laissons tout en état de marche. La relation ne s'arrête pas à la livraison."],
+    ],
+  },
+};

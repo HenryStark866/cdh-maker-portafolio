@@ -22,7 +22,7 @@ que una IA te recomiende. Lo que sí está en tus manos es darles todas las razo
 
 ## Semana 1 — publicar e indexar (≈ 2 horas)
 
-- [ ] **Desplegar** los cambios (`firebase deploy --only hosting`) y luego correr `node tools/indexnow.mjs`.
+- [x] **Desplegar** los cambios (`firebase deploy --only hosting`) y luego correr `node tools/indexnow.mjs`.
 - [ ] **Firebase → Hosting → Dominios:** deja `cdhmaker.com` como dominio principal y configura
       `www.cdhmaker.com` para que **redirija** a `cdhmaker.com`. Hoy los 4 dominios responden
       con la misma página. El código ya declara `cdhmaker.com` como el oficial (canonical).
@@ -32,9 +32,12 @@ que una IA te recomiende. Lo que sí está en tus manos es darles todas las razo
 - [ ] **Bing Webmaster Tools** (bing.com/webmasters): impórtalo desde Search Console y envía el
       mismo sitemap. Revisa el informe **AI Performance**: es el único que hoy muestra cuándo
       Copilot y Bing te citan, y con qué preguntas.
-- [ ] **Brave** (search.brave.com/submit-url): envía `https://cdhmaker.com/` y `https://cdhmaker.com/en`.
+- [ ] **Brave** (search.brave.com/submit-url) — *pide verificación humana; hazlo tú*: envía `https://cdhmaker.com/` y `https://cdhmaker.com/en`.
       Claude busca con Brave.
-- [ ] **GitHub** (la única fuente externa indexada hoy):
+- [ ] **GitHub** (la única fuente externa indexada hoy). *Hecho el 2026-10-14: homepage, descripción y
+      topics de `cdh-maker-portafolio`, `IncubApp` (→ incubapp.cdhmaker.com) y `privacycheck-co`, y el README
+      de perfil (`HenryStark866/HenryStark866`). Falta el perfil: corre `gh auth refresh -h github.com -s user`
+      y pídemelo, o edítalo en github.com/settings/profile.*
   - Cambia el nombre del perfil de "CDH Maker IT" a "Henry Taborda · CDH Maker".
   - Escribe una bio con tus servicios y "Medellín, Colombia".
   - Pon como web `https://cdhmaker.com`.
@@ -100,11 +103,17 @@ que una IA te recomiende. Lo que sí está en tus manos es darles todas las razo
   nombre o un servicio para pegarlo en ChatGPT. También afecta la accesibilidad (lectores de
   pantalla, "leer en voz alta"). La trampa de `debugger` puede desenfocar el sitio para agentes
   de IA que navegan con herramientas de depuración.
-- **Páginas por servicio.** Los competidores que salen en "impresión 3D Medellín" o "software a
-  la medida Medellín" tienen una URL propia por servicio y ciudad. Es el siguiente paso grande
-  en el código.
+- **Páginas por servicio.** Hechas (ver abajo). Lo que sigue depende de ti: cuando tengas un
+  trabajo real de impresión 3D o de IoT con foto, súmalo al portafolio; esas dos páginas hoy no
+  tienen proyectos relacionados porque no hay ninguno publicado en el sitio.
 
 ## Lo que ya quedó hecho en el código
+
+- **Páginas por servicio y ciudad** en los 10 idiomas: impresión 3D en Medellín
+  (`/servicios/impresion-3d-medellin`), software y SaaS a la medida, integración de IA e
+  IoT/automatización, cada una con qué incluye, tiempos del cotizador, proyectos reales,
+  preguntas frecuentes, JSON-LD `Service` y entrada en el sitemap. Enlazadas desde
+  Servicios, Soluciones y el footer (MANUAL-TECNICO §8.4).
 
 - **Una página estática por idioma** (`/`, `/en`, `/zh`, `/hi`, `/ar`, `/pt`, `/bn`, `/ru`,
   `/fr`, `/id`), cada una con title, description, canonical y hreflang propios. Antes los

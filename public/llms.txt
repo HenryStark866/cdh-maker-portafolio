@@ -15,6 +15,13 @@
 - [Electronics & IoT](https://cdhmaker.com/en#servicios): Electronic and connected systems: sensing, automation and remote monitoring for homes, industry and agriculture. (Embedded systems (Arduino, ESP32, Raspberry Pi); Home automation; Sensor and IoT monitoring)
 - [Design & technical consulting](https://cdhmaker.com/en#servicios): Expert guidance to make your project real: design, advice and training. (2D/3D CAD design; Project advice and consulting; Maker training and workshops)
 
+## Service pages
+
+- [3D printing in Medellín](https://cdhmaker.com/en/services/3d-printing-medellin): Custom 3D printing in Medellín, Colombia (FDM and resin), laser cutting, CNC and CAD design. Shipping across Colombia. Free quote in under 24 hours. Includes: FDM 3D printing; Resin 3D printing; Laser cutting and engraving; CNC machining; 2D/3D CAD design; From prototype to your door.
+- [Custom software and SaaS](https://cdhmaker.com/en/services/custom-software-medellin): Custom web applications, SaaS platforms, websites and process automation, built in Medellín for clients in Colombia and worldwide. Free quote in 24 h. Includes: Custom web applications; SaaS platforms; Websites and online stores; Process automation; Compliance with Colombia's Law 1581; Deployment and follow-up.
+- [Artificial intelligence integration](https://cdhmaker.com/en/services/ai-integration-medellin): AI assistants, AI-generated content with human review and AI analysis integrated into your software. From Medellín, Colombia, for clients worldwide. Includes: AI assistants; AI content with human approval; AI analysis inside your software; AI in company operations.
+- [Electronics, IoT and automation](https://cdhmaker.com/en/services/iot-automation-medellin): Electronic prototypes, sensor monitoring, home automation and automation with Arduino, ESP32 and Raspberry Pi for homes, industry and agriculture in Medellín. Includes: Embedded systems; Sensor monitoring; Home and business automation; Custom enclosures and parts; The software that goes with it.
+
 ## What clients come for
 
 - A website or online store for your business: Fast, mobile-friendly, search-ready websites: from a landing page to a full platform.
@@ -31,7 +38,7 @@
 - [PrivacyCheck](https://privacycheck-co.vercel.app): Real platform demo: entity registration, registry lookup, weighted self-assessment, simulator and AI analysis. Built with Next.js, in the cloud.
 - [A Tiempo Logística](https://atiempo-logistica.vercel.app): Last-mile logistics SaaS platform for e-commerce in Medellín: shipment tracking, warehouse, routes, cash-on-delivery collection and end-to-end traceability. Next.js + Supabase.
 - [TaxiYa](https://taxiya.vercel.app): Platform that lets taxi companies operate without phone calls or costly data plans: passenger, driver and dispatch apps with real-time dispatch. A CDH Maker product.
-- [IncubApp](https://incubant-app.vercel.app): Multi-company SaaS for hatcheries and farms: photo rounds, work orders, sales, logistics, animal health and real-time management, with AI. A CDH Maker product.
+- [IncubApp](https://incubapp.cdhmaker.com): Multi-company SaaS for hatcheries and farms: photo rounds, work orders, sales, logistics, animal health and real-time management, with AI. A CDH Maker product.
 - EvaIA: AI assistant running 100% locally: voice, spoken replies, camera vision, database memory and its own animated avatar.
 - SIGI: System that drafts ideas, scripts and pieces for social media with AI (Gemini) and queues them for review: nothing publishes without my manual approval. FastAPI + Next.js + Supabase — in progress.
 
@@ -55,6 +62,11 @@ Estudio de ingeniería en Medellín, Colombia: software y SaaS a la medida, inte
 - [Fabricación digital / Maker](https://cdhmaker.com/#servicios): Prototipado y fabricación con tecnologías digitales: de tu idea o plano a la pieza terminada. (Impresión 3D (FDM / resina); Corte y grabado láser; Mecanizado CNC y prototipado)
 - [Electrónica e IoT](https://cdhmaker.com/#servicios): Sistemas electrónicos y conectados: sensórica, automatización y monitoreo remoto para hogares, industria y agro. (Sistemas embebidos (Arduino, ESP32, Raspberry Pi); Domótica y automatización; Monitoreo con sensores e IoT)
 - [Diseño y consultoría técnica](https://cdhmaker.com/#servicios): Acompañamiento experto para materializar tu proyecto: diseño, asesoría y formación. (Diseño CAD 2D/3D; Asesorías y consultoría de proyectos; Capacitaciones y talleres maker)
+
+- [Impresión 3D en Medellín](https://cdhmaker.com/servicios/impresion-3d-medellin): Impresión 3D por encargo en Medellín (FDM y resina), corte láser, CNC y diseño CAD. Envíos a toda Colombia. Cotización gratis en menos de 24 horas. Incluye: Impresión 3D FDM; Impresión 3D en resina; Corte y grabado láser; Mecanizado CNC; Diseño CAD 2D/3D; Del prototipo a tu puerta.
+- [Software y SaaS a la medida](https://cdhmaker.com/servicios/software-a-la-medida-medellin): Aplicaciones web, plataformas SaaS, páginas web y automatización de procesos a la medida, desde Medellín para Colombia y el mundo. Cotización gratis en 24 h. Incluye: Aplicaciones web a la medida; Plataformas SaaS; Páginas web y tiendas en línea; Automatización de procesos; Cumplimiento de la Ley 1581; Despliegue y acompañamiento.
+- [Integración de inteligencia artificial](https://cdhmaker.com/servicios/inteligencia-artificial-medellin): Asistentes de IA, contenido generado con IA y revisión humana, y análisis con IA integrados a tu software. Desde Medellín, para Colombia y el mundo. Incluye: Asistentes de IA; Contenido con IA y aprobación humana; Análisis con IA dentro de tu software; IA en la operación de la empresa.
+- [Electrónica, IoT y automatización](https://cdhmaker.com/servicios/iot-automatizacion-medellin): Prototipos electrónicos, monitoreo con sensores, domótica y automatización con Arduino, ESP32 y Raspberry Pi para hogares, industria y agro, en Medellín. Incluye: Sistemas embebidos; Monitoreo con sensores; Domótica y automatización; Carcasas y piezas a medida; El software que lo acompaña.
 
 - **¿Cuánto cuesta un proyecto?** Cada proyecto es único, por eso la cotización es personalizada y gratuita: describes tu idea, la revisamos y recibes precio y tiempos en menos de 24 horas, sin compromiso.
 - **¿Cómo es el proceso de trabajo y pago?** Trabajamos por etapas con entregas parciales: ves avances reales desde los primeros días y el pago se divide por hitos. Sin sorpresas ni letra pequeña.

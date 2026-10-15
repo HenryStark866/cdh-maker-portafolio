@@ -213,6 +213,10 @@ window.CDH_I18N_DICT["en"] = {
   "faq9_a": "CDH Maker is the brand of Ing. Henry Taborda, an engineer and maker in Medellín, Colombia. You talk directly with the person who designs, builds and delivers your project, in Spanish or English.",
   "logo_top": "CDH Maker — back to top",
   "foot_needs": "Solutions",
+  "fs_3d": "3D printing in Medellín",
+  "fs_sw": "Custom software and SaaS",
+  "fs_ai": "Artificial intelligence integration",
+  "fs_iot": "Electronics, IoT and automation",
   "foot_faq": "FAQ",
   "to_top": "Back to top",
   "hero_kicker": "Engineering"

@@ -924,8 +924,8 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    const btn = document.getElementById("openEstimator");
-    if (btn) btn.addEventListener("click", open);
+    // #openEstimator en la portada; [data-estimator] en las páginas de servicio
+    document.querySelectorAll("#openEstimator, [data-estimator]").forEach((btn) => btn.addEventListener("click", open));
   });
   window.addEventListener("cdh:langchange", () => { if (modal && !modal.hidden) render(); });
 

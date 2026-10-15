@@ -215,5 +215,9 @@ window.CDH_I18N_DICT["es"] = {
   "foot_needs": "Soluciones",
   "foot_faq": "Preguntas frecuentes",
   "to_top": "Volver arriba",
-  "hero_kicker": "Ingeniería"
+  "hero_kicker": "Ingeniería",
+  "fs_sw": "Software y SaaS a la medida",
+  "fs_3d": "Impresión 3D en Medellín",
+  "fs_iot": "Electrónica, IoT y automatización",
+  "fs_ai": "Integración de inteligencia artificial"
 };

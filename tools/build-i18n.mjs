@@ -17,6 +17,11 @@
         todo sacado del diccionario del idioma.
      3. Escribe public/<código>.html para los otros 9 idiomas (Firebase con
         cleanUrls los sirve en /en, /pt, /fr…), con el cuerpo ya traducido.
+     3b. Escribe las páginas por servicio y ciudad (§SERVICES): español en
+        public/servicios/<slug>.html (/servicios/…) y los demás idiomas en
+        public/<código>/services/<slug>.html, con textos de
+        tools/servicios/<código>.mjs, tiempos leídos de public/estimator.js,
+        hreflang propio y JSON-LD Service (provider = #org).
      4. Regenera public/sitemap.xml y public/llms.txt.
 
    Uso:  node tools/build-i18n.mjs            (avisa si faltan traducciones)
@@ -24,7 +29,8 @@
    El deploy de Firebase lo corre solo (firebase.json → hosting.predeploy).
 
    Archivos que este script ESCRIBE (no editarlos a mano):
-     public/{en,zh,hi,ar,pt,bn,ru,fr,id}.html, public/sitemap.xml,
+     public/{en,zh,hi,ar,pt,bn,ru,fr,id}.html, public/servicios/*.html,
+     public/<código>/services/*.html, public/sitemap.xml,
      public/llms.txt, public/i18n/es.js (solo las claves presentes en el HTML)
      y el bloque seo de public/index.html.
    ───────────────────────────────────────────────────────────────────────────
@@ -36,7 +42,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import vm from "node:vm";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PUB = path.join(ROOT, "public");
@@ -98,7 +104,7 @@ const PROJECTS = [
   { name: "PrivacyCheck", url: "https://privacycheck-co.vercel.app", t: "pj_featured_t", p: "pj_featured_p" },
   { name: "A Tiempo Logística", url: "https://atiempo-logistica.vercel.app", t: "pj_at_t", p: "pj_at_p" },
   { name: "TaxiYa", url: "https://taxiya.vercel.app", t: "pj_taxi_t", p: "pj_taxi_p" },
-  { name: "IncubApp", url: "https://incubant-app.vercel.app", t: "pj_inc_t", p: "pj_inc_p" },
+  { name: "IncubApp", url: "https://incubapp.cdhmaker.com", t: "pj_inc_t", p: "pj_inc_p" },
   { name: "EvaIA", t: "pj_eva_t", p: "pj_eva_p" },
   { name: "SIGI", t: "pj_sigi_t", p: "pj_sigi_p" },
   // El autodiagnóstico Ley 1581 del reto CAVALTEC es el mismo PrivacyCheck,
@@ -108,10 +114,51 @@ const FAQ_COUNT = 9;   // faq1_q … faq9_q
 // Claves que solo usan la cabecera y el JSON-LD (no aparecen en el <body>)
 const HEAD_KEYS = ["meta_title", "meta_desc", "person_job"];
 const NEEDS_COUNT = 8; // n1_t … n8_t
+
+// §SERVICES — páginas por servicio y ciudad (textos en tools/servicios/<código>.mjs).
+// Rutas: español en /servicios/<slug.es>; los demás idiomas en
+// /<código>/services/<slug.en> (con cleanUrls, el archivo es
+// public/<código>/services/<slug>.html).
+//   card:     tarjeta de #servicios de la portada que la representa (su
+//             Offer del JSON-LD de la portada recibe la url de la página)
+//   area:     "local" = Medellín + Colombia (físico); "global" = además el mundo
+//   projects: claves de PROJECT_CARDS, en el orden en que se muestran
+//   tools:    muestra el bloque cotizador + visor 3D (fabricación)
+const SERVICES = [
+  { id: "print3d", slug: { es: "impresion-3d-medellin", en: "3d-printing-medellin" }, card: 2, area: "local", projects: [], tools: true },
+  { id: "software", slug: { es: "software-a-la-medida-medellin", en: "custom-software-medellin" }, card: 1, area: "global", projects: ["at", "taxi", "inc", "pc"] },
+  { id: "ai", slug: { es: "inteligencia-artificial-medellin", en: "ai-integration-medellin" }, area: "global", projects: ["eva", "sigi", "inc", "pc"] },
+  { id: "iot", slug: { es: "iot-automatizacion-medellin", en: "iot-automation-medellin" }, card: 3, area: "local", projects: [] },
+];
+// Tarjetas de proyecto de las páginas de servicio: textos del diccionario
+// principal (los mismos de #proyectos) y la imagen de public/media. La URL
+// en vivo sale de PROJECTS: se cambia en un solo lugar.
+const PROJECT_CARDS = {
+  at: { t: "pj_at_t", p: "pj_at_p", tag: "tag_saas", img: "atiempo-logistica", ext: "jpg", w: 1000, h: 625, alt: "alt_at" },
+  taxi: { t: "pj_taxi_t", p: "pj_taxi_p", tag: "tag_saas", img: "taxiya", ext: "jpg", w: 1000, h: 625, alt: "alt_taxi" },
+  inc: { t: "pj_inc_t", p: "pj_inc_p", tag: "tag_saas_ai", img: "incubapp", ext: "jpg", w: 1000, h: 625, alt: "alt_inc" },
+  pc: { t: "pj_featured_t", p: "pj_featured_p", tag: "tag_web", img: "privacycheck-poster", ext: "jpg", w: 1280, h: 720, alt: "pj_featured_t" },
+  eva: { t: "pj_eva_t", p: "pj_eva_p", tag: "tag_ai", img: "evaia-avatar", ext: "png", w: 640, h: 640, alt: "alt_eva" },
+  sigi: { t: "pj_sigi_t", p: "pj_sigi_p", tag: "tag_sigi" },
+};
+for (const card of Object.values(PROJECT_CARDS)) {
+  const pj = PROJECTS.find((x) => x.t === card.t);
+  if (pj && pj.url) card.url = pj.url;
+}
+// Íconos de las tarjetas de servicio (los mismos trazos de la portada)
+const SVC_ICON = {
+  print3d: '<path d="M6 3h12l4 6-10 12L2 9l4-6z" /><path d="M11 3 8 9l4 12 4-12-3-6" /><path d="M2 9h20" />',
+  software: '<path d="m8 6-6 6 6 6" /><path d="m16 6 6 6-6 6" /><path d="m14 4-4 16" />',
+  ai: '<path d="M12 2a4 4 0 0 1 4 4v1a3 3 0 0 1 3 3v1a3 3 0 0 1-1 5.2V17a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4v-.8A3 3 0 0 1 5 11v-1a3 3 0 0 1 3-3V6a4 4 0 0 1 4-4z" /><path d="M12 2v19" />',
+  iot: '<rect x="4" y="4" width="16" height="16" rx="2" /><path d="M9 9h6v6H9z" /><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3" />',
+};
 // ════════════════════════════════════════════════════════════════════════
 
 const BUILD_DATE = new Date().toISOString().slice(0, 10);
 const urlOf = (code) => (code === "es" ? `${SITE}/` : `${SITE}/${code}`);
+const homePath = (code) => (code === "es" ? "/" : `/${code}`);
+const svcPath = (svc, code) => (code === "es" ? `/servicios/${svc.slug.es}` : `/${code}/services/${svc.slug.en}`);
+const svcUrl = (svc, code) => SITE + svcPath(svc, code);
 
 // ── Utilidades de texto ──────────────────────────────────────────────────
 const escText = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -255,6 +302,8 @@ function jsonLd(code, d) {
     "@type": "Offer",
     itemOffered: {
       "@type": "Service",
+      // La línea que tiene página propia apunta a ella (en este idioma)
+      ...(SERVICES.some((s) => s.card === n) ? { url: svcUrl(SERVICES.find((s) => s.card === n), code) } : {}),
       name: plain(d[`s${n}_t`]),
       description: plain(d[`s${n}_p`]),
       serviceType: ["a", "b", "c"].map((x) => plain(d[`s${n}_${x}`])),
@@ -426,6 +475,7 @@ function translatePage(src, code, d, es, missing) {
   // Rutas relativas → absolutas: la página se sirve en /en y también debe
   // funcionar si alguien llega por /en/ (con barra final)
   html = html.replace(/\s(src|href|poster|srcset)="(?!#|\/|[a-z][a-z0-9+.-]*:)([^"]+)"/gi, ` $1="/$2"`);
+  html = localizeSvcLinks(html, code);
   // Fila de idiomas del footer: marcar como actual el de esta página
   html = html
     .replace(/(<a href="\/" hreflang="es"[^>]*?) aria-current="page"/, "$1")
@@ -438,21 +488,397 @@ function translatePage(src, code, d, es, missing) {
   return html;
 }
 
+// ── 3b. Páginas por servicio y ciudad ────────────────────────────────────
+// Cada página reutiliza el "cascarón" de la portada YA traducida (menú,
+// footer, scripts, sección de proceso y de contacto) y cambia el <main>, el
+// bloque seo y los enlaces que dependen de la URL.
+
+// Enlaces de la portada (fuente en español) → la ruta del idioma de la página
+function localizeSvcLinks(html, code) {
+  if (code === "es") return html;
+  for (const s of SERVICES) html = html.split(`href="${svcPath(s, "es")}"`).join(`href="${svcPath(s, code)}"`);
+  return html;
+}
+
+// Tiempos de referencia: se leen de public/estimator.js para que las páginas
+// nunca contradigan al cotizador (TIME_WEB, TIME_IOT, TIME_DESIGN y PRICE)
+function readEstimator() {
+  const src = fs.readFileSync(path.join(PUB, "estimator.js"), "utf8");
+  const grab = (name) => {
+    const m = src.match(new RegExp(`const ${name} = (\\{[\\s\\S]*?\\});`));
+    if (!m) throw new Error(`estimator.js: no se encontró "const ${name} = {…};"`);
+    return vm.runInNewContext(`(${m[1]})`);
+  };
+  return { web: grab("TIME_WEB"), iot: grab("TIME_IOT"), design: grab("TIME_DESIGN"), price: grab("PRICE") };
+}
+
+// Valores de los marcadores {landing}, {app}… en el idioma de la página
+function timeVars(est, sd) {
+  const c = sd.common;
+  const r = (x, u) => fill(c.range, { min: x.min, max: x.max, u: c[u] });
+  return {
+    landing: r(est.web.landing, "u_weeks"), app: r(est.web.app, "u_weeks"), auto: r(est.web.auto, "u_weeks"),
+    proto: r(est.iot.proto, "u_weeks"), product: r(est.iot.product, "u_weeks"), iotauto: r(est.iot.auto, "u_weeks"),
+    cad: r(est.design.cad, "u_days"), advice: r(est.design.advice, "u_days"), workshop: r(est.design.workshop, "u_days"),
+    fdm: fill(sd.print3d.fdm, { n: est.price.fdm_cm3_por_hora }),
+    resin: fill(sd.print3d.resin, { n: est.price.resina_cm_alto_por_hora }),
+  };
+}
+const fill = (s, vars) => String(s).replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m));
+
+async function loadServiceDict(code) {
+  const file = path.join(ROOT, "tools", "servicios", `${code}.mjs`);
+  if (!fs.existsSync(file)) return {};
+  // ?v= evita la caché de módulos si el build se importa dos veces en un proceso
+  return (await import(`${pathToFileURL(file).href}?v=${Date.now()}`)).default;
+}
+
+// Completa `d` con `es` donde falte algo (mismas claves, listas del mismo
+// largo) y anota cada hueco en `missing` como "servicio.clave"
+function withFallback(es, d, missing, where = "") {
+  if (Array.isArray(es)) {
+    if (!Array.isArray(d) || d.length !== es.length) { missing.add(where); return es; }
+    return es.map((v, i) => withFallback(v, d[i], missing, `${where}[${i}]`));
+  }
+  if (es && typeof es === "object") {
+    const out = {};
+    for (const k of Object.keys(es)) out[k] = withFallback(es[k], d && d[k], missing, where ? `${where}.${k}` : k);
+    return out;
+  }
+  if (typeof d !== "string" || !d.trim()) { missing.add(where); return es; }
+  return d;
+}
+
+// Extrae <section … id="X"> … </section> de una página ya armada
+function sectionById(html, id) {
+  const m = new RegExp(`<section\\b[^>]*\\bid="${id}"[^>]*>`).exec(html);
+  if (!m) throw new Error(`No se encontró la sección #${id} en la portada`);
+  const end = findClose(html, "section", m.index + m[0].length);
+  return html.slice(m.index, end + "</section>".length);
+}
+
+function svcJsonLd(svc, code, s, c, d) {
+  const page = svcUrl(svc, code);
+  const ORG = `${SITE}/#org`, WEBSITE = `${SITE}/#website`;
+  const medellin = { "@type": "City", name: "Medellín", containedInPlace: { "@type": "Country", name: "Colombia" } };
+  const areaServed = [medellin, { "@type": "Country", name: "Colombia" }];
+  if (svc.area === "global") areaServed.push({ "@type": "Place", name: "Worldwide" });
+
+  const org = {
+    "@type": ["ProfessionalService", "Organization"],
+    "@id": ORG,
+    name: ENTITY.name,
+    url: `${SITE}/`,
+    logo: `${SITE}/icon.svg`,
+    email: ENTITY.email,
+    address: { "@type": "PostalAddress", ...ENTITY.address },
+  };
+  const service = {
+    "@type": "Service",
+    "@id": `${page}#service`,
+    name: s.name,
+    serviceType: s.name,
+    description: s.meta_desc,
+    url: page,
+    provider: { "@id": ORG },
+    areaServed,
+    availableChannel: {
+      "@type": "ServiceChannel",
+      serviceUrl: `${page}#contacto`,
+      availableLanguage: ENTITY.serviceLanguages.map((l) => l.name),
+    },
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: c.inc_t,
+      itemListElement: s.inc.map(([t, p]) => ({
+        "@type": "Offer",
+        itemOffered: { "@type": "Service", name: t, description: p, provider: { "@id": ORG } },
+      })),
+    },
+  };
+  const webpage = {
+    "@type": "WebPage",
+    "@id": `${page}#webpage`,
+    url: page,
+    name: s.meta_title,
+    description: s.meta_desc,
+    inLanguage: code,
+    isPartOf: { "@id": WEBSITE },
+    about: { "@id": `${page}#service` },
+    breadcrumb: { "@id": `${page}#breadcrumb` },
+    primaryImageOfPage: { "@type": "ImageObject", url: `${SITE}/media/og.jpg`, width: 1200, height: 630 },
+    dateModified: BUILD_DATE,
+  };
+  const projects = svc.projects.map((k) => PROJECT_CARDS[k]);
+  if (projects.length) {
+    webpage.mentions = projects.map((p) => {
+      const pj = PROJECTS.find((x) => x.t === p.t);
+      const item = { "@type": "CreativeWork", name: pj ? pj.name : plain(d[p.t]), description: plain(d[p.p]), creator: { "@id": ORG } };
+      if (p.url) item.url = p.url;
+      return item;
+    });
+  }
+  const breadcrumb = {
+    "@type": "BreadcrumbList",
+    "@id": `${page}#breadcrumb`,
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: c.crumb_home, item: urlOf(code) },
+      { "@type": "ListItem", position: 2, name: plain(d.nav_serv), item: `${urlOf(code)}#servicios` },
+      { "@type": "ListItem", position: 3, name: s.name, item: page },
+    ],
+  };
+  const faq = {
+    "@type": "FAQPage",
+    "@id": `${page}#faq`,
+    inLanguage: code,
+    mainEntity: s.faq.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })),
+  };
+  const nodes = [org, service, webpage, breadcrumb, faq].map((n) => JSON.stringify(n));
+  return `{"@context":"https://schema.org","@graph":[\n${nodes.join(",\n")}\n]}`.replace(/</g, "\\u003c");
+}
+
+function svcSeoBlock(svc, code, s, c, d, langsWithPage) {
+  const lang = LANGS.find((l) => l.code === code);
+  const page = svcUrl(svc, code);
+  const I = "  ";
+  const lines = [
+    `<!-- seo:start — bloque GENERADO por tools/build-i18n.mjs desde tools/servicios/${code}.mjs: no editar a mano -->`,
+    `<title>${escText(s.meta_title)}</title>`,
+    `<meta name="description" content="${escAttr(s.meta_desc)}" />`,
+    `<link rel="canonical" href="${page}" />`,
+    ...langsWithPage.map((l) => `<link rel="alternate" hreflang="${l}" href="${svcUrl(svc, l)}" />`),
+    `<link rel="alternate" hreflang="x-default" href="${svcUrl(svc, "es")}" />`,
+    `<meta property="og:type" content="website" />`,
+    `<meta property="og:site_name" content="${ENTITY.name}" />`,
+    `<meta property="og:title" content="${escAttr(s.meta_title)}" />`,
+    `<meta property="og:description" content="${escAttr(s.meta_desc)}" />`,
+    `<meta property="og:url" content="${page}" />`,
+    `<meta property="og:image" content="${SITE}/media/og.jpg" />`,
+    `<meta property="og:image:width" content="1200" />`,
+    `<meta property="og:image:height" content="630" />`,
+    `<meta property="og:image:alt" content="${escAttr(s.meta_title)}" />`,
+    `<meta property="og:locale" content="${lang.locale}" />`,
+    ...LANGS.filter((l) => l.code !== code && langsWithPage.includes(l.code)).map((l) => `<meta property="og:locale:alternate" content="${l.locale}" />`),
+    `<meta name="twitter:card" content="summary_large_image" />`,
+    `<meta name="twitter:title" content="${escAttr(s.meta_title)}" />`,
+    `<meta name="twitter:description" content="${escAttr(s.meta_desc)}" />`,
+    `<meta name="twitter:image" content="${SITE}/media/og.jpg" />`,
+    `<script type="application/ld+json">`,
+    svcJsonLd(svc, code, s, c, d),
+    `</script>`,
+    `<!-- seo:end -->`,
+  ];
+  return lines.map((l) => (l.startsWith("{") ? l : I + l)).join("\n").trimStart();
+}
+
+const ARROW_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg>';
+
+// El <main> de la página: héroe, qué incluye, tiempos, proyectos, proceso,
+// preguntas, otros servicios y contacto
+function svcMain(svc, code, sd, d, vars, home) {
+  const c = sd.common;
+  const s = sd[svc.id];
+  const t = (x) => escText(fill(x, vars));
+  const H = homePath(code);
+  const sections = [];
+
+  // Qué incluye
+  sections.push(`<section class="section" id="incluye">
+    <div class="container">
+      <p class="section-kicker">${t(c.inc_k)}</p>
+      <h2>${t(c.inc_t)}</h2>
+      <div class="cards svc-inc">
+${s.inc.map(([h, p]) => `        <article class="card">
+          <h3>${t(h)}</h3>
+          <p>${t(p)}</p>
+        </article>`).join("\n")}
+      </div>
+    </div>
+  </section>`);
+
+  // Tiempos (del cotizador) + herramientas
+  const tools = svc.tools
+    ? `
+      <div class="svc-tools">
+        <h3>${t(s.tools_t)}</h3>
+        <p>${t(s.tools_p)}</p>
+        <div class="hero-cta svc-tools-cta">
+          <button type="button" class="btn btn-primary" data-estimator>${escText(plain(d.tool_est_open))}</button>
+          <button type="button" class="btn btn-ghost" id="openViewer3d">${escText(plain(d.tool_view_open))}</button>
+        </div>
+      </div>`
+    : `
+      <div class="hero-cta svc-tools-cta">
+        <button type="button" class="btn btn-primary" data-estimator>${escText(plain(d.tool_est_open))}</button>
+      </div>`;
+  sections.push(`<section class="section" id="tiempos">
+    <div class="container">
+      <p class="section-kicker">${t(c.times_k)}</p>
+      <h2>${t(c.times_t)}</h2>
+      <p class="section-sub">${t(c.times_s)}</p>
+      <dl class="svc-times">
+${s.times.map(([label, value]) => `        <div class="svc-time"><dt>${t(label)}</dt><dd>${t(value)}</dd></div>`).join("\n")}
+      </dl>${s.times_note ? `\n      <p class="svc-note">${t(s.times_note)}</p>` : ""}${tools}
+    </div>
+  </section>`);
+
+  // Proyectos relacionados (solo los que existen en la portada)
+  if (svc.projects.length) {
+    const cards = svc.projects.map((k) => {
+      const p = PROJECT_CARDS[k];
+      const media = p.img
+        ? `
+          <${p.url ? `a class="project-media" href="${p.url}" target="_blank" rel="noopener"` : "div class=\"project-media\""}>
+            <picture>
+              <source srcset="/media/${p.img}.webp" type="image/webp" />
+              <img src="/media/${p.img}.${p.ext}" alt="${escAttr(plain(d[p.alt]))}" loading="lazy" decoding="async" width="${p.w}" height="${p.h}" />
+            </picture>
+          </${p.url ? "a" : "div"}>`
+        : "";
+      const link = p.url ? `\n            <a class="project-link" href="${p.url}" target="_blank" rel="noopener">${escText(plain(d.live))}</a>` : "";
+      return `        <article class="project${p.img ? " project-with-media" : ""}">${media}
+          <div class="project-body">
+            <div class="project-tag">${escText(plain(d[p.tag]))}</div>
+            <h3>${escText(plain(d[p.t]))}</h3>
+            <p>${escText(plain(d[p.p]))}</p>${link}
+          </div>
+        </article>`;
+    });
+    sections.push(`<section class="section" id="proyectos">
+    <div class="container">
+      <p class="section-kicker">${t(c.proj_k)}</p>
+      <h2>${t(c.proj_t)}</h2>
+      <p class="section-sub">${t(c.proj_s)}</p>
+      <div class="projects">
+${cards.join("\n")}
+      </div>
+    </div>
+  </section>`);
+  }
+
+  // Proceso: la misma sección de la portada
+  sections.push(sectionById(home, "proceso"));
+
+  // Preguntas frecuentes del servicio
+  sections.push(`<section class="section" id="faq">
+    <div class="container">
+      <p class="section-kicker">${escText(plain(d.faq_k))}</p>
+      <h2>${t(c.faq_t)}</h2>
+      <div class="faq-list">
+${s.faq.map(([q, a]) => `        <details class="faq-item">
+          <summary><span>${t(q)}</span><i class="faq-chev"></i></summary>
+          <p>${t(a)}</p>
+        </details>`).join("\n")}
+      </div>
+    </div>
+  </section>`);
+
+  // Otros servicios (enlazado interno entre las páginas del mismo idioma)
+  sections.push(`<section class="section" id="otros-servicios">
+    <div class="container">
+      <p class="section-kicker">${t(c.more_k)}</p>
+      <h2>${t(c.more_t)}</h2>
+      <div class="cards">
+${SERVICES.filter((o) => o !== svc).map((o) => `        <a class="card svc-link-card" href="${svcPath(o, code)}">
+          <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${SVC_ICON[o.id]}</svg></div>
+          <h3>${t(sd[o.id].name)}</h3>
+          <p>${t(sd[o.id].meta_desc)}</p>
+          <span class="tool-card-cta" aria-hidden="true">→</span>
+        </a>`).join("\n")}
+      </div>
+    </div>
+  </section>`);
+
+  // Contacto: la misma sección de la portada
+  sections.push(sectionById(home, "contacto"));
+
+  // Fondos alternos: una sección sí y una no, sin importar cuáles haya
+  const body = sections.map((sec, i) =>
+    sec.replace(/<section class="section(?: section-alt)?"/, `<section class="section${i % 2 ? "" : " section-alt"}"`));
+
+  const hero = `<!-- ===== HÉROE DEL SERVICIO ===== -->
+  <section class="hero svc-hero">
+    <div class="orb orb-1" aria-hidden="true"></div>
+    <div class="orb orb-2" aria-hidden="true"></div>
+    <div class="container hero-inner">
+      <nav class="breadcrumb" aria-label="${escAttr(c.crumb_aria)}">
+        <ol>
+          <li><a href="${H}">${t(c.crumb_home)}</a></li>
+          <li><a href="${H}#servicios">${escText(plain(d.nav_serv))}</a></li>
+          <li aria-current="page">${t(s.name)}</li>
+        </ol>
+      </nav>
+      <p class="hero-kicker">${t(s.kicker)}</p>
+      <h1>${t(s.h1)}</h1>
+      <p class="hero-sub">${t(s.lead)}</p>
+      <div class="hero-cta">
+        <a href="#contacto" class="btn btn-primary btn-glow">${ARROW_SVG}<span>${escText(plain(d.hero_cta1))}</span></a>
+        <button type="button" class="btn btn-ghost" data-estimator>${t(c.estimate)}</button>
+      </div>
+    </div>
+  </section>`;
+
+  return `<main id="contenido">
+
+  ${hero}
+
+  ${body.join("\n\n  ")}
+
+  </main>`;
+}
+
+function buildServicePage(svc, code, home, sd, d, vars, langsWithPage) {
+  const s = sd[svc.id];
+  const c = sd.common;
+  let html = home;
+  // Cabecera
+  html = replaceSeo(html, svcSeoBlock(svc, code, s, c, d, langsWithPage));
+  html = html.replace(/<html\b[^>]*>/, `<html lang="${code}" dir="${RTL.includes(code) ? "rtl" : "ltr"}">`);
+  html = html.replace(
+    /^(<!DOCTYPE html>\s*)<!--[\s\S]*?-->/i,
+    `$1<!-- GENERADO por tools/build-i18n.mjs (página de servicio "${svc.id}") a partir de index.html,\n     i18n/${code}.js y tools/servicios/${code}.mjs. No editar: los cambios se pierden en el próximo build. -->`
+  );
+  // Rutas relativas → absolutas (la página vive en una subcarpeta)
+  html = html.replace(/\s(src|href|poster|srcset)="(?!#|\/|[a-z][a-z0-9+.-]*:)([^"]+)"/gi, ` $1="/$2"`);
+  // Anclas de la portada (#servicios…) → la portada del idioma. El logo
+  // lleva a la portada; el enlace "saltar al contenido", al <main> de aquí.
+  html = html.replace(/<a href="#servicios" class="skip-link"/, '<a href="#contenido" class="skip-link"');
+  html = html.replace(/<a href="#top" class="nav-logo"/, `<a href="${homePath(code)}" class="nav-logo"`);
+  html = html.replace(/href="#(?!top"|contenido")([a-zA-Z][\w-]*)"/g, `href="${homePath(code)}#$1"`);
+  // Fila de idiomas del footer → esta misma página en cada idioma
+  for (const l of langsWithPage) {
+    html = html.split(`<a href="${homePath(l)}" hreflang="${l}"`).join(`<a href="${svcPath(svc, l)}" hreflang="${l}"`);
+  }
+  // Contenido propio (las secciones de proceso y contacto salen de la portada
+  // original, con sus anclas internas intactas)
+  const start = html.indexOf('<main id="contenido">');
+  const end = html.indexOf("</main>", start);
+  if (start < 0 || end < 0) throw new Error('La portada debe tener <main id="contenido"> … </main>');
+  return html.slice(0, start) + svcMain(svc, code, sd, d, vars, home) + html.slice(end + "</main>".length);
+}
+
 // ── 4. sitemap.xml y llms.txt ────────────────────────────────────────────
-function sitemap() {
-  const alts = [
-    ...LANGS.map((l) => `    <xhtml:link rel="alternate" hreflang="${l.code}" href="${urlOf(l.code)}" />`),
-    `    <xhtml:link rel="alternate" hreflang="x-default" href="${SITE}/" />`,
-  ].join("\n");
-  const urls = LANGS.map((l) => `  <url>
-    <loc>${urlOf(l.code)}</loc>
+function sitemap(svcLangs) {
+  // Un grupo = la misma página en varios idiomas: cada <url> lista a todas
+  const group = (codes, url, xDefault) => {
+    const alts = [
+      ...codes.map((c) => `    <xhtml:link rel="alternate" hreflang="${c}" href="${url(c)}" />`),
+      `    <xhtml:link rel="alternate" hreflang="x-default" href="${xDefault}" />`,
+    ].join("\n");
+    return codes.map((c) => `  <url>
+    <loc>${url(c)}</loc>
     <lastmod>${BUILD_DATE}</lastmod>
 ${alts}
   </url>`).join("\n");
+  };
+  const urls = [
+    group(LANGS.map((l) => l.code), urlOf, `${SITE}/`),
+    ...SERVICES.map((s) => group(svcLangs, (c) => svcUrl(s, c), svcUrl(s, "es"))),
+  ].join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>
 <!-- CDH Maker — mapa del sitio. GENERADO por tools/build-i18n.mjs: no editar.
-     Una página por idioma; el panel de clientes y el perfil quedan fuera a
-     propósito (ver robots.txt). -->
+     La portada y cada página de servicio, una URL por idioma; el panel de
+     clientes y el perfil quedan fuera a propósito (ver robots.txt). -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${urls}
@@ -463,7 +889,7 @@ ${urls}
 // llms.txt (llmstxt.org): resumen en Markdown pensado para modelos de
 // lenguaje. Va en inglés —lo que más leen los asistentes— con un bloque en
 // español, y todo lo variable sale de los diccionarios.
-function llmsTxt(en, es) {
+function llmsTxt(en, es, svcEn, svcEs) {
   const p = (s) => plain(s);
   const svc = (d, n) => `${p(d[`s${n}_p`])} (${["a", "b", "c"].map((x) => p(d[`s${n}_${x}`])).join("; ")})`;
   const needs = (d) =>
@@ -475,6 +901,9 @@ function llmsTxt(en, es) {
   const projects = PROJECTS.map((x) =>
     x.url ? `- [${x.name}](${x.url}): ${p(en[x.p])}` : `- ${x.name}: ${p(en[x.p])}`).join("\n");
   const pages = LANGS.map((l) => `- [${l.name}](${urlOf(l.code)})`).join("\n");
+  // Páginas de servicio: cada una con su descripción y lo que incluye
+  const svcPages = (sd, code) => SERVICES.map((s) =>
+    `- [${sd[s.id].name}](${svcUrl(s, code)}): ${sd[s.id].meta_desc} ${code === "es" ? "Incluye" : "Includes"}: ${sd[s.id].inc.map(([t]) => t).join("; ")}.`).join("\n");
 
   return `# CDH Maker
 
@@ -489,6 +918,10 @@ function llmsTxt(en, es) {
 ## Services
 
 ${[1, 2, 3, 4].map((n) => `- [${p(en[`s${n}_t`])}](${urlOf("en")}#servicios): ${svc(en, n)}`).join("\n")}
+
+## Service pages
+
+${svcPages(svcEn, "en")}
 
 ## What clients come for
 
@@ -508,6 +941,8 @@ ${p(es.meta_desc)}
 
 ${[1, 2, 3, 4].map((n) => `- [${p(es[`s${n}_t`])}](${urlOf("es")}#servicios): ${svc(es, n)}`).join("\n")}
 
+${svcPages(svcEs, "es")}
+
 ${faqs(es)}
 
 ## Optional
@@ -517,7 +952,7 @@ ${pages}
 }
 
 // ── Principal ────────────────────────────────────────────────────────────
-function main() {
+async function main() {
   const indexFile = path.join(PUB, "index.html");
   let index = fs.readFileSync(indexFile, "utf8");
 
@@ -547,9 +982,39 @@ function main() {
     report.push({ code, missing: [...missing] });
   }
 
+  // 3b. Páginas por servicio: solo en los idiomas que tienen su archivo
+  // tools/servicios/<código>.mjs (una página a medio traducir no se publica)
+  const est = readEstimator();
+  const svcEsSrc = await loadServiceDict("es");
+  const svcDicts = {};
+  for (const { code } of LANGS) {
+    const src = code === "es" ? svcEsSrc : await loadServiceDict(code);
+    if (!Object.keys(src).length) { report.push({ code, missing: [`tools/servicios/${code}.mjs (no existe: sin páginas de servicio)`] }); continue; }
+    const missing = new Set();
+    svcDicts[code] = withFallback(svcEsSrc, src, missing);
+    if (missing.size) report.push({ code, missing: [...missing].map((k) => "servicios:" + k) });
+  }
+  const svcLangs = LANGS.map((l) => l.code).filter((c) => svcDicts[c]);
+  let nSvc = 0;
+  for (const code of svcLangs) {
+    // Marcadores rellenados en TODO el diccionario: HTML, JSON-LD y llms.txt
+    const vars = timeVars(est, svcDicts[code]);
+    const fillDeep = (v) => (typeof v === "string" ? fill(v, vars) : Array.isArray(v) ? v.map(fillDeep)
+      : Object.fromEntries(Object.entries(v).map(([k, x]) => [k, fillDeep(x)])));
+    const sd = svcDicts[code] = fillDeep(svcDicts[code]);
+    const d = { ...es, ...(dicts[code] || {}) };
+    const home = code === "es" ? index : translatePage(index, code, dicts[code], es, new Set());
+    for (const svc of SERVICES) {
+      const file = path.join(PUB, ...svcPath(svc, code).split("/").filter(Boolean)) + ".html";
+      fs.mkdirSync(path.dirname(file), { recursive: true });
+      fs.writeFileSync(file, buildServicePage(svc, code, home, sd, d, vars, svcLangs));
+      nSvc++;
+    }
+  }
+
   // 4. Mapa del sitio y llms.txt
-  fs.writeFileSync(path.join(PUB, "sitemap.xml"), sitemap());
-  fs.writeFileSync(path.join(PUB, "llms.txt"), llmsTxt({ ...es, ...dicts.en }, es));
+  fs.writeFileSync(path.join(PUB, "sitemap.xml"), sitemap(svcLangs));
+  fs.writeFileSync(path.join(PUB, "llms.txt"), llmsTxt({ ...es, ...dicts.en }, es, svcDicts.en || svcDicts.es, svcDicts.es));
 
   // Reporte
   let faltan = 0;
@@ -558,11 +1023,11 @@ function main() {
     faltan += r.missing.length;
     console.warn(`⚠ ${r.code}: ${r.missing.length} clave(s) sin traducir (quedan en español): ${r.missing.join(", ")}`);
   }
-  console.log(`✓ ${LANGS.length} páginas, sitemap.xml y llms.txt generados (${BUILD_DATE}).`);
+  console.log(`✓ ${LANGS.length} portadas, ${nSvc} páginas de servicio, sitemap.xml y llms.txt generados (${BUILD_DATE}).`);
   if (faltan && STRICT) {
     console.error("✗ --strict: hay traducciones faltantes.");
     process.exit(1);
   }
 }
 
-main();
+await main();

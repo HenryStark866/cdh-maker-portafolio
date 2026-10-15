@@ -213,6 +213,10 @@ window.CDH_I18N_DICT["id"] = {
   "contact_privacy": "Kami tidak menampilkan nomor telepon atau email secara langsung di halaman untuk menghindari spam: tombol di atas akan langsung mengarahkan Anda, tanpa pendaftaran.",
   "logo_top": "CDH Maker — kembali ke atas",
   "foot_needs": "Solusi",
+  "fs_3d": "Cetak 3D di Medellín",
+  "fs_sw": "Perangkat lunak & SaaS khusus",
+  "fs_ai": "Integrasi kecerdasan buatan",
+  "fs_iot": "Elektronik, IoT & otomasi",
   "foot_faq": "Pertanyaan umum",
   "foot_contact_cta": "Buka kontak",
   "to_top": "Kembali ke atas"

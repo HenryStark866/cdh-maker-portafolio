@@ -39,7 +39,8 @@ PORTAFOLIO HCT/
 ├── MANUAL-TECNICO.md      # Este documento
 ├── _originales-media/     # Copias sin comprimir (NO se publican: fuera de public/)
 ├── tools/                 # Scripts de build (NO se publican)
-│   ├── build-i18n.mjs     # Genera las páginas por idioma, sitemap.xml y llms.txt (§8.3)
+│   ├── build-i18n.mjs     # Genera las páginas por idioma y por servicio, sitemap.xml y llms.txt (§8.3, §8.4)
+│   └── servicios/         # Textos de las páginas por servicio: es.mjs (fuente) + un archivo por idioma (§8.4)
 │   └── indexnow.mjs       # Avisa a Bing/IndexNow tras cada deploy (§11)
 └── public/                # TODO lo que se publica en el hosting
     ├── index.html         # Página principal en español (FUENTE de las demás)
@@ -66,7 +67,9 @@ PORTAFOLIO HCT/
     ├── icon.svg           # Ícono del sitio (favicon + PWA)
     ├── manifest.json      # Manifiesto PWA
     ├── robots.txt         # Reglas de rastreo (bots de IA bienvenidos; excluye perfil y admin)
-    ├── sitemap.xml        # GENERADO: las 10 URLs con sus alternates hreflang
+    ├── sitemap.xml        # GENERADO: portada + páginas de servicio, cada una en 10 idiomas con hreflang
+    ├── servicios/         # GENERADO: páginas por servicio en español (/servicios/…)
+    ├── <código>/services/ # GENERADO: las mismas páginas en los otros 9 idiomas (/en/services/…)
     └── media/             # Imágenes (WebP + original) y video de proyectos
 ```
 
@@ -295,6 +298,52 @@ llmstxt.org; es barato y opcional, pocos bots lo piden todavía).
 `firebase.json` lo corre solo antes de cada deploy (`hosting.predeploy`). Aun así, conviene
 correrlo y **hacer commit** de los archivos generados para que el repo refleje lo publicado.
 
+### 8.4 Páginas por servicio y ciudad
+
+Quien busca "impresión 3D Medellín" o "software a la medida Medellín" (en Google o
+preguntándole a una IA) encuentra páginas con una URL propia por servicio y ciudad; una
+portada con anclas compite peor. Por eso el mismo build genera, para cada servicio de
+`SERVICES` en `tools/build-i18n.mjs`, una página en cada idioma:
+
+| Servicio (`id`) | Español | Otros idiomas |
+|---|---|---|
+| `print3d` | `/servicios/impresion-3d-medellin` | `/<código>/services/3d-printing-medellin` |
+| `software` | `/servicios/software-a-la-medida-medellin` | `/<código>/services/custom-software-medellin` |
+| `ai` | `/servicios/inteligencia-artificial-medellin` | `/<código>/services/ai-integration-medellin` |
+| `iot` | `/servicios/iot-automatizacion-medellin` | `/<código>/services/iot-automation-medellin` |
+
+Cada página reutiliza el menú, el footer, los scripts y las secciones de **proceso** y
+**contacto** de la portada ya traducida, y agrega: héroe con ruta de navegación, "qué
+incluye", **tiempos de referencia**, proyectos relacionados (solo los que existen en
+`#proyectos`), preguntas frecuentes del servicio y enlaces a los otros servicios. En el
+`<head>`: title, description, canonical, hreflang de las 10 versiones y JSON-LD `Service`
+(con `provider` = `https://cdhmaker.com/#org`), `BreadcrumbList`, `FAQPage` y `WebPage`
+(que menciona los proyectos). También entran al `sitemap.xml` y a `llms.txt`.
+
+- **Textos:** `tools/servicios/<código>.mjs`. `es.mjs` es la fuente; los demás repiten su
+  estructura (mismas claves y mismo número de elementos en cada lista). Si a un idioma le
+  falta algo, el build lo avisa como `servicios:<ruta>` y usa el español en ese hueco; con
+  `--strict` falla. Un idioma **sin** archivo no genera páginas de servicio.
+- **Tiempos:** nunca se escriben a mano. `{landing}`, `{app}`, `{auto}`, `{proto}`,
+  `{product}`, `{iotauto}`, `{cad}`, `{fdm}` y `{resin}` se reemplazan con `TIME_WEB`,
+  `TIME_IOT`, `TIME_DESIGN` y `PRICE` de `public/estimator.js`: si cambia el cotizador,
+  cambian solas las páginas en el próximo build.
+- **Regla del contenido:** solo datos que ya están en el sitio. No hay proyectos de
+  impresión 3D ni de IoT en el portafolio, así que esas páginas no muestran proyectos
+  relacionados; al agregar uno al portafolio, se suma su clave en `PROJECT_CARDS` y en
+  `projects` del servicio.
+- **Enlaces desde la portada:** tarjetas de `#servicios` (`card-link`), necesidades de
+  `#soluciones` (`need-link`) y columna "Servicios" del footer, con las claves `fs_3d`,
+  `fs_sw`, `fs_ai`, `fs_iot`. Los `href` se escriben en español en `index.html`; el build
+  los cambia por la ruta de cada idioma.
+- **Agregar un servicio:** una entrada en `SERVICES` (slug `es` y `en`, área, proyectos),
+  su ícono en `SVC_ICON`, su bloque en los 10 `tools/servicios/<código>.mjs` y, si se quiere
+  enlazar desde la portada, el enlace en `index.html` con `href="/servicios/<slug.es>"`
+  (el build lo cambia solo por la ruta de cada idioma).
+- **Hosting:** `firebase.json` aplica las cabeceras de seguridad también a `/servicios/**`
+  y `/<código>/services/**`. Con `cleanUrls`, `/en` sigue sirviendo `en.html` aunque exista
+  la carpeta `en/` (comprobado con `firebase serve`).
+
 ## 9. Chatbot "Maker" (chatbot.js)
 
 - **Motor de reglas 100% en el navegador** — sin APIs externas, las conversaciones no salen del equipo del visitante.
@@ -399,6 +448,7 @@ Nota: si algún día prefieres logos en vez de texto, sube la imagen a `public/m
 | Agregar un perfil (LinkedIn, Google Business…) a los datos para IA | `tools/build-i18n.mjs` → `ENTITY.sameAs` + build |
 | Cambiar textos del chatbot | `chatbot.js` → objeto `TEXT` (bloques es/en) |
 | Enseñar un tema nuevo al chatbot | `chatbot.js` → `INTENTS` + respuesta en `TEXT` |
+| Cambiar el texto de una página de servicio | `tools/servicios/<código>.mjs` (español: `es.mjs`) + build (§8.4) |
 | Añadir un proyecto al portafolio | `index.html` sección Proyectos + imagen en `media/` + claves en los 9 `i18n/<código>.js` + entrada en `PROJECTS` de `tools/build-i18n.mjs` + build |
 | Agregar un aliado al footer | `index.html` columna "Nuestros aliados" (pasos completos en §12) |
 | Cambiar colores / tema | `styles.css` → variables `:root` (dark y light) |

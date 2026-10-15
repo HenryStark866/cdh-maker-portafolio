@@ -1,0 +1,145 @@
+/* CDH MAKER — tools/servicios/id.mjs
+   Halaman layanan, bahasa Indonesia. Struktur sama dengan es.mjs (sumber).
+   {penanda} diisi oleh tools/build-i18n.mjs dengan waktu dari
+   public/estimator.js. */
+
+export default {
+  common: {
+    crumb_home: "Beranda",
+    crumb_aria: "Navigasi jejak",
+    inc_k: "// Yang termasuk",
+    inc_t: "Yang termasuk dalam layanan",
+    times_k: "// Waktu",
+    times_t: "Waktu acuan",
+    times_s: "Ini adalah nilai dari estimator di situs ini: perkiraan yang tidak mengikat. Waktu pasti proyek Anda tercantum dalam penawaran, gratis dan dalam waktu kurang dari 24 jam.",
+    proj_k: "// Proyek terkait",
+    proj_t: "Hasil kerja nyata di bidang ini",
+    proj_s: "Proyek yang sudah kami bangun dan bisa Anda lihat.",
+    faq_t: "Pertanyaan umum tentang layanan ini",
+    more_k: "// Layanan lain",
+    more_t: "Mungkin Anda juga tertarik",
+    estimate: "Hitung perkiraan saya",
+    range: "{min}–{max} {u}",
+    u_weeks: "minggu",
+    u_days: "hari",
+  },
+
+  print3d: {
+    meta_title: "Cetak 3D di Medellín: FDM, resin, laser dan CNC | CDH Maker",
+    meta_desc: "Cetak 3D sesuai pesanan di Medellín, Kolombia (FDM dan resin), potong laser, CNC dan desain CAD. Pengiriman ke seluruh Kolombia. Penawaran gratis 24 jam.",
+    name: "Cetak 3D di Medellín",
+    kicker: "// Fabrikasi digital",
+    h1: "Cetak 3D di Medellín",
+    lead: "Kami mencetak komponen Anda dengan FDM atau resin, memotong dan mengukir dengan laser, serta memesin dengan CNC dari file STL, gambar teknik, atau sekadar ide. Bengkel di Medellín, dengan pengiriman kurir ke seluruh Kolombia.",
+    inc: [
+      ["Cetak 3D FDM", "Komponen fungsional dan prototipe dari PLA, PETG, ABS atau TPU, dengan infill yang disesuaikan dengan penggunaan komponen."],
+      ["Cetak 3D resin", "Untuk komponen yang membutuhkan detail halus dan permukaan yang mulus."],
+      ["Potong dan ukir laser", "Komponen datar dari MDF, akrilik atau kayu, dihitung berdasarkan ketebalan dan luasnya."],
+      ["Pemesinan CNC", "Kayu, aluminium, baja atau plastik: dari bentuk lurus hingga komponen detail dengan lengkungan dan ukiran."],
+      ["Desain CAD 2D/3D", "Jika Anda hanya punya ide atau sketsa, kami memodelkan komponennya hingga siap diproduksi."],
+      ["Dari prototipe sampai ke pintu Anda", "Kami melakukan iterasi bersama Anda sampai komponen berfungsi, lalu mengirimkannya dengan kurir ke kota mana pun di Kolombia."],
+    ],
+    times: [
+      ["Desain CAD satu komponen", "{cad}"],
+      ["Kecepatan cetak FDM: cm³ efektif per jam, kualitas standar", "{fdm}"],
+      ["Kecepatan cetak resin: cm tinggi per jam", "{resin}"],
+    ],
+    fdm: "≈ {n} cm³/jam",
+    resin: "≈ {n} cm/jam",
+    tools_t: "Hitung komponen Anda sebelum menghubungi kami",
+    tools_p: "Estimator langsung menghitung waktu, berat, dan material komponen Anda dari ukuran, material, dan infill-nya. Penampil 3D membuka file STL Anda di browser, tanpa mengunggahnya ke server mana pun, lalu mengirimkannya langsung ke estimator.",
+    faq: [
+      ["File apa yang saya perlukan untuk cetak 3D?", "Idealnya file STL. Gambar teknik atau sekadar ide juga bisa: dalam hal itu kami mendesain komponennya dengan CAD sebelum diproduksi."],
+      ["Apakah Anda mengirim ke luar Medellín?", "Ya. Komponen fisik (cetak 3D, laser dan CNC) dikirim dengan kurir ke seluruh Kolombia."],
+      ["Berapa biaya mencetak satu komponen 3D?", "Tergantung volume, material, infill, dan jumlah komponen. Estimator di situs ini langsung memberi perkiraan waktu, berat, dan material, dan penawaran akhir datang gratis dalam waktu kurang dari 24 jam, tanpa komitmen."],
+      ["Material apa saja yang Anda gunakan?", "Untuk cetak FDM: PLA, PETG, ABS dan TPU. Untuk cetak detail, resin standar. Untuk potong laser, MDF, akrilik dan kayu; untuk CNC, kayu, aluminium, baja atau plastik."],
+      ["Bisakah saya memeriksa model sebelum mengirimkannya?", "Bisa. Penampil 3D di situs ini membuka STL Anda langsung di browser, tanpa mengunggahnya ke server mana pun, untuk diputar dan diperiksa, lalu mengirimkannya ke estimator untuk memperkirakan lama pencetakan."],
+    ],
+  },
+
+  software: {
+    meta_title: "Perangkat lunak & SaaS khusus di Medellín | CDH Maker",
+    meta_desc: "Aplikasi web, platform SaaS, situs web dan otomasi proses yang dibuat khusus, dari Medellín untuk Kolombia dan dunia. Penawaran gratis dalam 24 jam.",
+    name: "Perangkat lunak & SaaS khusus",
+    kicker: "// Pengembangan perangkat lunak",
+    h1: "Perangkat lunak & SaaS khusus di Medellín",
+    lead: "Kami merancang dan membangun aplikasi web, platform SaaS, dan otomasi untuk menjalankan perusahaan Anda atau meluncurkan produk Anda sendiri. Anda berbicara langsung dengan orang yang memprogramnya, dan kami menyerahkannya di cloud untuk klien di Kolombia maupun negara lain.",
+    inc: [
+      ["Aplikasi web khusus", "Perangkat lunak untuk menjalankan perusahaan Anda: logistik, penjualan, inventaris, dan perintah kerja, dengan logika bisnis Anda, bukan logika templat."],
+      ["Platform SaaS", "Produk cloud Anda sendiri, multi-perusahaan jika diperlukan, seperti TaxiYa, A Tiempo Logística atau IncubApp."],
+      ["Situs web dan toko online", "Situs yang cepat, ramah ponsel, dan siap untuk mesin pencari: dari landing page hingga platform lengkap."],
+      ["Otomasi proses", "Lebih sedikit pekerjaan manual: formulir, laporan, notifikasi, dan alur antar alat Anda, terhubung dan bebas salah ketik."],
+      ["Kepatuhan Undang-Undang 1581 Kolombia", "Alat penilaian mandiri dan kepatuhan perlindungan data untuk perusahaan di Kolombia, seperti PrivacyCheck."],
+      ["Peluncuran dan pendampingan", "Kode yang rapi, pengujian, dan peluncuran di cloud; Anda menerima dokumentasi dan pendampingan setelah serah terima."],
+    ],
+    times: [
+      ["Landing page atau situs informasi", "{landing}"],
+      ["Aplikasi web khusus", "{app}"],
+      ["Otomasi proses", "{auto}"],
+    ],
+    times_note: "Jika antarmuka harus dirancang dari nol, estimator menambah satu minggu. Mendesak? Hubungi kami dan kita lihat cara memprioritaskannya.",
+    faq: [
+      ["Berapa lama membangun sebuah aplikasi web?", "Sebagai acuan, aplikasi web khusus membutuhkan {app}, landing page {landing} dan otomasi proses {auto}. Kami bekerja secara bertahap, jadi Anda melihat kemajuan nyata sejak hari-hari pertama."],
+      ["Teknologi apa yang Anda gunakan?", "JavaScript, Next.js, Python, FastAPI, Supabase dan Firebase, serta model AI seperti Gemini jika proyek membutuhkannya."],
+      ["Bisakah Anda membangun produk SaaS saya sendiri?", "Bisa. TaxiYa dan IncubApp adalah produk SaaS milik CDH Maker, dan A Tiempo Logística adalah platform SaaS last-mile untuk e-commerce di Medellín. Ketiganya bisa dilihat secara langsung."],
+      ["Apakah Anda melayani perusahaan di luar Medellín atau Kolombia?", "Ya. Perangkat lunak diserahkan di cloud ke mana pun di dunia, dan kami melayani dalam bahasa Spanyol dan Inggris."],
+      ["Bagaimana cara pembayaran pengembangan?", "Per tahap pencapaian: proyek berjalan bertahap dengan penyerahan parsial, dan pembayaran dibagi di antara tahap-tahap itu. Penawaran gratis dan datang dalam waktu kurang dari 24 jam, tanpa syarat tersembunyi."],
+    ],
+  },
+
+  ai: {
+    meta_title: "Integrasi kecerdasan buatan di Medellín | CDH Maker",
+    meta_desc: "Asisten AI, konten buatan AI dengan tinjauan manusia, dan analisis AI yang terintegrasi ke perangkat lunak Anda. Dari Medellín untuk Kolombia dan dunia.",
+    name: "Integrasi kecerdasan buatan",
+    kicker: "// Kecerdasan buatan",
+    h1: "Integrasi kecerdasan buatan di Medellín",
+    lead: "Kami mengintegrasikan kecerdasan buatan ke sistem nyata: asisten dengan suara dan penglihatan, konten buatan AI yang ditinjau manusia sebelum diterbitkan, dan analisis AI di dalam perangkat lunak operasional Anda. AI di tempat yang memberi nilai, dan manusia yang meninjau di tempat yang diperlukan.",
+    inc: [
+      ["Asisten AI", "Asisten yang bercakap, menjawab dengan suara, dan memahami apa yang dilihat kamera. Bisa berjalan 100% secara lokal, seperti EvaIA."],
+      ["Konten AI dengan persetujuan manusia", "Ide, naskah, dan konten yang dibuat dengan AI (Gemini) masuk antrean tinjauan: tidak ada yang diterbitkan tanpa persetujuan, seperti di SIGI."],
+      ["Analisis AI di dalam perangkat lunak Anda", "Diagnosis dan analisis yang terintegrasi di platform yang sudah Anda gunakan, seperti analisis AI di PrivacyCheck."],
+      ["AI dalam operasional perusahaan", "Kecerdasan buatan untuk operasional sehari-hari, seperti di IncubApp untuk penetasan dan peternakan."],
+    ],
+    times: [
+      ["Aplikasi web khusus dengan AI", "{app}"],
+      ["Otomasi proses dengan AI", "{auto}"],
+    ],
+    times_note: "AI diintegrasikan di dalam aplikasi atau otomasi, jadi waktu acuan estimator untuk keduanya berlaku.",
+    faq: [
+      ["Bisakah Anda mengintegrasikan kecerdasan buatan ke perusahaan atau produk saya?", "Bisa. Kami mengembangkan asisten AI, pembuatan konten, dan analisis AI yang terintegrasi ke sistem nyata: misalnya EvaIA (asisten lokal dengan suara dan penglihatan), SIGI (sedang dibangun; konten AI dengan persetujuan manusia) dan IncubApp (operasional industri dengan AI)."],
+      ["Apakah AI menerbitkan atau memutuskan sendiri?", "Tidak harus. Jika diperlukan, alurnya dirancang dengan tinjauan manusia: di SIGI tidak ada yang diterbitkan tanpa persetujuan manual."],
+      ["Bisakah AI digunakan tanpa mengirim data ke cloud?", "Bisa, tergantung kasusnya. EvaIA berjalan 100% secara lokal: suara, jawaban lisan, penglihatan kamera, dan memori basis data di perangkat yang sama."],
+      ["Model AI apa yang Anda gunakan?", "Model seperti Gemini untuk proyek cloud, seperti SIGI, dan AI yang berjalan lokal jika proyek membutuhkannya, seperti EvaIA."],
+      ["Berapa lama mengintegrasikan AI?", "Tergantung di mana AI diintegrasikan: di dalam aplikasi web khusus, {app}; di dalam otomasi proses, {auto}. Penawaran gratis datang dalam waktu kurang dari 24 jam."],
+    ],
+  },
+
+  iot: {
+    meta_title: "Elektronik, IoT & otomasi di Medellín | CDH Maker",
+    meta_desc: "Prototipe elektronik, pemantauan sensor, rumah pintar dan otomasi dengan Arduino, ESP32 dan Raspberry Pi untuk rumah, industri dan pertanian di Medellín.",
+    name: "Elektronik, IoT & otomasi",
+    kicker: "// Elektronik & IoT",
+    h1: "IoT & otomasi di Medellín",
+    lead: "Kami merancang dan membangun sistem elektronik terhubung dengan Arduino, ESP32 dan Raspberry Pi: sensor yang mengukur, peringatan yang memberi tahu, dan kendali jarak jauh untuk rumah, industri, dan pertanian. Dari prototipe hingga produk yang berfungsi, dengan casing dan perangkat lunak yang dibuat di studio yang sama.",
+    inc: [
+      ["Sistem tertanam", "Pengembangan dengan Arduino, ESP32 dan Raspberry Pi, dari bukti konsep hingga produk fungsional yang lengkap."],
+      ["Pemantauan dengan sensor", "Pengukuran, peringatan, dan pemantauan jarak jauh untuk rumah, industri, dan pertanian."],
+      ["Rumah pintar dan otomasi", "Otomasi rumah atau usaha dengan kendali jarak jauh, agar tidak terlalu bergantung pada pekerjaan manual."],
+      ["Casing dan komponen khusus", "Elektronik butuh tempat: casing dirancang dan dibuat di bengkel yang sama dengan cetak 3D, laser atau CNC."],
+      ["Perangkat lunak pendampingnya", "Aplikasi atau cloud yang menerima data dibangun oleh studio yang sama: Anda tidak perlu mengoordinasikan tiga pemasok berbeda."],
+    ],
+    times: [
+      ["Prototipe atau bukti konsep", "{proto}"],
+      ["Produk fungsional lengkap", "{product}"],
+      ["Otomasi rumah atau usaha", "{iotauto}"],
+    ],
+    times_note: "Dengan lebih dari 10 sensor atau modul, estimator menambah hingga satu minggu.",
+    faq: [
+      ["Platform apa yang Anda gunakan?", "Untuk perangkat keras, Arduino, ESP32 dan Raspberry Pi. Untuk perangkat lunak, JavaScript, Python, Firebase atau Supabase, tergantung proyeknya."],
+      ["Berapa lama proyek IoT?", "Sebagai acuan, prototipe atau bukti konsep membutuhkan {proto}, produk fungsional lengkap {product} dan otomasi rumah atau usaha {iotauto}."],
+      ["Apakah Anda bekerja untuk industri dan pertanian, atau hanya rumah?", "Untuk ketiganya: sistem sensor, otomasi, dan pemantauan jarak jauh dirancang untuk rumah, industri, dan pertanian."],
+      ["Berapa biaya proyek elektronik atau IoT?", "Setiap proyek dihitung khusus dan gratis: ceritakan apa yang ingin Anda ukur atau otomatiskan dan terima harga serta waktu dalam kurang dari 24 jam, tanpa komitmen."],
+      ["Apa yang terjadi setelah serah terima?", "Anda menerima dokumentasi dan pendampingan: kami menjawab pertanyaan, menyesuaikan detail, dan memastikan semuanya berjalan. Hubungan tidak berakhir saat serah terima."],
+    ],
+  },
+};

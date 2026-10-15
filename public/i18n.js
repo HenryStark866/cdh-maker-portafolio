@@ -56,7 +56,7 @@
 
   // Versión de los diccionarios: subirla invalida la caché del navegador
   // cuando se corrige una traducción (ver §10 del manual técnico).
-  const DICT_V = 4;
+  const DICT_V = 5;
 
   // Lo único que el español necesita cuando el HTML ya está en español:
   // las palabras del texto rotativo del hero, que no viven en el DOM.
@@ -172,7 +172,9 @@
       if (key in dict) el.setAttribute("alt", dict[key]);
     });
     // 3. Título de la pestaña del navegador
-    if (dict.meta_title) document.title = dict.meta_title;
+    // (solo sin páginas estáticas: ahí el título ya viene escrito y en las
+    // páginas de servicio NO es el de la portada que trae el diccionario)
+    if (dict.meta_title && !ESTATICO) document.title = dict.meta_title;
     // 4. Atributos del documento: idioma y dirección de escritura
     const html = document.documentElement;
     html.setAttribute("lang", lang);
