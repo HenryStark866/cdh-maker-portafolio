@@ -6,6 +6,8 @@ Sitio web del portafolio de servicios de **CDH Maker**: desarrollo web y softwar
 
 > 📘 **Documentación completa de la plataforma:** ver [MANUAL-TECNICO.md](MANUAL-TECNICO.md)
 > (arquitectura, autenticación, CRM, i18n, chatbot, seguridad, despliegue y mantenimiento).
+>
+> 🧭 **Mapa de arquitectura, decisiones (ADR) y desfases detectados:** ver [ARQUITECTURA.md](ARQUITECTURA.md)
 
 ## Seguridad y clientes
 

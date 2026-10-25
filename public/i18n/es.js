@@ -219,5 +219,8 @@ window.CDH_I18N_DICT["es"] = {
   "fs_sw": "Software y SaaS a la medida",
   "fs_3d": "Impresión 3D en Medellín",
   "fs_iot": "Electrónica, IoT y automatización",
-  "fs_ai": "Integración de inteligencia artificial"
+  "fs_ai": "Integración de inteligencia artificial",
+  "tag_client": "Software · Cliente",
+  "pj_ref_t": "Refricom — Gestión del mantenimiento",
+  "pj_ref_p": "Sistema entregado a Refricom para planear y controlar el mantenimiento de sus equipos: inventario, cronograma preventivo con alertas, correctivos, órdenes de trabajo y reportes."
 };

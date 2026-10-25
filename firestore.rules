@@ -38,5 +38,80 @@ service cloud.firestore {
       // Protege el historial de clientes contra borrados accidentales o maliciosos
       allow delete: if false;
     }
+
+    // ── Portal de firma electrónica (public/firma.js) ────────────────────
+    // firmas/{exp}/eventos/{id}: exp = SHA-256(token del enlace : código),
+    // así que solo quien tiene el enlace Y el código conoce la ruta. No hay
+    // regla de listado global ni de collection group: nadie puede enumerar
+    // expedientes. Cada evento se crea una sola vez y nunca se edita ni se
+    // borra (prueba de la firma, art. 12 Ley 527 de 1999). La hora la pone el
+    // servidor (request.time), no el navegador.
+    match /firmas/{exp}/eventos/{id} {
+      allow get, list: if exp.matches('^[0-9a-f]{64}$');
+      allow update, delete: if false;
+      allow create: if exp.matches('^[0-9a-f]{64}$')
+        && request.resource.data.at == request.time
+        && request.resource.data.ua is string
+        && request.resource.data.ua.size() <= 400
+        && (esLectura(id, request.resource.data)
+            || esCondiciones(exp, id, request.resource.data)
+            || esFirma(exp, id, request.resource.data));
+    }
+
+    function evento(exp, id) {
+      return /databases/$(database)/documents/firmas/$(exp)/eventos/$(id);
+    }
+
+    function huella(h) {
+      return h is string && h.matches('^[0-9a-f]{64}$');
+    }
+
+    function persona(d) {
+      return d.nombre is string && d.nombre.size() >= 3 && d.nombre.size() <= 120
+        && d.cedula is string && d.cedula.matches('^[0-9]{5,12}$')
+        && d.cargo is string && d.cargo.size() <= 80;
+    }
+
+    // lectura-<doc>: el firmante recorrió el documento hasta el final
+    function esLectura(id, d) {
+      return id.matches('^lectura-[a-z]{2,20}$')
+        && d.keys().hasOnly(['tipo', 'doc', 'sha256', 'ua', 'at'])
+        && d.tipo == 'lectura'
+        && id == 'lectura-' + d.doc
+        && huella(d.sha256);
+    }
+
+    // condiciones: acepta contrato, acuerdo de firma y aviso de privacidad,
+    // solo si ya leyó los tres (mismos ids que REQUERIDOS en firma.js)
+    function esCondiciones(exp, id, d) {
+      return id == 'condiciones'
+        && d.keys().hasOnly(['tipo', 'docs', 'nombre', 'cedula', 'cargo', 'referencia', 'ua', 'at'])
+        && d.tipo == 'condiciones'
+        && d.docs is map && d.docs.size() <= 10
+        && d.docs.keys().hasAll(['contrato', 'firmaelec', 'privacidad'])
+        && huella(d.docs.contrato) && huella(d.docs.firmaelec) && huella(d.docs.privacidad)
+        && persona(d)
+        && d.referencia is bool
+        && exists(evento(exp, 'lectura-contrato'))
+        && exists(evento(exp, 'lectura-firmaelec'))
+        && exists(evento(exp, 'lectura-privacidad'));
+    }
+
+    // firma-<doc>: exige condiciones aceptadas y el documento leído, y que
+    // firme la misma persona que aceptó las condiciones
+    function esFirma(exp, id, d) {
+      return id.matches('^firma-[a-z]{2,20}$')
+        && d.keys().hasOnly(['tipo', 'doc', 'sha256', 'nombre', 'cedula', 'cargo', 'trazo', 'declaracion', 'ua', 'at'])
+        && d.tipo == 'firma'
+        && id == 'firma-' + d.doc
+        && huella(d.sha256)
+        && persona(d)
+        && d.declaracion == true
+        && d.trazo is string && d.trazo.size() < 150000
+        && d.trazo.matches('^data:image/png;base64,[A-Za-z0-9+/=]+$')
+        && exists(evento(exp, 'lectura-' + d.doc))
+        && get(evento(exp, 'condiciones')).data.cedula == d.cedula
+        && get(evento(exp, 'condiciones')).data.nombre == d.nombre;
+    }
   }
 }

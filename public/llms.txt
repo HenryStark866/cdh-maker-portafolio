@@ -41,6 +41,7 @@
 - [IncubApp](https://incubapp.cdhmaker.com): Multi-company SaaS for hatcheries and farms: photo rounds, work orders, sales, logistics, animal health and real-time management, with AI. A CDH Maker product.
 - EvaIA: AI assistant running 100% locally: voice, spoken replies, camera vision, database memory and its own animated avatar.
 - SIGI: System that drafts ideas, scripts and pieces for social media with AI (Gemini) and queues them for review: nothing publishes without my manual approval. FastAPI + Next.js + Supabase — in progress.
+- Refricom — Sistema de Gestión del Mantenimiento: System delivered to Refricom to plan and control the maintenance of its equipment: inventory, preventive schedule with alerts, corrective work, work orders and reports.
 
 ## FAQ
 

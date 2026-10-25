@@ -1,0 +1,172 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   CDH MAKER — firma.css
+   Estilos del portal de firma electrónica (firma.html). Independiente de
+   styles.css: es una página de trabajo, clara y legible, sin el fondo animado.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  color-scheme: light;
+  --fondo: #eef3f5;
+  --superficie: #ffffff;
+  --tinta: #0b1f27;
+  --tinta-suave: #4a6470;
+  --navy: #06232e;
+  --cian: #0891b2;
+  --cian-claro: #e0f7fb;
+  --linea: #d3e2e6;
+  --ok: #0f7b4f;
+  --ok-claro: #e3f6ee;
+  --alerta: #9a5b00;
+  --alerta-claro: #fff4e0;
+  --error: #b42318;
+  --radio: 14px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font: 400 16px/1.55 "Inter", system-ui, sans-serif;
+  color: var(--tinta);
+  background: var(--fondo);
+}
+
+h1, h2, h3 { font-family: "Space Grotesk", sans-serif; color: var(--navy); line-height: 1.2; }
+h1 { font-size: clamp(1.5rem, 4vw, 2rem); margin: 0 0 .4rem; }
+h2 { font-size: 1.25rem; margin: 0 0 .6rem; }
+h3 { font-size: 1.05rem; margin: 0; }
+p { margin: 0 0 .8rem; }
+
+/* ===== Barra superior ===== */
+.barra {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  background: var(--navy);
+  color: #fff;
+}
+.marca { display: flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font: 700 1.1rem "Space Grotesk", sans-serif; }
+.barra-sub { margin-left: auto; font-size: .85rem; color: #9fc0c9; }
+
+.contenedor { width: 100%; max-width: 860px; margin: 0 auto; padding: 24px 16px 48px; flex: 1; }
+
+/* ===== Tarjetas y pasos ===== */
+.tarjeta {
+  background: var(--superficie);
+  border: 1px solid var(--linea);
+  border-radius: var(--radio);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.tarjeta.bloqueada { opacity: .6; }
+.pasos { display: flex; gap: 6px; margin: 0 0 20px; padding: 0; list-style: none; flex-wrap: wrap; }
+.pasos li {
+  flex: 1 1 140px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: var(--superficie);
+  border: 1px solid var(--linea);
+  font-size: .85rem;
+  color: var(--tinta-suave);
+}
+.pasos li b { display: block; color: var(--tinta); font-size: .9rem; }
+.pasos li.actual { border-color: var(--cian); box-shadow: inset 0 -3px 0 var(--cian); }
+.pasos li.hecho { background: var(--ok-claro); border-color: #b5e3cf; }
+
+.doc-cabeza { display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+.doc-cabeza h3 { flex: 1 1 240px; }
+.estado {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: .78rem;
+  font-weight: 600;
+  background: var(--fondo);
+  color: var(--tinta-suave);
+  white-space: nowrap;
+}
+.estado.ok { background: var(--ok-claro); color: var(--ok); }
+.estado.pendiente { background: var(--alerta-claro); color: var(--alerta); }
+
+.resumen { margin: 12px 0; padding: 12px 14px 12px 32px; background: var(--cian-claro); border-radius: 10px; font-size: .92rem; }
+.resumen li { margin-bottom: 4px; }
+.resumen-titulo { font-weight: 600; font-size: .85rem; color: var(--navy); margin: 12px 0 0; }
+
+.acciones { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+
+/* ===== Botones ===== */
+.btn {
+  appearance: none;
+  border: 0;
+  border-radius: 10px;
+  padding: 11px 18px;
+  font: 600 .95rem "Inter", sans-serif;
+  cursor: pointer;
+  background: var(--navy);
+  color: #fff;
+  min-height: 44px;
+}
+.btn:hover { filter: brightness(1.15); }
+.btn:disabled { background: #a9bcc2; cursor: not-allowed; filter: none; }
+.btn-sec { background: var(--superficie); color: var(--navy); border: 1px solid var(--navy); }
+.btn-texto { background: transparent; color: inherit; padding-left: 4px; padding-right: 4px; }
+.btn-ok { background: var(--ok); }
+.btn:focus-visible, input:focus-visible { outline: 3px solid var(--cian); outline-offset: 2px; }
+
+/* ===== Formularios ===== */
+.campos { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 12px 0; }
+label.campo { display: flex; flex-direction: column; gap: 4px; font-size: .88rem; font-weight: 500; }
+input[type="text"], input[type="password"] {
+  font: 400 1rem "Inter", sans-serif;
+  padding: 11px 12px;
+  border: 1px solid #a9bcc2;
+  border-radius: 10px;
+  background: #fff;
+  color: var(--tinta);
+  min-height: 44px;
+}
+input.codigo { font: 600 1.4rem/1 "Space Grotesk", monospace; letter-spacing: .2em; text-transform: uppercase; text-align: center; max-width: 260px; }
+.check { display: flex; gap: 10px; align-items: flex-start; margin: 10px 0; font-size: .95rem; cursor: pointer; }
+.check input { width: 22px; height: 22px; margin: 1px 0 0; flex: none; accent-color: var(--navy); }
+.check.inactivo { color: var(--tinta-suave); cursor: not-allowed; }
+.ayuda { font-size: .85rem; color: var(--tinta-suave); }
+.error { color: var(--error); font-weight: 500; }
+
+.aviso { padding: 12px 14px; border-radius: 10px; background: var(--alerta-claro); color: #5c3800; font-size: .92rem; }
+.aviso.ok { background: var(--ok-claro); color: #0b4f33; }
+.aviso.info { background: var(--cian-claro); color: var(--navy); }
+
+/* ===== Video ===== */
+.video { position: relative; width: 100%; aspect-ratio: 16 / 9; background: var(--navy); border-radius: 12px; overflow: hidden; margin: 12px 0; }
+.video video, .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.video .sin-video { position: absolute; inset: 0; display: grid; place-items: center; color: #9fc0c9; text-align: center; padding: 16px; }
+
+/* ===== Firma manuscrita ===== */
+.lienzo-marco { position: relative; border: 2px dashed #a9bcc2; border-radius: 12px; background: #fff; touch-action: none; }
+.lienzo-marco canvas { display: block; width: 100%; height: 180px; cursor: crosshair; }
+.lienzo-marco .linea-base { position: absolute; left: 6%; right: 6%; bottom: 40px; border-top: 1px solid var(--linea); pointer-events: none; }
+.lienzo-marco .pista { position: absolute; left: 6%; bottom: 14px; font-size: .78rem; color: #8aa1aa; pointer-events: none; }
+
+/* ===== Visor ===== */
+.visor { position: fixed; inset: 0; z-index: 50; display: flex; flex-direction: column; background: var(--fondo); }
+.visor[hidden] { display: none; }
+.visor-barra { display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--superficie); border-bottom: 1px solid var(--linea); }
+.visor-barra strong { flex: 1; font-size: .95rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.visor-progreso { height: 4px; background: var(--linea); }
+.visor-progreso span { display: block; height: 100%; width: 0; background: var(--cian); transition: width .15s; }
+.visor iframe { flex: 1; width: 100%; border: 0; background: var(--fondo); }
+.visor-pie { margin: 0; padding: 10px 14px; background: var(--superficie); border-top: 1px solid var(--linea); font-size: .88rem; text-align: center; }
+
+.pie { padding: 16px; text-align: center; font-size: .78rem; color: var(--tinta-suave); }
+
+.oculto { display: none !important; }
+
+@media (max-width: 560px) {
+  .barra-sub { display: none; }
+  .tarjeta { padding: 16px; }
+  .visor-barra .btn-sec { padding: 8px 10px; font-size: .85rem; }
+}

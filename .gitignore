@@ -7,3 +7,11 @@ Thumbs.db
 # Copias sin comprimir del material audiovisual: pesan mucho y las versiones
 # previas ya viven en el historial (git show <commit>:public/media/<archivo>)
 _originales-media/
+
+# Documentos firmados o por firmar con clientes: montos, NIT y datos personales.
+# El repo es publico; estos archivos solo viven en el disco (y en OneDrive).
+legal/clientes/
+
+# Paquetes cifrados del portal de firma (tools/expediente.mjs). Se publican con
+# el deploy pero no se versionan: son de cada cliente.
+public/e/

@@ -107,6 +107,7 @@ const PROJECTS = [
   { name: "IncubApp", url: "https://incubapp.cdhmaker.com", t: "pj_inc_t", p: "pj_inc_p" },
   { name: "EvaIA", t: "pj_eva_t", p: "pj_eva_p" },
   { name: "SIGI", t: "pj_sigi_t", p: "pj_sigi_p" },
+  { name: "Refricom — Sistema de Gestión del Mantenimiento", t: "pj_ref_t", p: "pj_ref_p" },
   // El autodiagnóstico Ley 1581 del reto CAVALTEC es el mismo PrivacyCheck,
   // hecho con el equipo Sintaxis TI: no se lista dos veces ni como obra solo propia.
 ];
@@ -126,7 +127,7 @@ const NEEDS_COUNT = 8; // n1_t … n8_t
 //   tools:    muestra el bloque cotizador + visor 3D (fabricación)
 const SERVICES = [
   { id: "print3d", slug: { es: "impresion-3d-medellin", en: "3d-printing-medellin" }, card: 2, area: "local", projects: [], tools: true },
-  { id: "software", slug: { es: "software-a-la-medida-medellin", en: "custom-software-medellin" }, card: 1, area: "global", projects: ["at", "taxi", "inc", "pc"] },
+  { id: "software", slug: { es: "software-a-la-medida-medellin", en: "custom-software-medellin" }, card: 1, area: "global", projects: ["ref", "at", "taxi", "inc", "pc"] },
   { id: "ai", slug: { es: "inteligencia-artificial-medellin", en: "ai-integration-medellin" }, area: "global", projects: ["eva", "sigi", "inc", "pc"] },
   { id: "iot", slug: { es: "iot-automatizacion-medellin", en: "iot-automation-medellin" }, card: 3, area: "local", projects: [] },
 ];
@@ -140,6 +141,7 @@ const PROJECT_CARDS = {
   pc: { t: "pj_featured_t", p: "pj_featured_p", tag: "tag_web", img: "privacycheck-poster", ext: "jpg", w: 1280, h: 720, alt: "pj_featured_t" },
   eva: { t: "pj_eva_t", p: "pj_eva_p", tag: "tag_ai", img: "evaia-avatar", ext: "png", w: 640, h: 640, alt: "alt_eva" },
   sigi: { t: "pj_sigi_t", p: "pj_sigi_p", tag: "tag_sigi" },
+  ref: { t: "pj_ref_t", p: "pj_ref_p", tag: "tag_client" },
 };
 for (const card of Object.values(PROJECT_CARDS)) {
   const pj = PROJECTS.find((x) => x.t === card.t);
