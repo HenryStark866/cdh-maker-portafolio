@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Firma electrónica — CDH Maker</title>
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<style>
+  :root { --marca:#0B3C5D; --cian:#68B8D0; --fondo:#F2F7FA; --linea:#D5E1E8; --txt:#10202B; --suave:#5B6F7C; --ok:#15803D; --err:#B91C1C; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui,'Segoe UI',Roboto,Arial,sans-serif; background: var(--fondo); color: var(--txt); line-height:1.5; }
+  header { background: var(--marca); color:#fff; padding: 14px 16px; }
+  header .in { max-width: 920px; margin: 0 auto; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
+  header b { font-size: 18px; letter-spacing:.5px; } header span { color:#BFE3EE; font-size: 13px; }
+  main { max-width: 920px; margin: 0 auto; padding: 16px; }
+  .card { background:#fff; border:1px solid var(--linea); border-radius: 14px; padding: 18px; margin-bottom: 16px; }
+  h2 { margin: 0 0 4px; font-size: 18px; color: var(--marca); } h2 small { font-weight:500; color: var(--suave); font-size: 13px; }
+  .paso { display:inline-grid; place-items:center; width:26px; height:26px; border-radius:50%; background:var(--marca); color:#fff; font-size:14px; margin-right:8px; }
+  .grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 12px; margin-top: 12px; }
+  label { display:block; font-size: 13px; font-weight:600; color: var(--marca); margin-bottom: 4px; }
+  input[type=text], input[type=email] { width:100%; padding: 11px 12px; font-size:16px; border:1px solid #B8C9D3; border-radius:10px; background:#fff; }
+  input:focus { outline: 2px solid var(--cian); border-color: var(--cian); }
+  .tabs { display:flex; gap:8px; margin: 12px 0 8px; flex-wrap:wrap; }
+  .tab { padding: 8px 14px; border-radius: 20px; border:1px solid var(--linea); background:#fff; cursor:pointer; font-size:14px; color: var(--marca); font-weight:600; }
+  .tab.act { background: var(--marca); color:#fff; border-color: var(--marca); }
+  iframe { width:100%; height: 68vh; min-height: 420px; border:1px solid var(--linea); border-radius:10px; background:#fff; }
+  .pad { position:relative; border: 2px dashed #8FB3C4; border-radius: 12px; background:#FBFDFE; touch-action: none; margin-top: 10px; }
+  canvas { display:block; width:100%; height: 190px; touch-action: none; cursor: crosshair; }
+  .pad .hint { position:absolute; inset:0; display:grid; place-items:center; color:#9FB4C0; pointer-events:none; font-size: 15px; text-align:center; padding:8px; }
+  .acciones { display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; align-items:center; }
+  button { font: inherit; border-radius: 10px; padding: 11px 18px; border: 1px solid var(--marca); background:#fff; color: var(--marca); cursor:pointer; font-weight:600; }
+  button.primario { background: var(--marca); color:#fff; font-size:16px; padding: 13px 24px; }
+  button:disabled { opacity:.45; cursor:not-allowed; }
+  .chk { display:flex; gap:10px; align-items:flex-start; margin-top: 14px; font-size: 14px; }
+  .chk input { margin-top: 4px; width: 20px; height: 20px; }
+  .aviso { padding: 12px 14px; border-radius: 10px; font-size: 14px; margin-top:10px; }
+  .aviso.ok { background:#E8F6EC; color: var(--ok); border:1px solid #BFE5CB; }
+  .aviso.err { background:#FDECEC; color: var(--err); border:1px solid #F4C3C3; }
+  .aviso.info { background:#EAF4F9; color: var(--marca); border:1px solid #C5DEEA; }
+  .centro { text-align:center; padding: 28px 12px; } .centro h2 { font-size: 22px; }
+  .tiempo { font-variant-numeric: tabular-nums; font-weight:700; }
+  footer { max-width: 920px; margin: 0 auto; padding: 0 16px 28px; color: var(--suave); font-size: 12px; }
+</style>
+</head>
+<body>
+<header><div class="in"><b>CDH MAKER</b><span>Firma electrónica de documentos</span></div></header>
+<main id="app"><div class="card centro"><h2>Cargando…</h2><p>Verificando tu enlace.</p></div></main>
+<footer>La firma electrónica tiene efectos jurídicos conforme a la Ley 527 de 1999 y el Decreto 2364 de 2012. Este enlace es personal y temporal: no lo compartas.</footer>
+
+<script type="module">
+import { doc, getDoc, updateDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+import { db } from '/crm/fb.js';
+import { rellenar, sha256Hex } from '/crm/rellenar.js';
+
+const $app = document.getElementById('app');
+const fmt = (d) => d.toLocaleString('es-CO', { dateStyle: 'long', timeStyle: 'short' });
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
+const mensaje = (titulo, texto, cls = 'info') => { $app.innerHTML = `<div class="card centro"><h2>${esc(titulo)}</h2><div class="aviso ${cls}" style="display:inline-block;text-align:left">${texto}</div></div>`; };
+
+// El token viaja en el # (no llega a los registros del servidor); se acepta ?t= por compatibilidad.
+const token = location.hash.slice(1) || new URLSearchParams(location.search).get('t') || '';
+if (!/^[A-Za-z0-9_-]{20,64}$/.test(token)) {
+  mensaje('Enlace no válido', 'Revisa que hayas copiado el enlace completo.', 'err');
+} else {
+  iniciar().catch((e) => { console.error(e); mensaje('No pudimos cargar el documento', 'Revisa tu conexión e inténtalo de nuevo. Si el problema sigue, pide un enlace nuevo.', 'err'); });
+}
+
+async function iniciar() {
+  const ref = doc(db, 'enlaces', token);
+  const snap = await getDoc(ref);
+  if (!snap.exists()) return mensaje('Enlace no válido o vencido', 'No encontramos este enlace. Pide uno nuevo a CDH Maker.', 'err');
+  const d = snap.data();
+  const expira = d.expira.toDate();
+  if (d.estado === 'anulado') return mensaje('Enlace anulado', 'CDH Maker anuló esta solicitud de firma. Si necesitas firmar, pide un enlace nuevo.', 'err');
+  if (d.estado === 'firmado') {
+    const cuando = d.firmadoEn?.toDate ? fmt(d.firmadoEn.toDate()) : '';
+    return mensaje('Documento ya firmado ✔', `Este enlace ya fue usado${cuando ? ' el ' + cuando : ''}. No se puede firmar de nuevo.`, 'ok');
+  }
+  if (Date.now() >= expira.getTime()) return mensaje('Este enlace venció', `Era válido hasta el ${fmt(expira)}. Pide un enlace nuevo a CDH Maker.`, 'err');
+
+  const valores = { ...(d.prefill || {}) };
+  for (const c of d.campos) if (c.valor) valores[c.k] = c.valor;
+  let trazos = 0, activo = d.docs[0].id, dibujando = false;
+
+  $app.innerHTML = `
+    <div class="card">
+      <h2>Hola, ${esc(d.nombre)}</h2>
+      <p style="margin:4px 0 0">Vas a firmar: <b>${d.docs.map((x) => esc(x.titulo)).join(' y ')}</b>.</p>
+      <div class="aviso info">Este enlace es personal y vence el <b>${fmt(expira)}</b> (quedan <span class="tiempo" id="reloj"></span>).</div>
+    </div>
+    <div class="card"><h2><span class="paso">1</span>Tus datos <small>aparecen en el documento</small></h2>
+      <div class="grid" id="campos">${d.campos.map((c) => `<div><label for="f_${c.k}">${esc(c.label)}${c.req ? ' *' : ''}</label><input id="f_${c.k}" data-k="${c.k}" type="${c.tipo || 'text'}" autocomplete="off" value="${esc(c.valor || '')}" placeholder="${esc(c.ph || '')}"></div>`).join('')}</div>
+    </div>
+    <div class="card"><h2><span class="paso">2</span>Lee ${d.docs.length > 1 ? 'los documentos' : 'el documento'}</h2>
+      <div class="tabs" id="tabs"></div>
+      <iframe id="vista" sandbox="" title="Documento"></iframe>
+    </div>
+    <div class="card"><h2><span class="paso">3</span>Firma <small>dibuja tu firma con el dedo o el mouse</small></h2>
+      <div class="pad"><canvas id="lienzo"></canvas><div class="hint" id="hint">Firma aquí</div></div>
+      <div class="acciones"><button type="button" id="borrar">Borrar firma</button></div>
+      <label class="chk"><input type="checkbox" id="acepto"><span>He leído ${d.docs.length > 1 ? 'los documentos' : 'el documento'} y firmo electrónicamente con mi firma manuscrita digitalizada, aceptando su contenido. Entiendo que quedan registrados la fecha y hora, y una huella digital del texto firmado.</span></label>
+      <div class="acciones"><button type="button" class="primario" id="firmar" disabled>Firmar documento</button></div>
+      <div id="resultado"></div>
+    </div>`;
+
+  // --- reloj ---
+  const reloj = document.getElementById('reloj');
+  const tick = () => {
+    const s = Math.max(0, Math.floor((expira.getTime() - Date.now()) / 1000));
+    reloj.textContent = `${String(Math.floor(s / 3600)).padStart(2, '0')}:${String(Math.floor(s / 60) % 60).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+    if (s === 0) mensaje('Este enlace venció', 'Pide un enlace nuevo a CDH Maker.', 'err');
+  };
+  tick(); setInterval(tick, 1000);
+
+  // --- vista previa ---
+  const vista = document.getElementById('vista');
+  const tabs = document.getElementById('tabs');
+  const pintarTabs = () => { tabs.innerHTML = d.docs.map((x) => `<button type="button" class="tab ${x.id === activo ? 'act' : ''}" data-id="${x.id}">${esc(x.titulo)}</button>`).join(''); };
+  const leerForm = () => { for (const i of document.querySelectorAll('#campos input')) valores[i.dataset.k] = i.value; };
+  const pintarVista = () => { leerForm(); vista.srcdoc = rellenar(d.docs.find((x) => x.id === activo).html, valores, {}); };
+  tabs.addEventListener('click', (e) => { const b = e.target.closest('.tab'); if (b) { activo = b.dataset.id; pintarTabs(); pintarVista(); } });
+  document.getElementById('campos').addEventListener('input', () => { pintarVista(); validar(); });
+  pintarTabs(); pintarVista();
+
+  // --- lienzo de firma ---
+  const cv = document.getElementById('lienzo'), ctx = cv.getContext('2d'), hint = document.getElementById('hint');
+  const ajustar = () => { const r = cv.getBoundingClientRect(), dpr = window.devicePixelRatio || 1; if (cv.width === Math.round(r.width * dpr)) return; cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr); ctx.scale(dpr, dpr); ctx.lineWidth = 2.4; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#0a1a33'; };
+  ajustar(); window.addEventListener('resize', () => { if (!trazos) ajustar(); });
+  const pos = (e) => { const r = cv.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; };
+  cv.addEventListener('pointerdown', (e) => { e.preventDefault(); cv.setPointerCapture(e.pointerId); dibujando = true; const p = pos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x + 0.01, p.y + 0.01); ctx.stroke(); hint.style.display = 'none'; });
+  cv.addEventListener('pointermove', (e) => { if (!dibujando) return; e.preventDefault(); const p = pos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); trazos++; validar(); });
+  const fin = () => { dibujando = false; };
+  cv.addEventListener('pointerup', fin); cv.addEventListener('pointercancel', fin);
+  document.getElementById('borrar').addEventListener('click', () => { ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, cv.width, cv.height); ctx.restore(); trazos = 0; hint.style.display = 'grid'; validar(); });
+
+  // --- validación y envío ---
+  const btn = document.getElementById('firmar'), acepto = document.getElementById('acepto'), res = document.getElementById('resultado');
+  function validar() {
+    leerForm();
+    const faltan = d.campos.filter((c) => c.req && !(valores[c.k] || '').trim());
+    btn.disabled = !(faltan.length === 0 && trazos > 12 && acepto.checked);
+  }
+  acepto.addEventListener('change', validar); validar();
+
+  btn.addEventListener('click', async () => {
+    btn.disabled = true; res.innerHTML = '<div class="aviso info">Registrando tu firma…</div>';
+    try {
+      leerForm();
+      const datos = {};
+      for (const c of d.campos) datos[c.k] = String(valores[c.k] || '').trim().slice(0, 200);
+      const hashDoc = [];
+      for (const x of d.docs) hashDoc.push(x.id + ':' + await sha256Hex(x.html));
+      const firma = cv.toDataURL('image/png');
+      await updateDoc(ref, { estado: 'firmado', datos, firma, firmadoEn: serverTimestamp(), ua: navigator.userAgent.slice(0, 300), tz: Intl.DateTimeFormat().resolvedOptions().timeZone || '', hashDoc });
+      mensaje('¡Firmado correctamente! ✔', `Tu firma quedó registrada. Huella del documento: <code>${hashDoc[0].split(':')[1].slice(0, 16)}…</code><br>Ya puedes cerrar esta página.`, 'ok');
+    } catch (e) {
+      console.error(e);
+      const vencido = Date.now() >= expira.getTime();
+      res.innerHTML = `<div class="aviso err">${vencido ? 'El enlace venció antes de firmar.' : 'No se pudo registrar la firma (el enlace pudo haberse usado ya). Recarga la página; si persiste, pide un enlace nuevo.'}</div>`;
+      btn.disabled = false;
+    }
+  });
+}
+</script>
+</body>
+</html>

@@ -16,6 +16,7 @@ Disallow: /perfil
 Disallow: /perfil.html
 Disallow: /firma
 Disallow: /e/
+Disallow: /crm
 
 # Búsqueda y respuestas de IA (deciden si el sitio se puede citar y enlazar)
 User-agent: OAI-SearchBot
@@ -51,5 +52,6 @@ Disallow: /perfil
 Disallow: /perfil.html
 Disallow: /firma
 Disallow: /e/
+Disallow: /crm
 
 Sitemap: https://cdhmaker.com/sitemap.xml

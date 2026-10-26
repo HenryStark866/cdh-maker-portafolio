@@ -219,6 +219,21 @@ flowchart LR
 - **Prueba local**: `http://localhost:5055/firma?local#<token>` guarda los eventos en
   `localStorage` en vez de Firestore.
 
+### 7.2 CRM y firma con enlaces temporales (`/crm`, `/firmar`)
+
+- **Acceso**: `cdhmaker.com/crm`, sin clave. El administrador escribe su correo y entra con el enlace que
+  le llega (Firebase Auth, «vínculo de correo electrónico»). Administradores en dos sitios que deben
+  coincidir: `ADMINS` de `public/crm/app.js` y `esAdmin()` de `firestore.rules`.
+- **Datos** (Firestore de `cdh-maker-portafolio`, solo administradores): `crm_clientes/{id}` con datos y
+  plan de cuotas; `solicitudes/` de firma; `archivos/{aid}/partes/{n}` con PDF y `registro.json` en base64
+  (Cloud Storage exige el plan Blaze). Los enlaces de firma viven en `enlaces/{token}` y se firman en
+  `/firmar#token`; el PDF firmado se arma en el navegador (`public/crm/ensamblar.js`).
+- **Sistema anterior**: las solicitudes con `sistema: 'cdhmaker-firmas'` (proyecto `cdhmaker-firmas`,
+  creadas con `App Balmer/firmas/crear.mjs`) se leen por token en modo solo lectura.
+- **Importar**: `node tools/crm-expediente.mjs datos.json salida.json tipo=archivo.pdf …` arma un
+  `.json` (esquema `cdhmaker.crm.importacion.v1`) que se carga en CRM → Importar. Guardarlo en
+  `legal/clientes/`, nunca en `public/`.
+
 ## 8. Decisiones de arquitectura
 
 Deducidas del historial (`git log`). Formato corto: contexto → decisión → consecuencia.

@@ -58,6 +58,67 @@ service cloud.firestore {
             || esFirma(exp, id, request.resource.data));
     }
 
+    // ── CRM y firma con enlaces temporales (public/crm/, public/firmar.html) ──
+    // No hay secreto: crear enlaces, listar y ensamblar exige una sesión de
+    // Firebase Auth con correo verificado de un administrador de CDH Maker.
+    function esAdmin() {
+      return request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.email in ['cdhmaker@gmail.com', 'henrytaborda57@gmail.com', 'isarias09@gmail.com'];
+    }
+
+    // enlaces/{token}: un documento por firmante; el id es un token aleatorio
+    // de 32 bytes que solo conoce quien recibió el enlace.
+    match /enlaces/{token} {
+      allow get: if true;
+      allow list: if esAdmin();
+      allow create: if esAdmin()
+        && token.matches('^[A-Za-z0-9_-]{32,64}$')
+        && request.resource.data.estado == 'pendiente'
+        && request.resource.data.expira is timestamp
+        && request.resource.data.expira > request.time
+        && request.resource.data.expira <= request.time + duration.value(30, 'd');
+      // Firmar: una sola vez, antes de vencer y tocando solo los campos de la firma.
+      // Anular: solo el administrador y solo si no se ha firmado.
+      allow update: if (resource.data.estado == 'pendiente'
+          && request.time < resource.data.expira
+          && request.resource.data.estado == 'firmado'
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['estado', 'datos', 'firma', 'firmadoEn', 'ua', 'tz', 'hashDoc'])
+          && request.resource.data.firmadoEn == request.time
+          && request.resource.data.datos is map
+          && request.resource.data.hashDoc is list
+          && request.resource.data.firma is string
+          && request.resource.data.firma.matches('^data:image/png;base64,.*')
+          && request.resource.data.firma.size() < 400000)
+        || (esAdmin()
+          && resource.data.estado == 'pendiente'
+          && request.resource.data.estado == 'anulado'
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['estado', 'anuladoEn'])
+          && request.resource.data.anuladoEn == request.time);
+      allow delete: if esAdmin() && resource.data.estado != 'firmado';
+    }
+
+    // Expediente de cada cliente: solicitudes y archivos (PDF y registro.json
+    // en partes de base64, porque Cloud Storage exige el plan Blaze). Solo admin.
+    // Los archivos no se editan: se crean, se leen o se borran.
+    match /crm_clientes/{cliente} {
+      allow read, create, update: if esAdmin();
+      allow delete: if false;
+      match /solicitudes/{sid} {
+        allow read, create, update: if esAdmin();
+        allow delete: if false;
+      }
+      match /archivos/{aid} {
+        allow read, create, delete: if esAdmin();
+        match /partes/{n} {
+          allow read, create, delete: if esAdmin();
+        }
+      }
+    }
+    match /crm_plantillas/{pid} {
+      allow read, write: if esAdmin();
+    }
+
     function evento(exp, id) {
       return /databases/$(database)/documents/firmas/$(exp)/eventos/$(id);
     }

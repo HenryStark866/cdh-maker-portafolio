@@ -15,3 +15,7 @@ legal/clientes/
 # Paquetes cifrados del portal de firma (tools/expediente.mjs). Se publican con
 # el deploy pero no se versionan: son de cada cliente.
 public/e/
+
+# Registros de los emuladores de Firebase
+firestore-debug.log
+.claude/
