@@ -1,4 +1,6 @@
-// CRM de CDH Maker (cdhmaker.com/crm): clientes, plan de pagos, solicitudes de firma y expediente.
+// Panel de administración de CDH Maker (cdhmaker.com/crm): Inicio, Leads, Pipeline, Clientes (plan de pagos,
+// solicitudes de firma y expediente), Proyectos, Afiliados y YAM. Este archivo es el punto de entrada:
+// acceso, navegación y el módulo de Clientes; el resto vive en un archivo por módulo (ver docs/panel-admin.md).
 // Acceso sin clave: el administrador escribe su correo y entra con el enlace que le llega (Firebase Auth,
 // "vínculo de correo electrónico"). La seguridad real está en firestore.rules (esAdmin).
 // Datos: crm_clientes/{id} (+ solicitudes/, archivos/{aid}/partes/{n}); enlaces/{token} para firmar.
@@ -8,6 +10,14 @@ import { collection, doc, getDoc, getDocs, setDoc, updateDoc, addDoc, deleteDoc,
 import { onAuthStateChanged, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, signOut }
   from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 import { ensamblar, estadoDocs, sha256Bytes } from './ensamblar.js';
+import { esc, cop, fecha, fmtFecha, aviso, slug, resumenPagos, RE_CODIGO } from './util.js?v=1';
+import { vistaInicio } from './inicio.js?v=1';
+import { vistaLeads, vistaLead } from './leads.js?v=1';
+import { vistaPipeline, vistaOportunidad } from './pipeline.js?v=1';
+import { vistaProyectos, vistaProyecto } from './proyectos.js?v=1';
+import { vistaAfiliados, vistaAfiliado } from './afiliados.js?v=1';
+import { vistaYam } from './yam.js?v=1';
+import { bitacora } from './actividades.js?v=1';
 
 // Deben coincidir con esAdmin() de firestore.rules.
 const ADMINS = ['cdhmaker@gmail.com', 'henrytaborda57@gmail.com', 'isarias09@gmail.com'];
@@ -18,12 +28,6 @@ const PARTE = 700000; // caracteres base64 por documento de Firestore (límite 1
 
 const $app = document.getElementById('app');
 const $nav = document.getElementById('nav');
-const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const cop = (n) => 'COP ' + Number(n || 0).toLocaleString('es-CO');
-const fecha = (t) => (t?.toDate ? t.toDate() : t ? new Date(t) : null);
-const fmtFecha = (t, hora = false) => { const d = fecha(t); return d && !isNaN(d) ? d.toLocaleString('es-CO', hora ? { dateStyle: 'medium', timeStyle: 'short' } : { dateStyle: 'medium' }) : '—'; };
-const aviso = (el, txt, cls = 'info') => { el.innerHTML = `<div class="aviso ${cls}">${txt}</div>`; };
-const slug = (s) => String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60);
 const token = () => { const b = crypto.getRandomValues(new Uint8Array(32)); return btoa(String.fromCharCode(...b)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); };
 const b64 = (bytes) => { let s = ''; for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode(...bytes.subarray(i, i + 0x8000)); return btoa(s); };
 const deB64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
@@ -38,13 +42,13 @@ async function completarEnlace() {
     await signInWithEmailLink(auth, correo.trim().toLowerCase(), location.href);
     localStorage.removeItem(CLAVE_CORREO);
   } catch (e) { console.error(e); alert('El enlace de acceso no es válido o ya se usó. Pide uno nuevo.'); }
-  history.replaceState(null, '', location.pathname);
+  history.replaceState(null, '', location.pathname + (EMULADOR ? '?emu' : ''));
 }
 
 function pantallaAcceso(msg = '') {
   $nav.innerHTML = '';
   $app.innerHTML = `<div class="card" style="max-width:440px;margin:40px auto">
-    <h2>Entrar al CRM</h2>
+    <h2>Entrar al panel</h2>
     <p class="suave">Escribe tu correo de administrador. Te llegará un enlace para entrar; no necesitas clave.</p>
     <form id="fAcceso"><label for="correo">Correo</label><input id="correo" type="email" required autocomplete="email">
     <div class="acciones"><button class="primario">Enviarme el enlace</button></div></form><div id="msg">${msg}</div></div>`;
@@ -63,30 +67,43 @@ function pantallaAcceso(msg = '') {
 
 // ───────── navegación ─────────
 let usuario = null;
+const MODULOS = [['inicio', 'Inicio'], ['leads', 'Leads'], ['pipeline', 'Pipeline'], ['clientes', 'Clientes'], ['proyectos', 'Proyectos'], ['afiliados', 'Afiliados'], ['yam', 'YAM'], ['importar', 'Importar']];
+function tema() {
+  const r = document.documentElement;
+  const oscuroAhora = r.dataset.tema ? r.dataset.tema === 'oscuro' : matchMedia('(prefers-color-scheme: dark)').matches;
+  r.dataset.tema = oscuroAhora ? 'claro' : 'oscuro';
+  try { localStorage.setItem('cdh_crm_tema', r.dataset.tema); } catch { }
+}
 function nav(actual) {
-  $nav.innerHTML = `<button data-ir="clientes" class="${actual === 'clientes' ? 'act' : ''}">Clientes</button>
-    <button data-ir="importar" class="${actual === 'importar' ? 'act' : ''}">Importar</button>
-    <span style="color:#BFE3EE;font-size:12px">${esc(usuario.email)}</span><button id="salir">Salir</button>`;
+  $nav.innerHTML = MODULOS.map(([k, l]) => `<button data-ir="${k}" class="${actual === k ? 'act' : ''}">${l}</button>`).join('')
+    + `<button id="tema" title="Cambiar tema claro/oscuro" aria-label="Cambiar tema">◐</button><span class="quien">${esc(usuario.email)}</span><button id="salir">Salir</button>`;
   $nav.querySelectorAll('[data-ir]').forEach((b) => b.addEventListener('click', () => (location.hash = b.dataset.ir)));
   document.getElementById('salir').addEventListener('click', () => signOut(auth));
+  document.getElementById('tema').addEventListener('click', tema);
 }
 async function enrutar() {
   if (!usuario) return;
-  const [ruta, id] = location.hash.slice(1).split('/');
+  const [ruta, crudo] = location.hash.slice(1).split('/');
+  const id = crudo ? decodeURIComponent(crudo) : '';
+  const ctx = { nav, usuario };
   try {
-    if (ruta === 'cliente' && id) return await vistaCliente(decodeURIComponent(id));
+    if (ruta === 'cliente' && id) return await vistaCliente(id);
+    if (ruta === 'clientes') return await vistaClientes();
     if (ruta === 'importar') return vistaImportar();
-    return await vistaClientes();
+    if (ruta === 'leads') return await vistaLeads(ctx);
+    if (ruta === 'lead' && id) return await vistaLead(id, ctx);
+    if (ruta === 'pipeline') return await vistaPipeline(ctx);
+    if (ruta === 'op' && id) return await vistaOportunidad(id, ctx);
+    if (ruta === 'proyectos') return await vistaProyectos(ctx);
+    if (ruta === 'proyecto' && id) return await vistaProyecto(id, ctx);
+    if (ruta === 'afiliados') return await vistaAfiliados(ctx);
+    if (ruta === 'afiliado' && id) return await vistaAfiliado(id, ctx);
+    if (ruta === 'yam') return await vistaYam(ctx);
+    return await vistaInicio(ctx);
   } catch (e) { console.error(e); $app.innerHTML = `<div class="card"><div class="aviso err">Error: ${esc(e.code || e.message)}</div></div>`; }
 }
 
 // ───────── clientes ─────────
-const resumenPagos = (c) => {
-  const cuotas = c.cuotas || [];
-  const pagado = cuotas.filter((q) => q.estado === 'pagada').reduce((s, q) => s + Number(q.valor || 0), 0);
-  const total = Number(c.valor_total || cuotas.reduce((s, q) => s + Number(q.valor || 0), 0));
-  return { pagado, total, saldo: total - pagado, pagadas: cuotas.filter((q) => q.estado === 'pagada').length, n: cuotas.length };
-};
 
 async function vistaClientes() {
   nav('clientes');
@@ -111,7 +128,8 @@ async function vistaClientes() {
 }
 
 const CAMPOS = [['nombre', 'Nombre o razón social'], ['tipo', 'Tipo (persona natural / empresa)'], ['documento', 'Cédula o NIT'], ['empresa', 'Empresa relacionada'],
-  ['correo', 'Correo'], ['telefono', 'Teléfono'], ['direccion', 'Ciudad y dirección'], ['proyecto', 'Proyecto'], ['valor_total', 'Valor total (COP)'], ['estado', 'Estado (activo, pagado, cerrado)']];
+  ['correo', 'Correo'], ['telefono', 'Teléfono'], ['direccion', 'Ciudad y dirección'], ['proyecto', 'Proyecto'], ['valor_total', 'Valor total (COP)'], ['estado', 'Estado (activo, pagado, cerrado)'],
+  ['afiliado', 'Código de afiliado que lo refirió (comisión)']];
 
 async function vistaCliente(id) {
   nav('clientes');
@@ -139,13 +157,25 @@ async function vistaCliente(id) {
       <details><summary class="suave" style="cursor:pointer">Nueva solicitud de firma</summary>${formSolicitud()}</details></div>
     <div class="card"><h2>Expediente</h2><div id="archivos"><p class="suave">Cargando…</p></div>
       <div class="acciones"><input type="file" id="fArchivo" multiple style="width:auto"><button class="mini" id="subir">Subir al expediente</button></div><div id="mArchivo"></div></div>
+    <div class="card"><h2>Proyectos</h2><div id="proyCli"><p class="suave">Cargando…</p></div></div>
+    <div class="card" id="bitCli"></div>
   </div></div>`;
+  bitacora(document.getElementById('bitCli'), usuario, 'cliente', id);
+  getDocs(collection(db, 'crm_proyectos')).then((s) => {
+    const el = document.getElementById('proyCli');
+    const ps = s.docs.filter((d) => d.data().cliente_id === id);
+    el.innerHTML = ps.length ? `<ul class="lista">${ps.map((d) => `<li data-p="${esc(d.id)}"><b>${esc(d.data().nombre)}</b><small>${esc(d.data().estado)}${d.data().url_produccion ? ' · ' + esc(d.data().url_produccion) : ''}</small></li>`).join('')}</ul>`
+      : '<p class="suave">Sin proyectos. <a href="#proyectos">Crear uno en Proyectos</a>.</p>';
+    el.querySelectorAll('[data-p]').forEach((li) => li.addEventListener('click', () => (location.hash = 'proyecto/' + encodeURIComponent(li.dataset.p))));
+  }).catch(() => { document.getElementById('proyCli').innerHTML = '<p class="suave">No se pudieron leer los proyectos.</p>'; });
 
   const guardar = async (cambios) => { await updateDoc(ref, { ...cambios, actualizado: serverTimestamp(), actualizado_por: usuario.email }); await vistaCliente(id); };
   document.getElementById('fDatos').addEventListener('submit', async (e) => {
     e.preventDefault();
     const f = Object.fromEntries(new FormData(e.target));
     if (f.valor_total !== '') f.valor_total = Number(f.valor_total) || 0;
+    f.afiliado = String(f.afiliado || '').trim().toLowerCase();
+    if (f.afiliado && !RE_CODIGO.test(f.afiliado)) return aviso(document.getElementById('mDatos'), 'El código de afiliado debe tener 4–20 caracteres: a-z, 0-9 o guiones.', 'err');
     await guardar(f);
   });
   $app.querySelectorAll('[data-pagar]').forEach((b) => b.addEventListener('click', async () => {

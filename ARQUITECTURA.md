@@ -221,6 +221,10 @@ flowchart LR
 
 ### 7.2 CRM y firma con enlaces temporales (`/crm`, `/firmar`)
 
+> Desde 2026-10-27 `/crm` es el **panel de administración** completo (Inicio, Leads, Pipeline, Clientes,
+> Proyectos, Afiliados, YAM) y `public/ref.js` registra leads anónimos con código de afiliado. Detalle en
+> [docs/panel-admin.md](docs/panel-admin.md).
+
 - **Acceso**: `cdhmaker.com/crm`, sin clave. El administrador escribe su correo y entra con el enlace que
   le llega (Firebase Auth, «vínculo de correo electrónico»). Administradores en dos sitios que deben
   coincidir: `ADMINS` de `public/crm/app.js` y `esAdmin()` de `firestore.rules`.

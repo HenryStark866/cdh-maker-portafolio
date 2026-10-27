@@ -24,8 +24,20 @@
   const waNumber = () => _d("8:6578:9<:7;");
   const email = () => _d("fgkpdnhuCjpdlo1frp");
 
+  // Todos los botones llaman a waUrl() en el momento del clic: aquí se marca el
+  // contacto para el panel (ref.js, sin datos personales) y, si el visitante
+  // llegó por un afiliado (?ref=), el código viaja al final del mensaje.
   const waUrl = (msg) => {
     const n = waNumber();
+    const R = window.CDH_REF;
+    if (R) {
+      try {
+        const svc = /^Servicio: (.+)$/m.exec(msg || "");
+        R.contacto(null, { servicio: svc ? svc[1] : "" });
+        const codigo = R.codigo();
+        if (codigo) msg = (msg ? msg + "\n\n" : "") + "Ref: " + codigo;
+      } catch (_) { }
+    }
     const q = msg ? `?text=${encodeURIComponent(msg)}` : "";
     return n ? `https://wa.me/${n}${q}` : "#";
   };
@@ -55,6 +67,7 @@
       a.href = "#";
       a.onclick = (e) => {
         e.preventDefault();
+        if (window.CDH_REF) try { window.CDH_REF.contacto("web_correo"); } catch (_) { }
         window.location.href = mailUrl("Proyecto con CDH Maker");
       };
     });

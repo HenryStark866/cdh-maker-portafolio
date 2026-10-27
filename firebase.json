@@ -19,6 +19,11 @@
         "regex": "^/(?P<lang>en|zh|hi|ar|pt|bn|ru|fr|id)/$",
         "destination": "/:lang",
         "type": 301
+      },
+      {
+        "source": "/@(admin|panel)",
+        "destination": "/crm",
+        "type": 302
       }
     ],
     "headers": [
