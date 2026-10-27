@@ -7,7 +7,7 @@ import { collection, doc, getDoc, getDocs, setDoc, updateDoc, addDoc, deleteDoc,
   from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 import { onAuthStateChanged, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, signOut }
   from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-import { ensamblar, estadoDocs, sha256Bytes } from './ensamblar.js';
+import { ensamblar, estadoDocs, sha256Bytes } from './ensamblar.js?v=2';
 
 // Deben coincidir con esAdmin() de firestore.rules.
 const ADMINS = ['cdhmaker@gmail.com', 'henrytaborda57@gmail.com', 'isarias09@gmail.com'];
@@ -38,7 +38,7 @@ async function completarEnlace() {
     await signInWithEmailLink(auth, correo.trim().toLowerCase(), location.href);
     localStorage.removeItem(CLAVE_CORREO);
   } catch (e) { console.error(e); alert('El enlace de acceso no es válido o ya se usó. Pide uno nuevo.'); }
-  history.replaceState(null, '', location.pathname);
+  history.replaceState(null, '', location.pathname + (EMULADOR ? '?emu' : ''));
 }
 
 function pantallaAcceso(msg = '') {

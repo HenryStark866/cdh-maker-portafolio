@@ -37,12 +37,17 @@ const plantillaJSON = (x, v) => {
   return x;
 };
 
-// Renderiza el HTML en un iframe fuera de pantalla con el ancho útil de una hoja A4 y lo pasa a PDF.
+// Renderiza el HTML en un iframe fuera de pantalla con el ancho útil de una hoja A4 y lo pasa a PDF,
+// una imagen por hoja. jsPDF.html() deformaba el texto y la posición de las firmas, así que se
+// rasteriza con html2canvas (fiel al navegador) y se corta la página donde no parta un párrafo,
+// una fila o una firma; los elementos con break-before: page abren hoja nueva.
 async function htmlAPdf(html) {
   const { jsPDF } = window.jspdf;
   const ANCHO = 673; // 178 mm (A4 menos 16 mm por lado) a 96 ppp
+  const MM = 178 / ANCHO; // milímetros por píxel
+  const ALTO = Math.floor(273 / MM); // alto útil de la hoja: 297 mm menos 12 mm arriba y abajo
   const ifr = document.createElement('iframe');
-  ifr.style.cssText = `position:fixed;left:-20000px;top:0;width:${ANCHO}px;height:1200px;border:0`;
+  ifr.style.cssText = `position:fixed;left:-20000px;top:0;width:${ANCHO}px;height:${ALTO}px;border:0`;
   document.body.append(ifr);
   try {
     await new Promise((ok) => { ifr.onload = ok; ifr.srcdoc = html; });
@@ -51,8 +56,43 @@ async function htmlAPdf(html) {
     d.body.style.margin = '0';
     await d.fonts?.ready;
     await Promise.all([...d.images].map((i) => i.complete ? 0 : new Promise((ok) => { i.onload = i.onerror = ok; })));
+    const total = Math.ceil(d.documentElement.scrollHeight);
+    ifr.style.height = total + 'px';
+
+    // Cortes de página
+    const caja = (e) => e.getBoundingClientRect();
+    const atomos = [...d.body.querySelectorAll('p,li,tr,h1,h2,h3,h4,h5,h6,img,figure,pre,blockquote,dt,dd,.firma-img,.firma-vacia')]
+      .map(caja).filter((r) => r.height > 0 && r.height < ALTO * 0.8).map((r) => [r.top, r.bottom]);
+    const forzados = [...d.body.querySelectorAll('*')].filter((e) => /page|always/.test(getComputedStyle(e).breakBefore)).map((e) => caja(e).top);
+    const seguro = (y) => atomos.every(([a, b]) => y <= a + 0.5 || y >= b - 0.5);
+    const cortes = [0];
+    while (cortes.at(-1) < total - 2) {
+      const ini = cortes.at(-1);
+      let fin = Math.min(ini + ALTO, total);
+      const f = forzados.find((y) => y > ini + 2 && y < fin);
+      if (f) fin = f;
+      else if (fin < total) {
+        let y = fin;
+        while (y > ini + ALTO * 0.5 && !seguro(y)) y--;
+        if (seguro(y)) fin = y;
+      }
+      cortes.push(fin);
+    }
+
+    const escala = Math.min(2, 32000 / total);
+    const lienzo = await window.html2canvas(d.documentElement, { scale: escala, width: ANCHO, height: total, windowWidth: ANCHO, windowHeight: total, backgroundColor: '#ffffff', logging: false });
     const pdf = new jsPDF({ unit: 'mm', format: 'a4', compress: true });
-    await pdf.html(d.body, { margin: [12, 16, 12, 16], autoPaging: 'text', width: 178, windowWidth: ANCHO, html2canvas: { backgroundColor: '#ffffff', useCORS: false } });
+    for (let i = 1; i < cortes.length; i++) {
+      const alto = cortes[i] - cortes[i - 1];
+      if (alto < 2) continue;
+      const hoja = document.createElement('canvas');
+      hoja.width = lienzo.width; hoja.height = Math.round(alto * escala);
+      const ctx = hoja.getContext('2d');
+      ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, hoja.width, hoja.height);
+      ctx.drawImage(lienzo, 0, Math.round(cortes[i - 1] * escala), hoja.width, hoja.height, 0, 0, hoja.width, hoja.height);
+      if (i > 1) pdf.addPage();
+      pdf.addImage(hoja.toDataURL('image/jpeg', 0.88), 'JPEG', 16, 12, 178, alto * MM);
+    }
     return new Uint8Array(pdf.output('arraybuffer'));
   } finally { ifr.remove(); }
 }
