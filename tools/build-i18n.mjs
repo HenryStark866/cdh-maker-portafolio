@@ -102,12 +102,13 @@ const ENTITY = {
 // Proyectos del portafolio: claves del diccionario de su título y descripción
 const PROJECTS = [
   { name: "PrivacyCheck", url: "https://privacycheck-co.vercel.app", t: "pj_featured_t", p: "pj_featured_p" },
-  { name: "A Tiempo Logística", url: "https://atiempo-logistica.vercel.app", t: "pj_at_t", p: "pj_at_p" },
+  // YAM es el SaaS estrella de CDH Maker: la plataforma de A Tiempo Logística
+  { name: "YAM", url: "https://yam.cdhmaker.com", t: "pj_at_t", p: "pj_at_p" },
   { name: "TaxiYa", url: "https://taxiya.vercel.app", t: "pj_taxi_t", p: "pj_taxi_p" },
   { name: "IncubApp", url: "https://incubapp.cdhmaker.com", t: "pj_inc_t", p: "pj_inc_p" },
   { name: "EvaIA", t: "pj_eva_t", p: "pj_eva_p" },
   { name: "SIGI", t: "pj_sigi_t", p: "pj_sigi_p" },
-  { name: "Refricom — Sistema de Gestión del Mantenimiento", t: "pj_ref_t", p: "pj_ref_p" },
+  { name: "Refricom — Sistema de Gestión del Mantenimiento", url: "https://refricom.cdhmaker.com", t: "pj_ref_t", p: "pj_ref_p" },
   // El autodiagnóstico Ley 1581 del reto CAVALTEC es el mismo PrivacyCheck,
   // hecho con el equipo Sintaxis TI: no se lista dos veces ni como obra solo propia.
 ];
@@ -135,7 +136,7 @@ const SERVICES = [
 // principal (los mismos de #proyectos) y la imagen de public/media. La URL
 // en vivo sale de PROJECTS: se cambia en un solo lugar.
 const PROJECT_CARDS = {
-  at: { t: "pj_at_t", p: "pj_at_p", tag: "tag_saas", img: "atiempo-logistica", ext: "jpg", w: 1000, h: 625, alt: "alt_at" },
+  at: { t: "pj_at_t", p: "pj_at_p", tag: "tag_star", img: "atiempo-logistica", ext: "jpg", w: 1000, h: 625, alt: "alt_at" },
   taxi: { t: "pj_taxi_t", p: "pj_taxi_p", tag: "tag_saas", img: "taxiya", ext: "jpg", w: 1000, h: 625, alt: "alt_taxi" },
   inc: { t: "pj_inc_t", p: "pj_inc_p", tag: "tag_saas_ai", img: "incubapp", ext: "jpg", w: 1000, h: 625, alt: "alt_inc" },
   pc: { t: "pj_featured_t", p: "pj_featured_p", tag: "tag_web", img: "privacycheck-poster", ext: "jpg", w: 1280, h: 720, alt: "pj_featured_t" },

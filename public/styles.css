@@ -1003,74 +1003,172 @@ a:focus-visible, button:focus-visible, select:focus-visible, summary:focus-visib
   outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px;
 }
 
-/* ===== Ventana de anuncios (widget fijo, no modal) ===== */
-#cdh-ad-widget {
-  position: fixed; z-index: 90;
-  bottom: 84px; left: calc(var(--sidebar-w) + 16px);
-  opacity: 0; transform: translateY(10px);
-  transition: opacity 0.35s ease, transform 0.35s ease;
+/* ===== Cinta de la portada: Shorts + ofertas (ads.js) =====
+   Banda en el flujo de la página, justo después del hero. La pista se mueve
+   con transform (GPU) y se detiene con hover, foco, el botón Pausar, el
+   visor abierto o cuando sale de pantalla (.is-off). */
+.cinta { position: relative; z-index: 1; padding: 44px 0 36px; }
+.cinta-head {
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 16px;
+  margin-bottom: 20px;
 }
-#cdh-ad-widget.show { opacity: 1; transform: none; }
-.cdh-ad-card {
-  width: 264px;
-  background: rgba(10, 30, 41, 0.94); backdrop-filter: blur(10px);
-  border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
-  box-shadow: 0 16px 46px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(34, 211, 238, 0.06);
+.cinta-title { font-size: clamp(1.25rem, 2.4vw, 1.75rem); line-height: 1.2; letter-spacing: -0.02em; }
+.cinta-head .section-kicker { margin-bottom: 10px; }
+.cinta-toggle {
+  flex-shrink: 0; display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 14px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  font: 600 0.8rem var(--font-body);
+  transition: border-color 0.2s;
 }
-[data-theme="light"] .cdh-ad-card { background: rgba(255, 255, 255, 0.96); }
-.cdh-ad-head {
-  display: flex; align-items: center; gap: 7px;
-  padding: 9px 10px; border-bottom: 1px solid var(--border);
+.cinta-toggle:hover { border-color: var(--accent); }
+.cinta-toggle svg { width: 14px; height: 14px; color: var(--accent); }
+.cinta-toggle .i-play, .cinta-toggle[aria-pressed="true"] .i-pause { display: none; }
+.cinta-toggle[aria-pressed="true"] .i-play { display: block; }
+.cinta-viewport {
+  overflow: hidden; padding: 6px 0 10px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
 }
-.cdh-ad-dot {
-  width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
-  box-shadow: 0 0 8px var(--accent); flex-shrink: 0;
-  animation: cdh-ad-pulse 2s ease-in-out infinite;
+.cinta-track {
+  list-style: none; display: flex; gap: 16px; width: max-content;
+  padding: 0 8px; margin: 0; min-height: 300px;
 }
-@keyframes cdh-ad-pulse { 50% { opacity: 0.4; } }
-.cdh-ad-tag {
-  font-family: var(--font-display); font-size: 0.64rem; letter-spacing: 1.2px;
-  text-transform: uppercase; color: var(--text-dim);
+.cinta-track.is-anim { animation: cinta-scroll var(--cinta-dur, 60s) linear infinite; will-change: transform; }
+@keyframes cinta-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+[dir="rtl"] .cinta-track.is-anim { animation-name: cinta-scroll-rtl; }
+@keyframes cinta-scroll-rtl { from { transform: translateX(0); } to { transform: translateX(50%); } }
+.cinta:hover .cinta-track, .cinta:focus-within .cinta-track,
+.cinta.is-paused .cinta-track, .cinta.is-off .cinta-track, .cinta.is-modal .cinta-track {
+  animation-play-state: paused;
 }
-.cdh-ad-min {
-  margin-left: auto; width: 22px; height: 22px; border-radius: 50%;
-  border: 1px solid var(--border); background: var(--surface-2); color: var(--text);
-  cursor: pointer; display: grid; place-items: center; line-height: 1; font-size: 1rem;
-  transition: border-color 0.2s, transform 0.2s;
-}
-.cdh-ad-min:hover { border-color: var(--accent); transform: scale(1.08); }
-.cdh-ad-media { position: relative; aspect-ratio: 16 / 9; background: #04141c; }
-.cdh-ad-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
-.cdh-ad-mute {
-  position: absolute; bottom: 8px; right: 8px; width: 28px; height: 28px;
-  border-radius: 50%; border: 1px solid rgba(255,255,255,0.25);
-  background: rgba(3, 10, 15, 0.55); backdrop-filter: blur(6px);
-  color: #fff; cursor: pointer; display: grid; place-items: center;
-}
-.cdh-ad-mute:hover { border-color: var(--accent); }
-.cdh-ad-mute svg { width: 14px; height: 14px; }
-.cdh-ad-body { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 2px; }
-.cdh-ad-body strong { font-family: var(--font-display); font-size: 0.88rem; }
-.cdh-ad-body span { color: var(--text-dim); font-size: 0.76rem; line-height: 1.35; }
+/* Reducir movimiento: fila fija con desplazamiento manual */
+.cinta.is-static .cinta-viewport { overflow-x: auto; scroll-snap-type: x mandatory; -webkit-mask-image: none; mask-image: none; }
+.cinta.is-static .cinta-item { scroll-snap-align: start; }
+.cinta-item { flex: 0 0 auto; display: flex; }
 
-.cdh-ad-pill {
-  display: flex; align-items: center; gap: 8px;
-  padding: 10px 16px 10px 12px; border-radius: 999px;
-  background: rgba(10, 30, 41, 0.94); backdrop-filter: blur(10px);
-  border: 1px solid var(--border); color: var(--accent); cursor: pointer;
-  font-family: var(--font-display); font-size: 0.82rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-  transition: border-color 0.2s, transform 0.2s;
+.cinta-card {
+  position: relative; display: flex; flex-direction: column; overflow: hidden;
+  height: 300px; border-radius: 16px; text-align: start;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  text-decoration: none; font: inherit; cursor: pointer;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
-[data-theme="light"] .cdh-ad-pill { background: rgba(255, 255, 255, 0.96); }
-.cdh-ad-pill:hover { border-color: var(--accent); transform: translateY(-2px); }
-.cdh-ad-pill svg { width: 16px; height: 16px; }
-.cdh-ad-pill span { color: var(--text); }
+.cinta-card:hover, .cinta-card:focus-visible {
+  transform: translateY(-4px); border-color: var(--accent);
+  box-shadow: 0 14px 34px -14px var(--glow);
+}
+.cinta-badge {
+  align-self: flex-start; padding: 3px 9px; border-radius: 999px;
+  font: 600 0.66rem var(--font-display); letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+/* Short: miniatura vertical 9:16 (hqdefault es 4:3 con el video al centro) */
+.cinta-short { width: 169px; padding: 0; background: #000; color: #fff; border-color: transparent; }
+.cinta-thumb { position: absolute; inset: 0; }
+.cinta-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cinta-short::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, transparent 28%, transparent 52%, rgba(0,0,0,0.85) 100%);
+}
+.cinta-short .cinta-badge {
+  position: absolute; top: 10px; inset-inline-start: 10px; z-index: 1;
+  color: #fff; background: rgba(204, 0, 41, 0.92); border-color: transparent;
+}
+.cinta-play {
+  position: absolute; z-index: 1; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center;
+  color: #fff; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(4px); transition: transform 0.2s ease, background 0.2s ease;
+}
+.cinta-play svg { width: 22px; height: 22px; margin-inline-start: 3px; }
+.cinta-short:hover .cinta-play, .cinta-short:focus-visible .cinta-play { transform: translate(-50%, -50%) scale(1.1); background: rgba(204, 0, 41, 0.9); }
+.cinta-cap {
+  position: absolute; z-index: 1; left: 10px; right: 10px; bottom: 10px;
+  font: 600 0.82rem/1.3 var(--font-display);
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+/* Oferta: servicio de CDH, YAM o producto de un comercio */
+.cinta-offer { width: 236px; padding: 18px 18px 16px; gap: 10px; }
+.cinta-offer::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(120% 70% at 100% 0%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 60%);
+}
+.cinta-yam::before {
+  background: radial-gradient(120% 70% at 100% 0%, color-mix(in srgb, var(--accent-2) 26%, transparent), transparent 60%);
+}
+.cinta-ico {
+  width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; flex-shrink: 0;
+  color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+.cinta-ico svg { width: 24px; height: 24px; }
+.cinta-img { display: block; margin: -18px -18px 0; height: 128px; flex-shrink: 0; background: var(--surface-2); }
+.cinta-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cinta-ttl { font: 700 1.04rem/1.25 var(--font-display); letter-spacing: -0.01em; }
+.cinta-txt { color: var(--text-dim); font-size: 0.84rem; line-height: 1.45; }
+.cinta-price { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.cinta-price b { font: 700 1.15rem var(--font-display); color: var(--accent); }
+.cinta-price s { color: var(--text-dim); font-size: 0.82rem; }
+.cinta-store { color: var(--text-dim); font-size: 0.78rem; }
+.cinta-cta {
+  margin-top: auto; align-self: flex-start; padding: 8px 14px; border-radius: 999px;
+  font: 600 0.82rem var(--font-body); color: var(--btn-fg); background: var(--accent);
+}
+.cinta-yam .cinta-cta { background: var(--accent-2); }
+.cinta-ttl, .cinta-txt, .cinta-price, .cinta-store, .cinta-cta, .cinta-badge, .cinta-ico, .cinta-img { position: relative; }
+
+/* Visor del Short (dialog nativo: foco atrapado y Esc para cerrar) */
+.cinta-modal {
+  margin: auto; padding: 0; border: none; background: transparent; color: var(--text);
+  max-width: min(400px, 94vw); width: 100%;
+}
+.cinta-modal::backdrop { background: rgba(2, 8, 12, 0.82); backdrop-filter: blur(4px); }
+.cinta-modal-box {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 18px; overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+}
+.cinta-modal-head { display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
+.cinta-modal-head strong {
+  flex: 1; min-width: 0; font: 600 0.92rem/1.3 var(--font-display);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.cinta-modal-x {
+  flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%; cursor: pointer;
+  border: 1px solid var(--border); background: var(--surface-2); color: var(--text);
+  font-size: 1.3rem; line-height: 1; display: grid; place-items: center;
+}
+.cinta-modal-x:hover { border-color: var(--accent); }
+.cinta-modal-frame {
+  position: relative; height: min(70vh, 620px); aspect-ratio: 9 / 16; max-width: 100%;
+  margin: 0 auto; background: #000;
+}
+.cinta-modal-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.cinta-modal-yt {
+  display: block; padding: 12px 14px; text-align: center;
+  color: var(--accent); font-weight: 600; font-size: 0.86rem; text-decoration: none;
+}
+.cinta-modal-yt:hover { text-decoration: underline; }
 
 @media (max-width: 760px) {
-  #cdh-ad-widget { left: 14px; bottom: 96px; }
-  .cdh-ad-card { width: 50vw; max-width: 210px; }
-  .cdh-ad-body span { display: none; }
+  .cinta { padding: 32px 0 26px; }
+  .cinta-head { align-items: center; }
+  .cinta-toggle { padding: 9px; }
+  .cinta-toggle-l { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .cinta-track { gap: 12px; min-height: 250px; }
+  .cinta-card { height: 250px; }
+  .cinta-short { width: 141px; }
+  .cinta-offer { width: 204px; padding: 14px 14px 12px; gap: 8px; }
+  .cinta-img { margin: -14px -14px 0; height: 100px; }
+  .cinta-ttl { font-size: 0.96rem; }
+  .cinta-txt { font-size: 0.8rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cinta-track.is-anim { animation: none; }
+  .cinta-card, .cinta-play { transition: none; }
 }
 
 /* ===== Responsive — sidebar → top bar en móvil ===== */
@@ -1118,7 +1216,6 @@ a:focus-visible, button:focus-visible, select:focus-visible, summary:focus-visib
   .about { grid-template-columns: 1fr; }
   .hero { padding: 70px 0 60px; }
   .footer-grid { grid-template-columns: 1fr; gap: 26px; }
-  .cdh-ad-window { max-width: 100%; }
 }
 
 /* ===== Páginas por servicio (/servicios/…, /<idioma>/services/…) =====

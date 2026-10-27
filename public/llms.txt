@@ -25,7 +25,7 @@
 ## What clients come for
 
 - A website or online store for your business: Fast, mobile-friendly, search-ready websites: from a landing page to a full platform.
-- A custom system or SaaS: Software to run your company —logistics, sales, inventory, work orders— or your own SaaS product, like TaxiYa, A Tiempo Logística or IncubApp.
+- A custom system or SaaS: Software to run your company —logistics, sales, inventory, work orders— or your own SaaS product, like YAM, IncubApp or TaxiYa.
 - Integrating artificial intelligence: AI assistants, content generation and analytics built into your operation, with human review where it's needed, as in EvaIA and SIGI (in progress).
 - Automating repetitive processes: Less manual work: forms, reports, notifications and flows between your tools, connected and free of typing errors.
 - A prototype or a physical part: Made-to-order 3D printing (FDM and resin), laser cutting and engraving, and CNC machining in Medellín, shipped anywhere in Colombia.
@@ -36,12 +36,12 @@
 ## Projects (proof of work)
 
 - [PrivacyCheck](https://privacycheck-co.vercel.app): Real platform demo: entity registration, registry lookup, weighted self-assessment, simulator and AI analysis. Built with Next.js, in the cloud.
-- [A Tiempo Logística](https://atiempo-logistica.vercel.app): Last-mile logistics SaaS platform for e-commerce in Medellín: shipment tracking, warehouse, routes, cash-on-delivery collection and end-to-end traceability. Next.js + Supabase.
+- [YAM](https://yam.cdhmaker.com): CDH Maker's flagship SaaS and the platform of A Tiempo Logística in Medellín: pickup, warehouse, routing, cash-on-delivery collection, invoicing and online stores for merchants, with real-time tracking. Next.js + Supabase.
 - [TaxiYa](https://taxiya.vercel.app): Platform that lets taxi companies operate without phone calls or costly data plans: passenger, driver and dispatch apps with real-time dispatch. A CDH Maker product.
 - [IncubApp](https://incubapp.cdhmaker.com): Multi-company SaaS for hatcheries and farms: photo rounds, work orders, sales, logistics, animal health and real-time management, with AI. A CDH Maker product.
 - EvaIA: AI assistant running 100% locally: voice, spoken replies, camera vision, database memory and its own animated avatar.
 - SIGI: System that drafts ideas, scripts and pieces for social media with AI (Gemini) and queues them for review: nothing publishes without my manual approval. FastAPI + Next.js + Supabase — in progress.
-- Refricom — Sistema de Gestión del Mantenimiento: System delivered to Refricom to plan and control the maintenance of its equipment: inventory, preventive schedule with alerts, corrective work, work orders and reports.
+- [Refricom — Sistema de Gestión del Mantenimiento](https://refricom.cdhmaker.com): System delivered to Refricom to plan and control the maintenance of its equipment: inventory, preventive schedule with alerts, corrective work, work orders and reports.
 
 ## FAQ
 

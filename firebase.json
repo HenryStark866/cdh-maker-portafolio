@@ -12,7 +12,7 @@
   "hosting": {
     "public": "public",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-    "predeploy": ["node tools/build-i18n.mjs"],
+    "predeploy": ["node tools/sync-shorts.mjs", "node tools/build-i18n.mjs"],
     "cleanUrls": true,
     "redirects": [
       {

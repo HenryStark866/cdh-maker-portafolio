@@ -63,7 +63,7 @@ PORTAFOLIO HCT/
     ├── voice.js           # Voz del asesor (Web Speech API) → window.CDH_VOICE
     ├── chatbot.js         # Chatbot de reglas "Maker" (motor conversacional)
     ├── chatbot-kb.js      # Base de conocimiento del chatbot (cargada bajo demanda)
-    ├── ads.js             # Widget de anuncio flotante (video diferido)
+    ├── ads.js             # Cinta de Shorts + ofertas tras el hero (media/shorts.json)
     ├── icon.svg           # Ícono del sitio (favicon + PWA)
     ├── manifest.json      # Manifiesto PWA
     ├── robots.txt         # Reglas de rastreo (bots de IA bienvenidos; excluye perfil y admin)
@@ -91,7 +91,9 @@ El orden **importa** y no debe cambiarse sin revisar dependencias:
    cargado de antemano**: el SDK se descarga bajo demanda (ver §4.5).
 6. `script.js` — interacciones generales.
 7. `chatbot.js` — chatbot 100% texto con memoria conversacional avanzada (mantiene el contexto del proyecto y la sesión, conectando a `chatbot-kb.js`).
-8. `ads.js` — widget de anuncio flotante.
+8. `ads.js` — cinta animada de Shorts (ClipFactory) y ofertas, en la banda `#cinta` tras el hero.
+   `tools/sync-shorts.mjs` (predeploy) escribe `media/shorts.json` desde el RSS del canal.
+9. `/ref.js` (defer) — afiliados `?ref=` (lo mantiene el Frente B del panel).
 
 > El SDK de Firebase **ya no se carga desde el HTML**. Eran ~300 KB en cada visita y la
 > mayoría de visitantes nunca crea cuenta.
@@ -217,7 +219,7 @@ node -e "console.log(require('crypto').createHash('sha256').update('TU_NUEVA_CLA
   enlace (solo tras la primera interacción del visitante): **nunca se redirige solo**, porque
   Google y los rastreadores de IA lo penalizan. La portada `/` sí lleva a la URL del idioma
   que el visitante eligió explícitamente antes.
-- El cotizador, el visor 3D, el widget de anuncio y el chat de WhatsApp tienen sus textos en
+- El cotizador, el visor 3D, la cinta de la portada y el chat de WhatsApp tienen sus textos en
   los 10 idiomas dentro de su propio archivo (objetos `C` / `T`).
 
 ### 8.1 Diccionarios separados y carga bajo demanda

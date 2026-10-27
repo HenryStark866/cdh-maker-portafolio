@@ -41,7 +41,8 @@ firebase deploy --only firestore:rules,hosting
   de datos, partículas 3D y HUD holográfico). Se adapta al tema y respeta *reducir movimiento*.
 - **Asesor "Maker" (100% texto con memoria avanzada)**: recuerda el contexto de la conversación (servicio elegido, productos de interés, detalles técnicos y alcance) durante toda la sesión. Construye enlaces de cotización personalizados para WhatsApp con todo el requerimiento acumulado.
 - **Carga liviana**: el SDK de Firebase (~300 KB) solo se descarga si el visitante abre el
-  área de clientes; imágenes en WebP y el video del anuncio se pide recién al desplegarlo.
+  área de clientes; imágenes en WebP, y la cinta de Shorts y ofertas carga tras la página
+  (el reproductor de YouTube solo al abrir un Short).
 - **10 idiomas, cada uno con su URL** (`/`, `/en`, `/pt`, `/fr`…): páginas estáticas
   generadas por `tools/build-i18n.mjs`, para que buscadores y asistentes de IA (que no
   ejecutan JavaScript) lean el sitio completo en todos los idiomas, con su JSON-LD,

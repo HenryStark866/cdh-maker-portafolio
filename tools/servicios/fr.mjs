@@ -66,7 +66,7 @@ export default {
     lead: "Nous concevons et développons des applications web, des plateformes SaaS et des automatisations pour faire tourner votre entreprise ou lancer votre propre produit. Vous parlez directement avec la personne qui le programme, et nous livrons dans le cloud pour des clients en Colombie et dans tout autre pays.",
     inc: [
       ["Applications web sur mesure", "Des logiciels pour piloter votre entreprise : logistique, ventes, stocks et ordres de travail, avec la logique de votre activité et non celle d'un modèle."],
-      ["Plateformes SaaS", "Votre propre produit dans le cloud, multi-entreprise si besoin, comme TaxiYa, A Tiempo Logística ou IncubApp."],
+      ["Plateformes SaaS", "Votre propre produit dans le cloud, multi-entreprise si besoin, comme TaxiYa, YAM ou IncubApp."],
       ["Sites web et boutiques en ligne", "Des sites rapides, adaptés au mobile et prêts pour les moteurs de recherche : de la landing page à la plateforme complète."],
       ["Automatisation des processus", "Moins de travail manuel : formulaires, rapports, notifications et flux entre vos outils, connectés et sans erreurs de saisie."],
       ["Conformité à la loi colombienne 1581", "Des outils d'autodiagnostic et de conformité en protection des données pour les entreprises en Colombie, comme PrivacyCheck."],
@@ -81,7 +81,7 @@ export default {
     faq: [
       ["Combien de temps faut-il pour développer une application web ?", "À titre indicatif, une application web sur mesure prend {app}, une landing page {landing} et une automatisation de processus {auto}. Nous travaillons par étapes : vous voyez des avancées concrètes dès les premiers jours."],
       ["Avec quelles technologies travaillez-vous ?", "JavaScript, Next.js, Python, FastAPI, Supabase et Firebase, ainsi que des modèles d'IA comme Gemini lorsque le projet le demande."],
-      ["Pouvez-vous construire mon propre produit SaaS ?", "Oui. TaxiYa et IncubApp sont des produits SaaS de CDH Maker, et A Tiempo Logística est une plateforme SaaS de livraison du dernier kilomètre pour l'e-commerce à Medellín. Les trois sont visibles en ligne."],
+      ["Pouvez-vous construire mon propre produit SaaS ?", "Oui. TaxiYa et IncubApp sont des produits SaaS de CDH Maker, et YAM (A Tiempo Logística) est une plateforme SaaS de livraison du dernier kilomètre pour l'e-commerce à Medellín. Les trois sont visibles en ligne."],
       ["Travaillez-vous avec des entreprises hors de Medellín ou de Colombie ?", "Oui. Le logiciel est livré dans le cloud partout dans le monde, et nous travaillons en espagnol et en anglais."],
       ["Comment se paie le développement ?", "Par jalons : le projet avance par étapes avec des livraisons partielles et le paiement est réparti sur ces étapes. Le devis est gratuit et arrive en moins de 24 heures, sans petits caractères."],
     ],
