@@ -49,11 +49,23 @@
   .suave { color: var(--suave); font-size: 12px; } code { font-size: 12px; word-break: break-all; }
   .centro { text-align:center; padding: 40px 16px; }
   .oculto { display:none !important; }
+  a.boton { display:inline-block; text-decoration:none; border-radius:8px; padding:5px 12px; border:1px solid var(--marca); background:#fff; color:var(--marca); font-weight:600; font-size:13px; }
+  a.boton.primario { background:var(--marca); color:#fff; }
+  tr.fila { cursor:pointer; } tr.fila:hover td { background: var(--fondo); }
+  .editor { display:grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap:16px; align-items:start; }
+  @media (max-width: 1100px) { .editor { grid-template-columns: 1fr; } }
+  .editor textarea.texto { font-family:inherit; font-size:13px; min-height:70px; }
+  .vista { position:sticky; top:12px; } .vista iframe { width:100%; height:calc(100vh - 110px); min-height:520px; border:1px solid var(--linea); border-radius:8px; background:#eef3f5; }
+  table.items { min-width:640px; } table.items td { padding:4px 3px; } table.items input, table.items select { padding:6px; font-size:13px; }
+  .totales { margin:10px 0 0 auto; max-width:300px; } .totales div { display:flex; justify-content:space-between; padding:3px 0; border-bottom:1px solid var(--linea); }
+  .totales .gran { font-size:16px; color:var(--marca); border-bottom:0; }
+  select.mini { padding:3px 6px; font-size:12px; border-radius:8px; }
+  fieldset:disabled input, fieldset:disabled select, fieldset:disabled textarea { background:#F6F9FB; color:var(--txt); }
 </style>
 </head>
 <body>
-<header><div class="in"><div><b>CDH MAKER</b> <span>CRM · expedientes y firma electrónica</span></div><nav id="nav"></nav></div></header>
+<header><div class="in"><div><b>CDH MAKER</b> <span>CRM · clientes, cotizaciones, docs y firmas</span></div><nav id="nav"></nav></div></header>
 <main id="app"><div class="card centro"><h2>Cargando…</h2></div></main>
-<script type="module" src="/crm/app.js?v=3"></script>
+<script type="module" src="/crm/app.js?v=4"></script>
 </body>
 </html>

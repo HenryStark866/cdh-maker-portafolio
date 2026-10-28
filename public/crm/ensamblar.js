@@ -10,7 +10,7 @@ const LIBS = [
   'https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js',
 ];
 let cargadas = null;
-const cargarLibs = () => cargadas ??= LIBS.reduce((p, src) => p.then(() => new Promise((ok, mal) => {
+export const cargarLibs = () => cargadas ??= LIBS.reduce((p, src) => p.then(() => new Promise((ok, mal) => {
   const s = document.createElement('script');
   s.src = src; s.onload = ok; s.onerror = () => mal(new Error('No se pudo cargar ' + src));
   document.head.append(s);
@@ -41,7 +41,7 @@ const plantillaJSON = (x, v) => {
 // una imagen por hoja. jsPDF.html() deformaba el texto y la posición de las firmas, así que se
 // rasteriza con html2canvas (fiel al navegador) y se corta la página donde no parta un párrafo,
 // una fila o una firma; los elementos con break-before: page abren hoja nueva.
-async function htmlAPdf(html) {
+export async function htmlAPdf(html) {
   const { jsPDF } = window.jspdf;
   const ANCHO = 673; // 178 mm (A4 menos 16 mm por lado) a 96 ppp
   const MM = 178 / ANCHO; // milímetros por píxel

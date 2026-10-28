@@ -3,11 +3,12 @@
 // "vínculo de correo electrónico"). La seguridad real está en firestore.rules (esAdmin).
 // Datos: crm_clientes/{id} (+ solicitudes/, archivos/{aid}/partes/{n}); enlaces/{token} para firmar.
 import { db, auth, EMULADOR } from './fb.js';
-import { collection, doc, getDoc, getDocs, setDoc, updateDoc, addDoc, deleteDoc, query, orderBy, serverTimestamp, Timestamp, writeBatch }
+import { collection, collectionGroup, doc, getDoc, getDocs, setDoc, updateDoc, addDoc, deleteDoc, query, where, orderBy, serverTimestamp, Timestamp, writeBatch, runTransaction }
   from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 import { onAuthStateChanged, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, signOut }
   from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-import { ensamblar, estadoDocs, sha256Bytes } from './ensamblar.js?v=2';
+import { ensamblar, estadoDocs, sha256Bytes, htmlAPdf, cargarLibs } from './ensamblar.js?v=3';
+import { htmlDocumento, totales, claseDe, sumarDias, TIPOS, EMISOR_BASE } from './comercial.js?v=2';
 
 // Deben coincidir con esAdmin() de firestore.rules.
 const ADMINS = ['cdhmaker@gmail.com', 'henrytaborda57@gmail.com', 'isarias09@gmail.com'];
@@ -65,6 +66,8 @@ function pantallaAcceso(msg = '') {
 let usuario = null;
 function nav(actual) {
   $nav.innerHTML = `<button data-ir="clientes" class="${actual === 'clientes' ? 'act' : ''}">Clientes</button>
+    <button data-ir="cotizador" class="${actual === 'cotizador' ? 'act' : ''}">Cotizador</button>
+    <button data-ir="docs" class="${actual === 'docs' ? 'act' : ''}">Docs</button>
     <button data-ir="libro" class="${actual === 'libro' ? 'act' : ''}">Libro contable</button>
     <button data-ir="importar" class="${actual === 'importar' ? 'act' : ''}">Importar</button>
     <span style="color:#BFE3EE;font-size:12px">${esc(usuario.email)}</span><button id="salir">Salir</button>`;
@@ -73,9 +76,12 @@ function nav(actual) {
 }
 async function enrutar() {
   if (!usuario) return;
-  const [ruta, id] = location.hash.slice(1).split('/');
+  const [ruta, id, extra] = location.hash.slice(1).split('/');
   try {
     if (ruta === 'cliente' && id) return await vistaCliente(decodeURIComponent(id));
+    if (ruta === 'cotizador') return await vistaCotizador(id || 'cotizacion');
+    if (ruta === 'doc' && id) return await vistaDocumento(decodeURIComponent(id), extra ? decodeURIComponent(extra) : '');
+    if (ruta === 'docs') return await vistaDocs(id || '');
     if (ruta === 'importar') return vistaImportar();
     if (ruta === 'libro') return await vistaLibro(id ? decodeURIComponent(id) : '');
     return await vistaClientes();
@@ -137,10 +143,12 @@ async function vistaCliente(id) {
       </table>
       <form id="fCuota" class="acciones"><input name="fecha" type="date" required style="width:auto"><input name="valor" type="number" min="0" placeholder="Valor" required style="width:140px"><button class="mini">Agregar cuota</button></form>
     </div>
+    <div class="card"><div class="sol cab" style="border:0;padding:0;margin:0 0 6px"><h2 style="margin:0">Cotizaciones y facturas</h2>
+      <a class="boton" href="#doc/nuevo/${encodeURIComponent(id)}">Nueva cotización</a></div><div id="comerciales"><p class="suave">Cargando…</p></div></div>
     <div class="card"><h2>Firmas</h2><div id="solicitudes"><p class="suave">Cargando…</p></div>
       <details><summary class="suave" style="cursor:pointer">Nueva solicitud de firma</summary>${formSolicitud()}</details></div>
     <div class="card"><h2>Expediente</h2><div id="archivos"><p class="suave">Cargando…</p></div>
-      <div class="acciones"><input type="file" id="fArchivo" multiple style="width:auto"><button class="mini" id="subir">Subir al expediente</button></div><div id="mArchivo"></div></div>
+      <div class="acciones"><input type="file" id="fArchivo" multiple style="width:auto"><select id="fCarpeta" style="width:auto">${opcionesCarpeta('')}</select><button class="mini" id="subir">Subir al expediente</button></div><div id="mArchivo"></div></div>
   </div></div>`;
 
   const guardar = async (cambios) => { await updateDoc(ref, { ...cambios, actualizado: serverTimestamp(), actualizado_por: usuario.email }); await vistaCliente(id); };
@@ -177,41 +185,71 @@ async function vistaCliente(id) {
     const m = document.getElementById('mArchivo');
     const files = [...document.getElementById('fArchivo').files];
     if (!files.length) return aviso(m, 'Elige uno o más archivos.', 'err');
-    for (const f of files) { aviso(m, 'Subiendo ' + esc(f.name) + '…'); await guardarArchivo(id, { nombre: f.name, tipo: 'documento', mime: f.type || 'application/octet-stream', bytes: new Uint8Array(await f.arrayBuffer()) }); }
+    const carpeta = document.getElementById('fCarpeta').value;
+    for (const f of files) { aviso(m, 'Subiendo ' + esc(f.name) + '…'); await guardarArchivo(id, { nombre: f.name, tipo: 'documento', carpeta, mime: f.type || 'application/octet-stream', bytes: new Uint8Array(await f.arrayBuffer()) }); }
     await vistaCliente(id);
   });
   enlazarSolicitud(id, c);
   pintarSolicitudes(id, c);
   pintarArchivos(id);
+  pintarComerciales(id);
+}
+
+async function pintarComerciales(cliente) {
+  const el = document.getElementById('comerciales');
+  const docs = (await getDocs(query(collection(db, 'crm_documentos'), where('cliente', '==', cliente)))).docs.map((d) => ({ id: d.id, ...d.data() }))
+    .sort((a, b) => String(b.fecha).localeCompare(String(a.fecha)));
+  el.innerHTML = docs.length ? tablaComerciales(docs, false) : '<p class="suave">Sin cotizaciones ni facturas.</p>';
+  enlazarFilas(el);
 }
 
 // ───────── expediente (archivos en partes base64: Cloud Storage exige plan Blaze) ─────────
-async function guardarArchivo(cliente, { nombre, tipo, mime, bytes, sha256 }) {
+// cliente vacío = documento general de CDH Maker (crm_docs), que no pertenece a un expediente.
+const rutaArchivo = (cliente, aid) => (cliente ? ['crm_clientes', cliente, 'archivos', aid] : ['crm_docs', aid]);
+async function guardarArchivo(cliente, { nombre, tipo, carpeta, mime, bytes, sha256 }) {
   const texto = b64(bytes);
   const partes = Math.ceil(texto.length / PARTE) || 1;
-  const aRef = await addDoc(collection(db, 'crm_clientes', cliente, 'archivos'), {
-    nombre, tipo, mime, tamano: bytes.length, sha256: sha256 || await sha256Bytes(bytes), partes, creado: serverTimestamp(), creado_por: usuario.email,
+  const aRef = await addDoc(cliente ? collection(db, 'crm_clientes', cliente, 'archivos') : collection(db, 'crm_docs'), {
+    nombre, tipo, carpeta: carpeta || carpetaDe({ nombre, tipo }), mime, tamano: bytes.length, sha256: sha256 || await sha256Bytes(bytes), partes, creado: serverTimestamp(), creado_por: usuario.email,
   });
-  for (let n = 0; n < partes; n++) await setDoc(doc(db, 'crm_clientes', cliente, 'archivos', aRef.id, 'partes', String(n)), { d: texto.slice(n * PARTE, (n + 1) * PARTE) });
+  for (let n = 0; n < partes; n++) await setDoc(doc(db, ...rutaArchivo(cliente, aRef.id), 'partes', String(n)), { d: texto.slice(n * PARTE, (n + 1) * PARTE) });
   return aRef.id;
 }
+async function bajarArchivo(cliente, aid, a) {
+  const partes = await getDocs(collection(db, ...rutaArchivo(cliente, aid), 'partes'));
+  descargar(deB64(partes.docs.sort((x, y) => Number(x.id) - Number(y.id)).map((p) => p.data().d).join('')), a.nombre, a.mime);
+}
+async function borrarArchivo(cliente, aid) {
+  for (const p of (await getDocs(collection(db, ...rutaArchivo(cliente, aid), 'partes'))).docs) await deleteDoc(p.ref);
+  await deleteDoc(doc(db, ...rutaArchivo(cliente, aid)));
+}
+
+// Carpetas de Docs. Los archivos anteriores a las carpetas se clasifican por su tipo y nombre.
+const CARPETAS = [['contratos', 'Contratos'], ['cuentas_cobro', 'Cuentas de cobro'], ['facturas', 'Facturas'], ['cotizaciones', 'Cotizaciones'],
+  ['actas', 'Actas, anexos y órdenes'], ['firmas', 'Evidencia de firma'], ['otros', 'Otros']];
+const nombreCarpeta = (k) => CARPETAS.find(([x]) => x === k)?.[1] || 'Otros';
+function carpetaDe(a) {
+  if (a.carpeta) return a.carpeta;
+  const t = `${a.tipo || ''} ${a.nombre || ''}`.toLowerCase();
+  if (/registro|firma-|\.png|\.json|certificado/.test(t)) return 'firmas';
+  if (/cuenta|cobro/.test(t)) return 'cuentas_cobro';
+  if (/factura/.test(t)) return 'facturas';
+  if (/cotiza|propuesta/.test(t)) return 'cotizaciones';
+  if (/acta|anexo|orden|paz-y-salvo|bienvenida|plan-de-pago/.test(t)) return 'actas';
+  if (/contrato|acuerdo/.test(t)) return 'contratos';
+  return 'otros';
+}
+const opcionesCarpeta = (sel) => `<option value="">Clasificar automáticamente</option>${CARPETAS.map(([k, n]) => `<option value="${k}" ${k === sel ? 'selected' : ''}>${n}</option>`).join('')}`;
 async function pintarArchivos(cliente) {
   const el = document.getElementById('archivos');
   const snap = await getDocs(query(collection(db, 'crm_clientes', cliente, 'archivos'), orderBy('creado', 'desc')));
   if (!snap.size) { el.innerHTML = '<p class="suave">Sin archivos todavía.</p>'; return; }
-  el.innerHTML = `<table><tr><th>Archivo</th><th>Tipo</th><th>Fecha</th><th></th></tr>${snap.docs.map((d) => { const a = d.data(); return `<tr><td>${esc(a.nombre)}<br><small class="suave">${(a.tamano / 1024).toFixed(0)} KB · SHA-256 ${esc((a.sha256 || '').slice(0, 12))}…</small></td><td>${esc(a.tipo)}</td><td>${fmtFecha(a.creado, true)}</td>
+  el.innerHTML = `<table><tr><th>Archivo</th><th>Carpeta</th><th>Fecha</th><th></th></tr>${snap.docs.map((d) => { const a = d.data(); return `<tr><td>${esc(a.nombre)}<br><small class="suave">${(a.tamano / 1024).toFixed(0)} KB · SHA-256 ${esc((a.sha256 || '').slice(0, 12))}…</small></td><td><a href="#docs/${carpetaDe(a)}">${esc(nombreCarpeta(carpetaDe(a)))}</a></td><td>${fmtFecha(a.creado, true)}</td>
     <td><button class="mini" data-bajar="${d.id}">Descargar</button> <button class="mini peligro" data-borrar="${d.id}">Borrar</button></td></tr>`; }).join('')}</table>`;
-  el.querySelectorAll('[data-bajar]').forEach((b) => b.addEventListener('click', async () => {
-    const a = snap.docs.find((d) => d.id === b.dataset.bajar).data();
-    const partes = await getDocs(collection(db, 'crm_clientes', cliente, 'archivos', b.dataset.bajar, 'partes'));
-    const texto = partes.docs.sort((x, y) => Number(x.id) - Number(y.id)).map((p) => p.data().d).join('');
-    descargar(deB64(texto), a.nombre, a.mime);
-  }));
+  el.querySelectorAll('[data-bajar]').forEach((b) => b.addEventListener('click', () => bajarArchivo(cliente, b.dataset.bajar, snap.docs.find((d) => d.id === b.dataset.bajar).data())));
   el.querySelectorAll('[data-borrar]').forEach((b) => b.addEventListener('click', async () => {
     if (!confirm('¿Borrar este archivo del expediente? No se puede deshacer.')) return;
-    const partes = await getDocs(collection(db, 'crm_clientes', cliente, 'archivos', b.dataset.borrar, 'partes'));
-    for (const p of partes.docs) await deleteDoc(p.ref);
-    await deleteDoc(doc(db, 'crm_clientes', cliente, 'archivos', b.dataset.borrar));
+    await borrarArchivo(cliente, b.dataset.borrar);
     pintarArchivos(cliente);
   }));
 }
@@ -342,8 +380,13 @@ async function vistaLibro(mes) {
   const vig = vista.filter((m) => m.estado !== 'anulado');
   const suma = (t) => vig.filter((m) => m.tipo === t).reduce((s, m) => s + Number(m.valor || 0), 0);
   const ing = suma('ingreso'), egr = suma('egreso');
-  const cxc = clientes.flatMap((c) => (c.cuotas || []).filter((q) => q.estado !== 'pagada').map((q) => ({ c, q }))).sort((a, b) => String(a.q.fecha).localeCompare(String(b.q.fecha)));
-  const totalCxc = cxc.reduce((s, { q }) => s + Number(q.valor || 0), 0);
+  // Por cobrar: cuotas pendientes de los clientes y facturas / cuentas de cobro emitidas sin pagar.
+  const facturas = (await getDocs(query(collection(db, 'crm_documentos'), where('estado', '==', 'emitida')))).docs.map((d) => ({ id: d.id, ...d.data() }));
+  const cxc = [
+    ...clientes.flatMap((c) => (c.cuotas || []).filter((q) => q.estado !== 'pagada').map((q) => ({ fecha: q.fecha, href: '#cliente/' + encodeURIComponent(c.id), nombre: c.nombre, concepto: `Cuota ${q.n} de ${(c.cuotas || []).length}`, valor: Number(q.valor || 0) }))),
+    ...facturas.map((f) => ({ fecha: f.vence || f.fecha, href: '#doc/' + f.id, nombre: f.receptor?.nombre || '', concepto: `${TIPOS[claseDe(f)].corto} ${f.numero}`, valor: totales(f).total })),
+  ].sort((a, b) => String(a.fecha).localeCompare(String(b.fecha)));
+  const totalCxc = cxc.reduce((s, x) => s + x.valor, 0);
   const hoy = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Bogota' });
 
   $app.innerHTML = `
@@ -355,7 +398,7 @@ async function vistaLibro(mes) {
       <div><span class="suave">Ingresos</span><h2 style="color:var(--ok)">${cop(ing)}</h2></div>
       <div><span class="suave">Egresos</span><h2 style="color:var(--err)">${cop(egr)}</h2></div>
       <div><span class="suave">Resultado</span><h2>${cop(ing - egr)}</h2></div>
-      <div><span class="suave">Por cobrar (todas las cuotas pendientes)</span><h2 style="color:var(--warn)">${cop(totalCxc)}</h2></div>
+      <div><span class="suave">Por cobrar (cuotas y facturas pendientes)</span><h2 style="color:var(--warn)">${cop(totalCxc)}</h2></div>
     </div>${nuevos ? `<div class="aviso ok">Se registraron ${nuevos} pago(s) de cuotas que venían del CRM.</div>` : ''}</div>
   <div class="cols"><div class="card"><h2>Nuevo movimiento</h2>
     <form id="fMov"><label>Tipo</label><select name="tipo" id="tipo"><option value="ingreso">Ingreso</option><option value="egreso">Egreso</option></select>
@@ -373,12 +416,12 @@ async function vistaLibro(mes) {
       <td><b>${esc(m.cuenta)}</b><br><small>${esc(m.concepto)}${m.referencia ? ' · ' + esc(m.referencia) : ''}</small></td>
       <td>${m.cliente ? `<a href="#cliente/${encodeURIComponent(m.cliente)}">${esc(m.tercero)}</a>` : esc(m.tercero || '')}</td>
       <td style="text-align:right;white-space:nowrap;font-weight:600;color:${m.tipo === 'ingreso' ? 'var(--ok)' : 'var(--err)'}">${m.tipo === 'ingreso' ? '+' : '−'} ${cop(m.valor)}</td>
-      <td>${m.estado === 'anulado' ? '<small>anulado</small>' : m.origen === 'cuota' ? '<small class="suave">cuota</small>' : `<button class="mini peligro" data-anular="${esc(m.id)}">Anular</button>`}</td></tr>`).join('')}</table>`
+      <td>${m.estado === 'anulado' ? '<small>anulado</small>' : m.origen === 'cuota' ? '<small class="suave">cuota</small>' : m.origen === 'factura' ? `<a class="suave" href="#doc/${esc(m.documento_id)}">factura</a>` : `<button class="mini peligro" data-anular="${esc(m.id)}">Anular</button>`}</td></tr>`).join('')}</table>`
       : '<p class="suave">Sin movimientos en este periodo.</p>'}</div>
     <div class="card"><h2>Cuentas por cobrar</h2>
-    ${cxc.length ? `<table><tr><th>Vence</th><th>Cliente</th><th>Cuota</th><th style="text-align:right">Valor</th></tr>${cxc.map(({ c, q }) => `<tr><td>${esc(q.fecha)}${q.fecha < hoy ? ' <span class="chip vencido">vencida</span>' : ''}</td>
-      <td><a href="#cliente/${encodeURIComponent(c.id)}">${esc(c.nombre)}</a></td><td>${esc(q.n)} de ${(c.cuotas || []).length}</td><td style="text-align:right">${cop(q.valor)}</td></tr>`).join('')}</table>`
-      : '<p class="suave">No hay cuotas pendientes.</p>'}</div></div></div>`;
+    ${cxc.length ? `<table><tr><th>Vence</th><th>Cliente</th><th>Concepto</th><th style="text-align:right">Valor</th></tr>${cxc.map((x) => `<tr><td>${esc(x.fecha)}${x.fecha < hoy ? ' <span class="chip vencido">vencida</span>' : ''}</td>
+      <td><a href="${esc(x.href)}">${esc(x.nombre)}</a></td><td>${esc(x.concepto)}</td><td style="text-align:right">${cop(x.valor)}</td></tr>`).join('')}</table>`
+      : '<p class="suave">No hay cuentas por cobrar.</p>'}</div></div></div>`;
 
   const tipo = document.getElementById('tipo'), dl = document.getElementById('cuentas');
   const pintarCuentas = () => { dl.innerHTML = CUENTAS[tipo.value].map((x) => `<option value="${x}">`).join(''); };
@@ -402,6 +445,362 @@ async function vistaLibro(mes) {
     const filas = [['Fecha', 'Tipo', 'Cuenta', 'Concepto', 'Tercero', 'Documento', 'Valor', 'Medio', 'Referencia', 'Estado', 'Registrado por'],
       ...vista.map((m) => [m.fecha, m.tipo, m.cuenta, m.concepto, m.tercero, m.documento, m.tipo === 'egreso' ? -m.valor : m.valor, m.medio, m.referencia, m.estado, m.creado_por])];
     descargar(new TextEncoder().encode('﻿' + csv(filas)), `libro-cdh-maker${mes ? '-' + mes : ''}.csv`, 'text/csv');
+  });
+}
+
+// ───────── cotizador (crm_documentos): cotizaciones que se convierten en factura o cuenta de cobro ─────────
+// Una cotización recibe su número al guardarse por primera vez; una factura nace como borrador y recibe
+// el consecutivo al emitirse, para que la numeración no tenga saltos. Las emitidas no se editan: se anulan.
+// Estados — cotización: borrador, enviada, aceptada, rechazada, facturada; factura: borrador, emitida, pagada, anulada.
+const ESTADOS_COT = ['borrador', 'enviada', 'aceptada', 'rechazada'];
+const CHIP = { borrador: 'pendiente', enviada: 'parcial', aceptada: 'firmado', facturada: 'firmado', emitida: 'parcial', pagada: 'firmado', rechazada: 'anulado', anulada: 'anulado' };
+const hoyCO = () => new Date().toLocaleDateString('en-CA', { timeZone: 'America/Bogota' });
+const leerEmisor = async () => ({ ...EMISOR_BASE, ...((await getDoc(doc(db, 'crm_config', 'emisor'))).data() || {}) });
+
+async function consecutivo(clase, fechaDoc) {
+  const anio = String(fechaDoc || hoyCO()).slice(0, 4);
+  const ref = doc(db, 'crm_consecutivos', `${clase}-${anio}`);
+  const n = await runTransaction(db, async (tx) => { const s = await tx.get(ref); const n = (s.data()?.n || 0) + 1; tx.set(ref, { n, actualizado: serverTimestamp() }); return n; });
+  return `${TIPOS[clase].prefijo}-${anio}-${String(n).padStart(4, '0')}`;
+}
+
+function tablaComerciales(docs, conCliente = true) {
+  return `<table><tr><th>N.º</th><th>Fecha</th>${conCliente ? '<th>Cliente</th>' : ''}<th>Asunto</th><th style="text-align:right">Total</th><th>Estado</th></tr>
+    ${docs.map((d) => `<tr class="fila" data-doc="${esc(d.id)}"><td><b>${esc(d.numero || 'borrador')}</b><br><small class="suave">${esc(TIPOS[claseDe(d)].corto)}</small></td><td>${esc(d.fecha)}</td>
+      ${conCliente ? `<td>${esc(d.receptor?.nombre || '')}</td>` : ''}<td>${esc(d.titulo || '')}</td><td style="text-align:right;white-space:nowrap">${cop(totales(d).total)}</td>
+      <td><span class="chip ${CHIP[d.estado] || 'pendiente'}">${esc(d.estado)}</span></td></tr>`).join('')}</table>`;
+}
+const enlazarFilas = (el) => el.querySelectorAll('[data-doc]').forEach((tr) => tr.addEventListener('click', () => (location.hash = 'doc/' + tr.dataset.doc)));
+
+async function vistaCotizador(filtro) {
+  nav('cotizador');
+  const [todos, catalogo, emisor] = await Promise.all([
+    getDocs(query(collection(db, 'crm_documentos'), orderBy('fecha', 'desc'))).then((s) => s.docs.map((d) => ({ id: d.id, ...d.data() }))),
+    getDocs(query(collection(db, 'crm_catalogo'), orderBy('nombre'))).then((s) => s.docs.map((d) => ({ id: d.id, ...d.data() }))),
+    leerEmisor(),
+  ]);
+  const cots = todos.filter((d) => d.tipo === 'cotizacion'), facs = todos.filter((d) => d.tipo === 'factura');
+  const suma = (l) => l.reduce((s, d) => s + totales(d).total, 0);
+  const lista = filtro === 'factura' ? facs : cots;
+  $app.innerHTML = `
+  <div class="card"><div class="sol cab" style="border:0;padding:0;margin:0"><h2 style="margin:0">Cotizador</h2>
+    <a class="boton primario" href="#doc/nuevo">Nueva cotización</a></div>
+    <div class="grid" style="margin-top:12px">
+      <div><span class="suave">En negociación (enviadas)</span><h2>${cop(suma(cots.filter((d) => d.estado === 'enviada')))}</h2></div>
+      <div><span class="suave">Aceptadas sin facturar</span><h2 style="color:var(--ok)">${cop(suma(cots.filter((d) => d.estado === 'aceptada')))}</h2></div>
+      <div><span class="suave">Facturado por cobrar</span><h2 style="color:var(--warn)">${cop(suma(facs.filter((d) => d.estado === 'emitida')))}</h2></div>
+      <div><span class="suave">Facturado y pagado</span><h2>${cop(suma(facs.filter((d) => d.estado === 'pagada')))}</h2></div>
+    </div></div>
+  <div class="card"><div class="acciones" style="margin:0 0 10px">
+      <button data-filtro="cotizacion" class="${filtro !== 'factura' ? 'primario' : ''}">Cotizaciones (${cots.length})</button>
+      <button data-filtro="factura" class="${filtro === 'factura' ? 'primario' : ''}">Facturas y cuentas de cobro (${facs.length})</button></div>
+    <div id="lista">${lista.length ? tablaComerciales(lista) : `<p class="suave">${filtro === 'factura' ? 'Aún no hay facturas. Se crean desde una cotización con «Convertir en factura».' : 'Aún no hay cotizaciones.'}</p>`}</div></div>
+  <div class="cols">
+    <div class="card"><h2>Catálogo</h2><p class="suave">Servicios y productos con precio de referencia. Al escribir la descripción de un ítem, el cotizador los sugiere.</p>
+      <form id="fCat"><label>Tipo</label><select name="tipo"><option value="servicio">Servicio</option><option value="producto">Producto</option></select>
+        <label>Nombre</label><input name="nombre" required><label>Unidad</label><input name="unidad" list="unidades" placeholder="unidad, hora, mes…"><datalist id="unidades"><option value="unidad"><option value="hora"><option value="mes"><option value="proyecto"><option value="gramo"></datalist>
+        <label>Precio (COP)</label><input name="precio" type="number" min="0" step="1" required>
+        <div class="acciones"><button class="primario">Agregar al catálogo</button></div></form></div>
+    <div class="card"><h2>Ítems del catálogo (${catalogo.length})</h2>${catalogo.length ? `<table><tr><th>Ítem</th><th>Unidad</th><th style="text-align:right">Precio</th><th></th></tr>
+      ${catalogo.map((x) => `<tr><td>${esc(x.nombre)}<br><small class="suave">${x.tipo === 'producto' ? 'Producto' : 'Servicio'}</small></td><td>${esc(x.unidad || '')}</td><td style="text-align:right">${cop(x.precio)}</td>
+        <td><button class="mini peligro" data-quitar="${esc(x.id)}">Quitar</button></td></tr>`).join('')}</table>` : '<p class="suave">El catálogo está vacío.</p>'}
+      <details style="margin-top:14px"><summary class="suave" style="cursor:pointer">Datos del emisor que salen en los documentos</summary>
+        <form id="fEmisor"><div class="grid">${[['nombre', 'Nombre'], ['marca', 'Marca'], ['cedula', 'Cédula'], ['rut', 'RUT (NIT con DV)'], ['direccion', 'Dirección'], ['ciudad', 'Ciudad'], ['correo', 'Correo'], ['telefono', 'Teléfono'],
+          ['banco', 'Banco / entidad'], ['tipo_cuenta', 'Tipo de cuenta'], ['cuenta', 'Número de cuenta'], ['titular', 'Titular'], ['plazo_pago', 'Plazo de pago (días hábiles)']].map(([k, l]) => `<div><label>${l}</label><input name="${k}" value="${esc(emisor[k] ?? '')}"></div>`).join('')}</div>
+          <label>Condiciones por defecto de las cotizaciones</label><textarea name="condiciones" style="font-family:inherit;font-size:13px">${esc(emisor.condiciones)}</textarea>
+          <div class="acciones"><button class="primario">Guardar datos del emisor</button></div></form><div id="mEmisor"></div></details></div></div>`;
+  $app.querySelectorAll('[data-filtro]').forEach((b) => b.addEventListener('click', () => (location.hash = 'cotizador/' + b.dataset.filtro)));
+  enlazarFilas(document.getElementById('lista'));
+  document.getElementById('fCat').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const f = Object.fromEntries(new FormData(e.target));
+    await addDoc(collection(db, 'crm_catalogo'), { ...f, precio: Number(f.precio) || 0, creado: serverTimestamp(), creado_por: usuario.email });
+    await vistaCotizador(filtro);
+  });
+  $app.querySelectorAll('[data-quitar]').forEach((b) => b.addEventListener('click', async () => {
+    if (!confirm('¿Quitar este ítem del catálogo? Las cotizaciones que ya lo usan no cambian.')) return;
+    await deleteDoc(doc(db, 'crm_catalogo', b.dataset.quitar));
+    await vistaCotizador(filtro);
+  }));
+  document.getElementById('fEmisor').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const f = Object.fromEntries(new FormData(e.target));
+    await setDoc(doc(db, 'crm_config', 'emisor'), { ...f, plazo_pago: Number(f.plazo_pago) || 5, actualizado: serverTimestamp(), actualizado_por: usuario.email });
+    aviso(document.getElementById('mEmisor'), 'Datos guardados. Se usan en los documentos que exportes de aquí en adelante.', 'ok');
+  });
+}
+
+async function vistaDocumento(id, clienteInicial) {
+  nav('cotizador');
+  const [clientes, catalogo, emisor] = await Promise.all([
+    getDocs(query(collection(db, 'crm_clientes'), orderBy('nombre'))).then((s) => s.docs.map((d) => ({ id: d.id, ...d.data() }))),
+    getDocs(query(collection(db, 'crm_catalogo'), orderBy('nombre'))).then((s) => s.docs.map((d) => d.data())),
+    leerEmisor(),
+  ]);
+  const nuevo = id === 'nuevo';
+  let d;
+  if (nuevo) {
+    const c = clientes.find((x) => x.id === clienteInicial);
+    d = { tipo: 'cotizacion', estado: 'borrador', numero: '', fecha: hoyCO(), validez_dias: 15, cliente: c?.id || '', receptor: receptorDe(c), titulo: c?.proyecto || '',
+      items: [{ tipo: 'servicio', descripcion: '', cantidad: 1, unidad: '', precio: 0, descuento: 0 }], iva: 0, notas: '', condiciones: emisor.condiciones };
+  } else {
+    const s = await getDoc(doc(db, 'crm_documentos', id));
+    if (!s.exists()) { $app.innerHTML = '<div class="card"><div class="aviso err">Documento no encontrado.</div></div>'; return; }
+    d = s.data();
+  }
+  const cotiz = d.tipo === 'cotizacion';
+  const bloqueado = cotiz ? ['facturada'].includes(d.estado) : d.estado !== 'borrador';
+  const clase = claseDe(d);
+
+  $app.innerHTML = `<p><a href="#cotizador/${cotiz ? 'cotizacion' : 'factura'}">← Cotizador</a>${d.cliente ? ` · <a href="#cliente/${encodeURIComponent(d.cliente)}">${esc(d.receptor?.nombre || 'Cliente')}</a>` : ''}</p>
+  <div class="card"><div class="sol cab" style="border:0;padding:0;margin:0"><h2 style="margin:0">${esc(TIPOS[clase].corto)} ${esc(d.numero || (nuevo ? 'nueva' : 'borrador'))} <span class="chip ${CHIP[d.estado] || 'pendiente'}">${esc(d.estado)}</span></h2>
+    <div class="acciones" style="margin:0" id="acciones"></div></div><div id="mDoc"></div>
+    ${d.origen ? `<p class="suave" style="margin:6px 0 0">Viene de la cotización <a href="#doc/${esc(d.origen)}">${esc(d.origen_numero)}</a>.</p>` : ''}
+    ${d.factura ? `<p class="suave" style="margin:6px 0 0">Facturada en <a href="#doc/${esc(d.factura)}">${esc(d.factura_numero || 'la factura')}</a>.</p>` : ''}
+    ${d.pago ? `<p class="suave" style="margin:6px 0 0">Pagada el ${esc(d.pago.fecha)}${d.pago.referencia ? ' · ' + esc(d.pago.referencia) : ''} — registrada en el <a href="#libro">libro contable</a>.</p>` : ''}
+    ${d.estado === 'anulada' && d.motivo_anulacion ? `<p class="suave" style="margin:6px 0 0">Anulada: ${esc(d.motivo_anulacion)}</p>` : ''}</div>
+  <div class="editor"><form id="fDoc" class="card" autocomplete="off"><fieldset ${bloqueado ? 'disabled' : ''} style="border:0;padding:0;margin:0;min-width:0">
+    <h3 style="margin-top:0">Cliente</h3>
+    <select name="cliente"><option value="">— Cliente sin ficha en el CRM —</option>${clientes.map((c) => `<option value="${esc(c.id)}" ${c.id === d.cliente ? 'selected' : ''}>${esc(c.nombre)}</option>`).join('')}</select>
+    <div class="grid">${[['nombre', 'Nombre o razón social'], ['documento', 'NIT o C.C.'], ['correo', 'Correo'], ['telefono', 'Teléfono'], ['direccion', 'Ciudad y dirección']]
+      .map(([k, l]) => `<div><label>${l}</label><input name="r_${k}" value="${esc(d.receptor?.[k] ?? '')}"></div>`).join('')}</div>
+    <h3>Documento</h3>
+    <label>${cotiz ? 'Proyecto o asunto' : 'Concepto'}</label><input name="titulo" value="${esc(d.titulo || '')}">
+    <div class="grid"><div><label>Fecha</label><input name="fecha" type="date" value="${esc(d.fecha)}" required></div>
+      ${cotiz ? `<div><label>Validez (días)</label><input name="validez_dias" type="number" min="1" value="${esc(d.validez_dias ?? 15)}"></div>`
+        : `<div><label>Vence</label><input name="vence" type="date" value="${esc(d.vence || '')}"></div>
+           <div><label>Emitir como</label><select name="modalidad"><option value="cuenta_cobro" ${clase === 'cuenta_cobro' ? 'selected' : ''}>Cuenta de cobro (no responsable de IVA)</option><option value="factura_venta" ${clase === 'factura_venta' ? 'selected' : ''}>Factura de venta</option></select></div>
+           <div><label>Cuenta contable del ingreso</label><input name="cuenta_contable" list="ctasIng" value="${esc(d.cuenta_contable || CUENTAS.ingreso[0])}"><datalist id="ctasIng">${CUENTAS.ingreso.map((x) => `<option value="${x}">`).join('')}</datalist></div>`}
+      <div><label>IVA</label><select name="iva"><option value="0">No causa</option><option value="19" ${Number(d.iva) === 19 ? 'selected' : ''}>19 %</option></select></div></div>
+    <div id="dian" class="grid ${clase === 'factura_venta' ? '' : 'oculto'}"><div><label>N.º factura electrónica DIAN</label><input name="dian_numero" value="${esc(d.dian?.numero || '')}"></div><div><label>CUFE (opcional)</label><input name="dian_cufe" value="${esc(d.dian?.cufe || '')}"></div></div>
+    <label>Introducción (opcional)</label><textarea name="notas" class="texto">${esc(d.notas || '')}</textarea>
+    <h3>Ítems</h3>
+    <div style="overflow-x:auto"><table class="items"><thead><tr><th style="width:96px">Tipo</th><th>Descripción</th><th style="width:64px">Cant.</th><th style="width:76px">Unidad</th><th style="width:110px">Valor unit.</th><th style="width:58px">Dto. %</th><th style="width:100px;text-align:right">Total</th><th></th></tr></thead><tbody id="items"></tbody></table></div>
+    <datalist id="catalogo">${catalogo.map((x) => `<option value="${esc(x.nombre)}">${cop(x.precio)}${x.unidad ? ' / ' + esc(x.unidad) : ''}</option>`).join('')}</datalist>
+    <div class="acciones"><button type="button" class="mini" id="masItem">+ Agregar ítem</button></div>
+    <div id="totales" class="totales"></div>
+    <label>${cotiz ? 'Condiciones' : 'Observaciones'}</label><textarea name="condiciones" class="texto">${esc(d.condiciones || '')}</textarea>
+  </fieldset></form>
+  <div class="card vista"><div class="sol cab" style="border:0;padding:0;margin:0 0 8px"><b>Vista previa</b><small class="suave">Así sale el PDF</small></div><iframe id="vista" title="Vista previa del documento"></iframe></div></div>`;
+
+  const $f = document.getElementById('fDoc'), $items = document.getElementById('items'), $vista = document.getElementById('vista'), m = document.getElementById('mDoc');
+  const fila = (it) => `<tr><td><select data-k="tipo"><option value="servicio">Servicio</option><option value="producto" ${it.tipo === 'producto' ? 'selected' : ''}>Producto</option></select></td>
+    <td><input data-k="descripcion" list="catalogo" value="${esc(it.descripcion)}" placeholder="Descripción"></td><td><input data-k="cantidad" type="number" min="0" step="any" value="${esc(it.cantidad)}"></td>
+    <td><input data-k="unidad" value="${esc(it.unidad || '')}"></td><td><input data-k="precio" type="number" min="0" step="1" value="${esc(it.precio)}"></td>
+    <td><input data-k="descuento" type="number" min="0" max="100" step="any" value="${esc(it.descuento || 0)}"></td><td class="tot" style="text-align:right;white-space:nowrap"></td>
+    <td>${bloqueado ? '' : '<button type="button" class="mini peligro" data-menos title="Quitar ítem">×</button>'}</td></tr>`;
+  const pintarItems = () => { $items.innerHTML = d.items.map(fila).join(''); };
+
+  // Lee el formulario sobre d (los campos de cabecera y cada fila de ítems).
+  const leer = () => {
+    const f = Object.fromEntries(new FormData($f));
+    if (bloqueado) return;
+    d.cliente = f.cliente; d.titulo = f.titulo; d.fecha = f.fecha; d.iva = Number(f.iva) || 0; d.notas = f.notas; d.condiciones = f.condiciones;
+    d.receptor = Object.fromEntries(['nombre', 'documento', 'correo', 'telefono', 'direccion'].map((k) => [k, (f['r_' + k] || '').trim()]));
+    if (cotiz) d.validez_dias = Number(f.validez_dias) || 15;
+    else { d.vence = f.vence; d.modalidad = f.modalidad; d.cuenta_contable = f.cuenta_contable; d.dian = { numero: f.dian_numero || '', cufe: f.dian_cufe || '' }; }
+    d.items = [...$items.rows].map((tr) => {
+      const v = Object.fromEntries([...tr.querySelectorAll('[data-k]')].map((x) => [x.dataset.k, x.value]));
+      return { tipo: v.tipo, descripcion: v.descripcion.trim(), cantidad: Number(v.cantidad) || 0, unidad: v.unidad.trim(), precio: Number(v.precio) || 0, descuento: Number(v.descuento) || 0 };
+    });
+  };
+  let espera = 0;
+  const refrescar = () => {
+    const t = totales(d);
+    [...$items.rows].forEach((tr, i) => { tr.querySelector('.tot').textContent = cop(t.filas[i]?.neto); });
+    document.getElementById('totales').innerHTML = `<div><span>Subtotal</span><b>${cop(t.subtotal)}</b></div>${t.descuentos ? `<div><span>Descuentos</span><b>− ${cop(t.descuentos)}</b></div>` : ''}
+      <div><span>IVA</span><b>${d.iva ? cop(t.iva) : 'No causa'}</b></div><div class="gran"><span>Total</span><b>${cop(t.total)}</b></div>`;
+    clearTimeout(espera);
+    espera = setTimeout(() => {
+      const w = $vista.contentWindow, y = w?.scrollY || 0;
+      $vista.srcdoc = htmlDocumento(d, emisor);
+      $vista.onload = () => $vista.contentWindow.scrollTo(0, y);
+    }, 250);
+  };
+  pintarItems(); refrescar();
+
+  $f.addEventListener('input', (e) => {
+    leer();
+    if (e.target.name === 'modalidad') document.getElementById('dian').classList.toggle('oculto', e.target.value !== 'factura_venta');
+    // Elegir un ítem del catálogo llena tipo, unidad y precio si aún no tiene precio.
+    if (e.target.dataset?.k === 'descripcion') {
+      const x = catalogo.find((c) => c.nombre === e.target.value), tr = e.target.closest('tr');
+      if (x && !Number(tr.querySelector('[data-k=precio]').value)) {
+        tr.querySelector('[data-k=precio]').value = x.precio; tr.querySelector('[data-k=unidad]').value = x.unidad || ''; tr.querySelector('[data-k=tipo]').value = x.tipo || 'servicio';
+        leer();
+      }
+    }
+    refrescar();
+  });
+  $f.querySelector('[name=cliente]').addEventListener('change', (e) => {
+    const c = clientes.find((x) => x.id === e.target.value);
+    if (!c) return;
+    for (const [k, v] of Object.entries(receptorDe(c))) $f.querySelector(`[name=r_${k}]`).value = v;
+    if (!$f.titulo.value) $f.titulo.value = c.proyecto || '';
+    leer(); refrescar();
+  });
+  document.getElementById('masItem').addEventListener('click', () => { leer(); d.items.push({ tipo: 'servicio', descripcion: '', cantidad: 1, unidad: '', precio: 0, descuento: 0 }); pintarItems(); refrescar(); });
+  $items.addEventListener('click', (e) => {
+    if (!e.target.matches('[data-menos]')) return;
+    leer(); d.items.splice(e.target.closest('tr').rowIndex - 1, 1); pintarItems(); refrescar();
+  });
+
+  // ── acciones ──
+  const ref = nuevo ? null : doc(db, 'crm_documentos', id);
+  const validar = () => {
+    if (!d.receptor.nombre) throw new Error('Escribe el nombre del cliente.');
+    d.items = d.items.filter((it) => it.descripcion || it.precio);
+    if (!d.items.length) throw new Error('Agrega al menos un ítem.');
+    if (d.items.some((it) => !it.descripcion)) throw new Error('Hay ítems sin descripción.');
+  };
+  const datos = () => ({ ...d, total: totales(d).total, actualizado: serverTimestamp(), actualizado_por: usuario.email });
+  const guardar = async () => {
+    leer(); validar();
+    if (nuevo) {
+      const numero = await consecutivo('cotizacion', d.fecha);
+      const nRef = await addDoc(collection(db, 'crm_documentos'), { ...datos(), numero, creado: serverTimestamp(), creado_por: usuario.email });
+      location.hash = 'doc/' + nRef.id;
+      return null;
+    }
+    await setDoc(ref, datos(), { merge: true });
+    return ref;
+  };
+  const accion = (fn) => async () => {
+    try { await fn(); } catch (e) { console.error(e); aviso(m, esc(e.message || e.code), 'err'); }
+  };
+  const exportar = async () => {
+    if (!bloqueado && (await guardar()) === null) return;
+    aviso(m, 'Generando PDF…');
+    await cargarLibs();
+    const pdf = await htmlAPdf(htmlDocumento(d, emisor, { pdf: true }));
+    const nombre = `${d.numero || 'borrador'}-${slug(d.receptor?.nombre || 'cliente')}.pdf`;
+    descargar(pdf, nombre, 'application/pdf');
+    // Copia en Docs (y en el expediente del cliente): solo de documentos numerados y si cambió.
+    if (!d.numero) return aviso(m, 'PDF descargado. Es un borrador: no se guarda en Docs hasta emitirlo.', 'info');
+    const sha = await sha256Bytes(pdf);
+    if (sha === d.pdf_sha256) return aviso(m, 'PDF descargado. Ya estaba guardado en Docs.', 'ok');
+    await guardarArchivo(d.cliente, { nombre, tipo: clase, carpeta: { cotizacion: 'cotizaciones', cuenta_cobro: 'cuentas_cobro', factura_venta: 'facturas' }[clase], mime: 'application/pdf', bytes: pdf, sha256: sha });
+    await updateDoc(ref, { pdf_sha256: sha, pdf_en: serverTimestamp() });
+    d.pdf_sha256 = sha;
+    aviso(m, `PDF descargado y guardado en <a href="#docs/${clase === 'cotizacion' ? 'cotizaciones' : clase === 'cuenta_cobro' ? 'cuentas_cobro' : 'facturas'}">Docs</a>${d.cliente ? ' y en el expediente del cliente' : ''}.`, 'ok');
+  };
+  const $acc = document.getElementById('acciones');
+  const boton = (txt, fn, cls = '') => { const b = document.createElement('button'); b.type = 'button'; b.textContent = txt; b.className = 'mini ' + cls; b.addEventListener('click', accion(fn)); $acc.append(b); return b; };
+
+  if (!bloqueado) boton(nuevo ? 'Guardar cotización' : 'Guardar', async () => { if (await guardar()) await vistaDocumento(id); }, 'primario');
+  if (!nuevo) boton('Exportar PDF', exportar);
+  if (cotiz && !nuevo && !bloqueado) {
+    const sel = document.createElement('select'); sel.style.width = 'auto'; sel.className = 'mini';
+    sel.innerHTML = ESTADOS_COT.map((x) => `<option ${x === d.estado ? 'selected' : ''}>${x}</option>`).join('');
+    sel.addEventListener('change', accion(async () => { await updateDoc(ref, { estado: sel.value, actualizado: serverTimestamp(), actualizado_por: usuario.email }); await vistaDocumento(id); }));
+    $acc.append(sel);
+    if (d.estado !== 'rechazada') boton('Convertir en factura', async () => {
+      await guardar();
+      const f = { ...d, tipo: 'factura', modalidad: Number(d.iva) ? 'factura_venta' : 'cuenta_cobro', estado: 'borrador', numero: '', fecha: hoyCO(), vence: sumarDias(hoyCO(), 15),
+        cuenta_contable: CUENTAS.ingreso[0], condiciones: '', origen: id, origen_numero: d.numero, dian: { numero: '', cufe: '' }, total: totales(d).total,
+        creado: serverTimestamp(), creado_por: usuario.email, actualizado: serverTimestamp(), actualizado_por: usuario.email };
+      delete f.validez_dias; delete f.pdf_sha256; delete f.pdf_en;
+      const fRef = await addDoc(collection(db, 'crm_documentos'), f);
+      await updateDoc(ref, { estado: 'facturada', factura: fRef.id, actualizado: serverTimestamp(), actualizado_por: usuario.email });
+      location.hash = 'doc/' + fRef.id;
+    }, 'primario');
+  }
+  if (!cotiz && d.estado === 'borrador') boton('Emitir', async () => {
+    leer(); validar();
+    if (!confirm(`¿Emitir esta ${TIPOS[claseDe(d)].corto.toLowerCase()}? Recibe su consecutivo y ya no se podrá editar (solo anular).`)) return;
+    await setDoc(ref, datos(), { merge: true });
+    const numero = await consecutivo(claseDe(d), d.fecha);
+    await updateDoc(ref, { numero, estado: 'emitida', emitida_en: serverTimestamp() });
+    if (d.origen) await updateDoc(doc(db, 'crm_documentos', d.origen), { factura_numero: numero });
+    await vistaDocumento(id);
+  }, 'primario');
+  if (!cotiz && d.estado === 'emitida') boton('Registrar pago', async () => {
+    const fp = prompt('Fecha del pago (AAAA-MM-DD):', hoyCO());
+    if (!fp) return;
+    const referencia = prompt('Referencia o medio del pago (opcional):', 'Transferencia') ?? '';
+    await setDoc(doc(db, 'crm_libro', 'factura-' + id), {
+      fecha: fp, tipo: 'ingreso', cuenta: d.cuenta_contable || CUENTAS.ingreso[0], concepto: `${TIPOS[claseDe(d)].corto} ${d.numero}${d.titulo ? ' — ' + d.titulo : ''}`,
+      tercero: d.receptor?.nombre || '', documento: d.receptor?.documento || '', cliente: d.cliente || '', documento_id: id, valor: totales(d).total,
+      medio: referencia, referencia, estado: 'vigente', origen: 'factura', creado: serverTimestamp(), actualizado: serverTimestamp(), creado_por: usuario.email,
+    });
+    await updateDoc(ref, { estado: 'pagada', pago: { fecha: fp, referencia, registrado_por: usuario.email }, actualizado: serverTimestamp(), actualizado_por: usuario.email });
+    await vistaDocumento(id);
+  }, 'primario');
+  if (!cotiz && d.estado === 'pagada') boton('Deshacer pago', async () => {
+    if (!confirm('¿Volver a dejar esta factura por cobrar? El ingreso del libro contable quedará anulado.')) return;
+    await anularAsiento('factura-' + id, 'Pago deshecho');
+    await updateDoc(ref, { estado: 'emitida', pago: null, actualizado: serverTimestamp(), actualizado_por: usuario.email });
+    await vistaDocumento(id);
+  });
+  if (!cotiz && ['borrador', 'emitida'].includes(d.estado)) boton('Anular', async () => {
+    const motivo = prompt('Motivo de la anulación:');
+    if (!motivo) return;
+    await updateDoc(ref, { estado: 'anulada', motivo_anulacion: motivo, anulada_en: serverTimestamp(), actualizado: serverTimestamp(), actualizado_por: usuario.email });
+    // La cotización de origen vuelve a quedar aceptada para poder facturarla de nuevo.
+    if (d.origen) await updateDoc(doc(db, 'crm_documentos', d.origen), { estado: 'aceptada', factura: '', factura_numero: '', actualizado: serverTimestamp(), actualizado_por: usuario.email });
+    await vistaDocumento(id);
+  }, 'peligro');
+}
+const receptorDe = (c) => ({ nombre: c?.nombre || '', documento: c?.documento || '', correo: c?.correo || '', telefono: c?.telefono || '', direccion: c?.direccion || '' });
+async function anularAsiento(aid, motivo) {
+  const aRef = doc(db, 'crm_libro', aid);
+  if ((await getDoc(aRef)).exists()) await updateDoc(aRef, { estado: 'anulado', motivo_anulacion: motivo, anulado_en: serverTimestamp(), anulado_por: usuario.email, actualizado: serverTimestamp() });
+}
+
+// ───────── Docs: todos los archivos del CRM por carpeta (expedientes de clientes + documentos generales) ─────────
+async function vistaDocs(carpeta) {
+  nav('docs');
+  const [deClientes, generales, clientes] = await Promise.all([
+    getDocs(collectionGroup(db, 'archivos')).then((s) => s.docs.map((d) => ({ id: d.id, cliente: d.ref.parent.parent.id, ...d.data() }))),
+    getDocs(collection(db, 'crm_docs')).then((s) => s.docs.map((d) => ({ id: d.id, cliente: '', ...d.data() }))),
+    getDocs(collection(db, 'crm_clientes')).then((s) => Object.fromEntries(s.docs.map((d) => [d.id, d.data().nombre]))),
+  ]);
+  const todos = [...deClientes, ...generales].map((a) => ({ ...a, carpeta: carpetaDe(a) })).sort((a, b) => (fecha(b.creado) || 0) - (fecha(a.creado) || 0));
+  const cuenta = (k) => todos.filter((a) => a.carpeta === k).length;
+  const vista = carpeta ? todos.filter((a) => a.carpeta === carpeta) : todos;
+  $app.innerHTML = `<div class="cols"><div>
+    <div class="card"><h2>Docs</h2><ul class="lista carpetas">
+      <li data-carpeta="" class="${carpeta ? '' : 'act'}"><b>📁 Todos</b> <small>${todos.length} archivos</small></li>
+      ${CARPETAS.map(([k, n]) => `<li data-carpeta="${k}" class="${k === carpeta ? 'act' : ''}"><b>📁 ${n}</b> <small>${cuenta(k)} archivos</small></li>`).join('')}</ul></div>
+    <div class="card"><h2>Subir a Docs</h2><form id="fDocs"><input type="file" name="archivos" multiple required>
+      <label>Carpeta</label><select name="carpeta">${opcionesCarpeta(carpeta)}</select>
+      <label>Cliente</label><select name="cliente"><option value="">— Documento general de CDH Maker —</option>${Object.entries(clientes).map(([k, n]) => `<option value="${esc(k)}">${esc(n)}</option>`).join('')}</select>
+      <div class="acciones"><button class="primario">Subir</button></div></form><div id="mDocs"></div></div></div>
+    <div class="card"><div class="sol cab" style="border:0;padding:0;margin:0 0 8px"><h2 style="margin:0">${carpeta ? esc(nombreCarpeta(carpeta)) : 'Todos los documentos'} (${vista.length})</h2>
+      <input id="buscar" type="search" placeholder="Buscar por nombre o cliente" style="width:auto;min-width:220px"></div>
+      ${vista.length ? `<div style="overflow-x:auto"><table id="tDocs"><tr><th>Archivo</th><th>Cliente</th>${carpeta ? '' : '<th>Carpeta</th>'}<th>Fecha</th><th></th></tr>
+      ${vista.map((a, i) => `<tr data-buscar="${esc((a.nombre + ' ' + (clientes[a.cliente] || '')).toLowerCase())}"><td>${esc(a.nombre)}<br><small class="suave">${(a.tamano / 1024).toFixed(0)} KB</small></td>
+        <td>${a.cliente ? `<a href="#cliente/${encodeURIComponent(a.cliente)}">${esc(clientes[a.cliente] || a.cliente)}</a>` : '<span class="suave">CDH Maker</span>'}</td>
+        ${carpeta ? '' : `<td>${esc(nombreCarpeta(a.carpeta))}</td>`}<td style="white-space:nowrap">${fmtFecha(a.creado)}</td>
+        <td style="white-space:nowrap"><button class="mini" data-bajar="${i}">Descargar</button> <select class="mini" data-mover="${i}" style="width:auto" title="Mover a otra carpeta">${CARPETAS.map(([k, n]) => `<option value="${k}" ${k === a.carpeta ? 'selected' : ''}>${n}</option>`).join('')}</select>
+          <button class="mini peligro" data-borrar="${i}">Borrar</button></td></tr>`).join('')}</table></div>` : '<p class="suave">Esta carpeta está vacía.</p>'}</div></div>`;
+  $app.querySelectorAll('[data-carpeta]').forEach((li) => li.addEventListener('click', () => (location.hash = 'docs' + (li.dataset.carpeta ? '/' + li.dataset.carpeta : ''))));
+  document.getElementById('buscar').addEventListener('input', (e) => {
+    const q = e.target.value.trim().toLowerCase();
+    document.querySelectorAll('#tDocs [data-buscar]').forEach((tr) => tr.classList.toggle('oculto', !!q && !tr.dataset.buscar.includes(q)));
+  });
+  $app.querySelectorAll('[data-bajar]').forEach((b) => b.addEventListener('click', () => { const a = vista[b.dataset.bajar]; bajarArchivo(a.cliente, a.id, a); }));
+  $app.querySelectorAll('[data-mover]').forEach((s) => s.addEventListener('change', async () => {
+    const a = vista[s.dataset.mover];
+    await updateDoc(doc(db, ...rutaArchivo(a.cliente, a.id)), { carpeta: s.value });
+    await vistaDocs(carpeta);
+  }));
+  $app.querySelectorAll('[data-borrar]').forEach((b) => b.addEventListener('click', async () => {
+    const a = vista[b.dataset.borrar];
+    if (!confirm(`¿Borrar «${a.nombre}»? No se puede deshacer.`)) return;
+    await borrarArchivo(a.cliente, a.id);
+    await vistaDocs(carpeta);
+  }));
+  document.getElementById('fDocs').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const f = new FormData(e.target), m = document.getElementById('mDocs');
+    try {
+      for (const file of f.getAll('archivos')) {
+        aviso(m, 'Subiendo ' + esc(file.name) + '…');
+        await guardarArchivo(f.get('cliente'), { nombre: file.name, tipo: 'documento', carpeta: f.get('carpeta'), mime: file.type || 'application/octet-stream', bytes: new Uint8Array(await file.arrayBuffer()) });
+      }
+      await vistaDocs(carpeta);
+    } catch (err) { console.error(err); aviso(m, 'No se pudo subir: ' + esc(err.code || err.message), 'err'); }
   });
 }
 

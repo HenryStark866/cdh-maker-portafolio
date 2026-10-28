@@ -110,12 +110,45 @@ service cloud.firestore {
       }
       match /archivos/{aid} {
         allow read, create, delete: if esAdmin();
+        // Única edición permitida: moverlo de carpeta en CRM → Docs.
+        allow update: if esAdmin() && soloCarpeta();
         match /partes/{n} {
           allow read, create, delete: if esAdmin();
         }
       }
     }
+    // CRM → Docs lista los archivos de todos los expedientes con una consulta de grupo.
+    match /{ruta=**}/archivos/{aid} {
+      allow read: if esAdmin();
+    }
+    // Documentos generales de CDH Maker (no pertenecen a un cliente). Mismo esquema que archivos/.
+    match /crm_docs/{aid} {
+      allow read, create, delete: if esAdmin();
+      allow update: if esAdmin() && soloCarpeta();
+      match /partes/{n} {
+        allow read, create, delete: if esAdmin();
+      }
+    }
     match /crm_plantillas/{pid} {
+      allow read, write: if esAdmin();
+    }
+    // Cotizador (CRM → Cotizador): cotizaciones, facturas y cuentas de cobro. No se borran: se anulan.
+    // Una vez numerada, el número no cambia (la factura lo recibe al emitirse).
+    match /crm_documentos/{did} {
+      allow read: if esAdmin();
+      allow create: if esAdmin() && documentoValido();
+      allow update: if esAdmin() && documentoValido()
+        && (!('numero' in resource.data) || resource.data.numero == '' || request.resource.data.numero == resource.data.numero);
+      allow delete: if false;
+    }
+    match /crm_consecutivos/{cid} {
+      allow read, create, update: if esAdmin() && cid.matches('^[a-z_]+-[0-9]{4}$');
+      allow delete: if false;
+    }
+    match /crm_catalogo/{iid} {
+      allow read, write: if esAdmin();
+    }
+    match /crm_config/{cid} {
       allow read, write: if esAdmin();
     }
     // Libro contable de CDH Maker (CRM → Libro contable). Solo administradores. Los movimientos
@@ -128,6 +161,18 @@ service cloud.firestore {
         && request.resource.data.fecha is string && request.resource.data.fecha.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
         && request.resource.data.estado in ['vigente', 'anulado'];
       allow delete: if false;
+    }
+
+    function soloCarpeta() {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['carpeta'])
+        && request.resource.data.carpeta is string;
+    }
+
+    function documentoValido() {
+      return request.resource.data.tipo in ['cotizacion', 'factura']
+        && request.resource.data.estado in ['borrador', 'enviada', 'aceptada', 'rechazada', 'facturada', 'emitida', 'pagada', 'anulada']
+        && request.resource.data.items is list
+        && request.resource.data.fecha is string && request.resource.data.fecha.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$');
     }
 
     function evento(exp, id) {
