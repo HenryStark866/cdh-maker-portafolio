@@ -118,6 +118,17 @@ service cloud.firestore {
     match /crm_plantillas/{pid} {
       allow read, write: if esAdmin();
     }
+    // Libro contable de CDH Maker (CRM → Libro contable). Solo administradores. Los movimientos
+    // no se borran: se anulan (estado 'anulado'), para conservar la trazabilidad.
+    match /crm_libro/{mid} {
+      allow read: if esAdmin();
+      allow create, update: if esAdmin()
+        && request.resource.data.tipo in ['ingreso', 'egreso']
+        && request.resource.data.valor is number && request.resource.data.valor > 0
+        && request.resource.data.fecha is string && request.resource.data.fecha.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
+        && request.resource.data.estado in ['vigente', 'anulado'];
+      allow delete: if false;
+    }
 
     function evento(exp, id) {
       return /databases/$(database)/documents/firmas/$(exp)/eventos/$(id);

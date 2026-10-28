@@ -65,6 +65,7 @@ function pantallaAcceso(msg = '') {
 let usuario = null;
 function nav(actual) {
   $nav.innerHTML = `<button data-ir="clientes" class="${actual === 'clientes' ? 'act' : ''}">Clientes</button>
+    <button data-ir="libro" class="${actual === 'libro' ? 'act' : ''}">Libro contable</button>
     <button data-ir="importar" class="${actual === 'importar' ? 'act' : ''}">Importar</button>
     <span style="color:#BFE3EE;font-size:12px">${esc(usuario.email)}</span><button id="salir">Salir</button>`;
   $nav.querySelectorAll('[data-ir]').forEach((b) => b.addEventListener('click', () => (location.hash = b.dataset.ir)));
@@ -76,6 +77,7 @@ async function enrutar() {
   try {
     if (ruta === 'cliente' && id) return await vistaCliente(decodeURIComponent(id));
     if (ruta === 'importar') return vistaImportar();
+    if (ruta === 'libro') return await vistaLibro(id ? decodeURIComponent(id) : '');
     return await vistaClientes();
   } catch (e) { console.error(e); $app.innerHTML = `<div class="card"><div class="aviso err">Error: ${esc(e.code || e.message)}</div></div>`; }
 }
@@ -154,12 +156,15 @@ async function vistaCliente(id) {
     if (!fp) return;
     const ref2 = prompt('Referencia o nota del pago (opcional):', 'Transferencia') ?? '';
     const cuotas = [...c.cuotas]; cuotas[i] = { ...cuotas[i], estado: 'pagada', fecha_pago: fp, referencia: ref2, registrado_por: usuario.email };
+    await asientoCuota(id, c, cuotas[i]);
     await guardar({ cuotas });
   }));
   $app.querySelectorAll('[data-desmarcar]').forEach((b) => b.addEventListener('click', async () => {
-    if (!confirm('¿Marcar esta cuota como pendiente otra vez?')) return;
+    if (!confirm('¿Marcar esta cuota como pendiente otra vez? El ingreso del libro contable quedará anulado.')) return;
     const cuotas = [...c.cuotas]; const { fecha_pago, referencia, registrado_por, ...resto } = cuotas[Number(b.dataset.desmarcar)];
     cuotas[Number(b.dataset.desmarcar)] = { ...resto, estado: 'pendiente' };
+    const aRef = doc(db, 'crm_libro', idAsientoCuota(id, resto.n));
+    if ((await getDoc(aRef)).exists()) await updateDoc(aRef, { estado: 'anulado', anulado_en: serverTimestamp(), anulado_por: usuario.email, actualizado: serverTimestamp() });
     await guardar({ cuotas });
   }));
   document.getElementById('fCuota').addEventListener('submit', async (e) => {
@@ -300,6 +305,103 @@ function enlazarSolicitud(cliente) {
       await lote.commit();
       await vistaCliente(cliente);
     } catch (err) { console.error(err); aviso(m, 'No se pudo crear: ' + esc(err.message), 'err'); }
+  });
+}
+
+// ───────── libro contable (crm_libro): ingresos y egresos de CDH Maker, con cuentas por cobrar ─────────
+// Cada cuota pagada de un cliente genera su ingreso con id fijo (no se duplica). Los movimientos no se
+// borran: se anulan, para conservar la trazabilidad.
+const CUENTAS = {
+  ingreso: ['Desarrollo de software', 'Fabricación digital', 'Electrónica e IoT', 'Consultoría y capacitación', 'Otros ingresos'],
+  egreso: ['Infraestructura y licencias', 'Materiales e insumos', 'Equipos y herramientas', 'Transporte y envíos', 'Publicidad', 'Impuestos y seguridad social', 'Servicios profesionales', 'Otros gastos'],
+};
+const idAsientoCuota = (cliente, n) => `cuota-${cliente}-${n}`;
+async function asientoCuota(cliente, c, q) {
+  await setDoc(doc(db, 'crm_libro', idAsientoCuota(cliente, q.n)), {
+    fecha: q.fecha_pago, tipo: 'ingreso', cuenta: c.cuenta_contable || 'Desarrollo de software',
+    concepto: `Cuota ${q.n} de ${(c.cuotas || []).length || q.n} — ${c.proyecto || c.nombre}`, tercero: c.nombre, documento: c.documento || '',
+    cliente, cuota: q.n, valor: Number(q.valor || 0), medio: q.referencia || '', referencia: q.referencia || '', estado: 'vigente', origen: 'cuota',
+    creado: serverTimestamp(), actualizado: serverTimestamp(), creado_por: usuario.email,
+  });
+}
+const mesDe = (f) => String(f || '').slice(0, 7);
+const csv = (filas) => filas.map((r) => r.map((x) => { const s = String(x ?? ''); return /[",;\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; }).join(';')).join('\r\n');
+
+async function vistaLibro(mes) {
+  nav('libro');
+  const clientes = (await getDocs(collection(db, 'crm_clientes'))).docs.map((d) => ({ id: d.id, ...d.data() }));
+  let movs = (await getDocs(query(collection(db, 'crm_libro'), orderBy('fecha', 'desc')))).docs.map((d) => ({ id: d.id, ...d.data() }));
+  // Cuotas pagadas que aún no tienen asiento (p. ej. importadas): se registran una sola vez.
+  const tienen = new Set(movs.map((m) => m.id));
+  let nuevos = 0;
+  for (const c of clientes) for (const q of c.cuotas || []) if (q.estado === 'pagada' && q.fecha_pago && !tienen.has(idAsientoCuota(c.id, q.n))) { await asientoCuota(c.id, c, q); nuevos++; }
+  if (nuevos) movs = (await getDocs(query(collection(db, 'crm_libro'), orderBy('fecha', 'desc')))).docs.map((d) => ({ id: d.id, ...d.data() }));
+
+  const meses = [...new Set(movs.map((m) => mesDe(m.fecha)))].sort().reverse();
+  const vista = movs.filter((m) => !mes || mesDe(m.fecha) === mes);
+  const vig = vista.filter((m) => m.estado !== 'anulado');
+  const suma = (t) => vig.filter((m) => m.tipo === t).reduce((s, m) => s + Number(m.valor || 0), 0);
+  const ing = suma('ingreso'), egr = suma('egreso');
+  const cxc = clientes.flatMap((c) => (c.cuotas || []).filter((q) => q.estado !== 'pagada').map((q) => ({ c, q }))).sort((a, b) => String(a.q.fecha).localeCompare(String(b.q.fecha)));
+  const totalCxc = cxc.reduce((s, { q }) => s + Number(q.valor || 0), 0);
+  const hoy = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Bogota' });
+
+  $app.innerHTML = `
+  <div class="card"><div class="cab" style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center">
+    <h2 style="margin:0">Libro contable — CDH Maker</h2>
+    <div class="acciones" style="margin:0"><select id="mes" style="width:auto"><option value="">Todo el periodo</option>${meses.map((x) => `<option ${x === mes ? 'selected' : ''}>${x}</option>`).join('')}</select>
+    <button class="mini" id="exportar">Exportar CSV</button></div></div>
+    <div class="grid" style="margin-top:12px">
+      <div><span class="suave">Ingresos</span><h2 style="color:var(--ok)">${cop(ing)}</h2></div>
+      <div><span class="suave">Egresos</span><h2 style="color:var(--err)">${cop(egr)}</h2></div>
+      <div><span class="suave">Resultado</span><h2>${cop(ing - egr)}</h2></div>
+      <div><span class="suave">Por cobrar (todas las cuotas pendientes)</span><h2 style="color:var(--warn)">${cop(totalCxc)}</h2></div>
+    </div>${nuevos ? `<div class="aviso ok">Se registraron ${nuevos} pago(s) de cuotas que venían del CRM.</div>` : ''}</div>
+  <div class="cols"><div class="card"><h2>Nuevo movimiento</h2>
+    <form id="fMov"><label>Tipo</label><select name="tipo" id="tipo"><option value="ingreso">Ingreso</option><option value="egreso">Egreso</option></select>
+      <label>Fecha</label><input name="fecha" type="date" value="${hoy}" required>
+      <label>Cuenta</label><input name="cuenta" list="cuentas" required><datalist id="cuentas"></datalist>
+      <label>Concepto</label><input name="concepto" required>
+      <label>Tercero (cliente o proveedor)</label><input name="tercero" list="terceros"><datalist id="terceros">${clientes.map((c) => `<option value="${esc(c.nombre)}">`).join('')}</datalist>
+      <label>Valor (COP)</label><input name="valor" type="number" min="1" step="1" required>
+      <label>Medio de pago</label><input name="medio" list="medios" placeholder="Transferencia Bancolombia"><datalist id="medios"><option value="Transferencia Bancolombia"><option value="Efectivo"><option value="Nequi"><option value="Tarjeta"></datalist>
+      <label>Referencia / soporte</label><input name="referencia">
+      <div class="acciones"><button class="primario">Registrar</button></div></form><div id="mMov"></div></div>
+  <div><div class="card"><h2>Movimientos${mes ? ' · ' + esc(mes) : ''} (${vista.length})</h2>
+    ${vista.length ? `<table><tr><th>Fecha</th><th>Cuenta / concepto</th><th>Tercero</th><th style="text-align:right">Valor</th><th></th></tr>
+    ${vista.map((m) => `<tr style="${m.estado === 'anulado' ? 'opacity:.45;text-decoration:line-through' : ''}"><td>${esc(m.fecha)}</td>
+      <td><b>${esc(m.cuenta)}</b><br><small>${esc(m.concepto)}${m.referencia ? ' · ' + esc(m.referencia) : ''}</small></td>
+      <td>${m.cliente ? `<a href="#cliente/${encodeURIComponent(m.cliente)}">${esc(m.tercero)}</a>` : esc(m.tercero || '')}</td>
+      <td style="text-align:right;white-space:nowrap;font-weight:600;color:${m.tipo === 'ingreso' ? 'var(--ok)' : 'var(--err)'}">${m.tipo === 'ingreso' ? '+' : '−'} ${cop(m.valor)}</td>
+      <td>${m.estado === 'anulado' ? '<small>anulado</small>' : m.origen === 'cuota' ? '<small class="suave">cuota</small>' : `<button class="mini peligro" data-anular="${esc(m.id)}">Anular</button>`}</td></tr>`).join('')}</table>`
+      : '<p class="suave">Sin movimientos en este periodo.</p>'}</div>
+    <div class="card"><h2>Cuentas por cobrar</h2>
+    ${cxc.length ? `<table><tr><th>Vence</th><th>Cliente</th><th>Cuota</th><th style="text-align:right">Valor</th></tr>${cxc.map(({ c, q }) => `<tr><td>${esc(q.fecha)}${q.fecha < hoy ? ' <span class="chip vencido">vencida</span>' : ''}</td>
+      <td><a href="#cliente/${encodeURIComponent(c.id)}">${esc(c.nombre)}</a></td><td>${esc(q.n)} de ${(c.cuotas || []).length}</td><td style="text-align:right">${cop(q.valor)}</td></tr>`).join('')}</table>`
+      : '<p class="suave">No hay cuotas pendientes.</p>'}</div></div></div>`;
+
+  const tipo = document.getElementById('tipo'), dl = document.getElementById('cuentas');
+  const pintarCuentas = () => { dl.innerHTML = CUENTAS[tipo.value].map((x) => `<option value="${x}">`).join(''); };
+  tipo.addEventListener('change', pintarCuentas); pintarCuentas();
+  document.getElementById('mes').addEventListener('change', (e) => (location.hash = 'libro' + (e.target.value ? '/' + e.target.value : '')));
+  document.getElementById('fMov').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const f = Object.fromEntries(new FormData(e.target));
+    const cli = clientes.find((c) => c.nombre === f.tercero);
+    await addDoc(collection(db, 'crm_libro'), { ...f, valor: Number(f.valor), cliente: cli?.id || '', estado: 'vigente', origen: 'manual',
+      creado: serverTimestamp(), actualizado: serverTimestamp(), creado_por: usuario.email });
+    await vistaLibro(mes);
+  });
+  $app.querySelectorAll('[data-anular]').forEach((b) => b.addEventListener('click', async () => {
+    const motivo = prompt('Motivo de la anulación:');
+    if (!motivo) return;
+    await updateDoc(doc(db, 'crm_libro', b.dataset.anular), { estado: 'anulado', motivo_anulacion: motivo, anulado_en: serverTimestamp(), anulado_por: usuario.email, actualizado: serverTimestamp() });
+    await vistaLibro(mes);
+  }));
+  document.getElementById('exportar').addEventListener('click', () => {
+    const filas = [['Fecha', 'Tipo', 'Cuenta', 'Concepto', 'Tercero', 'Documento', 'Valor', 'Medio', 'Referencia', 'Estado', 'Registrado por'],
+      ...vista.map((m) => [m.fecha, m.tipo, m.cuenta, m.concepto, m.tercero, m.documento, m.tipo === 'egreso' ? -m.valor : m.valor, m.medio, m.referencia, m.estado, m.creado_por])];
+    descargar(new TextEncoder().encode('﻿' + csv(filas)), `libro-cdh-maker${mes ? '-' + mes : ''}.csv`, 'text/csv');
   });
 }
 
