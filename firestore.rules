@@ -7,7 +7,8 @@
 // ───────────────────────────────────────────────────────────────────────────
 // Autor:    Ing. Henry Taborda — CDH Maker (Medellín, Colombia)
 // Contacto: cdhmaker@gmail.com
-// Última actualización: 2026-10-28
+// Última actualización: 2026-10-29 (panel de administración: leads, pipeline,
+//                        proyectos, actividades, afiliados y comisiones)
 // ═══════════════════════════════════════════════════════════════════════════
 
 rules_version = '2';               // sintaxis moderna de reglas (v2)
@@ -33,6 +34,9 @@ service cloud.firestore {
       allow read, update: if request.auth != null
         && (request.auth.uid == clientId
             || request.auth.token.email == resource.data.email);
+
+      // El panel (/crm → Leads) muestra estos registros a los administradores
+      allow read: if esAdmin();
 
       // BORRAR: nadie desde el cliente (solo el admin desde la Consola).
       // Protege el historial de clientes contra borrados accidentales o maliciosos
@@ -267,6 +271,99 @@ service cloud.firestore {
         && request.resource.data.estado in ['borrador', 'enviada', 'aceptada', 'rechazada', 'facturada', 'emitida', 'pagada', 'anulada']
         && request.resource.data.items is list
         && request.resource.data.fecha is string && request.resource.data.fecha.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$');
+    }
+
+    // ── Panel de administración (/crm): leads, pipeline, proyectos, afiliados ──
+    // Todo es solo de administradores, salvo UNA excepción: el visitante anónimo
+    // del sitio puede CREAR un lead mínimo (public/ref.js) sin datos personales.
+    // Nunca puede leer, listar, editar ni borrar.
+    match /crm_leads/{id} {
+      allow read: if esAdmin();
+      allow update: if esAdmin() && leadAdmin(request.resource.data);
+      allow delete: if esAdmin();          // limpiar spam
+      allow create: if esAdmin() ? leadAdmin(request.resource.data) : leadPublico(request.resource.data);
+    }
+    // Oportunidades del pipeline (kanban): nuevo → … → ganado/perdido
+    match /crm_oportunidades/{id} {
+      allow read, delete: if esAdmin();
+      allow create, update: if esAdmin()
+        && request.resource.data.titulo is string && request.resource.data.titulo.size() <= 160
+        && request.resource.data.etapa in ['nuevo', 'contactado', 'propuesta', 'negociacion', 'ganado', 'perdido']
+        && request.resource.data.valor_cop is number && request.resource.data.valor_cop >= 0
+        && codigoOpcional(request.resource.data.get('afiliado', null));
+    }
+    // Proyectos: se cierran con estado, no se borran
+    match /crm_proyectos/{id} {
+      allow read: if esAdmin();
+      allow create, update: if esAdmin()
+        && request.resource.data.nombre is string && request.resource.data.nombre.size() <= 160
+        && request.resource.data.estado in ['planeacion', 'en_curso', 'pausado', 'entregado', 'soporte', 'cancelado'];
+      allow delete: if false;
+    }
+    // Bitácora (notas, llamadas, cambios de etapa) de cualquier entidad del panel
+    match /crm_actividades/{id} {
+      allow read: if esAdmin();
+      allow create: if esAdmin()
+        && request.resource.data.entidad in ['lead', 'oportunidad', 'cliente', 'proyecto', 'afiliado']
+        && request.resource.data.entidad_id is string
+        && request.resource.data.texto is string && request.resource.data.texto.size() <= 5000
+        && request.resource.data.creado_por == request.auth.token.email;
+      allow update, delete: if esAdmin() && resource.data.creado_por == request.auth.token.email;
+    }
+    // Afiliados de CDH: el id del documento ES el código del enlace ?ref=
+    match /crm_afiliados/{codigo} {
+      allow read: if esAdmin();
+      allow create, update: if esAdmin()
+        && codigo.matches('^[a-z0-9-]{4,20}$')
+        && request.resource.data.codigo == codigo
+        && request.resource.data.nombre is string && request.resource.data.nombre.size() <= 120
+        && request.resource.data.comision_pct is number
+        && request.resource.data.comision_pct >= 0 && request.resource.data.comision_pct <= 50
+        && request.resource.data.estado in ['activo', 'pausado', 'retirado'];
+      allow delete: if false;              // se retira, no se borra (historial de comisiones)
+    }
+    // Comisiones: auditables. No se borran; se anulan. Una pagada ya no cambia.
+    match /crm_comisiones/{id} {
+      allow read: if esAdmin();
+      allow create: if esAdmin() && comisionValida(request.resource.data)
+        && request.resource.data.estado in ['pendiente', 'aprobada'];
+      allow update: if esAdmin() && comisionValida(request.resource.data)
+        && resource.data.estado != 'pagada'
+        && request.resource.data.afiliado == resource.data.afiliado;
+      allow delete: if false;
+    }
+
+    function codigoOpcional(c) {
+      return c == null || (c is string && c.matches('^[a-z0-9-]{4,20}$'));
+    }
+    function textoCorto(d, k, n) {
+      return !(k in d) || (d[k] is string && d[k].size() <= n);
+    }
+    // Lead anónimo desde el sitio: lista cerrada de campos, ninguno personal.
+    function leadPublico(d) {
+      return d.keys().hasOnly(['origen', 'estado', 'ref', 'ref_ts', 'pagina', 'idioma', 'servicio', 'creado'])
+        && d.keys().hasAll(['origen', 'estado', 'creado'])
+        && d.origen in ['web_widget', 'web_whatsapp', 'web_correo', 'web_cotizador', 'web_visor3d']
+        && d.estado == 'nuevo'
+        && d.creado == request.time
+        && codigoOpcional(d.get('ref', null))
+        && (d.get('ref_ts', null) == null || d.ref_ts is int)
+        && textoCorto(d, 'pagina', 200)
+        && (!('idioma' in d) || (d.idioma is string && d.idioma.matches('^[a-z]{2}$')))
+        && textoCorto(d, 'servicio', 60);
+    }
+    function leadAdmin(d) {
+      return d.estado in ['nuevo', 'contactado', 'calificado', 'descartado', 'convertido']
+        && d.origen is string && d.origen.size() <= 40
+        && codigoOpcional(d.get('ref', null))
+        && textoCorto(d, 'nombre', 120) && textoCorto(d, 'notas', 5000);
+    }
+    function comisionValida(d) {
+      return d.afiliado is string && d.afiliado.matches('^[a-z0-9-]{4,20}$')
+        && d.base_cop is number && d.base_cop >= 0
+        && d.pct is number && d.pct >= 0 && d.pct <= 100     // 100 = bono fijo
+        && d.valor_cop is number && d.valor_cop >= 0
+        && d.estado in ['pendiente', 'aprobada', 'pagada', 'anulada'];
     }
 
     function evento(exp, id) {

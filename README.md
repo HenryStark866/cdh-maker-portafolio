@@ -8,6 +8,9 @@ Sitio web del portafolio de servicios de **CDH Maker**: desarrollo web y softwar
 > (arquitectura, autenticación, CRM, i18n, chatbot, seguridad, despliegue y mantenimiento).
 >
 > 🧭 **Mapa de arquitectura, decisiones (ADR) y desfases detectados:** ver [ARQUITECTURA.md](ARQUITECTURA.md)
+>
+> 🗂️ **Panel de administración (`/crm`: leads, pipeline, proyectos, afiliados, YAM):** ver [docs/panel-admin.md](docs/panel-admin.md)
+> y la campaña de afiliados en [docs/campana-afiliados-cdh.md](docs/campana-afiliados-cdh.md).
 
 ## Seguridad y clientes
 

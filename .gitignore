@@ -19,3 +19,5 @@ public/e/
 # Registros de los emuladores de Firebase
 firestore-debug.log
 .claude/
+0.26.0
+

@@ -1,8 +1,8 @@
-// CRM de CDH Maker (cdhmaker.com/crm): la consola de la empresa. Este archivo tiene el acceso, el enrutador,
-// Inicio, Clientes (software y servicios con seguimiento / productos), el cotizador, Docs e Importar; el
-// resto vive en su módulo: equipo.js, firmas.js, contratos.js, pagos.js, libro.js (contabilidad),
-// marketing.js. Acceso sin clave: el administrador entra con el enlace que le llega al correo (Firebase
-// Auth). La seguridad real está en firestore.rules (esAdmin).
+// CRM y Panel de administración de CDH Maker (cdhmaker.com/crm): consola de la empresa.
+// Módulos: Inicio, Leads, Pipeline, Clientes, Proyectos, Cotizador, Catálogo, Firmas, Afiliados, YAM,
+// Docs, Libro contable, Pagos, Marketing, Equipo e Importación.
+// Acceso sin clave: el administrador escribe su correo y entra con el enlace que le llega (Firebase Auth).
+// La seguridad real está en firestore.rules (esAdmin).
 import { collection, collectionGroup, doc, getDoc, getDocs, setDoc, updateDoc, addDoc, deleteDoc, query, where, orderBy, serverTimestamp, Timestamp, runTransaction }
   from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 import { onAuthStateChanged, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, signOut }
@@ -14,12 +14,24 @@ import { htmlDocumento, totales, claseDe, sumarDias, TIPOS, EMISOR_BASE } from '
 import { ADMINS, cargarEquipo, vistaEquipo, firmaAutorizada } from './equipo.js';
 import { vistaFirmas, pintarSolicitudes, crearSolicitudFirma, mostrarEnlaces, marcarEnviado, estadoSolicitud } from './firmas.js';
 import { vistaPagos, mediosParaCobro } from './pagos.js';
-// Módulos grandes o que pueden faltar en un despliegue parcial: se cargan al usarlos.
+
+// Módulos cargados dinámicamente según la ruta
 const libro = () => import('./libro.js');
 const marca = () => import('./marca.js').catch(() => null);
+const vistaLeads = (...a) => import('./leads.js?v=1').then((m) => m.vistaLeads(...a));
+const vistaLead = (...a) => import('./leads.js?v=1').then((m) => m.vistaLead(...a));
+const vistaPipeline = (...a) => import('./pipeline.js?v=1').then((m) => m.vistaPipeline(...a));
+const vistaOportunidad = (...a) => import('./pipeline.js?v=1').then((m) => m.vistaOportunidad(...a));
+const vistaProyectos = (...a) => import('./proyectos.js?v=1').then((m) => m.vistaProyectos(...a));
+const vistaProyecto = (...a) => import('./proyectos.js?v=1').then((m) => m.vistaProyecto(...a));
+const vistaAfiliados = (...a) => import('./afiliados.js?v=1').then((m) => m.vistaAfiliados(...a));
+const vistaAfiliado = (...a) => import('./afiliados.js?v=1').then((m) => m.vistaAfiliado(...a));
+const vistaYam = (...a) => import('./yam.js?v=1').then((m) => m.vistaYam(...a));
+const bitacora = (...a) => import('./actividades.js?v=1').then((m) => m.bitacora(...a));
+
 const CLAVE_CORREO = 'cdh_crm_correo';
 
-// ───────── acceso ─────────
+$1
 async function completarEnlace() {
   if (!isSignInWithEmailLink(auth, location.href)) return;
   let correo = localStorage.getItem(CLAVE_CORREO);
@@ -34,7 +46,7 @@ async function completarEnlace() {
 function pantallaAcceso(msg = '') {
   document.getElementById('nav').innerHTML = ''; document.getElementById('yo').innerHTML = '';
   $app.innerHTML = `<div class="card" style="max-width:440px;margin:40px auto">
-    <h2>Entrar a la consola</h2>
+    <h2>Entrar al panel y consola</h2>
     <p class="suave">Escribe tu correo de administrador. Te llegará un enlace para entrar; no necesitas clave.</p>
     <form id="fAcceso"><label for="correo">Correo</label><input id="correo" type="email" required autocomplete="email">
     <div class="acciones"><button class="primario">Enviarme el enlace</button></div></form><div id="msg">${msg}</div></div>`;
@@ -56,6 +68,15 @@ const RUTAS = {
   inicio: () => vistaInicio(),
   clientes: ([seg]) => vistaClientes(seg),
   cliente: ([id]) => vistaCliente(id),
+  leads: () => vistaLeads({ nav, usuario: ctx.usuario }),
+  lead: ([id]) => vistaLead(id, { nav, usuario: ctx.usuario }),
+  pipeline: () => vistaPipeline({ nav, usuario: ctx.usuario }),
+  op: ([id]) => vistaOportunidad(id, { nav, usuario: ctx.usuario }),
+  proyectos: () => vistaProyectos({ nav, usuario: ctx.usuario }),
+  proyecto: ([id]) => vistaProyecto(id, { nav, usuario: ctx.usuario }),
+  afiliados: () => vistaAfiliados({ nav, usuario: ctx.usuario }),
+  afiliado: ([id]) => vistaAfiliado(id, { nav, usuario: ctx.usuario }),
+  yam: () => vistaYam({ nav, usuario: ctx.usuario }),
   cotizador: ([f]) => vistaCotizador(f || 'cotizacion'),
   catalogo: async (p) => (await import('./catalogo.js')).vistaCatalogo(p),
   doc: ([id, extra]) => vistaDocumento(id, extra || ''),
@@ -127,7 +148,8 @@ async function vistaClientes(seg = 'proyecto') {
 }
 
 const CAMPOS = [['nombre', 'Nombre o razón social'], ['tipo', 'Tipo (persona natural / empresa)'], ['documento', 'Cédula o NIT'], ['empresa', 'Empresa relacionada'],
-  ['correo', 'Correo'], ['telefono', 'Teléfono / WhatsApp'], ['direccion', 'Ciudad y dirección'], ['proyecto', 'Proyecto o producto'], ['valor_total', 'Valor total (COP)'], ['estado', 'Estado (activo, pagado, cerrado)']];
+  ['correo', 'Correo'], ['telefono', 'Teléfono / WhatsApp'], ['direccion', 'Ciudad y dirección'], ['proyecto', 'Proyecto o producto'], ['valor_total', 'Valor total (COP)'], ['estado', 'Estado (activo, pagado, cerrado)'],
+  ['afiliado', 'Código de afiliado que lo refirió (comisión)']]
 
 async function vistaCliente(id) {
   nav('clientes');
@@ -171,7 +193,17 @@ async function vistaCliente(id) {
     <div class="card"><div class="cab" style="margin:0 0 6px"><h2 style="margin:0">Firmas</h2><a class="boton" href="#contrato/para/${encodeURIComponent(id)}">Enviar contrato a firmar</a></div><div id="solicitudes"><p class="suave">Cargando…</p></div></div>
     <div class="card"><h2>Expediente</h2><div id="archivos"><p class="suave">Cargando…</p></div>
       <div class="acciones"><input type="file" id="fArchivo" multiple style="width:auto"><select id="fCarpeta" style="width:auto">${opcionesCarpeta('')}</select><button class="mini" id="subir">Subir al expediente</button></div><div id="mArchivo"></div></div>
+    <div class="card"><h2>Proyectos</h2><div id="proyCli"><p class="suave">Cargando…</p></div></div>
+    <div class="card" id="bitCli"></div>
   </div></div>`;
+  bitacora(document.getElementById('bitCli'), ctx.usuario, 'cliente', id);
+  getDocs(collection(db, 'crm_proyectos')).then((s) => {
+    const el = document.getElementById('proyCli');
+    const ps = s.docs.filter((d) => d.data().cliente_id === id);
+    el.innerHTML = ps.length ? `<ul class="lista">${ps.map((d) => `<li data-p="${esc(d.id)}"><b>${esc(d.data().nombre)}</b><small>${esc(d.data().estado)}${d.data().url_produccion ? ' · ' + esc(d.data().url_produccion) : ''}</small></li>`).join('')}</ul>`
+      : '<p class="suave">Sin proyectos. <a href="#proyectos">Crear uno en Proyectos</a>.</p>';
+    el.querySelectorAll('[data-p]').forEach((li) => li.addEventListener('click', () => (location.hash = 'proyecto/' + encodeURIComponent(li.dataset.p))));
+  }).catch(() => { document.getElementById('proyCli').innerHTML = '<p class="suave">No se pudieron leer los proyectos.</p>'; });
 
   const guardar = async (cambios) => { await updateDoc(ref, { ...cambios, ...sello() }); await vistaCliente(id); };
   document.getElementById('fDatos').addEventListener('submit', async (e) => {
@@ -180,6 +212,8 @@ async function vistaCliente(id) {
     if (f.valor_total !== '') f.valor_total = Number(f.valor_total) || 0;
     if ('frecuencia_dias' in f) f.frecuencia_dias = Number(f.frecuencia_dias) || 15;
     if ('mensualidad' in f) f.mensualidad = Number(f.mensualidad) || 0;
+    f.afiliado = String(f.afiliado || '').trim().toLowerCase();
+    if (f.afiliado && !/^[a-z0-9-]{4,20}$/.test(f.afiliado)) return aviso(document.getElementById('mDatos'), 'El código de afiliado debe tener 4–20 caracteres: a-z, 0-9 o guiones.', 'err');
     await guardar(f);
   });
   document.getElementById('fSeg')?.addEventListener('submit', async (e) => {

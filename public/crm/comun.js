@@ -39,10 +39,15 @@ export const opcionesEquipo = (sel = '', vacio = '— Sin asignar —') => `${va
 // [clave, etiqueta, icono]. app.js enruta '#clave/...' a la vista de cada módulo.
 export const SECCIONES = [
   ['inicio', 'Inicio', 'M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z'],
+  ['leads', 'Leads', 'M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M8.5 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM20 8v6M23 11h-6'],
+  ['pipeline', 'Pipeline', 'M3 3h4v18H3zM10 3h4v12h-4zM17 3h4v8h-4z'],
   ['clientes', 'Clientes', 'M16 19v-1a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v1M9 10a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM22 19v-1a4 4 0 0 0-3-3.9M16 3.1a3.5 3.5 0 0 1 0 6.8'],
+  ['proyectos', 'Proyectos', 'M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z'],
   ['cotizador', 'Cotizador y cobros', 'M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8zM14 3v5h5M9 13h6M9 17h6'],
   ['catalogo', 'Catálogo y precios', 'M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8zM7.5 7.5h.01'],
   ['firmas', 'Firmas', 'M3 17c3-3 5-9 8-9s1 6 4 6 3-3 6-3M3 21h18'],
+  ['afiliados', 'Afiliados', 'M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'],
+  ['yam', 'YAM', 'M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18M16 10a4 4 0 0 1-8 0'],
   ['docs', 'Docs', 'M3 6a1 1 0 0 1 1-1h5l2 2h9a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z'],
   ['libro', 'Contabilidad', 'M4 19V5a1 1 0 0 1 1-1h11l4 4v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1zM8 14l3-3 2 2 3-4'],
   ['pagos', 'Medios de pago', 'M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h3v3h-3zM18 18h3v3h-3zM14 20h1M20 14h1'],

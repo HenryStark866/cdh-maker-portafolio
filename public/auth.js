@@ -227,6 +227,7 @@
           empresa: profile.company || "—",
           interes: profile.interest || "—",
           origen: "Registro web portafolio",
+          ref: (window.CDH_REF && window.CDH_REF.codigo()) || "—", // afiliado (ref.js)
           fecha: new Date().toISOString(),
         }),
       });
@@ -250,6 +251,7 @@
             company: profile.company || "",
             interest: profile.interest || "",
             source: "web-portfolio", // de dónde vino el registro
+            ref: (window.CDH_REF && window.CDH_REF.codigo()) || null, // afiliado (ref.js)
             updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           },
