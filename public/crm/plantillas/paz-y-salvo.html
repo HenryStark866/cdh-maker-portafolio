@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paz y Salvo — CDH Maker</title>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap");
+
+:root {
+  --tinta: #0b1f27;
+  --tinta-suave: #4a6470;
+  --navy: #06232e;
+  --cian: #0891b2;        /* cian de marca oscurecido para que lea en papel */
+  --cian-claro: #e0f7fb;
+  --linea: #c9dbe0;
+  --papel: #ffffff;
+  --fondo: #eef3f5;
+}
+
+* { box-sizing: border-box; }
+
+html { background: var(--fondo); }
+
+body {
+  margin: 0;
+  padding: 32px 16px;
+  font: 400 10.5pt/1.55 "Inter", system-ui, sans-serif;
+  color: var(--tinta);
+  background: var(--fondo);
+}
+
+.hoja {
+  max-width: 210mm;
+  margin: 0 auto;
+  padding: 18mm 18mm 16mm;
+  background: var(--papel);
+  box-shadow: 0 2px 16px rgba(6, 35, 46, .12);
+}
+
+/* ===== Encabezado ===== */
+.membrete {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid var(--navy);
+}
+.membrete svg { width: 46px; height: 46px; flex: none; }
+.membrete .marca { font: 700 15pt/1.1 "Space Grotesk", sans-serif; color: var(--navy); }
+.membrete .marca small { display: block; font: 500 8.5pt/1.4 "Inter", sans-serif; color: var(--tinta-suave); }
+.membrete .ref { margin-left: auto; text-align: right; font-size: 8.5pt; color: var(--tinta-suave); }
+.membrete .ref b { color: var(--tinta); }
+
+h1 {
+  margin: 22px 0 4px;
+  font: 700 17pt/1.2 "Space Grotesk", sans-serif;
+  color: var(--navy);
+  text-align: center;
+  letter-spacing: .3px;
+}
+.subtitulo { margin: 0 0 20px; text-align: center; color: var(--tinta-suave); font-size: 9.5pt; }
+
+h2 {
+  margin: 20px 0 8px;
+  padding-bottom: 3px;
+  font: 700 11pt/1.3 "Space Grotesk", sans-serif;
+  color: var(--navy);
+  border-bottom: 1px solid var(--linea);
+  page-break-after: avoid;
+}
+
+p, li { text-align: justify; line-height: 1.85; }   /* aire para la pista bajo cada campo */
+ol, ul { padding-left: 20px; }
+li { margin-bottom: 4px; }
+
+/* ===== Campos por completar ===== */
+.campo {
+  display: inline-block;
+  min-width: 120px;
+  border-bottom: 1px solid var(--tinta);
+  padding: 0 4px;
+  line-height: 1.2;
+  color: transparent;            /* la pista se ve en gris debajo, no sobre la línea */
+  position: relative;
+  vertical-align: baseline;
+}
+.campo::after {
+  content: attr(data-pista);
+  position: absolute;
+  left: 2px;
+  top: 100%;
+  font-size: 6.5pt;
+  color: #8aa1aa;
+  white-space: nowrap;
+}
+.campo.largo { min-width: 260px; }
+.campo.corto { min-width: 70px; }
+.casilla { display: inline-block; width: 11px; height: 11px; border: 1px solid var(--tinta); margin-right: 5px; vertical-align: -1px; }
+
+/* ===== Tablas ===== */
+table { width: 100%; border-collapse: collapse; margin: 8px 0 12px; font-size: 9.5pt; page-break-inside: avoid; }
+th, td { border: 1px solid var(--linea); padding: 6px 8px; text-align: left; vertical-align: top; }
+th { background: var(--navy); color: #fff; font-weight: 600; }
+tr.total td { font-weight: 700; background: var(--cian-claro); }
+td.num, th.num { text-align: right; white-space: nowrap; }
+table.datos th { width: 34%; background: var(--cian-claro); color: var(--tinta); }
+
+.nota {
+  margin: 12px 0;
+  padding: 8px 12px;
+  background: var(--cian-claro);
+  border-left: 3px solid var(--cian);
+  font-size: 9pt;
+}
+
+/* ===== Firmas ===== */
+.firmas { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 36px; page-break-inside: avoid; }
+.firma { padding-top: 46px; }
+.firma .raya { border-top: 1px solid var(--tinta); padding-top: 6px; font-size: 9pt; }
+.firma .raya b { display: block; font-size: 9.5pt; }
+.firma .raya span { display: block; color: var(--tinta-suave); }
+
+.pie {
+  margin-top: 26px;
+  padding-top: 8px;
+  border-top: 1px solid var(--linea);
+  font-size: 7.5pt;
+  color: var(--tinta-suave);
+  text-align: center;
+}
+
+/* Carta: menos ceremonia, más aire */
+.carta p { text-align: left; }
+.carta .destinatario { margin: 22px 0 18px; }
+.carta .destinatario p { margin: 0; text-align: left; }
+
+@media (max-width: 640px) {
+  body { padding: 0; }
+  .hoja { padding: 20px 16px; box-shadow: none; }
+  .membrete { flex-wrap: wrap; }
+  .membrete .ref { margin-left: 0; text-align: left; }
+  .firmas { grid-template-columns: 1fr; }
+  table { font-size: 8.5pt; }
+}
+
+@page { size: A4; margin: 0; }
+@media print {
+  html, body { background: #fff; padding: 0; }
+  .hoja { box-shadow: none; max-width: none; }
+  th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  tr.total td, .nota, table.datos th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+/* ===== CRM: campos rellenados (rellenar.js) y firmas ===== */
+.campo.ok { color: inherit; border-bottom: 0; min-width: 0; padding: 0; font-weight: 600; }
+.campo.ok::after, .campo.vacio::after { content: none; }
+.campo.vacio { color: #a16207; background: #fff8e6; border-bottom: 1px dashed #d4a72c; min-width: 0; padding: 0 3px; font-size: 8.5pt; line-height: 1.3; }
+.casilla { text-align: center; overflow: hidden; line-height: 9px; }
+.casilla .campo, .casilla .campo.ok { display: inline; color: var(--tinta); background: none; border: 0; padding: 0; min-width: 0; font: 700 8pt/9px "Inter", sans-serif; }
+.casilla .campo.vacio { color: transparent; }
+.firma { padding-top: 0; }
+.firma .firma-img { display: block; height: 46px; max-width: 220px; object-fit: contain; object-position: left bottom; }
+.firma .firma-vacia { display: block; height: 46px; }
+/* Ancho de hoja A4 útil (PDF con htmlAPdf) y celulares: sin marco de papel. */
+@media (max-width: 700px) { html, body { background: #fff; padding: 0; } .hoja { padding: 0 2px; box-shadow: none; max-width: none; } }
+</style>
+</head>
+<body>
+<main class="hoja">
+
+  <header class="membrete">
+    <!--LOGO-->
+    <div class="marca">CDH Maker<small>Software a la medida · IoT · Fabricación digital — Medellín, Colombia</small></div>
+    <div class="ref" style="line-height:2.2">Paz y salvo N.º <b><campo-k k="consecutivo" ph="consecutivo"></campo-k></b><br>Ciudad: Medellín</div>
+  </header>
+
+  <h1>PAZ Y SALVO</h1>
+  <p class="subtitulo">Certificación de cumplimiento de las obligaciones de pago</p>
+
+  <p>El suscrito, <b style="text-transform:uppercase"><campo-k k="h_nombre" ph="nombre completo del proveedor"></campo-k></b>, identificado con C.C. <campo-k k="h_cedula" ph="cédula del proveedor"></campo-k>, quien actúa bajo la marca comercial <b>CDH MAKER</b>,</p>
+
+  <h2>Certifica</h2>
+  <p>Que <campo-k k="c_nombre" ph="nombre o razón social del cliente"></campo-k>, identificado(a) con NIT/C.C. <campo-k k="c_documento" ph="NIT o C.C. del cliente"></campo-k>, se encuentra a <b>PAZ Y SALVO</b> con CDH Maker por concepto de <campo-k k="concepto" ph="concepto (contrato, anexo, propuesta o pedido)"></campo-k>, cuyo valor total de <b><campo-k k="valor_letras" ph="valor total en letras"></campo-k> PESOS M/CTE ($<campo-k k="valor_total" ph="valor total en números"></campo-k>)</b> fue pagado en su totalidad, según el siguiente detalle:</p>
+
+  <table>
+    <tr><th style="width:8%">N.º</th><th>Concepto</th><th style="width:20%">Fecha de pago</th><th style="width:20%">Referencia</th><th class="num" style="width:18%">Valor</th></tr>
+    <tr><td>1</td><td style="line-height:2.2"><campo-k k="pago1_concepto" ph="cuota / hito (pago 1)"></campo-k></td><td style="line-height:2.2"><campo-k k="pago1_fecha" ph="fecha (pago 1)"></campo-k></td><td style="line-height:2.2"><campo-k k="pago1_referencia" ph="comprobante (pago 1)"></campo-k></td><td class="num">$<campo-k k="pago1_valor" ph="valor (pago 1)"></campo-k></td></tr>
+    <tr><td>2</td><td style="line-height:2.2"><campo-k k="pago2_concepto" ph="cuota / hito (pago 2)"></campo-k></td><td style="line-height:2.2"><campo-k k="pago2_fecha" ph="fecha (pago 2)"></campo-k></td><td style="line-height:2.2"><campo-k k="pago2_referencia" ph="comprobante (pago 2)"></campo-k></td><td class="num">$<campo-k k="pago2_valor" ph="valor (pago 2)"></campo-k></td></tr>
+    <tr><td>3</td><td style="line-height:2.2"><campo-k k="pago3_concepto" ph="cuota / hito (pago 3)"></campo-k></td><td style="line-height:2.2"><campo-k k="pago3_fecha" ph="fecha (pago 3)"></campo-k></td><td style="line-height:2.2"><campo-k k="pago3_referencia" ph="comprobante (pago 3)"></campo-k></td><td class="num">$<campo-k k="pago3_valor" ph="valor (pago 3)"></campo-k></td></tr>
+    <tr><td>4</td><td style="line-height:2.2"><campo-k k="pago4_concepto" ph="cuota / hito (pago 4)"></campo-k></td><td style="line-height:2.2"><campo-k k="pago4_fecha" ph="fecha (pago 4)"></campo-k></td><td style="line-height:2.2"><campo-k k="pago4_referencia" ph="comprobante (pago 4)"></campo-k></td><td class="num">$<campo-k k="pago4_valor" ph="valor (pago 4)"></campo-k></td></tr>
+    <tr class="total"><td colspan="4">Total pagado</td><td class="num">$<campo-k k="total_pagado" ph="total pagado"></campo-k></td></tr>
+  </table>
+
+  <p>Alcance de esta certificación: <span class="casilla"><campo-k k="alcance_todo" ph="Por todo concepto derivado de la relación indicada"></campo-k></span> Por todo concepto derivado de la relación indicada &nbsp; <span class="casilla"><campo-k k="alcance_concepto" ph="Únicamente por el concepto indicado. Quedan por fuera"></campo-k></span> Únicamente por el concepto indicado. Quedan por fuera: <campo-k k="excluidos" ph="conceptos excluidos (o «ninguno»)"></campo-k></p>
+
+  <h2>Efectos</h2>
+  <ol>
+    <li>Con el pago total, quedan en firme los derechos de uso o de cesión sobre lo entregado, en los términos del contrato, del anexo o de la propuesta correspondiente.</li>
+    <li>Este paz y salvo se refiere a las obligaciones de pago. No extingue la garantía vigente, que se mantiene hasta el <campo-k k="garantia_hasta" ph="fecha de vencimiento de la garantía"></campo-k>, ni las obligaciones de confidencialidad y de protección de datos personales que subsisten entre las partes.</li>
+    <li>Los servicios que se contraten con posterioridad a esta fecha se rigen por sus propios documentos.</li>
+  </ol>
+
+  <p>Se expide a solicitud de la parte interesada en <campo-k k="ciudad_firma" ph="ciudad de firma"></campo-k>, a los <campo-k k="dia_firma" ph="día"></campo-k> días del mes de <campo-k k="mes_firma" ph="mes"></campo-k> de <campo-k k="anio_firma" ph="año"></campo-k>.</p>
+
+  <div class="firma" style="max-width:280px; margin-top:28px"><firma-k k="firma_h"></firma-k><div class="raya"><b><campo-k k="h_nombre" ph="nombre completo del proveedor"></campo-k></b><span>CDH Maker</span><span>C.C.: <campo-k k="h_cedula" ph="cédula del proveedor"></campo-k></span></div></div>
+
+  <footer class="pie">CDH Maker · Medellín, Colombia · cdhmaker@gmail.com · cdhmaker.com</footer>
+</main>
+</body>
+</html>

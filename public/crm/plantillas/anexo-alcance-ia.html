@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anexo de Alcance — Inteligencia artificial</title>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap");
+
+:root {
+  --tinta: #0b1f27;
+  --tinta-suave: #4a6470;
+  --navy: #06232e;
+  --cian: #0891b2;        /* cian de marca oscurecido para que lea en papel */
+  --cian-claro: #e0f7fb;
+  --linea: #c9dbe0;
+  --papel: #ffffff;
+  --fondo: #eef3f5;
+}
+
+* { box-sizing: border-box; }
+
+html { background: var(--fondo); }
+
+body {
+  margin: 0;
+  padding: 32px 16px;
+  font: 400 10.5pt/1.55 "Inter", system-ui, sans-serif;
+  color: var(--tinta);
+  background: var(--fondo);
+}
+
+.hoja {
+  max-width: 210mm;
+  margin: 0 auto;
+  padding: 18mm 18mm 16mm;
+  background: var(--papel);
+  box-shadow: 0 2px 16px rgba(6, 35, 46, .12);
+}
+
+/* ===== Encabezado ===== */
+.membrete {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid var(--navy);
+}
+.membrete svg { width: 46px; height: 46px; flex: none; }
+.membrete .marca { font: 700 15pt/1.1 "Space Grotesk", sans-serif; color: var(--navy); }
+.membrete .marca small { display: block; font: 500 8.5pt/1.4 "Inter", sans-serif; color: var(--tinta-suave); }
+.membrete .ref { margin-left: auto; text-align: right; font-size: 8.5pt; color: var(--tinta-suave); }
+.membrete .ref b { color: var(--tinta); }
+
+h1 {
+  margin: 22px 0 4px;
+  font: 700 17pt/1.2 "Space Grotesk", sans-serif;
+  color: var(--navy);
+  text-align: center;
+  letter-spacing: .3px;
+}
+.subtitulo { margin: 0 0 20px; text-align: center; color: var(--tinta-suave); font-size: 9.5pt; }
+
+h2 {
+  margin: 20px 0 8px;
+  padding-bottom: 3px;
+  font: 700 11pt/1.3 "Space Grotesk", sans-serif;
+  color: var(--navy);
+  border-bottom: 1px solid var(--linea);
+  page-break-after: avoid;
+}
+
+p, li { text-align: justify; line-height: 1.85; }   /* aire para la pista bajo cada campo */
+ol, ul { padding-left: 20px; }
+li { margin-bottom: 4px; }
+
+/* ===== Campos por completar ===== */
+.campo {
+  display: inline-block;
+  min-width: 120px;
+  border-bottom: 1px solid var(--tinta);
+  padding: 0 4px;
+  line-height: 1.2;
+  color: transparent;            /* la pista se ve en gris debajo, no sobre la línea */
+  position: relative;
+  vertical-align: baseline;
+}
+.campo::after {
+  content: attr(data-pista);
+  position: absolute;
+  left: 2px;
+  top: 100%;
+  font-size: 6.5pt;
+  color: #8aa1aa;
+  white-space: nowrap;
+}
+.campo.largo { min-width: 260px; }
+.campo.corto { min-width: 70px; }
+.casilla { display: inline-block; width: 11px; height: 11px; border: 1px solid var(--tinta); margin-right: 5px; vertical-align: -1px; }
+
+/* ===== Tablas ===== */
+table { width: 100%; border-collapse: collapse; margin: 8px 0 12px; font-size: 9.5pt; page-break-inside: avoid; }
+th, td { border: 1px solid var(--linea); padding: 6px 8px; text-align: left; vertical-align: top; }
+th { background: var(--navy); color: #fff; font-weight: 600; }
+tr.total td { font-weight: 700; background: var(--cian-claro); }
+td.num, th.num { text-align: right; white-space: nowrap; }
+table.datos th { width: 34%; background: var(--cian-claro); color: var(--tinta); }
+
+.nota {
+  margin: 12px 0;
+  padding: 8px 12px;
+  background: var(--cian-claro);
+  border-left: 3px solid var(--cian);
+  font-size: 9pt;
+}
+
+/* ===== Firmas ===== */
+.firmas { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 36px; page-break-inside: avoid; }
+.firma { padding-top: 46px; }
+.firma .raya { border-top: 1px solid var(--tinta); padding-top: 6px; font-size: 9pt; }
+.firma .raya b { display: block; font-size: 9.5pt; }
+.firma .raya span { display: block; color: var(--tinta-suave); }
+
+.pie {
+  margin-top: 26px;
+  padding-top: 8px;
+  border-top: 1px solid var(--linea);
+  font-size: 7.5pt;
+  color: var(--tinta-suave);
+  text-align: center;
+}
+
+/* Carta: menos ceremonia, más aire */
+.carta p { text-align: left; }
+.carta .destinatario { margin: 22px 0 18px; }
+.carta .destinatario p { margin: 0; text-align: left; }
+
+@media (max-width: 640px) {
+  body { padding: 0; }
+  .hoja { padding: 20px 16px; box-shadow: none; }
+  .membrete { flex-wrap: wrap; }
+  .membrete .ref { margin-left: 0; text-align: left; }
+  .firmas { grid-template-columns: 1fr; }
+  table { font-size: 8.5pt; }
+}
+
+@page { size: A4; margin: 0; }
+@media print {
+  html, body { background: #fff; padding: 0; }
+  .hoja { box-shadow: none; max-width: none; }
+  th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  tr.total td, .nota, table.datos th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+/* ===== CRM: campos rellenados (rellenar.js) y firmas ===== */
+.campo.ok { color: inherit; border-bottom: 0; min-width: 0; padding: 0; font-weight: 600; }
+.campo.ok::after, .campo.vacio::after { content: none; }
+.campo.vacio { color: #a16207; background: #fff8e6; border-bottom: 1px dashed #d4a72c; min-width: 0; padding: 0 3px; font-size: 8.5pt; line-height: 1.3; }
+.casilla { text-align: center; overflow: hidden; line-height: 9px; }
+.casilla .campo, .casilla .campo.ok { display: inline; color: var(--tinta); background: none; border: 0; padding: 0; min-width: 0; font: 700 8pt/9px "Inter", sans-serif; }
+.casilla .campo.vacio { color: transparent; }
+.firma { padding-top: 0; }
+.firma .firma-img { display: block; height: 46px; max-width: 220px; object-fit: contain; object-position: left bottom; }
+.firma .firma-vacia { display: block; height: 46px; }
+/* Ancho de hoja A4 útil (PDF con htmlAPdf) y celulares: sin marco de papel. */
+@media (max-width: 700px) { html, body { background: #fff; padding: 0; } .hoja { padding: 0 2px; box-shadow: none; max-width: none; } }
+</style>
+</head>
+<body>
+<main class="hoja">
+
+  <header class="membrete">
+    <!--LOGO-->
+    <div class="marca">CDH Maker<small>Software a la medida · IoT · Fabricación digital — Medellín, Colombia</small></div>
+    <div class="ref" style="line-height:2.2">Anexo N.º <b><campo-k k="consecutivo" ph="consecutivo"></campo-k></b><br>Contrato N.º <campo-k k="contrato_numero" ph="N.º del contrato marco"></campo-k></div>
+  </header>
+
+  <h1>ANEXO DE ALCANCE TÉCNICO</h1>
+  <p class="subtitulo">Integración de inteligencia artificial — asistentes, contenido con revisión humana y análisis con IA</p>
+
+  <p>Este anexo forma parte integral del Contrato Marco de Prestación de Servicios N.º <campo-k k="contrato_numero" ph="N.º del contrato marco"></campo-k> celebrado entre <span style="text-transform:uppercase"><campo-k k="h_nombre" ph="nombre completo del proveedor"></campo-k></span> (CDH MAKER), EL PROVEEDOR, y <campo-k k="c_nombre" ph="nombre o razón social del cliente"></campo-k>, EL CLIENTE. Los términos en mayúscula tienen el significado que les da el contrato.</p>
+
+  <h2>1. Identificación del proyecto</h2>
+  <table class="datos">
+    <tr><th>Nombre del proyecto</th><td style="line-height:2.2"><campo-k k="proyecto_nombre" ph="nombre del proyecto o solución"></campo-k></td></tr>
+    <tr><th>Tipo de solución</th><td><span class="casilla"><campo-k k="tipo_asistente" ph="Asistente de IA (texto, voz o visión)"></campo-k></span> Asistente de IA (texto, voz o visión) &nbsp; <span class="casilla"><campo-k k="tipo_contenido" ph="Generación de contenido con aprobación humana"></campo-k></span> Generación de contenido con aprobación humana &nbsp; <span class="casilla"><campo-k k="tipo_analisis" ph="Análisis o diagnóstico con IA dentro de un software"></campo-k></span> Análisis o diagnóstico con IA dentro de un software &nbsp; <span class="casilla"><campo-k k="tipo_automatizacion" ph="Automatización de procesos con IA"></campo-k></span> Automatización de procesos con IA</td></tr>
+    <tr><th>Propuesta / cotización de referencia</th><td style="line-height:2.2">N.º <campo-k k="cot_numero" ph="N.º de la cotización"></campo-k> del <campo-k k="cot_fecha" ph="fecha de la cotización"></campo-k></td></tr>
+    <tr><th>Fecha de inicio y plazo estimado</th><td style="line-height:2.2"><campo-k k="fecha_inicio" ph="fecha de inicio (dd/mm/aaaa)"></campo-k> · <campo-k k="plazo_semanas" ph="plazo en semanas"></campo-k> semanas</td></tr>
+    <tr><th>Sistema donde se integra</th><td style="line-height:2.2"><campo-k k="sistema_integracion" ph="sistema donde se integra"></campo-k></td></tr>
+  </table>
+
+  <h2>2. Objetivo y caso de uso</h2>
+  <p>Tarea que realizará la IA, quién usará sus resultados y en qué punto interviene una persona:</p>
+  <p><campo-k k="objetivo" ph="objetivo y descripción"></campo-k></p>
+  <p><campo-k k="objetivo_2" ph="objetivo (continuación)"></campo-k></p>
+
+  <h2>3. Entregables y pagos por hito</h2>
+  <table>
+    <tr><th style="width:6%">N.º</th><th style="width:26%">Entregable</th><th>Descripción</th><th style="width:15%">Fecha estimada</th><th class="num" style="width:15%">Valor del hito</th></tr>
+    <tr><td>1</td><td>Anticipo y diseño del caso de uso</td><td>Definición de tareas, fuentes de información, flujo de revisión humana y conjunto de pruebas de aceptación.</td><td style="line-height:2.2"><campo-k k="hito1_fecha" ph="fecha (hito 1)"></campo-k></td><td class="num">$<campo-k k="hito1_valor" ph="valor (hito 1)"></campo-k></td></tr>
+    <tr><td>2</td><td>Prototipo funcional</td><td>Primera versión con el modelo seleccionado, instrucciones (<i>prompts</i>) y fuentes de conocimiento, evaluada con el conjunto de pruebas.</td><td style="line-height:2.2"><campo-k k="hito2_fecha" ph="fecha (hito 2)"></campo-k></td><td class="num">$<campo-k k="hito2_valor" ph="valor (hito 2)"></campo-k></td></tr>
+    <tr><td>3</td><td style="line-height:2.2"><campo-k k="hito3_entregable" ph="integración / módulo (hito 3)"></campo-k></td><td style="line-height:2.2"><campo-k k="hito3_detalle" ph="descripción (hito 3)"></campo-k></td><td style="line-height:2.2"><campo-k k="hito3_fecha" ph="fecha (hito 3)"></campo-k></td><td class="num">$<campo-k k="hito3_valor" ph="valor (hito 3)"></campo-k></td></tr>
+    <tr><td>4</td><td>Puesta en producción y entrega</td><td>Despliegue, panel o registro de uso, documentación de configuración, capacitación y Acta de Entrega.</td><td style="line-height:2.2"><campo-k k="hito4_fecha" ph="fecha (hito 4)"></campo-k></td><td class="num">$<campo-k k="hito4_valor" ph="valor (hito 4)"></campo-k></td></tr>
+    <tr class="total"><td colspan="4">Valor total del anexo</td><td class="num">$<campo-k k="valor_total" ph="valor total en números"></campo-k></td></tr>
+  </table>
+
+  <h2>4. Modelos y servicios de terceros</h2>
+  <table class="datos">
+    <tr><th>Modo de ejecución</th><td><span class="casilla"><campo-k k="ia_nube" ph="En la nube, mediante API de un proveedor"></campo-k></span> En la nube, mediante API de un proveedor &nbsp; <span class="casilla"><campo-k k="ia_local" ph="100 % en local, en equipos de EL CLIENTE"></campo-k></span> 100 % en local, en equipos de EL CLIENTE &nbsp; <span class="casilla"><campo-k k="ia_mixto" ph="Mixto"></campo-k></span> Mixto</td></tr>
+    <tr><th>Proveedor y modelo previstos</th><td style="line-height:2.2"><campo-k k="ia_modelo" ph="proveedor y modelo de IA"></campo-k></td></tr>
+    <tr><th>Titular de la cuenta del proveedor</th><td><span class="casilla"><campo-k k="cuenta_cliente" ph="EL CLIENTE (recomendado)"></campo-k></span> EL CLIENTE (recomendado) &nbsp; <span class="casilla"><campo-k k="cuenta_proveedor" ph="EL PROVEEDOR, con reembolso mensual de consumos"></campo-k></span> EL PROVEEDOR, con reembolso mensual de consumos</td></tr>
+    <tr><th>Costo estimado de consumo</th><td style="line-height:2.2">US$ / $<campo-k k="consumo_valor" ph="costo estimado de consumo al mes"></campo-k> al mes, para <campo-k k="consumo_volumen" ph="volumen estimado de uso"></campo-k>. Tope de gasto mensual configurado: <campo-k k="consumo_tope" ph="tope de gasto mensual"></campo-k></td></tr>
+    <tr><th>Equipo para ejecución local</th><td style="line-height:2.2"><campo-k k="equipo_local" ph="requisitos de hardware local, si aplica"></campo-k></td></tr>
+  </table>
+  <div class="nota">Los costos de consumo de APIs de inteligencia artificial <b>no están incluidos</b> en el valor de este anexo. Se cobran por uso, los fija el proveedor del modelo, pueden variar en el tiempo y en moneda extranjera, y los asume EL CLIENTE. El costo estimado es una referencia, no una tarifa garantizada.</div>
+
+  <h2>5. Supuestos</h2>
+  <ol>
+    <li>EL CLIENTE entrega las fuentes de información (documentos, preguntas frecuentes, catálogos, ejemplos) completas, actualizadas y con derecho a usarlas para este fin.</li>
+    <li>EL CLIENTE acepta los términos de uso y las políticas del proveedor del modelo, incluidas sus restricciones de uso y su tratamiento de los datos enviados.</li>
+    <li>El conjunto de pruebas de aceptación se acuerda por escrito en el hito 1 y es representativo del uso real.</li>
+    <li>Los resultados de la IA se usan con revisión humana en los puntos definidos en el numeral 2, en especial antes de publicar contenido o tomar decisiones que afecten a personas.</li>
+  </ol>
+
+  <h2>6. Exclusiones y advertencias</h2>
+  <ul>
+    <li><b>Sin garantía de exactitud.</b> Los modelos de IA son probabilísticos: pueden producir respuestas incorrectas, incompletas, desactualizadas o inventadas, y su resultado puede variar ante la misma consulta. EL PROVEEDOR no garantiza la exactitud de cada respuesta ni que la IA esté libre de sesgos; garantiza que la solución cumple los criterios de aceptación del numeral 7.</li>
+    <li><b>Decisiones.</b> La IA es una herramienta de apoyo. Las decisiones médicas, jurídicas, financieras, laborales, crediticias o de cualquier otra índole que afecten derechos de personas son responsabilidad de EL CLIENTE y deben tomarlas personas.</li>
+    <li><b>Cambios del proveedor.</b> Las actualizaciones, cambios de precio, cambios de comportamiento, restricciones, caídas o descontinuación de modelos y APIs de terceros están fuera del control de EL PROVEEDOR y fuera de la garantía. La migración a otro modelo se cotiza aparte.</li>
+    <li><b>Entrenamiento.</b> No se incluye el entrenamiento ni el ajuste fino (<i>fine-tuning</i>) de modelos propios, salvo que se pacte de forma expresa.</li>
+    <li><b>Contenido generado.</b> EL CLIENTE es responsable de revisar que el contenido generado que decida publicar no infrinja derechos de terceros ni normas de publicidad o de protección al consumidor.</li>
+    <li>Consumos de API, licencias, hardware y alojamiento.</li>
+  </ul>
+
+  <h2>7. Datos personales e información confidencial</h2>
+  <ol>
+    <li>Cuando la solución use un modelo en la nube, la información que se le envíe será procesada por el proveedor del modelo, cuyos servidores pueden estar fuera de Colombia. EL CLIENTE, como Responsable del Tratamiento, debe contar con la autorización de los titulares para ello e informarlo en su aviso de privacidad.</li>
+    <li>No se enviarán al modelo datos sensibles (art. 5 de la Ley 1581 de 2012) ni datos de niños, niñas y adolescentes, salvo instrucción escrita de EL CLIENTE con la autorización correspondiente. Cuando sea viable, EL PROVEEDOR configurará la solución para anonimizar o minimizar los datos enviados.</li>
+    <li>Si la confidencialidad es crítica, se recomienda la ejecución en local o un plan del proveedor que no use los datos para entrenar sus modelos.</li>
+  </ol>
+
+  <h2>8. Criterios de aceptación</h2>
+  <ol>
+    <li>La solución se evalúa con el conjunto de pruebas acordado, compuesto por <campo-k k="pruebas_casos" ph="casos de prueba (ej. 30)"></campo-k> casos.</li>
+    <li>Se acepta cuando al menos el <campo-k k="pruebas_umbral" ph="% mínimo aceptable (ej. 85)"></campo-k> % de los casos obtiene una respuesta calificada como «aceptable» por EL CLIENTE según la rúbrica acordada, y ningún caso marcado como crítico obtiene una respuesta que pueda causar daño.</li>
+    <li>Las integraciones, pantallas y flujos de revisión humana se verifican con los criterios de software del contrato (cláusula Novena).</li>
+    <li>Una respuesta incorrecta aislada en el uso real no es, por sí sola, un defecto de garantía; sí lo es una degradación sistemática frente al resultado de la prueba de aceptación que sea atribuible a la configuración entregada.</li>
+  </ol>
+
+  <h2>9. Condiciones particulares</h2>
+  <p>Propiedad intelectual de las instrucciones, configuraciones y desarrollos específicos: <span class="casilla"><campo-k k="pi_licencia" ph="Opción A — Licencia"></campo-k></span> Opción A — Licencia &nbsp; <span class="casilla"><campo-k k="pi_cesion" ph="Opción B — Cesión (cláusula Undécima del contrato). Garantía"></campo-k></span> Opción B — Cesión (cláusula Undécima del contrato). Garantía: <campo-k k="garantia_meses" ph="meses de garantía (ej. 3)"></campo-k> meses. Otras condiciones:</p>
+  <p><campo-k k="condiciones" ph="condiciones especiales o «ninguna»"></campo-k></p>
+
+  <p>Para constancia se firma en <campo-k k="ciudad_firma" ph="ciudad de firma"></campo-k>, a los <campo-k k="dia_firma" ph="día"></campo-k> días del mes de <campo-k k="mes_firma" ph="mes"></campo-k> de <campo-k k="anio_firma" ph="año"></campo-k>.</p>
+
+  <section class="firmas">
+    <div class="firma"><firma-k k="firma_h"></firma-k><div class="raya"><b><campo-k k="h_nombre" ph="nombre completo del proveedor"></campo-k></b><span>CDH Maker — EL PROVEEDOR</span><span>C.C.: <campo-k k="h_cedula" ph="cédula del proveedor"></campo-k></span></div></div>
+    <div class="firma"><firma-k k="firma_c"></firma-k><div class="raya"><b><campo-k k="c_firmante" ph="nombre de quien firma por el cliente"></campo-k></b><span>EL CLIENTE</span><span>C.C./NIT: <campo-k k="c_cedula" ph="cédula de quien firma por el cliente"></campo-k></span></div></div>
+  </section>
+
+  <footer class="pie">CDH Maker · Medellín, Colombia · cdhmaker@gmail.com · cdhmaker.com</footer>
+</main>
+</body>
+</html>

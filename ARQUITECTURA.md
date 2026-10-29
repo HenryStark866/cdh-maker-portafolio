@@ -223,13 +223,23 @@ flowchart LR
 
 - **Acceso**: `cdhmaker.com/crm`, sin clave. El administrador escribe su correo y entra con el enlace que
   le llega (Firebase Auth, «vínculo de correo electrónico»). Administradores en dos sitios que deben
-  coincidir: `ADMINS` de `public/crm/app.js` y `esAdmin()` de `firestore.rules`.
+  coincidir: `ADMINS` de `public/crm/equipo.js` y `esAdmin()` de `firestore.rules`.
 - **Datos** (Firestore de `cdh-maker-portafolio`, solo administradores): `crm_clientes/{id}` con datos y
   plan de cuotas; `solicitudes/` de firma; `archivos/{aid}/partes/{n}` con PDF y `registro.json` en base64
   (Cloud Storage exige el plan Blaze). Los enlaces de firma viven en `enlaces/{token}` y se firman en
   `/firmar#token`; el PDF firmado se arma en el navegador (`public/crm/ensamblar.js`).
 - **Sistema anterior**: las solicitudes con `sistema: 'cdhmaker-firmas'` (proyecto `cdhmaker-firmas`,
   creadas con `App Balmer/firmas/crear.mjs`) se leen por token en modo solo lectura.
+- **Módulos** (`public/crm/`, ES modules sin build; `comun.js` tiene la sesión, el formato, la barra lateral y
+  los archivos en partes): `app.js` (acceso, enrutador, Inicio, Clientes, Cotizador, Docs, Importar),
+  `equipo.js` (perfiles en `crm_equipo` y firma preestablecida: solo su dueño la cambia), `firmas.js`
+  (todas las solicitudes; el proveedor firma solo con la firma autorizada), `contratos.js` + `plantillas/`
+  (contratos y anexos de `legal/servicios/` listos para firmar), `pagos.js` (QR Bre-B redibujados desde la
+  cadena EMVCo, en `crm_config/pagos`), `libro.js` (contabilidad: ingresos, costos, gastos, comprobantes,
+  reembolsos, retenciones; criterio en `CONTABILIDAD.md`), `marketing.js` (campañas, redes, calendario,
+  bots, plataformas) y `marca.js` (logo; los SVG de `public/brand/` salen de ahí).
+- **Clientes**: `segmento` `proyecto` (software y servicios: etapa, responsable, próximo seguimiento y
+  bitácora en `seguimientos/`) o `producto` (compras puntuales).
 - **Importar**: `node tools/crm-expediente.mjs datos.json salida.json tipo=archivo.pdf …` arma un
   `.json` (esquema `cdhmaker.crm.importacion.v1`) que se carga en CRM → Importar. Guardarlo en
   `legal/clientes/`, nunca en `public/`.

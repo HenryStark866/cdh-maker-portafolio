@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anexo de Alcance — Software a la medida</title>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap");
+
+:root {
+  --tinta: #0b1f27;
+  --tinta-suave: #4a6470;
+  --navy: #06232e;
+  --cian: #0891b2;        /* cian de marca oscurecido para que lea en papel */
+  --cian-claro: #e0f7fb;
+  --linea: #c9dbe0;
+  --papel: #ffffff;
+  --fondo: #eef3f5;
+}
+
+* { box-sizing: border-box; }
+
+html { background: var(--fondo); }
+
+body {
+  margin: 0;
+  padding: 32px 16px;
+  font: 400 10.5pt/1.55 "Inter", system-ui, sans-serif;
+  color: var(--tinta);
+  background: var(--fondo);
+}
+
+.hoja {
+  max-width: 210mm;
+  margin: 0 auto;
+  padding: 18mm 18mm 16mm;
+  background: var(--papel);
+  box-shadow: 0 2px 16px rgba(6, 35, 46, .12);
+}
+
+/* ===== Encabezado ===== */
+.membrete {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid var(--navy);
+}
+.membrete svg { width: 46px; height: 46px; flex: none; }
+.membrete .marca { font: 700 15pt/1.1 "Space Grotesk", sans-serif; color: var(--navy); }
+.membrete .marca small { display: block; font: 500 8.5pt/1.4 "Inter", sans-serif; color: var(--tinta-suave); }
+.membrete .ref { margin-left: auto; text-align: right; font-size: 8.5pt; color: var(--tinta-suave); }
+.membrete .ref b { color: var(--tinta); }
+
+h1 {
+  margin: 22px 0 4px;
+  font: 700 17pt/1.2 "Space Grotesk", sans-serif;
+  color: var(--navy);
+  text-align: center;
+  letter-spacing: .3px;
+}
+.subtitulo { margin: 0 0 20px; text-align: center; color: var(--tinta-suave); font-size: 9.5pt; }
+
+h2 {
+  margin: 20px 0 8px;
+  padding-bottom: 3px;
+  font: 700 11pt/1.3 "Space Grotesk", sans-serif;
+  color: var(--navy);
+  border-bottom: 1px solid var(--linea);
+  page-break-after: avoid;
+}
+
+p, li { text-align: justify; line-height: 1.85; }   /* aire para la pista bajo cada campo */
+ol, ul { padding-left: 20px; }
+li { margin-bottom: 4px; }
+
+/* ===== Campos por completar ===== */
+.campo {
+  display: inline-block;
+  min-width: 120px;
+  border-bottom: 1px solid var(--tinta);
+  padding: 0 4px;
+  line-height: 1.2;
+  color: transparent;            /* la pista se ve en gris debajo, no sobre la línea */
+  position: relative;
+  vertical-align: baseline;
+}
+.campo::after {
+  content: attr(data-pista);
+  position: absolute;
+  left: 2px;
+  top: 100%;
+  font-size: 6.5pt;
+  color: #8aa1aa;
+  white-space: nowrap;
+}
+.campo.largo { min-width: 260px; }
+.campo.corto { min-width: 70px; }
+.casilla { display: inline-block; width: 11px; height: 11px; border: 1px solid var(--tinta); margin-right: 5px; vertical-align: -1px; }
+
+/* ===== Tablas ===== */
+table { width: 100%; border-collapse: collapse; margin: 8px 0 12px; font-size: 9.5pt; page-break-inside: avoid; }
+th, td { border: 1px solid var(--linea); padding: 6px 8px; text-align: left; vertical-align: top; }
+th { background: var(--navy); color: #fff; font-weight: 600; }
+tr.total td { font-weight: 700; background: var(--cian-claro); }
+td.num, th.num { text-align: right; white-space: nowrap; }
+table.datos th { width: 34%; background: var(--cian-claro); color: var(--tinta); }
+
+.nota {
+  margin: 12px 0;
+  padding: 8px 12px;
+  background: var(--cian-claro);
+  border-left: 3px solid var(--cian);
+  font-size: 9pt;
+}
+
+/* ===== Firmas ===== */
+.firmas { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 36px; page-break-inside: avoid; }
+.firma { padding-top: 46px; }
+.firma .raya { border-top: 1px solid var(--tinta); padding-top: 6px; font-size: 9pt; }
+.firma .raya b { display: block; font-size: 9.5pt; }
+.firma .raya span { display: block; color: var(--tinta-suave); }
+
+.pie {
+  margin-top: 26px;
+  padding-top: 8px;
+  border-top: 1px solid var(--linea);
+  font-size: 7.5pt;
+  color: var(--tinta-suave);
+  text-align: center;
+}
+
+/* Carta: menos ceremonia, más aire */
+.carta p { text-align: left; }
+.carta .destinatario { margin: 22px 0 18px; }
+.carta .destinatario p { margin: 0; text-align: left; }
+
+@media (max-width: 640px) {
+  body { padding: 0; }
+  .hoja { padding: 20px 16px; box-shadow: none; }
+  .membrete { flex-wrap: wrap; }
+  .membrete .ref { margin-left: 0; text-align: left; }
+  .firmas { grid-template-columns: 1fr; }
+  table { font-size: 8.5pt; }
+}
+
+@page { size: A4; margin: 0; }
+@media print {
+  html, body { background: #fff; padding: 0; }
+  .hoja { box-shadow: none; max-width: none; }
+  th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  tr.total td, .nota, table.datos th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+/* ===== CRM: campos rellenados (rellenar.js) y firmas ===== */
+.campo.ok { color: inherit; border-bottom: 0; min-width: 0; padding: 0; font-weight: 600; }
+.campo.ok::after, .campo.vacio::after { content: none; }
+.campo.vacio { color: #a16207; background: #fff8e6; border-bottom: 1px dashed #d4a72c; min-width: 0; padding: 0 3px; font-size: 8.5pt; line-height: 1.3; }
+.casilla { text-align: center; overflow: hidden; line-height: 9px; }
+.casilla .campo, .casilla .campo.ok { display: inline; color: var(--tinta); background: none; border: 0; padding: 0; min-width: 0; font: 700 8pt/9px "Inter", sans-serif; }
+.casilla .campo.vacio { color: transparent; }
+.firma { padding-top: 0; }
+.firma .firma-img { display: block; height: 46px; max-width: 220px; object-fit: contain; object-position: left bottom; }
+.firma .firma-vacia { display: block; height: 46px; }
+/* Ancho de hoja A4 útil (PDF con htmlAPdf) y celulares: sin marco de papel. */
+@media (max-width: 700px) { html, body { background: #fff; padding: 0; } .hoja { padding: 0 2px; box-shadow: none; max-width: none; } }
+</style>
+</head>
+<body>
+<main class="hoja">
+
+  <header class="membrete">
+    <!--LOGO-->
+    <div class="marca">CDH Maker<small>Software a la medida · IoT · Fabricación digital — Medellín, Colombia</small></div>
+    <div class="ref" style="line-height:2.2">Anexo N.º <b><campo-k k="consecutivo" ph="consecutivo"></campo-k></b><br>Contrato N.º <campo-k k="contrato_numero" ph="N.º del contrato marco"></campo-k></div>
+  </header>
+
+  <h1>ANEXO DE ALCANCE TÉCNICO</h1>
+  <p class="subtitulo">Desarrollo de software a la medida — aplicaciones web, plataformas SaaS, sitios web y automatización de procesos</p>
+
+  <p>Este anexo forma parte integral del Contrato Marco de Prestación de Servicios N.º <campo-k k="contrato_numero" ph="N.º del contrato marco"></campo-k> celebrado entre <span style="text-transform:uppercase"><campo-k k="h_nombre" ph="nombre completo del proveedor"></campo-k></span> (CDH MAKER), EL PROVEEDOR, y <campo-k k="c_nombre" ph="nombre o razón social del cliente"></campo-k>, EL CLIENTE. Los términos en mayúscula tienen el significado que les da el contrato.</p>
+
+  <h2>1. Identificación del proyecto</h2>
+  <table class="datos">
+    <tr><th>Nombre del proyecto</th><td style="line-height:2.2"><campo-k k="proyecto_nombre" ph="nombre del proyecto o solución"></campo-k></td></tr>
+    <tr><th>Tipo de solución</th><td style="line-height:2.2"><span class="casilla"><campo-k k="tipo_web" ph="Aplicación web a la medida"></campo-k></span> Aplicación web a la medida &nbsp; <span class="casilla"><campo-k k="tipo_saas" ph="Plataforma SaaS"></campo-k></span> Plataforma SaaS &nbsp; <span class="casilla"><campo-k k="tipo_sitio" ph="Sitio web o tienda en línea"></campo-k></span> Sitio web o tienda en línea &nbsp; <span class="casilla"><campo-k k="tipo_automatizacion" ph="Automatización de procesos"></campo-k></span> Automatización de procesos &nbsp; <span class="casilla"><campo-k k="tipo_otra" ph="Otra"></campo-k></span> Otra: <campo-k k="tipo_otra_cual" ph="otro tipo de solución"></campo-k></td></tr>
+    <tr><th>Propuesta / cotización de referencia</th><td style="line-height:2.2">N.º <campo-k k="cot_numero" ph="N.º de la cotización"></campo-k> del <campo-k k="cot_fecha" ph="fecha de la cotización"></campo-k></td></tr>
+    <tr><th>Fecha de inicio y plazo estimado</th><td style="line-height:2.2"><campo-k k="fecha_inicio" ph="fecha de inicio (dd/mm/aaaa)"></campo-k> · <campo-k k="plazo_semanas" ph="plazo en semanas"></campo-k> semanas</td></tr>
+    <tr><th>Interlocutor de EL CLIENTE</th><td style="line-height:2.2"><campo-k k="c_interlocutor" ph="interlocutor del cliente (nombre y cargo)"></campo-k></td></tr>
+  </table>
+
+  <h2>2. Objetivo y descripción</h2>
+  <p>Problema que resuelve la solución y resultado esperado por EL CLIENTE:</p>
+  <p><campo-k k="objetivo" ph="objetivo y descripción"></campo-k></p>
+  <p><campo-k k="objetivo_2" ph="objetivo (continuación)"></campo-k></p>
+
+  <h2>3. Entregables y pagos por hito</h2>
+  <table>
+    <tr><th style="width:6%">N.º</th><th style="width:26%">Entregable / módulo</th><th>Descripción y funcionalidades incluidas</th><th style="width:15%">Fecha estimada</th><th class="num" style="width:15%">Valor del hito</th></tr>
+    <tr><td>1</td><td>Anticipo y levantamiento de requisitos</td><td>Sesiones de descubrimiento, historias de usuario priorizadas y prototipo navegable de las pantallas principales.</td><td style="line-height:2.2"><campo-k k="hito1_fecha" ph="fecha (hito 1)"></campo-k></td><td class="num">$<campo-k k="hito1_valor" ph="valor (hito 1)"></campo-k></td></tr>
+    <tr><td>2</td><td style="line-height:2.2"><campo-k k="hito2_entregable" ph="módulo (hito 2)"></campo-k></td><td style="line-height:2.2"><campo-k k="hito2_detalle" ph="funcionalidades (hito 2)"></campo-k></td><td style="line-height:2.2"><campo-k k="hito2_fecha" ph="fecha (hito 2)"></campo-k></td><td class="num">$<campo-k k="hito2_valor" ph="valor (hito 2)"></campo-k></td></tr>
+    <tr><td>3</td><td style="line-height:2.2"><campo-k k="hito3_entregable" ph="módulo (hito 3)"></campo-k></td><td style="line-height:2.2"><campo-k k="hito3_detalle" ph="funcionalidades (hito 3)"></campo-k></td><td style="line-height:2.2"><campo-k k="hito3_fecha" ph="fecha (hito 3)"></campo-k></td><td class="num">$<campo-k k="hito3_valor" ph="valor (hito 3)"></campo-k></td></tr>
+    <tr><td>4</td><td style="line-height:2.2"><campo-k k="hito4_entregable" ph="módulo (hito 4)"></campo-k></td><td style="line-height:2.2"><campo-k k="hito4_detalle" ph="funcionalidades (hito 4)"></campo-k></td><td style="line-height:2.2"><campo-k k="hito4_fecha" ph="fecha (hito 4)"></campo-k></td><td class="num">$<campo-k k="hito4_valor" ph="valor (hito 4)"></campo-k></td></tr>
+    <tr><td>5</td><td>Despliegue, capacitación y entrega</td><td>Puesta en producción, carga inicial de datos acordada, manual de usuario, capacitación y Acta de Entrega.</td><td style="line-height:2.2"><campo-k k="hito5_fecha" ph="fecha (hito 5)"></campo-k></td><td class="num">$<campo-k k="hito5_valor" ph="valor (hito 5)"></campo-k></td></tr>
+    <tr class="total"><td colspan="4">Valor total del anexo</td><td class="num">$<campo-k k="valor_total" ph="valor total en números"></campo-k></td></tr>
+  </table>
+
+  <h2>4. Especificaciones técnicas</h2>
+  <table class="datos">
+    <tr><th>Tecnologías</th><td style="line-height:2.2"><campo-k k="tecnologias" ph="tecnologías"></campo-k></td></tr>
+    <tr><th>Usuarios y roles previstos</th><td style="line-height:2.2"><campo-k k="usuarios_roles" ph="usuarios y roles previstos"></campo-k></td></tr>
+    <tr><th>Dispositivos y navegadores</th><td>Últimas dos versiones de Chrome, Edge, Safari y Firefox; diseño adaptable a celular. <span class="casilla"><campo-k k="pwa" ph="Incluye aplicación instalable (PWA)"></campo-k></span> Incluye aplicación instalable (PWA)</td></tr>
+    <tr><th>Alojamiento y dominio</th><td style="line-height:2.2"><span class="casilla"><campo-k k="hosting_cliente" ph="Cuenta de EL CLIENTE"></campo-k></span> Cuenta de EL CLIENTE &nbsp; <span class="casilla"><campo-k k="hosting_proveedor" ph="Administrado por EL PROVEEDOR con plan de soporte. Proveedor"></campo-k></span> Administrado por EL PROVEEDOR con plan de soporte. Proveedor: <campo-k k="hosting_nombre" ph="proveedor de alojamiento (ej. Vercel, Firebase)"></campo-k></td></tr>
+    <tr><th>Integraciones</th><td style="line-height:2.2"><campo-k k="integraciones" ph="integraciones (o «ninguna»)"></campo-k></td></tr>
+    <tr><th>Repositorio de código</th><td style="line-height:2.2"><campo-k k="repositorio" ph="repositorio de código"></campo-k></td></tr>
+    <tr><th>Ambientes</th><td><span class="casilla"><campo-k k="amb_pruebas" ph="Pruebas (staging)"></campo-k></span> Pruebas (<i>staging</i>) &nbsp; <span class="casilla"><campo-k k="amb_produccion" ph="Producción"></campo-k></span> Producción</td></tr>
+  </table>
+
+  <h2>5. Supuestos</h2>
+  <ol>
+    <li>EL CLIENTE entrega la información, los contenidos, los logos y los datos de prueba dentro de los plazos de la cláusula Octava del contrato.</li>
+    <li>El diseño visual se ajusta a la identidad gráfica que EL CLIENTE entregue. Se incluyen <campo-k k="rondas_ajustes" ph="rondas de ajustes (ej. 2)"></campo-k> rondas de ajustes sobre el prototipo; las rondas adicionales se cotizan aparte.</li>
+    <li>La carga inicial de datos se hace a partir de archivos que EL CLIENTE entrega en el formato que acuerden las partes (por ejemplo, Excel o CSV), depurados y completos.</li>
+    <li>Los servicios de terceros (alojamiento, base de datos, dominio, correo, mensajería) tienen planes y límites propios; el diseño parte del plan indicado en el numeral 4.</li>
+    <li>Volumen estimado de operación: <campo-k k="volumen" ph="volumen estimado (usuarios simultáneos / registros al mes)"></campo-k>. Un volumen mayor puede requerir ajustes de infraestructura.</li>
+  </ol>
+
+  <h2>6. Exclusiones</h2>
+  <ul>
+    <li>Funcionalidades, pantallas, reportes o integraciones no descritos en el numeral 3.</li>
+    <li>Costos de alojamiento, dominio, licencias y servicios de terceros, que asume EL CLIENTE.</li>
+    <li>Migración de datos desde sistemas anteriores, salvo la carga inicial descrita en los supuestos.</li>
+    <li>Creación de contenidos (textos, fotografías, video), posicionamiento pagado y gestión de redes sociales.</li>
+    <li>Aplicaciones móviles nativas publicadas en tiendas (App Store, Google Play), salvo que se incluyan de forma expresa.</li>
+    <li>Facturación electrónica, nómina electrónica u otros desarrollos regulados por la DIAN, salvo integración expresa con un proveedor tecnológico autorizado.</li>
+    <li>Auditorías o certificaciones externas de seguridad, y pruebas de carga más allá del volumen estimado.</li>
+    <li>Soporte y mantenimiento posteriores al período de garantía.</li>
+  </ul>
+
+  <h2>7. Criterios de aceptación</h2>
+  <ol>
+    <li>Cada funcionalidad del numeral 3 se verifica contra su historia de usuario o caso de prueba acordado durante el levantamiento de requisitos.</li>
+    <li>Los hallazgos se clasifican así:
+      <table>
+        <tr><th style="width:18%">Severidad</th><th>Definición</th><th style="width:28%">Efecto en la aceptación</th></tr>
+        <tr><td>Crítica</td><td>Impide usar la solución o provoca pérdida o corrupción de datos.</td><td>Impide la aceptación.</td></tr>
+        <tr><td>Alta</td><td>Una funcionalidad del alcance no opera y no hay forma alternativa de hacerlo.</td><td>Impide la aceptación.</td></tr>
+        <tr><td>Media</td><td>La funcionalidad opera con errores, pero existe una forma alternativa.</td><td>Se registra en el acta y se corrige en garantía.</td></tr>
+        <tr><td>Baja</td><td>Detalle visual, de texto o de usabilidad.</td><td>Se registra en el acta y se corrige en garantía.</td></tr>
+      </table>
+    </li>
+    <li>La solución se acepta cuando no hay hallazgos críticos ni altos abiertos y se cumple lo previsto en la cláusula Novena del contrato.</li>
+    <li>Las preferencias de diseño o las funciones nuevas que surjan durante la verificación no son hallazgos: se tramitan mediante Orden de Cambio.</li>
+  </ol>
+
+  <h2>8. Condiciones particulares</h2>
+  <p>Propiedad intelectual de los desarrollos específicos de este anexo: <span class="casilla"><campo-k k="pi_licencia" ph="Opción A — Licencia"></campo-k></span> Opción A — Licencia &nbsp; <span class="casilla"><campo-k k="pi_cesion" ph="Opción B — Cesión (cláusula Undécima del contrato). Garantía"></campo-k></span> Opción B — Cesión (cláusula Undécima del contrato). Garantía: <campo-k k="garantia_meses" ph="meses de garantía (ej. 3)"></campo-k> meses. Otras condiciones:</p>
+  <p><campo-k k="condiciones" ph="condiciones especiales o «ninguna»"></campo-k></p>
+
+  <p>Para constancia se firma en <campo-k k="ciudad_firma" ph="ciudad de firma"></campo-k>, a los <campo-k k="dia_firma" ph="día"></campo-k> días del mes de <campo-k k="mes_firma" ph="mes"></campo-k> de <campo-k k="anio_firma" ph="año"></campo-k>.</p>
+
+  <section class="firmas">
+    <div class="firma"><firma-k k="firma_h"></firma-k><div class="raya"><b><campo-k k="h_nombre" ph="nombre completo del proveedor"></campo-k></b><span>CDH Maker — EL PROVEEDOR</span><span>C.C.: <campo-k k="h_cedula" ph="cédula del proveedor"></campo-k></span></div></div>
+    <div class="firma"><firma-k k="firma_c"></firma-k><div class="raya"><b><campo-k k="c_firmante" ph="nombre de quien firma por el cliente"></campo-k></b><span>EL CLIENTE</span><span>C.C./NIT: <campo-k k="c_cedula" ph="cédula de quien firma por el cliente"></campo-k></span></div></div>
+  </section>
+
+  <footer class="pie">CDH Maker · Medellín, Colombia · cdhmaker@gmail.com · cdhmaker.com</footer>
+</main>
+</body>
+</html>

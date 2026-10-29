@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anexo de Alcance — IoT y automatización</title>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap");
+
+:root {
+  --tinta: #0b1f27;
+  --tinta-suave: #4a6470;
+  --navy: #06232e;
+  --cian: #0891b2;        /* cian de marca oscurecido para que lea en papel */
+  --cian-claro: #e0f7fb;
+  --linea: #c9dbe0;
+  --papel: #ffffff;
+  --fondo: #eef3f5;
+}
+
+* { box-sizing: border-box; }
+
+html { background: var(--fondo); }
+
+body {
+  margin: 0;
+  padding: 32px 16px;
+  font: 400 10.5pt/1.55 "Inter", system-ui, sans-serif;
+  color: var(--tinta);
+  background: var(--fondo);
+}
+
+.hoja {
+  max-width: 210mm;
+  margin: 0 auto;
+  padding: 18mm 18mm 16mm;
+  background: var(--papel);
+  box-shadow: 0 2px 16px rgba(6, 35, 46, .12);
+}
+
+/* ===== Encabezado ===== */
+.membrete {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid var(--navy);
+}
+.membrete svg { width: 46px; height: 46px; flex: none; }
+.membrete .marca { font: 700 15pt/1.1 "Space Grotesk", sans-serif; color: var(--navy); }
+.membrete .marca small { display: block; font: 500 8.5pt/1.4 "Inter", sans-serif; color: var(--tinta-suave); }
+.membrete .ref { margin-left: auto; text-align: right; font-size: 8.5pt; color: var(--tinta-suave); }
+.membrete .ref b { color: var(--tinta); }
+
+h1 {
+  margin: 22px 0 4px;
+  font: 700 17pt/1.2 "Space Grotesk", sans-serif;
+  color: var(--navy);
+  text-align: center;
+  letter-spacing: .3px;
+}
+.subtitulo { margin: 0 0 20px; text-align: center; color: var(--tinta-suave); font-size: 9.5pt; }
+
+h2 {
+  margin: 20px 0 8px;
+  padding-bottom: 3px;
+  font: 700 11pt/1.3 "Space Grotesk", sans-serif;
+  color: var(--navy);
+  border-bottom: 1px solid var(--linea);
+  page-break-after: avoid;
+}
+
+p, li { text-align: justify; line-height: 1.85; }   /* aire para la pista bajo cada campo */
+ol, ul { padding-left: 20px; }
+li { margin-bottom: 4px; }
+
+/* ===== Campos por completar ===== */
+.campo {
+  display: inline-block;
+  min-width: 120px;
+  border-bottom: 1px solid var(--tinta);
+  padding: 0 4px;
+  line-height: 1.2;
+  color: transparent;            /* la pista se ve en gris debajo, no sobre la línea */
+  position: relative;
+  vertical-align: baseline;
+}
+.campo::after {
+  content: attr(data-pista);
+  position: absolute;
+  left: 2px;
+  top: 100%;
+  font-size: 6.5pt;
+  color: #8aa1aa;
+  white-space: nowrap;
+}
+.campo.largo { min-width: 260px; }
+.campo.corto { min-width: 70px; }
+.casilla { display: inline-block; width: 11px; height: 11px; border: 1px solid var(--tinta); margin-right: 5px; vertical-align: -1px; }
+
+/* ===== Tablas ===== */
+table { width: 100%; border-collapse: collapse; margin: 8px 0 12px; font-size: 9.5pt; page-break-inside: avoid; }
+th, td { border: 1px solid var(--linea); padding: 6px 8px; text-align: left; vertical-align: top; }
+th { background: var(--navy); color: #fff; font-weight: 600; }
+tr.total td { font-weight: 700; background: var(--cian-claro); }
+td.num, th.num { text-align: right; white-space: nowrap; }
+table.datos th { width: 34%; background: var(--cian-claro); color: var(--tinta); }
+
+.nota {
+  margin: 12px 0;
+  padding: 8px 12px;
+  background: var(--cian-claro);
+  border-left: 3px solid var(--cian);
+  font-size: 9pt;
+}
+
+/* ===== Firmas ===== */
+.firmas { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 36px; page-break-inside: avoid; }
+.firma { padding-top: 46px; }
+.firma .raya { border-top: 1px solid var(--tinta); padding-top: 6px; font-size: 9pt; }
+.firma .raya b { display: block; font-size: 9.5pt; }
+.firma .raya span { display: block; color: var(--tinta-suave); }
+
+.pie {
+  margin-top: 26px;
+  padding-top: 8px;
+  border-top: 1px solid var(--linea);
+  font-size: 7.5pt;
+  color: var(--tinta-suave);
+  text-align: center;
+}
+
+/* Carta: menos ceremonia, más aire */
+.carta p { text-align: left; }
+.carta .destinatario { margin: 22px 0 18px; }
+.carta .destinatario p { margin: 0; text-align: left; }
+
+@media (max-width: 640px) {
+  body { padding: 0; }
+  .hoja { padding: 20px 16px; box-shadow: none; }
+  .membrete { flex-wrap: wrap; }
+  .membrete .ref { margin-left: 0; text-align: left; }
+  .firmas { grid-template-columns: 1fr; }
+  table { font-size: 8.5pt; }
+}
+
+@page { size: A4; margin: 0; }
+@media print {
+  html, body { background: #fff; padding: 0; }
+  .hoja { box-shadow: none; max-width: none; }
+  th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  tr.total td, .nota, table.datos th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+/* ===== CRM: campos rellenados (rellenar.js) y firmas ===== */
+.campo.ok { color: inherit; border-bottom: 0; min-width: 0; padding: 0; font-weight: 600; }
+.campo.ok::after, .campo.vacio::after { content: none; }
+.campo.vacio { color: #a16207; background: #fff8e6; border-bottom: 1px dashed #d4a72c; min-width: 0; padding: 0 3px; font-size: 8.5pt; line-height: 1.3; }
+.casilla { text-align: center; overflow: hidden; line-height: 9px; }
+.casilla .campo, .casilla .campo.ok { display: inline; color: var(--tinta); background: none; border: 0; padding: 0; min-width: 0; font: 700 8pt/9px "Inter", sans-serif; }
+.casilla .campo.vacio { color: transparent; }
+.firma { padding-top: 0; }
+.firma .firma-img { display: block; height: 46px; max-width: 220px; object-fit: contain; object-position: left bottom; }
+.firma .firma-vacia { display: block; height: 46px; }
+/* Ancho de hoja A4 útil (PDF con htmlAPdf) y celulares: sin marco de papel. */
+@media (max-width: 700px) { html, body { background: #fff; padding: 0; } .hoja { padding: 0 2px; box-shadow: none; max-width: none; } }
+</style>
+</head>
+<body>
+<main class="hoja">
+
+  <header class="membrete">
+    <!--LOGO-->
+    <div class="marca">CDH Maker<small>Software a la medida · IoT · Fabricación digital — Medellín, Colombia</small></div>
+    <div class="ref" style="line-height:2.2">Anexo N.º <b><campo-k k="consecutivo" ph="consecutivo"></campo-k></b><br>Contrato N.º <campo-k k="contrato_numero" ph="N.º del contrato marco"></campo-k></div>
+  </header>
+
+  <h1>ANEXO DE ALCANCE TÉCNICO</h1>
+  <p class="subtitulo">Electrónica, IoT y automatización — sistemas embebidos, monitoreo con sensores y domótica</p>
+
+  <p>Este anexo forma parte integral del Contrato Marco de Prestación de Servicios N.º <campo-k k="contrato_numero" ph="N.º del contrato marco"></campo-k> celebrado entre <span style="text-transform:uppercase"><campo-k k="h_nombre" ph="nombre completo del proveedor"></campo-k></span> (CDH MAKER), EL PROVEEDOR, y <campo-k k="c_nombre" ph="nombre o razón social del cliente"></campo-k>, EL CLIENTE. Los términos en mayúscula tienen el significado que les da el contrato.</p>
+
+  <h2>1. Identificación del proyecto</h2>
+  <table class="datos">
+    <tr><th>Nombre del proyecto</th><td style="line-height:2.2"><campo-k k="proyecto_nombre" ph="nombre del proyecto o solución"></campo-k></td></tr>
+    <tr><th>Tipo de entrega</th><td><span class="casilla"><campo-k k="entrega_prototipo" ph="Prototipo o prueba de concepto"></campo-k></span> Prototipo o prueba de concepto &nbsp; <span class="casilla"><campo-k k="entrega_producto" ph="Producto funcional completo"></campo-k></span> Producto funcional completo &nbsp; <span class="casilla"><campo-k k="entrega_automatizacion" ph="Automatización de hogar o negocio"></campo-k></span> Automatización de hogar o negocio</td></tr>
+    <tr><th>Sector</th><td style="line-height:2.2"><span class="casilla"><campo-k k="sector_hogar" ph="Hogar"></campo-k></span> Hogar &nbsp; <span class="casilla"><campo-k k="sector_industria" ph="Industria"></campo-k></span> Industria &nbsp; <span class="casilla"><campo-k k="sector_agro" ph="Agro"></campo-k></span> Agro &nbsp; <span class="casilla"><campo-k k="sector_otro" ph="Otro"></campo-k></span> Otro: <campo-k k="sector_otro_cual" ph="otro sector"></campo-k></td></tr>
+    <tr><th>Lugar de instalación</th><td style="line-height:2.2"><campo-k k="lugar_instalacion" ph="lugar de instalación"></campo-k></td></tr>
+    <tr><th>Propuesta / cotización de referencia</th><td style="line-height:2.2">N.º <campo-k k="cot_numero" ph="N.º de la cotización"></campo-k> del <campo-k k="cot_fecha" ph="fecha de la cotización"></campo-k></td></tr>
+    <tr><th>Fecha de inicio y plazo estimado</th><td style="line-height:2.2"><campo-k k="fecha_inicio" ph="fecha de inicio (dd/mm/aaaa)"></campo-k> · <campo-k k="plazo_semanas" ph="plazo en semanas"></campo-k> semanas</td></tr>
+  </table>
+
+  <h2>2. Objetivo</h2>
+  <p>Variables que se miden o procesos que se automatizan, alertas esperadas y quién las recibe:</p>
+  <p><campo-k k="objetivo" ph="objetivo y descripción"></campo-k></p>
+  <p><campo-k k="objetivo_2" ph="objetivo (continuación)"></campo-k></p>
+
+  <h2>3. Entregables y pagos por hito</h2>
+  <table>
+    <tr><th style="width:6%">N.º</th><th style="width:26%">Entregable</th><th>Descripción</th><th style="width:15%">Fecha estimada</th><th class="num" style="width:15%">Valor del hito</th></tr>
+    <tr><td>1</td><td>Anticipo y diseño</td><td>Arquitectura del sistema, selección de componentes y compra del hardware.</td><td style="line-height:2.2"><campo-k k="hito1_fecha" ph="fecha (hito 1)"></campo-k></td><td class="num">$<campo-k k="hito1_valor" ph="valor (hito 1)"></campo-k></td></tr>
+    <tr><td>2</td><td>Prototipo en banco</td><td>Electrónica y firmware funcionando en el taller, con lectura de sensores y envío de datos.</td><td style="line-height:2.2"><campo-k k="hito2_fecha" ph="fecha (hito 2)"></campo-k></td><td class="num">$<campo-k k="hito2_valor" ph="valor (hito 2)"></campo-k></td></tr>
+    <tr><td>3</td><td>Carcasa y software</td><td>Carcasa fabricada en impresión 3D, láser o CNC, y aplicación o panel que recibe los datos y envía alertas.</td><td style="line-height:2.2"><campo-k k="hito3_fecha" ph="fecha (hito 3)"></campo-k></td><td class="num">$<campo-k k="hito3_valor" ph="valor (hito 3)"></campo-k></td></tr>
+    <tr><td>4</td><td>Instalación, prueba en sitio y entrega</td><td>Instalación, configuración de red, prueba de operación continua, capacitación, documentación y Acta de Entrega.</td><td style="line-height:2.2"><campo-k k="hito4_fecha" ph="fecha (hito 4)"></campo-k></td><td class="num">$<campo-k k="hito4_valor" ph="valor (hito 4)"></campo-k></td></tr>
+    <tr class="total"><td colspan="4">Valor total del anexo</td><td class="num">$<campo-k k="valor_total" ph="valor total en números"></campo-k></td></tr>
+  </table>
+
+  <h2>4. Hardware</h2>
+  <table>
+    <tr><th>Componente</th><th style="width:9%" class="num">Cant.</th><th style="width:20%">Lo suministra</th><th style="width:22%">Garantía del fabricante</th><th class="num" style="width:15%">Valor</th></tr>
+    <tr><td style="line-height:2.2">Controlador <campo-k k="hw1_modelo" ph="modelo (hardware 1)"></campo-k></td><td class="num"><campo-k k="hw1_cant" ph="# (hardware 1)"></campo-k></td><td><span class="casilla"><campo-k k="hw1_prov" ph="Proveedor (hardware 1)"></campo-k></span> Proveedor<br><span class="casilla"><campo-k k="hw1_cli" ph="Cliente (hardware 1)"></campo-k></span> Cliente</td><td style="line-height:2.2"><campo-k k="hw1_garantia" ph="meses (hardware 1)"></campo-k></td><td class="num">$<campo-k k="hw1_valor" ph="valor (hardware 1)"></campo-k></td></tr>
+    <tr><td style="line-height:2.2">Sensores: <campo-k k="hw2_referencia" ph="tipo y referencia (hardware 2)"></campo-k></td><td class="num"><campo-k k="hw2_cant" ph="# (hardware 2)"></campo-k></td><td><span class="casilla"><campo-k k="hw2_prov" ph="Proveedor (hardware 2)"></campo-k></span> Proveedor<br><span class="casilla"><campo-k k="hw2_cli" ph="Cliente (hardware 2)"></campo-k></span> Cliente</td><td style="line-height:2.2"><campo-k k="hw2_garantia" ph="meses (hardware 2)"></campo-k></td><td class="num">$<campo-k k="hw2_valor" ph="valor (hardware 2)"></campo-k></td></tr>
+    <tr><td style="line-height:2.2">Actuadores / relés: <campo-k k="hw3_tipo" ph="tipo (hardware 3)"></campo-k></td><td class="num"><campo-k k="hw3_cant" ph="# (hardware 3)"></campo-k></td><td><span class="casilla"><campo-k k="hw3_prov" ph="Proveedor (hardware 3)"></campo-k></span> Proveedor<br><span class="casilla"><campo-k k="hw3_cli" ph="Cliente (hardware 3)"></campo-k></span> Cliente</td><td style="line-height:2.2"><campo-k k="hw3_garantia" ph="meses (hardware 3)"></campo-k></td><td class="num">$<campo-k k="hw3_valor" ph="valor (hardware 3)"></campo-k></td></tr>
+    <tr><td>Fuente de alimentación y cableado</td><td class="num"><campo-k k="hw4_cant" ph="# (hardware 4)"></campo-k></td><td><span class="casilla"><campo-k k="hw4_prov" ph="Proveedor (hardware 4)"></campo-k></span> Proveedor<br><span class="casilla"><campo-k k="hw4_cli" ph="Cliente (hardware 4)"></campo-k></span> Cliente</td><td style="line-height:2.2"><campo-k k="hw4_garantia" ph="meses (hardware 4)"></campo-k></td><td class="num">$<campo-k k="hw4_valor" ph="valor (hardware 4)"></campo-k></td></tr>
+    <tr><td style="line-height:2.2">Otro: <campo-k k="hw5_componente" ph="componente (hardware 5)"></campo-k></td><td class="num"><campo-k k="hw5_cant" ph="# (hardware 5)"></campo-k></td><td><span class="casilla"><campo-k k="hw5_prov" ph="Proveedor (hardware 5)"></campo-k></span> Proveedor<br><span class="casilla"><campo-k k="hw5_cli" ph="Cliente (hardware 5)"></campo-k></span> Cliente</td><td style="line-height:2.2"><campo-k k="hw5_garantia" ph="meses (hardware 5)"></campo-k></td><td class="num">$<campo-k k="hw5_valor" ph="valor (hardware 5)"></campo-k></td></tr>
+    <tr class="total"><td colspan="4">Total hardware <span class="casilla"><campo-k k="hw_incluido" ph="incluido en el valor del anexo"></campo-k></span> incluido en el valor del anexo <span class="casilla"><campo-k k="hw_aparte" ph="se paga aparte"></campo-k></span> se paga aparte</td><td class="num">$<campo-k k="hw_total" ph="total hardware"></campo-k></td></tr>
+  </table>
+  <div class="nota">El hardware comercial (controladores, sensores, módulos, fuentes) tiene la <b>garantía de su fabricante o distribuidor</b>, en sus términos y plazos. EL PROVEEDOR gestionará la reclamación ante el distribuidor durante la garantía del anexo; el reemplazo queda sujeto a la respuesta de este. La garantía de EL PROVEEDOR cubre el diseño, el ensamble, el firmware y el software que él desarrolla.</div>
+
+  <h2>5. Conectividad e infraestructura del sitio</h2>
+  <table class="datos">
+    <tr><th>Conexión prevista</th><td><span class="casilla"><campo-k k="red_wifi" ph="Wi-Fi de EL CLIENTE"></campo-k></span> Wi-Fi de EL CLIENTE &nbsp; <span class="casilla"><campo-k k="red_celular" ph="Red celular (SIM y plan de datos)"></campo-k></span> Red celular (SIM y plan de datos) &nbsp; <span class="casilla"><campo-k k="red_lora" ph="LoRa"></campo-k></span> LoRa &nbsp; <span class="casilla"><campo-k k="red_local" ph="Sin conexión (local)"></campo-k></span> Sin conexión (local)</td></tr>
+    <tr><th>Plataforma de datos</th><td style="line-height:2.2"><campo-k k="plataforma" ph="plataforma de datos (ej. Firebase, Supabase)"></campo-k></td></tr>
+    <tr><th>Canal de alertas</th><td><span class="casilla"><campo-k k="alerta_app" ph="Aplicación"></campo-k></span> Aplicación &nbsp; <span class="casilla"><campo-k k="alerta_correo" ph="Correo"></campo-k></span> Correo &nbsp; <span class="casilla"><campo-k k="alerta_whatsapp" ph="WhatsApp / Telegram"></campo-k></span> WhatsApp / Telegram &nbsp; <span class="casilla"><campo-k k="alerta_local" ph="Alarma local"></campo-k></span> Alarma local</td></tr>
+  </table>
+  <p>EL CLIENTE garantiza en el sitio de instalación: (a) una red con cobertura y estabilidad suficientes en el punto de cada dispositivo, o la señal celular necesaria; (b) los puntos eléctricos, la protección eléctrica y la puesta a tierra adecuadas; y (c) el acceso del personal de EL PROVEEDOR en las fechas acordadas. Los planes de datos, SIM, servicios en la nube y mensajería son costos de EL CLIENTE.</p>
+
+  <h2>6. Supuestos</h2>
+  <ol>
+    <li>Las condiciones del ambiente (temperatura, humedad, polvo, agua, vibración) son las informadas por EL CLIENTE: <campo-k k="ambiente" ph="condiciones ambientales del sitio"></campo-k>. La carcasa se diseña para ellas.</li>
+    <li>Los tiempos dependen de la disponibilidad de los componentes en el mercado; las demoras de importación o de distribuidores extienden el cronograma.</li>
+    <li>La precisión de las mediciones es la que declara la hoja de datos del fabricante de cada sensor, debidamente instalado.</li>
+  </ol>
+
+  <h2>7. Exclusiones y advertencias</h2>
+  <ul>
+    <li>Obras civiles, instalaciones eléctricas del inmueble, tableros, acometidas y trabajos en alturas, que deben ejecutar personas o empresas habilitadas por cuenta de EL CLIENTE.</li>
+    <li>Certificaciones de producto (por ejemplo RETIE, homologaciones de equipos de telecomunicaciones o marcados internacionales). Un prototipo o desarrollo a la medida no es un producto certificado, salvo que se pacte y se costee la certificación.</li>
+    <li>Uso en aplicaciones críticas para la vida, la salud o la seguridad de las personas, o como único sistema de seguridad o de alarma: la solución es un sistema de apoyo y monitoreo, salvo que se diseñe y se certifique para ello.</li>
+    <li>Fallas por cortes o variaciones de energía, caídas de internet o de la red celular, daños por agua, golpes, descargas, manipulación de terceros o uso fuera de las condiciones del numeral 6.</li>
+    <li>Calibración metrológica certificada de los sensores ante laboratorio acreditado.</li>
+    <li>Mantenimiento preventivo, reposición de baterías y consumibles después de la entrega.</li>
+  </ul>
+
+  <h2>8. Criterios de aceptación</h2>
+  <ol>
+    <li>Prueba de operación continua en sitio durante <campo-k k="prueba_horas" ph="horas de prueba continua (ej. 72)"></campo-k> horas, en la que el sistema registra y transmite datos con una disponibilidad mínima del <campo-k k="prueba_disponibilidad" ph="% de disponibilidad (ej. 95)"></campo-k> %, descontando los cortes de energía o de conectividad ajenos a EL PROVEEDOR.</li>
+    <li>Las lecturas de cada sensor coinciden con un instrumento de referencia dentro de la tolerancia del fabricante.</li>
+    <li>Cada alerta configurada se dispara al simular su condición y llega al canal definido en un tiempo máximo de <campo-k k="alerta_tiempo" ph="tiempo máximo de alerta (ej. 2 min)"></campo-k>.</li>
+    <li>Los actuadores responden a los comandos locales y remotos previstos.</li>
+    <li>La aplicación o el panel cumple los criterios de software del contrato (cláusula Novena).</li>
+  </ol>
+
+  <h2>9. Garantía y condiciones particulares</h2>
+  <p>Garantía de EL PROVEEDOR sobre diseño, ensamble, firmware y software: <campo-k k="garantia_meses" ph="meses de garantía (ej. 3)"></campo-k> meses desde la aceptación. Hardware: según la garantía de cada fabricante (numeral 4). Las visitas en sitio por causas no cubiertas por la garantía se cobran según tarifa vigente. Propiedad intelectual del diseño electrónico, firmware y carcasa: <span class="casilla"><campo-k k="pi_licencia" ph="Opción A — Licencia"></campo-k></span> Opción A — Licencia &nbsp; <span class="casilla"><campo-k k="pi_cesion" ph="Opción B — Cesión (cláusula Undécima del contrato). El hardware pasa a ser propiedad de EL CLIENTE con su pago total. Otras condiciones"></campo-k></span> Opción B — Cesión (cláusula Undécima del contrato). El hardware pasa a ser propiedad de EL CLIENTE con su pago total. Otras condiciones:</p>
+  <p><campo-k k="condiciones" ph="condiciones especiales o «ninguna»"></campo-k></p>
+
+  <p>Para constancia se firma en <campo-k k="ciudad_firma" ph="ciudad de firma"></campo-k>, a los <campo-k k="dia_firma" ph="día"></campo-k> días del mes de <campo-k k="mes_firma" ph="mes"></campo-k> de <campo-k k="anio_firma" ph="año"></campo-k>.</p>
+
+  <section class="firmas">
+    <div class="firma"><firma-k k="firma_h"></firma-k><div class="raya"><b><campo-k k="h_nombre" ph="nombre completo del proveedor"></campo-k></b><span>CDH Maker — EL PROVEEDOR</span><span>C.C.: <campo-k k="h_cedula" ph="cédula del proveedor"></campo-k></span></div></div>
+    <div class="firma"><firma-k k="firma_c"></firma-k><div class="raya"><b><campo-k k="c_firmante" ph="nombre de quien firma por el cliente"></campo-k></b><span>EL CLIENTE</span><span>C.C./NIT: <campo-k k="c_cedula" ph="cédula de quien firma por el cliente"></campo-k></span></div></div>
+  </section>
+
+  <footer class="pie">CDH Maker · Medellín, Colombia · cdhmaker@gmail.com · cdhmaker.com</footer>
+</main>
+</body>
+</html>

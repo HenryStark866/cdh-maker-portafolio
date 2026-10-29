@@ -79,6 +79,11 @@ export async function htmlAPdf(html) {
       cortes.push(fin);
     }
 
+    // Texto que el lector debe poder copiar del PDF (p. ej. la llave de pago) y enlaces: se superponen
+    // como texto invisible y zonas clicables sobre la imagen de la hoja.
+    const copiables = [...d.body.querySelectorAll('[data-copiable]')].map((e) => ({ txt: e.textContent.trim(), r: caja(e) }));
+    const enlaces = [...d.body.querySelectorAll('a[href^="http"]')].map((e) => ({ url: e.href, r: caja(e) }));
+
     const escala = Math.min(2, 32000 / total);
     const lienzo = await window.html2canvas(d.documentElement, { scale: escala, width: ANCHO, height: total, windowWidth: ANCHO, windowHeight: total, backgroundColor: '#ffffff', logging: false });
     const pdf = new jsPDF({ unit: 'mm', format: 'a4', compress: true });
@@ -92,6 +97,12 @@ export async function htmlAPdf(html) {
       ctx.drawImage(lienzo, 0, Math.round(cortes[i - 1] * escala), hoja.width, hoja.height, 0, 0, hoja.width, hoja.height);
       if (i > 1) pdf.addPage();
       pdf.addImage(hoja.toDataURL('image/jpeg', 0.88), 'JPEG', 16, 12, 178, alto * MM);
+      const enHoja = ({ r }) => r.top >= cortes[i - 1] - 1 && r.bottom <= cortes[i] + 1;
+      for (const { txt, r } of copiables.filter(enHoja)) {
+        pdf.setFontSize(Math.max(4, r.height * MM * 2.835 * 0.8));
+        pdf.text(txt, 16 + r.left * MM, 12 + (r.bottom - cortes[i - 1]) * MM - r.height * MM * 0.22, { renderingMode: 'invisible' });
+      }
+      for (const { url, r } of enlaces.filter(enHoja)) pdf.link(16 + r.left * MM, 12 + (r.top - cortes[i - 1]) * MM, r.width * MM, r.height * MM, { url });
     }
     return new Uint8Array(pdf.output('arraybuffer'));
   } finally { ifr.remove(); }

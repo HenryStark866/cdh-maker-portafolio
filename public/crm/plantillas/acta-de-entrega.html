@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acta de Entrega — Plantilla</title>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap");
+
+:root {
+  --tinta: #0b1f27;
+  --tinta-suave: #4a6470;
+  --navy: #06232e;
+  --cian: #0891b2;        /* cian de marca oscurecido para que lea en papel */
+  --cian-claro: #e0f7fb;
+  --linea: #c9dbe0;
+  --papel: #ffffff;
+  --fondo: #eef3f5;
+}
+
+* { box-sizing: border-box; }
+
+html { background: var(--fondo); }
+
+body {
+  margin: 0;
+  padding: 32px 16px;
+  font: 400 10.5pt/1.55 "Inter", system-ui, sans-serif;
+  color: var(--tinta);
+  background: var(--fondo);
+}
+
+.hoja {
+  max-width: 210mm;
+  margin: 0 auto;
+  padding: 18mm 18mm 16mm;
+  background: var(--papel);
+  box-shadow: 0 2px 16px rgba(6, 35, 46, .12);
+}
+
+/* ===== Encabezado ===== */
+.membrete {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid var(--navy);
+}
+.membrete svg { width: 46px; height: 46px; flex: none; }
+.membrete .marca { font: 700 15pt/1.1 "Space Grotesk", sans-serif; color: var(--navy); }
+.membrete .marca small { display: block; font: 500 8.5pt/1.4 "Inter", sans-serif; color: var(--tinta-suave); }
+.membrete .ref { margin-left: auto; text-align: right; font-size: 8.5pt; color: var(--tinta-suave); }
+.membrete .ref b { color: var(--tinta); }
+
+h1 {
+  margin: 22px 0 4px;
+  font: 700 17pt/1.2 "Space Grotesk", sans-serif;
+  color: var(--navy);
+  text-align: center;
+  letter-spacing: .3px;
+}
+.subtitulo { margin: 0 0 20px; text-align: center; color: var(--tinta-suave); font-size: 9.5pt; }
+
+h2 {
+  margin: 20px 0 8px;
+  padding-bottom: 3px;
+  font: 700 11pt/1.3 "Space Grotesk", sans-serif;
+  color: var(--navy);
+  border-bottom: 1px solid var(--linea);
+  page-break-after: avoid;
+}
+
+p, li { text-align: justify; line-height: 1.85; }   /* aire para la pista bajo cada campo */
+ol, ul { padding-left: 20px; }
+li { margin-bottom: 4px; }
+
+/* ===== Campos por completar ===== */
+.campo {
+  display: inline-block;
+  min-width: 120px;
+  border-bottom: 1px solid var(--tinta);
+  padding: 0 4px;
+  line-height: 1.2;
+  color: transparent;            /* la pista se ve en gris debajo, no sobre la línea */
+  position: relative;
+  vertical-align: baseline;
+}
+.campo::after {
+  content: attr(data-pista);
+  position: absolute;
+  left: 2px;
+  top: 100%;
+  font-size: 6.5pt;
+  color: #8aa1aa;
+  white-space: nowrap;
+}
+.campo.largo { min-width: 260px; }
+.campo.corto { min-width: 70px; }
+.casilla { display: inline-block; width: 11px; height: 11px; border: 1px solid var(--tinta); margin-right: 5px; vertical-align: -1px; }
+
+/* ===== Tablas ===== */
+table { width: 100%; border-collapse: collapse; margin: 8px 0 12px; font-size: 9.5pt; page-break-inside: avoid; }
+th, td { border: 1px solid var(--linea); padding: 6px 8px; text-align: left; vertical-align: top; }
+th { background: var(--navy); color: #fff; font-weight: 600; }
+tr.total td { font-weight: 700; background: var(--cian-claro); }
+td.num, th.num { text-align: right; white-space: nowrap; }
+table.datos th { width: 34%; background: var(--cian-claro); color: var(--tinta); }
+
+.nota {
+  margin: 12px 0;
+  padding: 8px 12px;
+  background: var(--cian-claro);
+  border-left: 3px solid var(--cian);
+  font-size: 9pt;
+}
+
+/* ===== Firmas ===== */
+.firmas { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 36px; page-break-inside: avoid; }
+.firma { padding-top: 46px; }
+.firma .raya { border-top: 1px solid var(--tinta); padding-top: 6px; font-size: 9pt; }
+.firma .raya b { display: block; font-size: 9.5pt; }
+.firma .raya span { display: block; color: var(--tinta-suave); }
+
+.pie {
+  margin-top: 26px;
+  padding-top: 8px;
+  border-top: 1px solid var(--linea);
+  font-size: 7.5pt;
+  color: var(--tinta-suave);
+  text-align: center;
+}
+
+/* Carta: menos ceremonia, más aire */
+.carta p { text-align: left; }
+.carta .destinatario { margin: 22px 0 18px; }
+.carta .destinatario p { margin: 0; text-align: left; }
+
+@media (max-width: 640px) {
+  body { padding: 0; }
+  .hoja { padding: 20px 16px; box-shadow: none; }
+  .membrete { flex-wrap: wrap; }
+  .membrete .ref { margin-left: 0; text-align: left; }
+  .firmas { grid-template-columns: 1fr; }
+  table { font-size: 8.5pt; }
+}
+
+@page { size: A4; margin: 0; }
+@media print {
+  html, body { background: #fff; padding: 0; }
+  .hoja { box-shadow: none; max-width: none; }
+  th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  tr.total td, .nota, table.datos th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+/* ===== CRM: campos rellenados (rellenar.js) y firmas ===== */
+.campo.ok { color: inherit; border-bottom: 0; min-width: 0; padding: 0; font-weight: 600; }
+.campo.ok::after, .campo.vacio::after { content: none; }
+.campo.vacio { color: #a16207; background: #fff8e6; border-bottom: 1px dashed #d4a72c; min-width: 0; padding: 0 3px; font-size: 8.5pt; line-height: 1.3; }
+.casilla { text-align: center; overflow: hidden; line-height: 9px; }
+.casilla .campo, .casilla .campo.ok { display: inline; color: var(--tinta); background: none; border: 0; padding: 0; min-width: 0; font: 700 8pt/9px "Inter", sans-serif; }
+.casilla .campo.vacio { color: transparent; }
+.firma { padding-top: 0; }
+.firma .firma-img { display: block; height: 46px; max-width: 220px; object-fit: contain; object-position: left bottom; }
+.firma .firma-vacia { display: block; height: 46px; }
+/* Ancho de hoja A4 útil (PDF con htmlAPdf) y celulares: sin marco de papel. */
+@media (max-width: 700px) { html, body { background: #fff; padding: 0; } .hoja { padding: 0 2px; box-shadow: none; max-width: none; } }
+</style>
+</head>
+<body>
+<main class="hoja">
+
+  <header class="membrete">
+    <!--LOGO-->
+    <div class="marca">CDH Maker<small>Software a la medida · IoT · Fabricación digital — Medellín, Colombia</small></div>
+    <div class="ref" style="line-height:2.2">Acta N.º <b><campo-k k="consecutivo" ph="consecutivo"></campo-k></b><br>Ciudad: Medellín</div>
+  </header>
+
+  <h1>ACTA DE ENTREGA FORMAL</h1>
+  <p class="subtitulo"><campo-k k="proyecto_nombre" ph="nombre del proyecto o solución"></campo-k> — <campo-k k="c_nombre" ph="nombre o razón social del cliente"></campo-k></p>
+
+  <p>En la ciudad de <campo-k k="ciudad_firma" ph="ciudad de firma"></campo-k>, a los <campo-k k="dia_firma" ph="día"></campo-k> días del mes de <campo-k k="mes_firma" ph="mes"></campo-k> de <campo-k k="anio_firma" ph="año"></campo-k>, se reúnen las partes que se identifican a continuación con el fin de dejar constancia de la entrega formal de <campo-k k="proyecto_nombre" ph="nombre del proyecto o solución"></campo-k>, desarrollado por CDH Maker para EL CLIENTE, y de las condiciones bajo las cuales este lo recibe.</p>
+
+  <h2>1. Partes</h2>
+  <table class="datos">
+    <tr><th>Proveedor</th><td style="line-height:2.2">CDH Maker — <campo-k k="h_nombre" ph="nombre completo del proveedor"></campo-k><br>C.C./NIT: <campo-k k="h_cedula" ph="cédula del proveedor"></campo-k><br>Correo: cdhmaker@gmail.com · Tel.: <campo-k k="h_telefono" ph="WhatsApp / teléfono del proveedor"></campo-k></td></tr>
+    <tr><th>Cliente</th><td style="line-height:2.2"><campo-k k="c_nombre_comercial" ph="nombre comercial del cliente"></campo-k><br>Razón social: <campo-k k="c_nombre" ph="nombre o razón social del cliente"></campo-k><br>NIT/C.C.: <campo-k k="c_documento" ph="NIT o C.C. del cliente"></campo-k> · Dirección: <campo-k k="c_direccion" ph="dirección del cliente"></campo-k></td></tr>
+    <tr><th>Responsable por el proveedor</th><td>Ing. Henry Taborda — Desarrollador y líder del proyecto</td></tr>
+    <tr><th>Responsable por el cliente</th><td style="line-height:2.2"><campo-k k="c_firmante" ph="nombre de quien firma por el cliente"></campo-k> — Cargo: <campo-k k="c_cargo" ph="cargo de quien firma por el cliente"></campo-k><br>C.C.: <campo-k k="c_cedula" ph="cédula de quien firma por el cliente"></campo-k></td></tr>
+  </table>
+
+  <h2>2. Antecedentes</h2>
+  <p>EL CLIENTE contrató a CDH Maker para <campo-k k="objeto" ph="objeto contratado"></campo-k>, por un valor total de <b><campo-k k="valor_letras" ph="valor total en letras"></campo-k> PESOS M/CTE ($<campo-k k="valor_total" ph="valor total en números"></campo-k>)</b>, según <span class="casilla"><campo-k k="seg_propuesta" ph="propuesta / cotización"></campo-k></span> propuesta / cotización &nbsp; <span class="casilla"><campo-k k="seg_anexo" ph="Anexo de Alcance N.º"></campo-k></span> Anexo de Alcance N.º <campo-k k="anexo_numero" ph="N.º del anexo"></campo-k> del <campo-k k="anexo_fecha" ph="fecha del anexo"></campo-k>. <campo-k k="validaciones" ph="validaciones previas del cliente, si las hubo"></campo-k></p>
+
+  <h2>3. Descripción de lo entregado</h2>
+  <p>Se entrega <campo-k k="descripcion" ph="descripción breve de la solución"></campo-k>, compuesta por:</p>
+  <table>
+    <tr><th style="width:32%">Componente</th><th>Alcance entregado</th><th style="width:12%">Recibido</th></tr>
+    <tr><td style="line-height:2.2"><campo-k k="comp1_nombre" ph="componente o módulo (componente 1)"></campo-k></td><td style="line-height:2.2"><campo-k k="comp1_alcance" ph="alcance (componente 1)"></campo-k></td><td><span class="casilla"><campo-k k="comp1_ok" ph="comp1_ok (componente 1)"></campo-k></span></td></tr>
+    <tr><td style="line-height:2.2"><campo-k k="comp2_nombre" ph="componente o módulo (componente 2)"></campo-k></td><td style="line-height:2.2"><campo-k k="comp2_alcance" ph="alcance (componente 2)"></campo-k></td><td><span class="casilla"><campo-k k="comp2_ok" ph="comp2_ok (componente 2)"></campo-k></span></td></tr>
+    <tr><td style="line-height:2.2"><campo-k k="comp3_nombre" ph="componente o módulo (componente 3)"></campo-k></td><td style="line-height:2.2"><campo-k k="comp3_alcance" ph="alcance (componente 3)"></campo-k></td><td><span class="casilla"><campo-k k="comp3_ok" ph="comp3_ok (componente 3)"></campo-k></span></td></tr>
+    <tr><td style="line-height:2.2"><campo-k k="comp4_nombre" ph="componente o módulo (componente 4)"></campo-k></td><td style="line-height:2.2"><campo-k k="comp4_alcance" ph="alcance (componente 4)"></campo-k></td><td><span class="casilla"><campo-k k="comp4_ok" ph="comp4_ok (componente 4)"></campo-k></span></td></tr>
+    <tr><td style="line-height:2.2"><campo-k k="comp5_nombre" ph="componente o módulo (componente 5)"></campo-k></td><td style="line-height:2.2"><campo-k k="comp5_alcance" ph="alcance (componente 5)"></campo-k></td><td><span class="casilla"><campo-k k="comp5_ok" ph="comp5_ok (componente 5)"></campo-k></span></td></tr>
+    <tr><td>Otros</td><td style="line-height:2.2"><campo-k k="otros_alcance" ph="otro elemento entregado, si aplica"></campo-k></td><td><span class="casilla"><campo-k k="otros_ok" ph="otros_ok"></campo-k></span></td></tr>
+  </table>
+
+  <p><b>Datos de la entrega:</b></p>
+  <ul>
+    <li>Dirección de acceso (URL), lugar de instalación o forma de entrega: <campo-k k="acceso" ph="URL, sitio de instalación o guía de envío"></campo-k></li>
+    <li>Usuario administrador entregado a: <campo-k k="admin_usuario" ph="usuario administrador entregado a"></campo-k>. Las contraseñas se entregan por canal privado y no se escriben en esta acta; EL CLIENTE se compromete a cambiarlas en el primer ingreso.</li>
+    <li>Código fuente o archivos fuente: <span class="casilla"><campo-k k="fuente_entregado" ph="Entregados en"></campo-k></span> Entregados en <campo-k k="fuente_medio" ph="repositorio o medio del código"></campo-k> &nbsp; <span class="casilla"><campo-k k="fuente_no_aplica" ph="No aplica"></campo-k></span> No aplica</li>
+    <li>Documentación entregada: <span class="casilla"><campo-k k="doc_manual" ph="Manual de usuario"></campo-k></span> Manual de usuario &nbsp; <span class="casilla"><campo-k k="doc_guia" ph="Guía de administración"></campo-k></span> Guía de administración &nbsp; <span class="casilla"><campo-k k="doc_otra" ph="Otra"></campo-k></span> Otra: <campo-k k="doc_otra_cual" ph="otra documentación"></campo-k></li>
+    <li>Capacitación realizada el <campo-k k="capacitacion_fecha" ph="fecha de la capacitación"></campo-k>, con una duración de <campo-k k="capacitacion_horas" ph="horas de capacitación"></campo-k> horas, a las siguientes personas: <campo-k k="capacitacion_personas" ph="personas capacitadas"></campo-k></li>
+    <li>Datos cargados inicialmente: <span class="casilla"><campo-k k="datos_si" ph="Sí"></campo-k></span> Sí &nbsp; <span class="casilla"><campo-k k="datos_no" ph="No"></campo-k></span> No &nbsp; Detalle: <campo-k k="datos_detalle" ph="datos cargados (cantidad / alcance)"></campo-k></li>
+  </ul>
+
+  <h2>4. Fecha de entrega</h2>
+  <p>La solución se entrega en funcionamiento el día <campo-k k="fecha_entrega" ph="fecha de entrega (dd/mm/aaaa)"></campo-k> a las <campo-k k="hora_entrega" ph="hora de entrega"></campo-k>. Esta fecha marca el inicio del período de verificación y de la garantía descritos a continuación.</p>
+
+  <h2>5. Condiciones de aceptación</h2>
+  <ol>
+    <li><b>Período de verificación.</b> EL CLIENTE cuenta con <campo-k k="verificacion_dias" ph="días hábiles de verificación (ej. 10)"></campo-k> días hábiles contados desde la fecha de entrega para reportar por escrito (correo o WhatsApp) cualquier funcionalidad del alcance del numeral 3 que no opere según lo acordado.</li>
+    <li><b>Aceptación tácita.</b> Si vencido ese plazo no se recibe ningún reporte, o si EL CLIENTE usa la solución en su operación diaria, se entenderá recibida a satisfacción.</li>
+    <li><b>Corrección de hallazgos.</b> Los defectos reportados dentro del período de verificación que correspondan al alcance contratado se corregirán sin costo en un plazo máximo de <campo-k k="correccion_dias" ph="días hábiles para corregir (ej. 5)"></campo-k> días hábiles.</li>
+    <li><b>Garantía.</b> CDH Maker garantiza el correcto funcionamiento del alcance entregado durante <campo-k k="garantia_meses" ph="meses de garantía (ej. 3)"></campo-k> meses desde la fecha de entrega. La garantía no cubre fallas por uso indebido, modificaciones hechas por terceros, cambios en servidores, equipos o servicios externos ajenos a CDH Maker, ni pérdida de información por falta de copias de respaldo a cargo de EL CLIENTE. El hardware de terceros tiene la garantía de su fabricante.</li>
+    <li><b>Cambios de alcance.</b> Toda funcionalidad nueva o modificación no incluida en el numeral 3 se cotizará por separado mediante Orden de Cambio y no afecta la validez de esta entrega.</li>
+    <li><b>Propiedad y licencia.</b> Con el pago total del valor acordado, EL CLIENTE adquiere <span class="casilla"><campo-k k="pi_licencia" ph="el derecho de uso"></campo-k></span> el derecho de uso &nbsp; <span class="casilla"><campo-k k="pi_cesion" ph="la cesión de los derechos patrimoniales de lo desarrollado, en los términos del contrato o de la propuesta comercial. CDH Maker conserva la autoría y los componentes reutilizables de su propiedad, conforme a la Ley 23 de 1982 y la Decisión Andina 351 de 1993"></campo-k></span> la cesión de los derechos patrimoniales de lo desarrollado, en los términos del contrato o de la propuesta comercial. CDH Maker conserva la autoría y los componentes reutilizables de su propiedad, conforme a la Ley 23 de 1982 y la Decisión Andina 351 de 1993.</li>
+    <li><b>Datos personales.</b> La información que EL CLIENTE registre en la solución es de su propiedad. CDH Maker solo accederá a ella para soporte, como Encargado del Tratamiento, y la tratará de forma confidencial, conforme a la Ley 1581 de 2012.</li>
+    <li><b>Pago.</b> El pago se rige por <span class="casilla"><campo-k k="pago_plan" ph="el Acuerdo de Plan de Pago"></campo-k></span> el Acuerdo de Plan de Pago &nbsp; <span class="casilla"><campo-k k="pago_contrato" ph="el contrato o anexo firmado por las partes. Saldo pendiente a la fecha: $"></campo-k></span> el contrato o anexo firmado por las partes. Saldo pendiente a la fecha: $<campo-k k="saldo_pendiente" ph="saldo pendiente (o «0»)"></campo-k>.</li>
+  </ol>
+
+  <h2>6. Observaciones</h2>
+  <p><campo-k k="observaciones" ph="observaciones (o «ninguna»)"></campo-k></p>
+  <p><campo-k k="observaciones_2" ph="observaciones (continuación)"></campo-k></p>
+
+  <p>En constancia, se firma en dos (2) ejemplares del mismo tenor, uno para cada parte.</p>
+
+  <section class="firmas">
+    <div class="firma"><firma-k k="firma_h"></firma-k><div class="raya"><b><campo-k k="h_nombre" ph="nombre completo del proveedor"></campo-k></b><span>CDH Maker — Proveedor</span><span>C.C./NIT: <campo-k k="h_cedula" ph="cédula del proveedor"></campo-k></span></div></div>
+    <div class="firma"><firma-k k="firma_c"></firma-k><div class="raya"><b><campo-k k="c_firmante" ph="nombre de quien firma por el cliente"></campo-k></b><span>Cliente</span><span>C.C.: <campo-k k="c_cedula" ph="cédula de quien firma por el cliente"></campo-k></span></div></div>
+  </section>
+
+  <footer class="pie">CDH Maker · Medellín, Colombia · cdhmaker@gmail.com · cdhmaker.com</footer>
+</main>
+</body>
+</html>

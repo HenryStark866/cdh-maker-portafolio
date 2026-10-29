@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anexo de Alcance — Impresión 3D y fabricación digital</title>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap");
+
+:root {
+  --tinta: #0b1f27;
+  --tinta-suave: #4a6470;
+  --navy: #06232e;
+  --cian: #0891b2;        /* cian de marca oscurecido para que lea en papel */
+  --cian-claro: #e0f7fb;
+  --linea: #c9dbe0;
+  --papel: #ffffff;
+  --fondo: #eef3f5;
+}
+
+* { box-sizing: border-box; }
+
+html { background: var(--fondo); }
+
+body {
+  margin: 0;
+  padding: 32px 16px;
+  font: 400 10.5pt/1.55 "Inter", system-ui, sans-serif;
+  color: var(--tinta);
+  background: var(--fondo);
+}
+
+.hoja {
+  max-width: 210mm;
+  margin: 0 auto;
+  padding: 18mm 18mm 16mm;
+  background: var(--papel);
+  box-shadow: 0 2px 16px rgba(6, 35, 46, .12);
+}
+
+/* ===== Encabezado ===== */
+.membrete {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid var(--navy);
+}
+.membrete svg { width: 46px; height: 46px; flex: none; }
+.membrete .marca { font: 700 15pt/1.1 "Space Grotesk", sans-serif; color: var(--navy); }
+.membrete .marca small { display: block; font: 500 8.5pt/1.4 "Inter", sans-serif; color: var(--tinta-suave); }
+.membrete .ref { margin-left: auto; text-align: right; font-size: 8.5pt; color: var(--tinta-suave); }
+.membrete .ref b { color: var(--tinta); }
+
+h1 {
+  margin: 22px 0 4px;
+  font: 700 17pt/1.2 "Space Grotesk", sans-serif;
+  color: var(--navy);
+  text-align: center;
+  letter-spacing: .3px;
+}
+.subtitulo { margin: 0 0 20px; text-align: center; color: var(--tinta-suave); font-size: 9.5pt; }
+
+h2 {
+  margin: 20px 0 8px;
+  padding-bottom: 3px;
+  font: 700 11pt/1.3 "Space Grotesk", sans-serif;
+  color: var(--navy);
+  border-bottom: 1px solid var(--linea);
+  page-break-after: avoid;
+}
+
+p, li { text-align: justify; line-height: 1.85; }   /* aire para la pista bajo cada campo */
+ol, ul { padding-left: 20px; }
+li { margin-bottom: 4px; }
+
+/* ===== Campos por completar ===== */
+.campo {
+  display: inline-block;
+  min-width: 120px;
+  border-bottom: 1px solid var(--tinta);
+  padding: 0 4px;
+  line-height: 1.2;
+  color: transparent;            /* la pista se ve en gris debajo, no sobre la línea */
+  position: relative;
+  vertical-align: baseline;
+}
+.campo::after {
+  content: attr(data-pista);
+  position: absolute;
+  left: 2px;
+  top: 100%;
+  font-size: 6.5pt;
+  color: #8aa1aa;
+  white-space: nowrap;
+}
+.campo.largo { min-width: 260px; }
+.campo.corto { min-width: 70px; }
+.casilla { display: inline-block; width: 11px; height: 11px; border: 1px solid var(--tinta); margin-right: 5px; vertical-align: -1px; }
+
+/* ===== Tablas ===== */
+table { width: 100%; border-collapse: collapse; margin: 8px 0 12px; font-size: 9.5pt; page-break-inside: avoid; }
+th, td { border: 1px solid var(--linea); padding: 6px 8px; text-align: left; vertical-align: top; }
+th { background: var(--navy); color: #fff; font-weight: 600; }
+tr.total td { font-weight: 700; background: var(--cian-claro); }
+td.num, th.num { text-align: right; white-space: nowrap; }
+table.datos th { width: 34%; background: var(--cian-claro); color: var(--tinta); }
+
+.nota {
+  margin: 12px 0;
+  padding: 8px 12px;
+  background: var(--cian-claro);
+  border-left: 3px solid var(--cian);
+  font-size: 9pt;
+}
+
+/* ===== Firmas ===== */
+.firmas { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 36px; page-break-inside: avoid; }
+.firma { padding-top: 46px; }
+.firma .raya { border-top: 1px solid var(--tinta); padding-top: 6px; font-size: 9pt; }
+.firma .raya b { display: block; font-size: 9.5pt; }
+.firma .raya span { display: block; color: var(--tinta-suave); }
+
+.pie {
+  margin-top: 26px;
+  padding-top: 8px;
+  border-top: 1px solid var(--linea);
+  font-size: 7.5pt;
+  color: var(--tinta-suave);
+  text-align: center;
+}
+
+/* Carta: menos ceremonia, más aire */
+.carta p { text-align: left; }
+.carta .destinatario { margin: 22px 0 18px; }
+.carta .destinatario p { margin: 0; text-align: left; }
+
+@media (max-width: 640px) {
+  body { padding: 0; }
+  .hoja { padding: 20px 16px; box-shadow: none; }
+  .membrete { flex-wrap: wrap; }
+  .membrete .ref { margin-left: 0; text-align: left; }
+  .firmas { grid-template-columns: 1fr; }
+  table { font-size: 8.5pt; }
+}
+
+@page { size: A4; margin: 0; }
+@media print {
+  html, body { background: #fff; padding: 0; }
+  .hoja { box-shadow: none; max-width: none; }
+  th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  tr.total td, .nota, table.datos th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+/* ===== CRM: campos rellenados (rellenar.js) y firmas ===== */
+.campo.ok { color: inherit; border-bottom: 0; min-width: 0; padding: 0; font-weight: 600; }
+.campo.ok::after, .campo.vacio::after { content: none; }
+.campo.vacio { color: #a16207; background: #fff8e6; border-bottom: 1px dashed #d4a72c; min-width: 0; padding: 0 3px; font-size: 8.5pt; line-height: 1.3; }
+.casilla { text-align: center; overflow: hidden; line-height: 9px; }
+.casilla .campo, .casilla .campo.ok { display: inline; color: var(--tinta); background: none; border: 0; padding: 0; min-width: 0; font: 700 8pt/9px "Inter", sans-serif; }
+.casilla .campo.vacio { color: transparent; }
+.firma { padding-top: 0; }
+.firma .firma-img { display: block; height: 46px; max-width: 220px; object-fit: contain; object-position: left bottom; }
+.firma .firma-vacia { display: block; height: 46px; }
+/* Ancho de hoja A4 útil (PDF con htmlAPdf) y celulares: sin marco de papel. */
+@media (max-width: 700px) { html, body { background: #fff; padding: 0; } .hoja { padding: 0 2px; box-shadow: none; max-width: none; } }
+</style>
+</head>
+<body>
+<main class="hoja">
+
+  <header class="membrete">
+    <!--LOGO-->
+    <div class="marca">CDH Maker<small>Software a la medida · IoT · Fabricación digital — Medellín, Colombia</small></div>
+    <div class="ref" style="line-height:2.2">Anexo N.º <b><campo-k k="consecutivo" ph="consecutivo"></campo-k></b><br>Contrato N.º <campo-k k="contrato_numero" ph="N.º del contrato marco"></campo-k></div>
+  </header>
+
+  <h1>ANEXO DE ALCANCE TÉCNICO</h1>
+  <p class="subtitulo">Impresión 3D y fabricación digital — FDM, resina, corte láser, CNC y diseño CAD</p>
+
+  <p>Este anexo forma parte integral del Contrato Marco de Prestación de Servicios N.º <campo-k k="contrato_numero" ph="N.º del contrato marco"></campo-k> celebrado entre <span style="text-transform:uppercase"><campo-k k="h_nombre" ph="nombre completo del proveedor"></campo-k></span> (CDH MAKER), EL PROVEEDOR, y <campo-k k="c_nombre" ph="nombre o razón social del cliente"></campo-k>, EL CLIENTE. Para pedidos puntuales puede usarse como orden de fabricación independiente, caso en el cual se le aplican las cláusulas del contrato marco que le sean pertinentes.</p>
+
+  <h2>1. Identificación del pedido</h2>
+  <table class="datos">
+    <tr><th>Referencia del pedido</th><td style="line-height:2.2"><campo-k k="proyecto_nombre" ph="nombre del proyecto o solución"></campo-k></td></tr>
+    <tr><th>Servicio</th><td><span class="casilla"><campo-k k="srv_fdm" ph="Impresión FDM"></campo-k></span> Impresión FDM &nbsp; <span class="casilla"><campo-k k="srv_resina" ph="Impresión en resina"></campo-k></span> Impresión en resina &nbsp; <span class="casilla"><campo-k k="srv_laser" ph="Corte / grabado láser"></campo-k></span> Corte / grabado láser &nbsp; <span class="casilla"><campo-k k="srv_cnc" ph="Mecanizado CNC"></campo-k></span> Mecanizado CNC &nbsp; <span class="casilla"><campo-k k="srv_cad" ph="Diseño CAD 2D/3D"></campo-k></span> Diseño CAD 2D/3D</td></tr>
+    <tr><th>Uso previsto de la pieza</th><td style="line-height:2.2"><span class="casilla"><campo-k k="uso_prototipo" ph="Prototipo / visual"></campo-k></span> Prototipo / visual &nbsp; <span class="casilla"><campo-k k="uso_funcional" ph="Funcional"></campo-k></span> Funcional &nbsp; <span class="casilla"><campo-k k="uso_serie" ph="Producción en serie"></campo-k></span> Producción en serie &nbsp; Detalle: <campo-k k="uso_detalle" ph="detalle de uso (esfuerzos, temperatura, exterior…)"></campo-k></td></tr>
+    <tr><th>Origen del diseño</th><td><span class="casilla"><campo-k k="origen_archivo" ph="Archivo de EL CLIENTE (STL, STEP, DXF, SVG)"></campo-k></span> Archivo de EL CLIENTE (STL, STEP, DXF, SVG) &nbsp; <span class="casilla"><campo-k k="origen_plano" ph="Plano o boceto de EL CLIENTE"></campo-k></span> Plano o boceto de EL CLIENTE &nbsp; <span class="casilla"><campo-k k="origen_proveedor" ph="Diseño de EL PROVEEDOR"></campo-k></span> Diseño de EL PROVEEDOR</td></tr>
+    <tr><th>Cotización de referencia</th><td style="line-height:2.2">N.º <campo-k k="cot_numero" ph="N.º de la cotización"></campo-k> del <campo-k k="cot_fecha" ph="fecha de la cotización"></campo-k></td></tr>
+    <tr><th>Fecha de entrega estimada</th><td style="line-height:2.2"><campo-k k="fecha_entrega" ph="fecha de entrega (dd/mm/aaaa)"></campo-k> · contada desde la aprobación del diseño y el pago del anticipo</td></tr>
+  </table>
+
+  <h2>2. Piezas y entregables</h2>
+  <table>
+    <tr><th style="width:5%">N.º</th><th>Pieza</th><th style="width:13%">Tecnología</th><th style="width:16%">Material y color</th><th style="width:11%">Relleno / espesor</th><th style="width:8%" class="num">Cant.</th><th class="num" style="width:14%">Valor</th></tr>
+    <tr><td>1</td><td style="line-height:2.2"><campo-k k="pieza1_nombre" ph="nombre / archivo (pieza 1)"></campo-k></td><td style="line-height:2.2"><campo-k k="pieza1_tecnologia" ph="FDM, resina… (pieza 1)"></campo-k></td><td style="line-height:2.2"><campo-k k="pieza1_material" ph="ej. PETG negro (pieza 1)"></campo-k></td><td style="line-height:2.2"><campo-k k="pieza1_relleno" ph="ej. 30 % (pieza 1)"></campo-k></td><td class="num"><campo-k k="pieza1_cant" ph="# (pieza 1)"></campo-k></td><td class="num">$<campo-k k="pieza1_valor" ph="valor (pieza 1)"></campo-k></td></tr>
+    <tr><td>2</td><td style="line-height:2.2"><campo-k k="pieza2_nombre" ph="nombre / archivo (pieza 2)"></campo-k></td><td style="line-height:2.2"><campo-k k="pieza2_tecnologia" ph="tecnología (pieza 2)"></campo-k></td><td style="line-height:2.2"><campo-k k="pieza2_material" ph="material (pieza 2)"></campo-k></td><td style="line-height:2.2"><campo-k k="pieza2_relleno" ph="relleno (pieza 2)"></campo-k></td><td class="num"><campo-k k="pieza2_cant" ph="# (pieza 2)"></campo-k></td><td class="num">$<campo-k k="pieza2_valor" ph="valor (pieza 2)"></campo-k></td></tr>
+    <tr><td>3</td><td style="line-height:2.2"><campo-k k="pieza3_nombre" ph="nombre / archivo (pieza 3)"></campo-k></td><td style="line-height:2.2"><campo-k k="pieza3_tecnologia" ph="tecnología (pieza 3)"></campo-k></td><td style="line-height:2.2"><campo-k k="pieza3_material" ph="material (pieza 3)"></campo-k></td><td style="line-height:2.2"><campo-k k="pieza3_relleno" ph="relleno (pieza 3)"></campo-k></td><td class="num"><campo-k k="pieza3_cant" ph="# (pieza 3)"></campo-k></td><td class="num">$<campo-k k="pieza3_valor" ph="valor (pieza 3)"></campo-k></td></tr>
+    <tr><td>—</td><td colspan="5">Diseño CAD, si aplica (incluye <campo-k k="cad_rondas" ph="rondas de ajustes CAD (ej. 2)"></campo-k> rondas de ajustes)</td><td class="num">$<campo-k k="cad_valor" ph="valor del diseño CAD"></campo-k></td></tr>
+    <tr><td>—</td><td colspan="5">Acabado (lijado, imprimación, pintura, insertos): <campo-k k="acabado_detalle" ph="acabado (detalle o «no aplica»)"></campo-k></td><td class="num">$<campo-k k="acabado_valor" ph="valor del acabado"></campo-k></td></tr>
+    <tr><td>—</td><td colspan="5">Envío: <span class="casilla"><campo-k k="envio_taller" ph="Recoge en taller"></campo-k></span> Recoge en taller &nbsp; <span class="casilla"><campo-k k="envio_mensajeria" ph="Mensajería a"></campo-k></span> Mensajería a <campo-k k="envio_ciudad" ph="ciudad de envío"></campo-k></td><td class="num">$<campo-k k="envio_valor" ph="valor del envío"></campo-k></td></tr>
+    <tr class="total"><td colspan="6">Valor total</td><td class="num">$<campo-k k="valor_total" ph="valor total en números"></campo-k></td></tr>
+  </table>
+  <p>Forma de pago: anticipo del <campo-k k="anticipo_pct" ph="% de anticipo (ej. 40)"></campo-k> % al aprobar el diseño o el archivo, y saldo contra entrega o antes del despacho.</p>
+
+  <h2>3. Tolerancias y calidad</h2>
+  <p>Salvo que se pacten tolerancias más estrictas, las dimensiones de las piezas se aceptan dentro de las siguientes desviaciones respecto del archivo aprobado:</p>
+  <table>
+    <tr><th style="width:30%">Tecnología</th><th>Tolerancia dimensional</th><th style="width:40%">Observaciones</th></tr>
+    <tr><td>Impresión FDM</td><td style="line-height:2.2">± <campo-k k="tol_fdm_mm" ph="tolerancia FDM en mm (ej. 0,3 mm)"></campo-k> o ± <campo-k k="tol_fdm_pct" ph="tolerancia FDM en % (ej. 0,5 %)"></campo-k>, lo que sea mayor</td><td>Las líneas de capa y las marcas de soportes son propias del proceso.</td></tr>
+    <tr><td>Impresión en resina</td><td style="line-height:2.2">± <campo-k k="tol_resina" ph="tolerancia resina (ej. 0,15 mm)"></campo-k></td><td>Puede haber contracción en piezas grandes o de paredes gruesas.</td></tr>
+    <tr><td>Corte láser</td><td style="line-height:2.2">± <campo-k k="tol_laser" ph="tolerancia láser (ej. 0,2 mm)"></campo-k></td><td>Bordes con quemado leve en madera y MDF.</td></tr>
+    <tr><td>Mecanizado CNC</td><td style="line-height:2.2">± <campo-k k="tol_cnc" ph="tolerancia CNC (ej. 0,1 mm)"></campo-k></td><td>Según material y herramienta.</td></tr>
+    <tr><td>Medidas críticas</td><td colspan="2"><campo-k k="medidas_criticas" ph="medidas críticas"></campo-k></td></tr>
+  </table>
+  <p>Pueden presentarse variaciones leves de color o de tono entre lotes de material y entre la pieza física y su representación en pantalla. Estas variaciones, las líneas de capa y las marcas de soporte no se consideran defectos.</p>
+
+  <h2>4. Archivos de EL CLIENTE y propiedad del diseño</h2>
+  <ol>
+    <li><b>Titularidad.</b> EL CLIENTE declara que es titular de los derechos de los archivos, planos, marcas y diseños que entrega, o que tiene autorización para reproducirlos, y mantendrá indemne a EL PROVEEDOR frente a reclamaciones de terceros por propiedad intelectual o industrial.</li>
+    <li><b>Archivos de EL CLIENTE.</b> EL PROVEEDOR fabrica según el archivo aprobado y no responde por errores de diseño, de escala, de geometría o de funcionamiento contenidos en él. Si detecta un problema evidente lo informará antes de fabricar. Las reimpresiones por errores del archivo se cobran.</li>
+    <li><b>Diseño de EL PROVEEDOR.</b> Respecto de los modelos CAD que diseñe EL PROVEEDOR:
+      <br><span class="casilla"><campo-k k="pi_cesion" ph="Con el pago total, se ceden a EL CLIENTE los derechos patrimoniales del diseño y se le entregan los archivos fuente ("></campo-k></span> Con el pago total, se ceden a EL CLIENTE los derechos patrimoniales del diseño y se le entregan los archivos fuente (<campo-k k="archivos_formato" ph="formato de los archivos fuente"></campo-k>).
+      <br><span class="casilla"><campo-k k="pi_licencia" ph="EL PROVEEDOR conserva la titularidad del diseño y EL CLIENTE adquiere las piezas fabricadas; los archivos fuente no se entregan salvo pago adicional"></campo-k></span> EL PROVEEDOR conserva la titularidad del diseño y EL CLIENTE adquiere las piezas fabricadas; los archivos fuente no se entregan salvo pago adicional.</li>
+    <li><b>Confidencialidad.</b> Los archivos de EL CLIENTE se usan solo para su pedido y no se comparten ni se reproducen para terceros.</li>
+    <li><b>Conservación.</b> EL PROVEEDOR conservará los archivos durante <campo-k k="archivos_meses" ph="meses de conservación de archivos (ej. 6)"></campo-k> meses para facilitar reposiciones, y luego podrá eliminarlos.</li>
+    <li><b>Piezas no permitidas.</b> EL PROVEEDOR puede rechazar la fabricación de armas o sus partes, piezas cuyo uso sea ilegal, réplicas que infrinjan marcas o derechos de autor evidentes, o piezas que considere peligrosas.</li>
+  </ol>
+
+  <h2>5. Supuestos</h2>
+  <ol>
+    <li>El plazo de entrega se cuenta desde la aprobación escrita del archivo o del diseño final y el pago del anticipo.</li>
+    <li>El material, el relleno y la orientación de impresión los recomienda EL PROVEEDOR según el uso informado; EL CLIENTE puede elegir otros asumiendo su efecto en la resistencia.</li>
+    <li>Las pruebas de ajuste o de funcionamiento que requieran el ensamble de EL CLIENTE se hacen con sus piezas o una muestra que él entregue.</li>
+  </ol>
+
+  <h2>6. Exclusiones</h2>
+  <ul>
+    <li>Piezas aptas para contacto con alimentos, uso médico, odontológico, aeronáutico, automotor de seguridad o estructural, salvo que se pacte expresamente con material y proceso certificados para ello.</li>
+    <li>Resistencia mecánica, térmica o química no informada en el uso previsto, y desgaste por uso normal.</li>
+    <li>Ensayos de laboratorio o certificados de material más allá de la ficha técnica del fabricante.</li>
+    <li>Daños durante el transporte una vez entregada la pieza a la empresa de mensajería; EL PROVEEDOR embalará adecuadamente y, si EL CLIENTE lo pide y paga, asegurará el envío.</li>
+  </ul>
+
+  <h2>7. Criterios de aceptación y reclamos</h2>
+  <ol>
+    <li>La pieza se acepta si corresponde al archivo aprobado, en el material, el color y la cantidad pactados, dentro de las tolerancias del numeral 3, y sin defectos que afecten su función (delaminación, deformación, piezas incompletas o fracturas).</li>
+    <li>EL CLIENTE debe revisar las piezas al recibirlas y reportar por escrito, con fotografías, cualquier defecto dentro de los <campo-k k="revision_dias" ph="días hábiles para reportar defectos (ej. 3)"></campo-k> días hábiles siguientes. Vencido ese plazo sin reporte, el pedido se entiende aceptado.</li>
+    <li>Las piezas con defectos atribuibles a la fabricación se reponen sin costo dentro de los <campo-k k="reposicion_dias" ph="días hábiles para reponer (ej. 5)"></campo-k> días hábiles siguientes. Si la reposición no es posible, se reembolsa el valor de esas piezas.</li>
+    <li>En primeras piezas o prototipos, la aprobación de la muestra por EL CLIENTE es el estándar de aceptación para la producción posterior.</li>
+  </ol>
+
+  <h2>8. Condiciones particulares</h2>
+  <p><campo-k k="condiciones" ph="condiciones especiales o «ninguna»"></campo-k></p>
+
+  <p>Para constancia se firma en <campo-k k="ciudad_firma" ph="ciudad de firma"></campo-k>, a los <campo-k k="dia_firma" ph="día"></campo-k> días del mes de <campo-k k="mes_firma" ph="mes"></campo-k> de <campo-k k="anio_firma" ph="año"></campo-k>.</p>
+
+  <section class="firmas">
+    <div class="firma"><firma-k k="firma_h"></firma-k><div class="raya"><b><campo-k k="h_nombre" ph="nombre completo del proveedor"></campo-k></b><span>CDH Maker — EL PROVEEDOR</span><span>C.C.: <campo-k k="h_cedula" ph="cédula del proveedor"></campo-k></span></div></div>
+    <div class="firma"><firma-k k="firma_c"></firma-k><div class="raya"><b><campo-k k="c_firmante" ph="nombre de quien firma por el cliente"></campo-k></b><span>EL CLIENTE</span><span>C.C./NIT: <campo-k k="c_cedula" ph="cédula de quien firma por el cliente"></campo-k></span></div></div>
+  </section>
+
+  <footer class="pie">CDH Maker · Medellín, Colombia · cdhmaker@gmail.com · cdhmaker.com</footer>
+</main>
+</body>
+</html>

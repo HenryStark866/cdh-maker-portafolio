@@ -60,7 +60,7 @@ export function enLetras(valor) {
 }
 
 // ───────── HTML del documento ─────────
-const LOGO = '<svg viewBox="0 0 512 512" width="46" height="46" aria-hidden="true"><rect width="512" height="512" rx="104" fill="#06232e"/><g transform="translate(56.5,56.5) scale(5.7)"><path d="M55 15H25A15 15 0 0 0 10 30v10a15 15 0 0 0 15 15h30" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="square"/><path d="M55 15H25A15 15 0 0 0 10 30v2h15V22" fill="none" stroke="#22d3ee" stroke-width="2.5" stroke-linecap="round"/><circle cx="25" cy="22" r="3" fill="#22d3ee"/><path d="M10 45v-5a15 15 0 0 1 15 15h20V42" fill="none" stroke="#22d3ee" stroke-width="2.5" stroke-linecap="round"/><circle cx="45" cy="42" r="3" fill="#22d3ee"/><circle cx="10" cy="45" r="3" fill="#22d3ee"/></g></svg>';
+const LOGO_BASE = '<svg viewBox="0 0 512 512" width="46" height="46" aria-hidden="true"><rect width="512" height="512" rx="104" fill="#06232e"/><g transform="translate(56.5,56.5) scale(5.7)"><path d="M55 15H25A15 15 0 0 0 10 30v10a15 15 0 0 0 15 15h30" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="square"/><path d="M55 15H25A15 15 0 0 0 10 30v2h15V22" fill="none" stroke="#22d3ee" stroke-width="2.5" stroke-linecap="round"/><circle cx="25" cy="22" r="3" fill="#22d3ee"/><path d="M10 45v-5a15 15 0 0 1 15 15h20V42" fill="none" stroke="#22d3ee" stroke-width="2.5" stroke-linecap="round"/><circle cx="45" cy="42" r="3" fill="#22d3ee"/><circle cx="10" cy="45" r="3" fill="#22d3ee"/></g></svg>';
 
 const CSS = `@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap");
 :root{--tinta:#0b1f27;--suave:#4a6470;--navy:#06232e;--cian:#0891b2;--cian-claro:#e0f7fb;--linea:#c9dbe0}
@@ -91,13 +91,26 @@ ol{padding-left:18px;margin:4px 0}li{margin-bottom:3px;font-size:8.5pt;text-alig
 .firmas{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:30px}
 .firma{padding-top:42px}.raya{border-top:1px solid var(--tinta);padding-top:5px;font-size:8.5pt}
 .raya b{display:block;font-size:9pt}.raya span{display:block;color:var(--suave)}
+.firma-img{display:block;max-height:64px;max-width:230px;margin:0 0 -6px}.firma{position:relative}.firma.con-img{padding-top:0}
+.firma-vacia{display:block;height:58px}.campo.vacio{color:#8aa1aa}.campo.ok{font-weight:600}
+.pagos{margin:14px 0 6px;padding:12px 14px;border:1px solid var(--linea);border-radius:10px;background:linear-gradient(180deg,#fff,#f6fbfc)}
+.pagos h2{margin:0 0 10px;border:0;padding:0;display:flex;justify-content:space-between;align-items:baseline}.pagos h2 small{font:500 8pt/1 "Inter",sans-serif;color:var(--suave)}
+.qrs{display:grid;grid-template-columns:repeat(auto-fit,minmax(70mm,1fr));gap:10px}
+.qr-t{display:flex;gap:10px;align-items:center;padding:8px;border:1px solid var(--linea);border-radius:10px;background:#fff;break-inside:avoid}
+.qr-t .qr{flex:none;width:34mm;height:34mm;padding:2px;border-radius:8px;border:1.5px solid var(--cian)}.qr-t .qr svg{width:100%;height:100%;display:block}
+.qr-t .ent{display:block;font-size:7.5pt;color:var(--suave);text-transform:uppercase;letter-spacing:.5px}
+.qr-t .llave{display:block;font:700 12pt/1.25 "Space Grotesk",sans-serif;color:var(--navy);word-break:break-all;margin:2px 0}
+.qr-t small{display:block;font-size:7.5pt;color:var(--suave)}
 .pie{margin-top:22px;padding-top:7px;border-top:1px solid var(--linea);font-size:7.5pt;color:var(--suave);text-align:center}
 .sello{display:inline-block;margin-top:4px;padding:1px 8px;border:1.5px solid;border-radius:4px;font:700 8pt/1.5 "Space Grotesk",sans-serif;letter-spacing:.6px}
 .sello.anulada{color:#b91c1c}.sello.pagada{color:#15803d}.sello.borrador{color:#a16207}
 @media (max-width:640px){body{padding:0}.hoja{padding:18px 14px;box-shadow:none}.membrete{flex-wrap:wrap}.ref{margin-left:0;text-align:left}.firmas{grid-template-columns:1fr}}`;
 
-export function htmlDocumento(d, emisor = {}, { pdf = false } = {}) {
+// Opciones: pdf (sin márgenes de pantalla) y paraFirma (deja <campo-k>/<firma-k> para /firmar).
+// emisor.logo (SVG de marca.js) y emisor.pagos (medios con su QR ya dibujado) los pone app.js.
+export function htmlDocumento(d, emisor = {}, { pdf = false, paraFirma = false } = {}) {
   const e = { ...EMISOR_BASE, ...emisor };
+  const LOGO = e.logo || LOGO_BASE;
   const clase = claseDe(d), T = TIPOS[clase];
   const t = totales(d);
   const r = d.receptor || {};
@@ -129,6 +142,8 @@ export function htmlDocumento(d, emisor = {}, { pdf = false } = {}) {
     <tr class="total"><td colspan="${conDesc ? 5 : 4}">${cotiz ? 'Total cotizado' : 'Total a pagar' + (cobro ? ' (antes de retenciones que practique el pagador)' : '')}</td><td class="num">${pesos(t.total)}</td></tr></table>
     <div class="letras"><b>Son:</b> ${enLetras(t.total)}</div>`;
 
+  const qrs = cobro && (e.pagos || []).length ? `<section class="pagos"><h2>Paga fácil <small>Escanea el QR o copia la llave</small></h2><div class="qrs">${e.pagos.map((m) => `<div class="qr-t">${m.svg ? `<div class="qr">${m.svg}</div>` : ''}
+      <div><span class="ent">${esc(m.titulo || m.entidad)}</span><b class="llave" data-copiable>${esc(m.llave)}</b><small>${esc(m.nota || '')}${m.titular ? '<br>Titular: ' + esc(m.titular) : ''}</small></div></div>`).join('')}</div></section>` : '';
   const pago = !cotiz && (e.banco || e.cuenta) ? `<h2>Forma de pago</h2><table class="datos">
     <tr><th>Banco / entidad</th><td>${esc(e.banco)}</td></tr><tr><th>Tipo y número de cuenta</th><td>${esc(e.tipo_cuenta)} ${esc(e.cuenta)}</td></tr>
     <tr><th>Titular</th><td>${esc(e.titular)}${e.cedula ? ' — C.C. ' + esc(e.cedula) : ''}</td></tr></table>
@@ -147,16 +162,22 @@ export function htmlDocumento(d, emisor = {}, { pdf = false } = {}) {
   const notas = d.notas ? `<p class="pre" style="font-size:9pt">${esc(d.notas)}</p>` : '';
   const origen = !cotiz && d.origen_numero ? `<p style="font-size:8.5pt;color:#4a6470">Según cotización N.º ${esc(d.origen_numero)}.</p>` : '';
 
+  // Firma del emisor: la imagen autorizada (Equipo → Firma) o el marcador para que se firme en /firmar.
+  const fe = d.firma_emisor?.imagen ? `<img class="firma-img" src="${d.firma_emisor.imagen}" alt="Firma">` : paraFirma ? '<firma-k k="firma_h"></firma-k>' : '';
+  const firmaEmisor = `<div class="firma ${fe ? 'con-img' : ''}">${fe}<div class="raya"><b>${esc(e.nombre)}</b><span>${esc(e.marca)}</span>${!cotiz && e.cedula ? '<span>C.C. ' + esc(e.cedula) + '</span>' : ''}${d.firma_emisor?.en ? '<span>Firma autorizada ' + esc(fechaLarga(d.firma_emisor.en.slice(0, 10))) + '</span>' : ''}</div></div>`;
+  const firmaCliente = (rotulo) => paraFirma
+    ? `<div class="firma con-img"><firma-k k="firma_c"></firma-k><div class="raya"><b>${rotulo}</b><span>${esc(r.nombre || 'Nombre')}</span><span>C.C./NIT: <campo-k k="c_cedula" ph="cédula o NIT"></campo-k></span><span>Fecha: <campo-k k="dia_firma" ph="día"></campo-k> de <campo-k k="mes_firma" ph="mes"></campo-k> de <campo-k k="anio_firma" ph="año"></campo-k></span></div></div>`
+    : `<div class="firma"><div class="raya"><b>${rotulo}</b><span>${esc(r.nombre || 'Nombre')}</span><span>Fecha: ____________________</span></div></div>`;
   const firmas = cotiz
-    ? `<div class="firmas"><div class="firma"><div class="raya"><b>${esc(e.nombre)}</b><span>${esc(e.marca)}</span></div></div>
-       <div class="firma"><div class="raya"><b>Aceptada por el cliente</b><span>${esc(r.nombre || 'Nombre')}</span><span>Fecha: ____________________</span></div></div></div>`
-    : `<p style="margin-top:16px">Atentamente,</p><div class="firma" style="max-width:280px"><div class="raya"><b>${esc(e.nombre)}</b><span>${esc(e.marca)}</span>${e.cedula ? '<span>C.C. ' + esc(e.cedula) + '</span>' : ''}</div></div>`;
+    ? `<div class="firmas">${firmaEmisor}${firmaCliente('Aceptada por el cliente')}</div>`
+    : paraFirma ? `<p style="margin-top:16px">Atentamente,</p><div class="firmas">${firmaEmisor}${firmaCliente('Recibida y aprobada por el cliente')}</div>`
+    : `<p style="margin-top:16px">Atentamente,</p><div style="max-width:280px">${firmaEmisor}</div>`;
 
   return `<!doctype html><html lang="es"${pdf ? ' class="pdf"' : ''}><head><meta charset="utf-8"><title>${esc(T.corto)} ${esc(numero)} — ${esc(e.marca)}</title><style>${CSS}</style></head><body><main class="hoja">
   <header class="membrete">${LOGO}<div class="marca">${esc(e.marca)}<small>Software a la medida · IoT · Fabricación digital — ${esc(e.ciudad)}, Colombia</small></div>
     <div class="ref">${ref}${sello ? `<br><span class="sello ${sello.toLowerCase()}">${sello}</span>` : ''}</div></header>
   <h1>${T.titulo}</h1><p class="subtitulo">${cotiz ? 'Propuesta económica' : cobro ? 'Persona natural no responsable de IVA' : 'Relación del cobro'}</p>
   ${cobro ? receptor + prestador : receptor}
-  ${notas}${items}${origen}${dian}${condiciones}${pago}${declaraciones}${firmas}
+  ${notas}${items}${origen}${dian}${condiciones}${qrs}${pago}${declaraciones}${firmas}
   <footer class="pie">${esc(e.marca)} · ${esc(e.ciudad)}, Colombia · ${esc(e.correo)} · ${esc(e.web)}</footer></main></body></html>`;
 }

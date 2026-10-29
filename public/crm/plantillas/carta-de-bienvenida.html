@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carta de Bienvenida — Plantilla</title>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap");
+
+:root {
+  --tinta: #0b1f27;
+  --tinta-suave: #4a6470;
+  --navy: #06232e;
+  --cian: #0891b2;        /* cian de marca oscurecido para que lea en papel */
+  --cian-claro: #e0f7fb;
+  --linea: #c9dbe0;
+  --papel: #ffffff;
+  --fondo: #eef3f5;
+}
+
+* { box-sizing: border-box; }
+
+html { background: var(--fondo); }
+
+body {
+  margin: 0;
+  padding: 32px 16px;
+  font: 400 10.5pt/1.55 "Inter", system-ui, sans-serif;
+  color: var(--tinta);
+  background: var(--fondo);
+}
+
+.hoja {
+  max-width: 210mm;
+  margin: 0 auto;
+  padding: 18mm 18mm 16mm;
+  background: var(--papel);
+  box-shadow: 0 2px 16px rgba(6, 35, 46, .12);
+}
+
+/* ===== Encabezado ===== */
+.membrete {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid var(--navy);
+}
+.membrete svg { width: 46px; height: 46px; flex: none; }
+.membrete .marca { font: 700 15pt/1.1 "Space Grotesk", sans-serif; color: var(--navy); }
+.membrete .marca small { display: block; font: 500 8.5pt/1.4 "Inter", sans-serif; color: var(--tinta-suave); }
+.membrete .ref { margin-left: auto; text-align: right; font-size: 8.5pt; color: var(--tinta-suave); }
+.membrete .ref b { color: var(--tinta); }
+
+h1 {
+  margin: 22px 0 4px;
+  font: 700 17pt/1.2 "Space Grotesk", sans-serif;
+  color: var(--navy);
+  text-align: center;
+  letter-spacing: .3px;
+}
+.subtitulo { margin: 0 0 20px; text-align: center; color: var(--tinta-suave); font-size: 9.5pt; }
+
+h2 {
+  margin: 20px 0 8px;
+  padding-bottom: 3px;
+  font: 700 11pt/1.3 "Space Grotesk", sans-serif;
+  color: var(--navy);
+  border-bottom: 1px solid var(--linea);
+  page-break-after: avoid;
+}
+
+p, li { text-align: justify; line-height: 1.85; }   /* aire para la pista bajo cada campo */
+ol, ul { padding-left: 20px; }
+li { margin-bottom: 4px; }
+
+/* ===== Campos por completar ===== */
+.campo {
+  display: inline-block;
+  min-width: 120px;
+  border-bottom: 1px solid var(--tinta);
+  padding: 0 4px;
+  line-height: 1.2;
+  color: transparent;            /* la pista se ve en gris debajo, no sobre la línea */
+  position: relative;
+  vertical-align: baseline;
+}
+.campo::after {
+  content: attr(data-pista);
+  position: absolute;
+  left: 2px;
+  top: 100%;
+  font-size: 6.5pt;
+  color: #8aa1aa;
+  white-space: nowrap;
+}
+.campo.largo { min-width: 260px; }
+.campo.corto { min-width: 70px; }
+.casilla { display: inline-block; width: 11px; height: 11px; border: 1px solid var(--tinta); margin-right: 5px; vertical-align: -1px; }
+
+/* ===== Tablas ===== */
+table { width: 100%; border-collapse: collapse; margin: 8px 0 12px; font-size: 9.5pt; page-break-inside: avoid; }
+th, td { border: 1px solid var(--linea); padding: 6px 8px; text-align: left; vertical-align: top; }
+th { background: var(--navy); color: #fff; font-weight: 600; }
+tr.total td { font-weight: 700; background: var(--cian-claro); }
+td.num, th.num { text-align: right; white-space: nowrap; }
+table.datos th { width: 34%; background: var(--cian-claro); color: var(--tinta); }
+
+.nota {
+  margin: 12px 0;
+  padding: 8px 12px;
+  background: var(--cian-claro);
+  border-left: 3px solid var(--cian);
+  font-size: 9pt;
+}
+
+/* ===== Firmas ===== */
+.firmas { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 36px; page-break-inside: avoid; }
+.firma { padding-top: 46px; }
+.firma .raya { border-top: 1px solid var(--tinta); padding-top: 6px; font-size: 9pt; }
+.firma .raya b { display: block; font-size: 9.5pt; }
+.firma .raya span { display: block; color: var(--tinta-suave); }
+
+.pie {
+  margin-top: 26px;
+  padding-top: 8px;
+  border-top: 1px solid var(--linea);
+  font-size: 7.5pt;
+  color: var(--tinta-suave);
+  text-align: center;
+}
+
+/* Carta: menos ceremonia, más aire */
+.carta p { text-align: left; }
+.carta .destinatario { margin: 22px 0 18px; }
+.carta .destinatario p { margin: 0; text-align: left; }
+
+@media (max-width: 640px) {
+  body { padding: 0; }
+  .hoja { padding: 20px 16px; box-shadow: none; }
+  .membrete { flex-wrap: wrap; }
+  .membrete .ref { margin-left: 0; text-align: left; }
+  .firmas { grid-template-columns: 1fr; }
+  table { font-size: 8.5pt; }
+}
+
+@page { size: A4; margin: 0; }
+@media print {
+  html, body { background: #fff; padding: 0; }
+  .hoja { box-shadow: none; max-width: none; }
+  th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  tr.total td, .nota, table.datos th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+/* ===== CRM: campos rellenados (rellenar.js) y firmas ===== */
+.campo.ok { color: inherit; border-bottom: 0; min-width: 0; padding: 0; font-weight: 600; }
+.campo.ok::after, .campo.vacio::after { content: none; }
+.campo.vacio { color: #a16207; background: #fff8e6; border-bottom: 1px dashed #d4a72c; min-width: 0; padding: 0 3px; font-size: 8.5pt; line-height: 1.3; }
+.casilla { text-align: center; overflow: hidden; line-height: 9px; }
+.casilla .campo, .casilla .campo.ok { display: inline; color: var(--tinta); background: none; border: 0; padding: 0; min-width: 0; font: 700 8pt/9px "Inter", sans-serif; }
+.casilla .campo.vacio { color: transparent; }
+.firma { padding-top: 0; }
+.firma .firma-img { display: block; height: 46px; max-width: 220px; object-fit: contain; object-position: left bottom; }
+.firma .firma-vacia { display: block; height: 46px; }
+/* Ancho de hoja A4 útil (PDF con htmlAPdf) y celulares: sin marco de papel. */
+@media (max-width: 700px) { html, body { background: #fff; padding: 0; } .hoja { padding: 0 2px; box-shadow: none; max-width: none; } }
+</style>
+</head>
+<body>
+<main class="hoja carta">
+
+  <header class="membrete">
+    <!--LOGO-->
+    <div class="marca">CDH Maker<small>Software a la medida · IoT · Fabricación digital — Medellín, Colombia</small></div>
+  </header>
+
+  <p style="margin-top:22px">Medellín, <campo-k k="fecha_carta" ph="fecha de la carta"></campo-k></p>
+
+  <div class="destinatario">
+    <p><campo-k k="c_tratamiento" ph="Señor / Señora"></campo-k></p>
+    <p><b><campo-k k="c_destinatario" ph="nombre completo del destinatario"></campo-k></b></p>
+    <p><campo-k k="c_cargo" ph="cargo de quien firma por el cliente"></campo-k></p>
+    <p><b><campo-k k="c_empresa" ph="empresa"></campo-k></b></p>
+    <p><campo-k k="c_direccion" ph="dirección del cliente"></campo-k></p>
+  </div>
+
+  <p><b>Asunto:</b> Bienvenida como cliente de CDH Maker</p>
+
+  <p>Apreciado(a) <campo-k k="c_saludo" ph="tratamiento y apellido (ej. señor Pérez)"></campo-k>:</p>
+
+  <p>Es un gusto darle la bienvenida a <campo-k k="c_empresa" ph="empresa"></campo-k> como cliente de CDH Maker. Con la entrega de <campo-k k="proyecto_nombre" ph="nombre del proyecto o solución"></campo-k> damos inicio formal a una relación comercial que esperamos sea larga y de mutuo beneficio.</p>
+
+  <p>Agradecemos la confianza que depositó en nosotros y el tiempo que dedicó a <campo-k k="agradecimiento" ph="qué hizo el cliente (revisar el prototipo, aprobar la muestra…)"></campo-k>. Su conformidad con el resultado es para nosotros la mejor señal de que la solución responde a la forma en que su organización trabaja.</p>
+
+  <p><b>Resumen de lo adquirido</b></p>
+  <table class="datos">
+    <tr><th>Solución</th><td style="line-height:2.2"><campo-k k="descripcion" ph="descripción breve de la solución"></campo-k></td></tr>
+    <tr><th>Valor de la inversión</th><td style="line-height:2.2">$<campo-k k="valor_total" ph="valor total en números"></campo-k>, según <campo-k k="segun_documento" ph="documento de soporte (plan de pago, contrato o cotización)"></campo-k> firmado por las partes.</td></tr>
+    <tr><th>Fecha de entrega</th><td style="line-height:2.2"><campo-k k="fecha_entrega" ph="fecha de entrega (dd/mm/aaaa)"></campo-k></td></tr>
+    <tr><th>Garantía</th><td style="line-height:2.2"><campo-k k="garantia_meses" ph="meses de garantía (ej. 3)"></campo-k> meses desde la fecha de entrega.</td></tr>
+  </table>
+
+  <p><b>Nuestro acompañamiento postventa</b></p>
+  <ul>
+    <li><b>Soporte directo:</b> puede escribirnos a cdhmaker@gmail.com o al WhatsApp <campo-k k="h_telefono" ph="WhatsApp / teléfono del proveedor"></campo-k>, de lunes a viernes de <campo-k k="soporte_desde" ph="hora de inicio del soporte"></campo-k> a <campo-k k="soporte_hasta" ph="hora de cierre del soporte"></campo-k>. Respondemos en un máximo de <campo-k k="soporte_respuesta_dias" ph="días hábiles de primera respuesta (ej. 1)"></campo-k> día hábil.</li>
+    <li><b>Garantía:</b> durante el período de garantía corregimos sin costo cualquier falla del alcance entregado.</li>
+    <li><b>Seguimiento:</b> a los treinta (30) días de la entrega lo contactaremos para revisar juntos cómo va el uso de la solución y resolver dudas de su equipo.</li>
+    <li><b>Capacitación adicional:</b> si se vinculan nuevas personas a su equipo, podemos programar una sesión de inducción.</li>
+    <li><b>Evolución de la solución:</b> cuando necesite nuevas funciones o integraciones (por ejemplo, <campo-k k="evolucion" ph="idea de evolución para este cliente"></campo-k>), con gusto le presentaremos una propuesta.</li>
+  </ul>
+
+  <p>Su contacto principal en CDH Maker soy yo, Henry Taborda, y estaré atento a lo que usted y su equipo necesiten.</p>
+
+  <p>Bienvenido(a), y gracias de nuevo por elegirnos.</p>
+
+  <p style="margin-top:22px">Cordialmente,</p>
+
+  <div class="firma" style="max-width:280px"><firma-k k="firma_h"></firma-k><div class="raya"><b>Ing. <campo-k k="h_nombre" ph="nombre completo del proveedor"></campo-k></b><span>Fundador — CDH Maker</span><span>cdhmaker@gmail.com</span></div></div>
+
+  <footer class="pie">CDH Maker · Medellín, Colombia · cdhmaker@gmail.com · cdhmaker.com</footer>
+</main>
+</body>
+</html>
