@@ -1003,36 +1003,44 @@ a:focus-visible, button:focus-visible, select:focus-visible, summary:focus-visib
   outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px;
 }
 
-/* ===== Cinta de la portada: Shorts + ofertas (ads.js) =====
-   Banda en el flujo de la página, justo después del hero. La pista se mueve
-   con transform (GPU) y se detiene con hover, foco, el botón Pausar, el
-   visor abierto o cuando sale de pantalla (.is-off). */
-.cinta { position: relative; z-index: 1; padding: 44px 0 36px; }
-.cinta-head {
-  display: flex; align-items: flex-end; justify-content: space-between; gap: 16px;
-  margin-bottom: 20px;
+/* ===== Cinta fija: Shorts + clientes + ofertas (ads.js) =====
+   Barra delgada pegada arriba (a la derecha de la barra lateral; en móvil,
+   debajo de la barra superior), visible siempre aunque se haga scroll. La
+   pista se mueve con transform (GPU) y se detiene con hover, foco, el botón
+   Pausar, el visor abierto o la pestaña oculta. Las reglas que mueven el
+   body y el scroll-padding están al final del archivo, para ganarle a las
+   del menú móvil. */
+:root { --cinta-h: 40px; }
+.cinta {
+  position: fixed; z-index: 45; top: 0; left: var(--sidebar-w); right: 0;
+  height: var(--cinta-h);
+  display: flex; align-items: center; gap: 10px; padding: 0 8px 0 14px;
+  background: var(--nav-bg); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-body);
 }
-.cinta-title { font-size: clamp(1.25rem, 2.4vw, 1.75rem); line-height: 1.2; letter-spacing: -0.02em; }
-.cinta-head .section-kicker { margin-bottom: 10px; }
+.cinta-label {
+  flex-shrink: 0; font: 600 0.68rem var(--font-display); letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--accent); white-space: nowrap;
+}
 .cinta-toggle {
-  flex-shrink: 0; display: inline-flex; align-items: center; gap: 7px;
-  padding: 8px 14px; border-radius: 999px; cursor: pointer;
-  border: 1px solid var(--border); background: var(--surface); color: var(--text);
-  font: 600 0.8rem var(--font-body);
+  flex-shrink: 0; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; cursor: pointer;
+  border: 1px solid var(--border); background: var(--surface); color: var(--accent);
   transition: border-color 0.2s;
 }
 .cinta-toggle:hover { border-color: var(--accent); }
-.cinta-toggle svg { width: 14px; height: 14px; color: var(--accent); }
+.cinta-toggle svg { width: 12px; height: 12px; }
 .cinta-toggle .i-play, .cinta-toggle[aria-pressed="true"] .i-pause { display: none; }
 .cinta-toggle[aria-pressed="true"] .i-play { display: block; }
+.cinta-toggle-l { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .cinta-viewport {
-  overflow: hidden; padding: 6px 0 10px;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+  flex: 1; min-width: 0; height: 100%; overflow: hidden; display: flex; align-items: center;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
 }
 .cinta-track {
-  list-style: none; display: flex; gap: 16px; width: max-content;
-  padding: 0 8px; margin: 0; min-height: 300px;
+  list-style: none; display: flex; align-items: center; gap: 10px; width: max-content;
+  padding: 0 6px; margin: 0;
 }
 .cinta-track.is-anim { animation: cinta-scroll var(--cinta-dur, 60s) linear infinite; will-change: transform; }
 @keyframes cinta-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
@@ -1043,83 +1051,50 @@ a:focus-visible, button:focus-visible, select:focus-visible, summary:focus-visib
   animation-play-state: paused;
 }
 /* Reducir movimiento: fila fija con desplazamiento manual */
-.cinta.is-static .cinta-viewport { overflow-x: auto; scroll-snap-type: x mandatory; -webkit-mask-image: none; mask-image: none; }
-.cinta.is-static .cinta-item { scroll-snap-align: start; }
+.cinta.is-static .cinta-viewport { overflow-x: auto; scrollbar-width: none; -webkit-mask-image: none; mask-image: none; }
+.cinta.is-static .cinta-viewport::-webkit-scrollbar { display: none; }
 .cinta-item { flex: 0 0 auto; display: flex; }
 
+/* Cada pieza es una píldora: miniatura o ícono · etiqueta · título · precio · → */
 .cinta-card {
-  position: relative; display: flex; flex-direction: column; overflow: hidden;
-  height: 300px; border-radius: 16px; text-align: start;
+  display: inline-flex; align-items: center; gap: 8px; height: 30px; max-width: 420px;
+  padding: 0 12px 0 3px; border-radius: 999px; white-space: nowrap;
   border: 1px solid var(--border); background: var(--surface); color: var(--text);
-  text-decoration: none; font: inherit; cursor: pointer;
-  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  text-decoration: none; font: 500 0.8rem/1 var(--font-body); cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
 }
-.cinta-card:hover, .cinta-card:focus-visible {
-  transform: translateY(-4px); border-color: var(--accent);
-  box-shadow: 0 14px 34px -14px var(--glow);
+.cinta-card:hover, .cinta-card:focus-visible { border-color: var(--accent); background: var(--surface-2); }
+.cinta-thumb, .cinta-ico, .cinta-img {
+  position: relative; flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; overflow: hidden;
+  display: grid; place-items: center;
+  color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, transparent);
 }
+.cinta-thumb img, .cinta-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cinta-ico svg { width: 14px; height: 14px; }
+.cinta-img.is-logo { border-radius: 7px; background: #fff; }
+.cinta-img.is-logo img { object-fit: contain; padding: 2px; }
+.cinta-initial { font: 700 0.72rem var(--font-display); color: var(--btn-fg); }
+.cinta-img.is-initial { background: var(--accent-2); }
 .cinta-badge {
-  align-self: flex-start; padding: 3px 9px; border-radius: 999px;
-  font: 600 0.66rem var(--font-display); letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
-}
-
-/* Short: miniatura vertical 9:16 (hqdefault es 4:3 con el video al centro) */
-.cinta-short { width: 169px; padding: 0; background: #000; color: #fff; border-color: transparent; }
-.cinta-thumb { position: absolute; inset: 0; }
-.cinta-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.cinta-short::after {
-  content: ""; position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, transparent 28%, transparent 52%, rgba(0,0,0,0.85) 100%);
-}
-.cinta-short .cinta-badge {
-  position: absolute; top: 10px; inset-inline-start: 10px; z-index: 1;
-  color: #fff; background: rgba(204, 0, 41, 0.92); border-color: transparent;
-}
-.cinta-play {
-  position: absolute; z-index: 1; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center;
-  color: #fff; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(4px); transition: transform 0.2s ease, background 0.2s ease;
-}
-.cinta-play svg { width: 22px; height: 22px; margin-inline-start: 3px; }
-.cinta-short:hover .cinta-play, .cinta-short:focus-visible .cinta-play { transform: translate(-50%, -50%) scale(1.1); background: rgba(204, 0, 41, 0.9); }
-.cinta-cap {
-  position: absolute; z-index: 1; left: 10px; right: 10px; bottom: 10px;
-  font: 600 0.82rem/1.3 var(--font-display);
-  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-}
-
-/* Oferta: servicio de CDH, YAM o producto de un comercio */
-.cinta-offer { width: 236px; padding: 18px 18px 16px; gap: 10px; }
-.cinta-offer::before {
-  content: ""; position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(120% 70% at 100% 0%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 60%);
-}
-.cinta-yam::before {
-  background: radial-gradient(120% 70% at 100% 0%, color-mix(in srgb, var(--accent-2) 26%, transparent), transparent 60%);
-}
-.cinta-ico {
-  width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; flex-shrink: 0;
+  flex-shrink: 0; padding: 3px 7px; border-radius: 999px;
+  font: 700 0.6rem/1 var(--font-display); letter-spacing: 0.08em; text-transform: uppercase;
   color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent);
 }
-.cinta-ico svg { width: 24px; height: 24px; }
-.cinta-img { display: block; margin: -18px -18px 0; height: 128px; flex-shrink: 0; background: var(--surface-2); }
-.cinta-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.cinta-ttl { font: 700 1.04rem/1.25 var(--font-display); letter-spacing: -0.01em; }
-.cinta-txt { color: var(--text-dim); font-size: 0.84rem; line-height: 1.45; }
-.cinta-price { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
-.cinta-price b { font: 700 1.15rem var(--font-display); color: var(--accent); }
-.cinta-price s { color: var(--text-dim); font-size: 0.82rem; }
-.cinta-store { color: var(--text-dim); font-size: 0.78rem; }
-.cinta-cta {
-  margin-top: auto; align-self: flex-start; padding: 8px 14px; border-radius: 999px;
-  font: 600 0.82rem var(--font-body); color: var(--btn-fg); background: var(--accent);
+.cinta-ttl { min-width: 0; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
+.cinta-price { flex-shrink: 0; display: inline-flex; align-items: baseline; gap: 6px; }
+.cinta-price b { color: var(--accent); font: 700 0.8rem var(--font-display); }
+.cinta-price s { color: var(--text-dim); font-size: 0.72rem; }
+.cinta-store { flex-shrink: 0; color: var(--text-dim); font-size: 0.72rem; }
+.cinta-cta { flex-shrink: 0; color: var(--accent); font-weight: 700; }
+/* Short: miniatura con el punto rojo de "video" */
+.cinta-short .cinta-badge { color: #fff; background: rgba(204, 0, 41, 0.92); }
+.cinta-short .cinta-thumb::after {
+  content: ""; position: absolute; inset: 0; margin: auto; width: 0; height: 0;
+  border-left: 7px solid #fff; border-top: 4.5px solid transparent; border-bottom: 4.5px solid transparent;
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.8));
 }
-.cinta-yam .cinta-cta { background: var(--accent-2); }
-.cinta-ttl, .cinta-txt, .cinta-price, .cinta-store, .cinta-cta, .cinta-badge, .cinta-ico, .cinta-img { position: relative; }
+.cinta-yam .cinta-badge, .cinta-client .cinta-badge { color: var(--accent-2); background: color-mix(in srgb, var(--accent-2) 14%, transparent); }
+.cinta-cat .cinta-price b::after { content: "*"; opacity: 0.6; }
 
 /* Visor del Short (dialog nativo: foco atrapado y Esc para cerrar) */
 .cinta-modal {
@@ -1153,23 +1128,6 @@ a:focus-visible, button:focus-visible, select:focus-visible, summary:focus-visib
 }
 .cinta-modal-yt:hover { text-decoration: underline; }
 
-@media (max-width: 760px) {
-  .cinta { padding: 32px 0 26px; }
-  .cinta-head { align-items: center; }
-  .cinta-toggle { padding: 9px; }
-  .cinta-toggle-l { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  .cinta-track { gap: 12px; min-height: 250px; }
-  .cinta-card { height: 250px; }
-  .cinta-short { width: 141px; }
-  .cinta-offer { width: 204px; padding: 14px 14px 12px; gap: 8px; }
-  .cinta-img { margin: -14px -14px 0; height: 100px; }
-  .cinta-ttl { font-size: 0.96rem; }
-  .cinta-txt { font-size: 0.8rem; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .cinta-track.is-anim { animation: none; }
-  .cinta-card, .cinta-play { transition: none; }
-}
 
 /* ===== Responsive — sidebar → top bar en móvil ===== */
 @media (max-width: 760px) {
@@ -1426,3 +1384,67 @@ html { scroll-padding-top: 24px; }
   .card:hover, .why-item:hover, .project:hover { transform: none; }
   ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Cinta fija (ads.js) — lo que desplaza la página. Va al final para ganarle
+   a las reglas del menú (escritorio: barra lateral; móvil: barra de 60 px).
+   ═══════════════════════════════════════════════════════════════════════════ */
+body { padding-top: var(--cinta-h); }
+html { scroll-padding-top: calc(var(--cinta-h) + 24px); }
+#cdh-lang-suggest { top: calc(var(--cinta-h) + 12px); }
+@media (max-width: 760px) {
+  body { padding-top: calc(60px + var(--cinta-h)); }
+  .cinta { top: 60px; left: 0; padding: 0 6px; gap: 6px; }
+  .cinta-label { display: none; }
+  .cinta-card { max-width: 300px; }
+}
+@media (max-width: 700px) {
+  html { scroll-padding-top: calc(76px + var(--cinta-h)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cinta-track.is-anim { animation: none; }
+  .cinta-card { transition: none; }
+}
+@media print { .cinta { display: none; } body { padding-top: 0; } }
+
+/* ===== Catálogo (/catalogo, /en/catalog — tools/catalogo.mjs) ===== */
+.cat-grid { align-items: stretch; }
+.cat-item { position: relative; display: flex; flex-direction: column; gap: 10px; }
+.cat-item.is-featured { border-color: color-mix(in srgb, var(--accent) 55%, transparent); box-shadow: var(--shadow-card), 0 0 0 1px color-mix(in srgb, var(--accent) 25%, transparent); }
+.cat-badge {
+  align-self: flex-start; padding: 3px 10px; border-radius: 999px;
+  font: 700 0.66rem var(--font-display); letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--btn-fg); background: var(--accent);
+}
+.cat-inc-t { font: 600 0.78rem var(--font-display); letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-dim); margin-top: 4px; }
+.cat-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 6px 0 4px; padding-top: 12px; border-top: 1px solid var(--border); }
+.cat-meta dt { font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; }
+.cat-meta dd { font-size: 0.9rem; }
+.cat-price { display: block; color: var(--accent); font: 700 1.05rem var(--font-display); }
+.cat-usd { display: block; color: var(--text-dim); font-size: 0.76rem; }
+.cat-cta { margin-top: auto; align-self: flex-start; }
+.cat-provisional { margin-top: 18px; max-width: 720px; font-size: 0.82rem; color: var(--text-dim); }
+
+/* ===== Chat: atajos y sugerencias del catálogo (chat-widget.js) ===== */
+.cdh-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.cdh-chips button, .cdh-chips a {
+  padding: 6px 11px; border-radius: 999px; cursor: pointer; text-decoration: none;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  font: 500 0.78rem var(--font-body);
+}
+.cdh-chips button:hover { border-color: var(--accent); }
+.cdh-chips a { border-style: dashed; color: var(--accent); }
+.cdh-sug {
+  display: flex; flex-direction: column; gap: 3px; margin-top: 8px; padding: 10px 12px; border-radius: 12px;
+  background: var(--surface-2); border: 1px solid var(--border);
+}
+.cdh-sug strong { font-size: 0.86rem; }
+.cdh-sug-price { color: var(--accent); font-weight: 700; font-size: 0.84rem; }
+.cdh-sug small { color: var(--text-dim); font-size: 0.76rem; line-height: 1.4; }
+.cdh-sug-acts { display: flex; align-items: center; gap: 10px; margin-top: 4px; font-size: 0.78rem; }
+.cdh-sug-pick {
+  padding: 4px 10px; border-radius: 999px; border: 0; cursor: pointer;
+  background: var(--accent); color: var(--btn-fg); font: 600 0.76rem var(--font-body);
+}
+.cdh-sug-pick:disabled { opacity: 0.7; cursor: default; }
+.cdh-sug-note { display: block; margin-top: 6px; color: var(--text-dim); font-size: 0.72rem; }

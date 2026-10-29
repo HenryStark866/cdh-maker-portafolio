@@ -225,5 +225,9 @@ window.CDH_I18N_DICT["fr"] = {
   "to_top": "Retour en haut",
   "tag_star": "Web · SaaS · Produit phare",
   "cinta_k": "// En vitrine",
-  "cinta_t": "Des idées en 60 secondes et des offres pour votre activité"
+  "cinta_t": "Des idées en 60 secondes et des offres pour votre activité",
+  "fs_cat": "Conseil et catalogue avec prix",
+  "fs_cat2": "Catalogue et tarifs",
+  "faq10_q": "Je ne sais pas de quoi mon entreprise a besoin. Par où commencer ?",
+  "faq10_a": "Par un appel d'orientation gratuit de 30 minutes : vous nous expliquez comment vous travaillez aujourd'hui et ce qui vous coûte du temps ou de l'argent, et nous vous disons quel type de solution convient et son coût approximatif. Pour aller plus loin, le diagnostic numérique express coûte 90 USD et il est déduit si vous lancez le projet. Prix dans le <a href=\"/catalogo\">catalogue</a>."
 };

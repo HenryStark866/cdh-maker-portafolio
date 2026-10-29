@@ -1,25 +1,30 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    CDH MAKER — ads.js
-   Cinta de la portada (#cinta): banda horizontal animada que intercala
+   Cinta fija (#cinta): barra delgada pegada arriba, visible siempre aunque
+   se haga scroll, que hace rotar en un bucle continuo
      · Shorts del canal de YouTube (los publica el bot ClipFactory). La lista
        sale de /media/shorts.json, que escribe tools/sync-shorts.mjs en cada
-       deploy. Al hacer clic se abre un visor con el embed de
-       youtube-nocookie; el iframe se crea SOLO al abrirlo y se destruye al
-       cerrarlo (nada de YouTube se carga mientras nadie lo pida, salvo las
-       miniaturas de i.ytimg.com). Los Shorts subidos con la inserción
-       desactivada ("embed": false) se abren en youtube.com.
-     · Ofertas: servicios de CDH Maker (WhatsApp vía contact.js), la tarjeta
-       "Vende en YAM" y, si el feed público de YAM responde, productos y
-       campañas reales de sus comercios. Nunca se inventan productos: sin
-       feed solo quedan las ofertas fijas de CDH.
+       deploy. Si la descripción del Short enlaza a un producto del catálogo
+       (cdhmaker.com/catalogo#<id>), la píldora lo nombra. Al hacer clic se
+       abre un visor con el embed de youtube-nocookie; el iframe se crea SOLO
+       al abrirlo y se destruye al cerrarlo. Los Shorts subidos con la
+       inserción desactivada ("embed": false) se abren en youtube.com.
+     · Productos y servicios de CDH Maker: /catalogo.json (lo genera
+       tools/build-i18n.mjs desde tools/catalogo.mjs, con precio orientativo).
+       Sin catálogo quedan las cuatro ofertas fijas de siempre (WhatsApp vía
+       contact.js).
+     · Clientes del ecosistema CDH Maker con su imagen: YAM (producto propio,
+       un cliente más), IncubApp, TaxiYa, Refricom, PrivacyCheck.
+     · "Vende en YAM" y, si el feed público de YAM responde, productos,
+       campañas y tiendas reales de sus comercios. Nunca se inventan
+       productos: sin feed no aparece ninguno.
 
-   Reemplaza al widget flotante con un solo video (versiones ≤ 6).
    Accesibilidad: se pausa con el mouse encima, con el foco dentro y con el
    botón Pausar (WCAG 2.2.2); con "reducir movimiento" no se anima y queda
    como fila con desplazamiento horizontal. Las copias que hacen el bucle van
-   con aria-hidden + inert. Se detiene sola cuando sale de la pantalla.
-   Textos en los 10 idiomas del sitio (objeto T; el título de la banda va en
-   index.html con data-i18n: cinta_k, cinta_t).
+   con aria-hidden + inert. Se detiene con la pestaña oculta.
+   Textos en los 10 idiomas del sitio (objeto T; la etiqueta y el nombre de
+   la barra van en index.html con data-i18n: cinta_k, cinta_t).
    ───────────────────────────────────────────────────────────────────────────
    Autor:    Ing. Henry Taborda — CDH Maker (Medellín, Colombia)
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -34,11 +39,31 @@
   if (!track || !viewport) return;
 
   const SHORTS_URL = "/media/shorts.json";
+  const CATALOG_URL = "/catalogo.json";
   const FEED_URL = "https://yam.cdhmaker.com/api/publico/vitrina";
   const FEED_TIMEOUT = 4000;
   const YAM_SIGNUP = "https://yam.cdhmaker.com/registro?ref=cdh-cinta";
   const MAX_FEED = 12;
-  const SPEED = 42; // px por segundo
+  const MAX_STORES = 8;
+  const SPEED = 36; // px por segundo
+
+  // Clientes del ecosistema (las mismas URL e imágenes de #proyectos).
+  // YAM es producto de CDH Maker y va como un cliente más.
+  const CLIENTS = [
+    { name: "YAM", url: "https://yam.cdhmaker.com/?ref=cdh-cinta", img: "/media/atiempo-logistica.webp" },
+    { name: "IncubApp", url: "https://incubapp.cdhmaker.com", img: "/media/incubapp.webp" },
+    { name: "TaxiYa", url: "https://taxiya.vercel.app", img: "/media/taxiya.webp" },
+    { name: "Refricom", url: "https://refricom.cdhmaker.com" },
+    { name: "PrivacyCheck", url: "https://privacycheck-co.vercel.app", img: "/media/privacycheck-poster.webp" },
+  ];
+  // Etiquetas nuevas de la barra (el resto de textos sigue en T)
+  const T2 = {
+    es: { client: "Cliente", store: "Tienda", cdh: "CDH Maker" }, en: { client: "Client", store: "Store", cdh: "CDH Maker" },
+    zh: { client: "客户", store: "店铺", cdh: "CDH Maker" }, hi: { client: "क्लाइंट", store: "स्टोर", cdh: "CDH Maker" },
+    ar: { client: "عميل", store: "متجر", cdh: "CDH Maker" }, pt: { client: "Cliente", store: "Loja", cdh: "CDH Maker" },
+    bn: { client: "ক্লায়েন্ট", store: "স্টোর", cdh: "CDH Maker" }, ru: { client: "Клиент", store: "Магазин", cdh: "CDH Maker" },
+    fr: { client: "Client", store: "Boutique", cdh: "CDH Maker" }, id: { client: "Klien", store: "Toko", cdh: "CDH Maker" },
+  };
 
   // ── Textos (10 idiomas) ────────────────────────────────────────────────
   // svc: [título, texto] de cada servicio, en el orden de SERVICES abajo.
@@ -130,6 +155,10 @@
     const l = (document.documentElement.lang || "es").slice(0, 2);
     return T[l] ? l : "es";
   };
+  const tx = () => Object.assign({}, T[lang()], T2[lang()]);
+  // El catálogo existe en español e inglés: los demás idiomas usan el inglés
+  const catLang = () => (lang() === "es" ? "es" : "en");
+  const catPage = () => (catLang() === "es" ? "/catalogo" : "/en/catalog");
 
   // Íconos: los mismos trazos de las tarjetas de #servicios
   const ICON = {
@@ -138,9 +167,12 @@
     print3d: '<path d="M6 3h12l4 6-10 12L2 9l4-6z" /><path d="M11 3 8 9l4 12 4-12-3-6" /><path d="M2 9h20" />',
     iot: '<rect x="4" y="4" width="16" height="16" rx="2" /><path d="M9 9h6v6H9z" /><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3" />',
     bag: '<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" /><path d="M3 6h18" /><path d="M16 10a4 4 0 0 1-8 0" />',
-    play: '<path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none" />',
+    talk: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /><path d="M8 9h8M8 13h5" />',
+    video: '<rect x="2" y="5" width="15" height="14" rx="2" /><path d="m17 10 5-3v10l-5-3z" />',
   };
   const SERVICES = ["software", "ai", "print3d", "iot"];
+  // Ícono de cada categoría del catálogo
+  const CAT_ICON = { consultoria: "talk", software: "software", ia: "ai", contenido: "video", fabricacion: "print3d", iot: "iot", productos: "bag" };
   const svg = (paths) =>
     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
 
@@ -182,38 +214,39 @@
     }
   }
 
-  // ── Tarjetas ───────────────────────────────────────────────────────────
+  // ── Píldoras ───────────────────────────────────────────────────────────
   // Si el Short no permite inserción (embed === false en shorts.json) la
-  // tarjeta es un enlace a youtube.com; si la permite, un botón que abre el visor.
+  // píldora es un enlace a youtube.com; si la permite, un botón que abre el visor.
   function shortCard(s, t) {
     const canEmbed = s.embed !== false;
     const b = el(canEmbed ? "button" : "a", "cinta-card cinta-short");
+    const promo = s.servicio && catalogById[s.servicio] ? catalogById[s.servicio].nombre[catLang()] : "";
+    const label = `${t.watch}: ${s.titulo || ""}${promo ? ` — ${promo}` : ""}`;
     if (canEmbed) {
       b.type = "button";
       b.dataset.id = s.id;
       b.dataset.title = s.titulo || "";
-      b.setAttribute("aria-label", `${t.watch}: ${s.titulo || ""}`);
+      b.setAttribute("aria-label", label);
     } else {
       b.href = `https://www.youtube.com/shorts/${s.id}`;
       b.target = "_blank";
       b.rel = "noopener";
-      b.setAttribute("aria-label", `${t.watch}: ${s.titulo || ""} (${t.newtab})`);
+      b.setAttribute("aria-label", `${label} (${t.newtab})`);
     }
+    b.title = s.titulo || "";
     const thumb = el("span", "cinta-thumb");
     const img = el("img");
-    img.src = `https://i.ytimg.com/vi/${s.id}/hqdefault.jpg`;
+    img.src = `https://i.ytimg.com/vi/${s.id}/default.jpg`;
     img.alt = "";
-    img.width = 480;
-    img.height = 360;
+    img.width = 24;
+    img.height = 24;
     img.loading = "lazy";
     img.decoding = "async";
     thumb.appendChild(img);
     b.appendChild(thumb);
     b.appendChild(el("span", "cinta-badge", t.short));
-    const play = el("span", "cinta-play");
-    play.innerHTML = svg(ICON.play);
-    b.appendChild(play);
-    b.appendChild(el("span", "cinta-cap", s.titulo || ""));
+    b.appendChild(el("span", "cinta-ttl", s.titulo || ""));
+    if (promo) b.appendChild(el("span", "cinta-store", promo));
     return b;
   }
 
@@ -225,26 +258,34 @@
       a.rel = "noopener";
       a.setAttribute("aria-label", `${o.title} — ${o.cta} (${t.newtab})`);
     }
+    if (o.text) a.title = o.text;
     if (o.msg) a.dataset.msg = o.msg;
     if (o.image) {
-      const fig = el("span", "cinta-img");
+      const fig = el("span", "cinta-img" + (o.logo ? " is-logo" : ""));
       const img = el("img");
       img.src = o.image;
       img.alt = "";
       img.loading = "lazy";
       img.decoding = "async";
       img.referrerPolicy = "no-referrer";
-      img.onerror = () => fig.remove();
+      img.onerror = () => {
+        fig.className = "cinta-img is-initial";
+        fig.textContent = "";
+        fig.appendChild(el("span", "cinta-initial", (o.title || "?").trim().charAt(0).toUpperCase()));
+      };
       fig.appendChild(img);
       a.appendChild(fig);
     } else if (o.icon) {
       const ico = el("span", "cinta-ico");
       ico.innerHTML = svg(ICON[o.icon]);
       a.appendChild(ico);
+    } else {
+      const fig = el("span", "cinta-img is-initial");
+      fig.appendChild(el("span", "cinta-initial", (o.title || "?").trim().charAt(0).toUpperCase()));
+      a.appendChild(fig);
     }
     a.appendChild(el("span", "cinta-badge", o.tag));
-    a.appendChild(el("strong", "cinta-ttl", o.title));
-    if (o.text) a.appendChild(el("span", "cinta-txt", o.text));
+    a.appendChild(el("span", "cinta-ttl", o.title));
     if (o.price) {
       const p = el("span", "cinta-price");
       p.appendChild(el("b", null, o.price));
@@ -256,18 +297,49 @@
       a.appendChild(p);
     }
     if (o.store) a.appendChild(el("span", "cinta-store", o.store));
-    a.appendChild(el("span", "cinta-cta", o.cta + " →"));
+    a.appendChild(el("span", "cinta-cta", "→"));
     return a;
   }
 
-  // Ofertas fijas: "Vende en YAM" + servicios de CDH (respaldo siempre presente)
+  // Respaldo sin catálogo: las cuatro ofertas fijas de siempre (WhatsApp)
   function staticOffers(t) {
-    const svc = SERVICES.map((icon, i) => ({
+    return SERVICES.map((icon, i) => ({
       kind: "svc", icon, tag: t.service, title: t.svc[i][0], text: t.svc[i][1], cta: t.quote,
       href: "#contacto", msg: t.msg.replace("{t}", t.svc[i][0]),
     }));
-    const yam = { kind: "yam", icon: "bag", tag: t.yam_tag, title: t.yam_t, text: t.yam_p, cta: t.yam_cta, href: YAM_SIGNUP, external: true };
-    return [yam, ...svc];
+  }
+  function yamOffer(t) {
+    return { kind: "yam", icon: "bag", tag: t.yam_tag, title: t.yam_t, text: t.yam_p, cta: t.yam_cta, href: YAM_SIGNUP, external: true };
+  }
+
+  // Productos y servicios del catálogo (destacados primero: la Consultoría abre)
+  let catalog = null;
+  let catalogById = {};
+  function catalogOffers(t) {
+    if (!catalog || !Array.isArray(catalog.items)) return [];
+    const L = catLang();
+    const items = catalog.items.filter((x) => x && x.nombre && x.nombre[L]);
+    items.sort((a, b) => (b.destacado ? 1 : 0) - (a.destacado ? 1 : 0));
+    return items.map((x) => {
+      const ext = x.url && safeUrl(x.url);
+      return {
+        kind: catalog.provisional && !(x.precio && x.precio.gratis) && !(x.precio && x.precio.texto) ? "cat" : "cat-fijo",
+        icon: CAT_ICON[x.cat] || "bag",
+        tag: x.cat === "productos" ? t.cdh : t.service,
+        title: x.nombre[L],
+        text: x.para ? x.para[L] : "",
+        price: x.precio_texto ? x.precio_texto[L] : "",
+        cta: t.see,
+        href: ext || `${catPage()}#${encodeURIComponent(x.id)}`,
+        external: !!ext,
+      };
+    });
+  }
+
+  function clientOffers(t) {
+    return CLIENTS.map((c) => ({
+      kind: "client", tag: t.client, title: c.name, image: c.img || null, cta: t.see, href: c.url, external: true,
+    }));
   }
 
   // Ofertas reales de los comercios de YAM (contrato: /api/publico/vitrina)
@@ -297,6 +369,27 @@
       });
     }
     return out.slice(0, MAX_FEED);
+  }
+
+  // Tiendas (e-commerce registrados en YAM) con su logo si el feed lo trae.
+  // Acepta data.comercios [{nombre, logo, url}]; si no viene, se arman con
+  // los comercios de las ofertas (enlace a su primer producto).
+  function storeOffers(data, t) {
+    if (!data || typeof data !== "object") return [];
+    const seen = new Set();
+    const out = [];
+    const add = (nombre, logo, url) => {
+      const name = nombre ? String(nombre).trim().slice(0, 40) : "";
+      const href = safeUrl(url);
+      if (!name || !href || seen.has(name.toLowerCase())) return;
+      seen.add(name.toLowerCase());
+      out.push({ kind: "store", tag: t.store, title: name, image: safeUrl(logo), logo: true, cta: t.see, href, external: true });
+    };
+    for (const c of Array.isArray(data.comercios) ? data.comercios : []) if (c) add(c.nombre, c.logo, c.url);
+    for (const o of Array.isArray(data.ofertas) ? data.ofertas : []) {
+      if (o && o.comercio) add(o.comercio.nombre, o.comercio.logo, o.comercio.url || o.url);
+    }
+    return out.slice(0, MAX_STORES);
   }
 
   // Reparte b entre los elementos de a, de forma pareja
@@ -344,7 +437,7 @@
     return dialog;
   }
   function openShort(id, title) {
-    const t = T[lang()];
+    const t = tx();
     const watchUrl = `https://www.youtube.com/shorts/${id}`;
     if (typeof HTMLDialogElement !== "function") {
       window.open(watchUrl, "_blank", "noopener");
@@ -377,13 +470,20 @@
 
   function setToggleLabel() {
     if (!toggle) return;
-    const t = T[lang()];
-    toggle.querySelector(".cinta-toggle-l").textContent = paused ? t.play : t.pause;
+    const t = tx();
+    const l = paused ? t.play : t.pause;
+    toggle.querySelector(".cinta-toggle-l").textContent = l;
+    toggle.title = l;
   }
 
   function render() {
-    const t = T[lang()];
-    const offers = spread(feedOffers(feedData, t), staticOffers(t));
+    const t = tx();
+    const own = catalogOffers(t);
+    // Mezcla: lo de los comercios (productos, campañas, tiendas) entre lo de
+    // CDH (catálogo o respaldo, clientes y "Vende en YAM"), y los Shorts
+    // repartidos por toda la pista
+    const cdh = spread(own.length ? own : staticOffers(t), [yamOffer(t), ...clientOffers(t)]);
+    const offers = spread(spread(feedOffers(feedData, t), storeOffers(feedData, t)), cdh);
     const items = spread(shorts.map((s) => ({ short: s })), offers.map((o) => ({ offer: o })));
     track.classList.remove("is-anim");
     track.textContent = "";
@@ -399,7 +499,7 @@
     setToggleLabel();
   }
 
-  // Bucle infinito: se duplica el juego de tarjetas (copia oculta para
+  // Bucle infinito: se duplica el juego de píldoras (copia oculta para
   // lectores de pantalla y sin foco) y la pista se desplaza la mitad.
   function setupMotion() {
     track.querySelectorAll(".cinta-item.is-clone").forEach((n) => n.remove());
@@ -410,7 +510,7 @@
     if (reduce) return;
     const originals = Array.from(track.children);
     if (!originals.length) return;
-    // Si el juego no llena la pantalla, se repite hasta llenarla
+    // Si el juego no llena la barra, se repite hasta llenarla
     const minW = viewport.clientWidth + 40;
     let guard = 0;
     while (track.scrollWidth < minW && guard++ < 6) {
@@ -459,12 +559,8 @@
     });
   }
 
-  // Fuera de pantalla no se anima (ahorra batería en móvil)
-  if ("IntersectionObserver" in window) {
-    new IntersectionObserver((entries) => {
-      for (const en of entries) root.classList.toggle("is-off", !en.isIntersecting);
-    }).observe(root);
-  }
+  // Pestaña oculta: no se anima (ahorra batería en móvil)
+  document.addEventListener("visibilitychange", () => root.classList.toggle("is-off", document.hidden));
 
   let resizeTimer = 0;
   let lastW = window.innerWidth;
@@ -479,31 +575,34 @@
     if (root.classList.contains("is-ready")) render();
   });
 
-  // Datos: primero lo local (rápido) con las ofertas fijas; el feed de YAM
-  // llega después y, si trae algo, se vuelve a pintar.
+  // Datos: primero lo local (rápido): Shorts, catálogo y clientes; el feed
+  // de YAM llega después y, si trae algo, se vuelve a pintar.
   async function load() {
-    try {
-      const data = await getJSON(SHORTS_URL, 6000);
-      shorts = (Array.isArray(data && data.shorts) ? data.shorts : []).filter((s) => s && /^[\w-]{11}$/.test(s.id));
-    } catch (e) {
-      shorts = [];
+    const [sh, cat] = await Promise.allSettled([getJSON(SHORTS_URL, 6000), getJSON(CATALOG_URL, 6000)]);
+    const data = sh.status === "fulfilled" ? sh.value : null;
+    shorts = (Array.isArray(data && data.shorts) ? data.shorts : []).filter((s) => s && /^[\w-]{11}$/.test(s.id));
+    if (cat.status === "fulfilled" && cat.value && Array.isArray(cat.value.items)) {
+      catalog = cat.value;
+      catalogById = Object.fromEntries(catalog.items.filter((x) => x && x.id).map((x) => [x.id, x]));
     }
     render();
     try {
-      const data = await getJSON(FEED_URL, FEED_TIMEOUT);
-      if (feedOffers(data, T[lang()]).length) {
-        feedData = data;
+      const feed = await getJSON(FEED_URL, FEED_TIMEOUT);
+      const t = tx();
+      if (feedOffers(feed, t).length || storeOffers(feed, t).length) {
+        feedData = feed;
         render();
       }
     } catch (e) {
-      // Feed caído, sin CORS o aún no publicado: quedan las ofertas fijas
+      // Feed caído, sin CORS o aún no publicado: queda lo de CDH
     }
   }
 
-  // Las miniaturas pesan: se espera a que la página termine su carga inicial
+  // La barra se ve desde el primer momento (vacía, sin saltos de diseño:
+  // tiene alto fijo); las miniaturas esperan a que la página termine de cargar
   function start() {
     const go = () => load();
-    if ("requestIdleCallback" in window) requestIdleCallback(go, { timeout: 1500 });
+    if ("requestIdleCallback" in window) requestIdleCallback(go, { timeout: 1200 });
     else setTimeout(go, 300);
   }
   if (document.readyState === "complete") start();

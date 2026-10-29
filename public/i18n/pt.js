@@ -225,5 +225,9 @@ window.CDH_I18N_DICT["pt"] = {
   "to_top": "Voltar ao topo",
   "tag_star": "Web · SaaS · Produto carro-chefe",
   "cinta_k": "// Em vitrine",
-  "cinta_t": "Ideias em 60 segundos e ofertas para o seu negócio"
+  "cinta_t": "Ideias em 60 segundos e ofertas para o seu negócio",
+  "fs_cat": "Consultoria e catálogo com preços",
+  "fs_cat2": "Catálogo e preços",
+  "faq10_q": "Não sei do que meu negócio precisa. Por onde começo?",
+  "faq10_a": "Por uma conversa de orientação gratuita de 30 minutos: você conta como trabalha hoje e o que custa tempo ou dinheiro, e dizemos que tipo de solução serve e quanto custaria aproximadamente. Se for preciso mais detalhe, o diagnóstico digital express custa USD 90 e é descontado se você contratar o projeto. Preços no <a href=\"/catalogo\">catálogo</a>."
 };

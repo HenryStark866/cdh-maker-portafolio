@@ -48,7 +48,7 @@
 {"@context":"https://schema.org","@graph":[
 {"@type":["ProfessionalService","Organization"],"@id":"https://cdhmaker.com/#org","name":"CDH Maker","url":"https://cdhmaker.com/","logo":"https://cdhmaker.com/icon.svg","email":"cdhmaker@gmail.com","address":{"@type":"PostalAddress","addressLocality":"Medellín","addressRegion":"Antioquia","addressCountry":"CO"}},
 {"@type":"Service","@id":"https://cdhmaker.com/en/services/3d-printing-medellin#service","name":"3D printing in Medellín","serviceType":"3D printing in Medellín","description":"Custom 3D printing in Medellín, Colombia (FDM and resin), laser cutting, CNC and CAD design. Shipping across Colombia. Free quote in under 24 hours.","url":"https://cdhmaker.com/en/services/3d-printing-medellin","provider":{"@id":"https://cdhmaker.com/#org"},"areaServed":[{"@type":"City","name":"Medellín","containedInPlace":{"@type":"Country","name":"Colombia"}},{"@type":"Country","name":"Colombia"}],"availableChannel":{"@type":"ServiceChannel","serviceUrl":"https://cdhmaker.com/en/services/3d-printing-medellin#contacto","availableLanguage":["Spanish","English"]},"hasOfferCatalog":{"@type":"OfferCatalog","name":"What the service includes","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"FDM 3D printing","description":"Functional parts and prototypes in PLA, PETG, ABS or TPU, with the infill set for how the part will be used.","provider":{"@id":"https://cdhmaker.com/#org"}}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Resin 3D printing","description":"For when the part needs fine detail and a smooth surface finish.","provider":{"@id":"https://cdhmaker.com/#org"}}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Laser cutting and engraving","description":"Flat parts in MDF, acrylic or wood, calculated from thickness and area.","provider":{"@id":"https://cdhmaker.com/#org"}}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"CNC machining","description":"Wood, aluminum, steel or plastic: from straight shapes to detailed parts with curves and engravings.","provider":{"@id":"https://cdhmaker.com/#org"}}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"2D/3D CAD design","description":"If you only have the idea or a sketch, we model the part and leave it ready to manufacture.","provider":{"@id":"https://cdhmaker.com/#org"}}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"From prototype to your door","description":"We iterate with you until the part works and ship it by courier to any city in Colombia.","provider":{"@id":"https://cdhmaker.com/#org"}}}]}},
-{"@type":"WebPage","@id":"https://cdhmaker.com/en/services/3d-printing-medellin#webpage","url":"https://cdhmaker.com/en/services/3d-printing-medellin","name":"3D printing in Medellín: FDM, resin, laser and CNC | CDH Maker","description":"Custom 3D printing in Medellín, Colombia (FDM and resin), laser cutting, CNC and CAD design. Shipping across Colombia. Free quote in under 24 hours.","inLanguage":"en","isPartOf":{"@id":"https://cdhmaker.com/#website"},"about":{"@id":"https://cdhmaker.com/en/services/3d-printing-medellin#service"},"breadcrumb":{"@id":"https://cdhmaker.com/en/services/3d-printing-medellin#breadcrumb"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://cdhmaker.com/media/og.jpg","width":1200,"height":630},"dateModified":"2026-10-27"},
+{"@type":"WebPage","@id":"https://cdhmaker.com/en/services/3d-printing-medellin#webpage","url":"https://cdhmaker.com/en/services/3d-printing-medellin","name":"3D printing in Medellín: FDM, resin, laser and CNC | CDH Maker","description":"Custom 3D printing in Medellín, Colombia (FDM and resin), laser cutting, CNC and CAD design. Shipping across Colombia. Free quote in under 24 hours.","inLanguage":"en","isPartOf":{"@id":"https://cdhmaker.com/#website"},"about":{"@id":"https://cdhmaker.com/en/services/3d-printing-medellin#service"},"breadcrumb":{"@id":"https://cdhmaker.com/en/services/3d-printing-medellin#breadcrumb"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://cdhmaker.com/media/og.jpg","width":1200,"height":630},"dateModified":"2026-10-29"},
 {"@type":"BreadcrumbList","@id":"https://cdhmaker.com/en/services/3d-printing-medellin#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://cdhmaker.com/en"},{"@type":"ListItem","position":2,"name":"Services","item":"https://cdhmaker.com/en#servicios"},{"@type":"ListItem","position":3,"name":"3D printing in Medellín","item":"https://cdhmaker.com/en/services/3d-printing-medellin"}]},
 {"@type":"FAQPage","@id":"https://cdhmaker.com/en/services/3d-printing-medellin#faq","inLanguage":"en","mainEntity":[{"@type":"Question","name":"What file do I need for 3D printing?","acceptedAnswer":{"@type":"Answer","text":"Ideally an STL file. A drawing or just the idea also works: in that case we design the part in CAD before manufacturing it."}},{"@type":"Question","name":"Do you ship outside Medellín?","acceptedAnswer":{"@type":"Answer","text":"Yes. Physical parts (3D printing, laser and CNC) are shipped by courier anywhere in Colombia."}},{"@type":"Question","name":"How much does it cost to 3D print a part?","acceptedAnswer":{"@type":"Answer","text":"It depends on the volume, material, infill and number of parts. The site's estimator gives you an instant estimate of time, weight and material, and the final quote arrives free in under 24 hours, with no commitment."}},{"@type":"Question","name":"Which materials do you work with?","acceptedAnswer":{"@type":"Answer","text":"For FDM printing: PLA, PETG, ABS and TPU. For detail printing, standard resin. For laser cutting, MDF, acrylic and wood; for CNC, wood, aluminum, steel or plastic."}},{"@type":"Question","name":"Can I check my model before sending it?","acceptedAnswer":{"@type":"Answer","text":"Yes. This site's 3D viewer opens your STL right in the browser, without uploading it to any server, so you can rotate and inspect it, and passes it to the estimator to see how long it would take to print."}}]}
 ]}
@@ -75,6 +75,24 @@
 
   <!-- ===== FONDO OCÉANO ===== -->
   <canvas id="metaverse" aria-hidden="true"></canvas>
+
+  <!-- ===== CINTA FIJA: Shorts, clientes y ofertas (la llena ads.js) =====
+       Barra delgada pegada arriba, visible siempre aunque se haga scroll.
+       ads.js la llena con media/shorts.json (Shorts del bot ClipFactory,
+       tools/sync-shorts.mjs), catalogo.json (productos y servicios de CDH
+       Maker), los clientes del ecosistema (YAM incluido) y el feed público
+       de YAM con los productos y tiendas de sus comercios. -->
+  <aside class="cinta" id="cinta" aria-label="Ideas in 60 seconds and offers for your business" data-i18n-aria="cinta_t">
+    <span class="cinta-label" data-i18n="cinta_k">// On display</span>
+    <div class="cinta-viewport">
+      <ul class="cinta-track" role="list"></ul>
+    </div>
+    <button type="button" class="cinta-toggle" aria-pressed="false" hidden>
+      <svg class="i-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1" /><rect x="14" y="5" width="4" height="14" rx="1" /></svg>
+      <svg class="i-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" /></svg>
+      <span class="cinta-toggle-l">Pausar</span>
+    </button>
+  </aside>
 
   <!-- ===== SIDEBAR NAV ===== -->
   <header class="nav" id="top">
@@ -605,6 +623,7 @@
         <a href="/en/services/custom-software-medellin" data-i18n="fs_sw">Custom software and SaaS</a>
         <a href="/en/services/ai-integration-medellin" data-i18n="fs_ai">Artificial intelligence integration</a>
         <a href="/en/services/iot-automation-medellin" data-i18n="fs_iot">Electronics, IoT and automation</a>
+        <a href="/en/catalog" data-i18n="fs_cat2">Catalog and pricing</a>
       </div>
       <div>
         <h4 data-i18n="foot_contact_h">Contact</h4>
@@ -656,10 +675,10 @@
   <script src="/i18n.js?v=15"></script>
   <script src="/contact.js?v=1"></script>
   <script src="/script.js?v=9"></script>
-  <script src="/chat-widget.js?v=1"></script>
+  <script src="/chat-widget.js?v=2"></script>
   <script src="/estimator.js?v=3"></script>
   <script src="/viewer3d.js?v=2"></script>
-  <script src="/ads.js?v=8"></script>
+  <script src="/ads.js?v=9"></script>
   <script src="/ref.js" defer></script>
 </body>
 

@@ -73,6 +73,16 @@
         ]
       },
       {
+        "source": "/@(catalogo|en/catalog)",
+        "headers": [
+          { "key": "Cache-Control", "value": "no-cache" },
+          { "key": "X-Content-Type-Options", "value": "nosniff" },
+          { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+          { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+          { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+        ]
+      },
+      {
         "source": "/perfil",
         "headers": [
           { "key": "Cache-Control", "value": "no-cache" },

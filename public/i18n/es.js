@@ -225,5 +225,9 @@ window.CDH_I18N_DICT["es"] = {
   "pj_ref_p": "Sistema entregado a Refricom para planear y controlar el mantenimiento de sus equipos: inventario, cronograma preventivo con alertas, correctivos, órdenes de trabajo y reportes.",
   "cinta_k": "// En vitrina",
   "cinta_t": "Ideas en 60 segundos y ofertas para tu negocio",
-  "tag_star": "Web · SaaS · Producto estrella"
+  "tag_star": "Web · SaaS · Producto estrella",
+  "fs_cat": "Consultoría y catálogo con precios",
+  "faq10_q": "No sé qué necesito para mi negocio, ¿por dónde empiezo?",
+  "faq10_a": "Por una sesión de orientación gratuita de 30 minutos: nos cuentas cómo trabajas hoy y qué te quita tiempo o dinero, y te decimos qué tipo de solución te sirve y cuánto costaría más o menos. Si hace falta más detalle, el diagnóstico digital express cuesta 290.000 COP (USD 90) y se descuenta si contratas el proyecto. Precios en el catálogo.",
+  "fs_cat2": "Catálogo y precios"
 };

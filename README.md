@@ -40,6 +40,12 @@ firebase deploy --only firestore:rules,hosting
 - **Fondo animado**: canvas de seis capas (malla en perspectiva, red neuronal con paquetes
   de datos, partículas 3D y HUD holográfico). Se adapta al tema y respeta *reducir movimiento*.
 - **Asesor "Maker" (100% texto con memoria avanzada)**: recuerda el contexto de la conversación (servicio elegido, productos de interés, detalles técnicos y alcance) durante toda la sesión. Construye enlaces de cotización personalizados para WhatsApp con todo el requerimiento acumulado.
+- **Cinta fija arriba** (`ads.js`): barra delgada visible siempre, que rota los Shorts del bot
+  ClipFactory, el catálogo con precios, los clientes del ecosistema (YAM incluido) y los
+  productos y tiendas de los comercios de YAM.
+- **Catálogo con precios** (`tools/catalogo.mjs` → `/catalogo`, `/en/catalog`,
+  `/catalogo.json`): la fuente única de productos y servicios; la Consultoría va primero.
+  Precios **provisionales** hasta que Henry los fije. Plan AEO: [PLAN-AEO-GLOBAL.md](PLAN-AEO-GLOBAL.md).
 - **Carga liviana**: el SDK de Firebase (~300 KB) solo se descarga si el visitante abre el
   área de clientes; imágenes en WebP, y la cinta de Shorts y ofertas carga tras la página
   (el reproductor de YouTube solo al abrir un Short).

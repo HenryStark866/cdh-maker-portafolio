@@ -225,5 +225,9 @@ window.CDH_I18N_DICT["en"] = {
   "hero_kicker": "Engineering",
   "tag_star": "Web · SaaS · Flagship product",
   "cinta_k": "// On display",
-  "cinta_t": "Ideas in 60 seconds and offers for your business"
+  "cinta_t": "Ideas in 60 seconds and offers for your business",
+  "fs_cat": "Consulting and catalog with prices",
+  "fs_cat2": "Catalog and pricing",
+  "faq10_q": "I don't know what my business needs. Where do I start?",
+  "faq10_a": "With a free 30-minute orientation call: you tell us how you work today and what costs you time or money, and we tell you what kind of solution fits and roughly what it would cost. If more detail is needed, the express digital diagnosis costs USD 90 and is credited if you hire the project. Prices in the <a href=\"/catalogo\">catalog</a>."
 };

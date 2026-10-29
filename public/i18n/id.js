@@ -225,5 +225,9 @@ window.CDH_I18N_DICT["id"] = {
   "to_top": "Kembali ke atas",
   "tag_star": "Web · SaaS · Produk unggulan",
   "cinta_k": "// Etalase",
-  "cinta_t": "Ide dalam 60 detik dan penawaran untuk bisnis Anda"
+  "cinta_t": "Ide dalam 60 detik dan penawaran untuk bisnis Anda",
+  "fs_cat": "Konsultasi dan katalog dengan harga",
+  "fs_cat2": "Katalog dan harga",
+  "faq10_q": "Saya tidak tahu apa yang dibutuhkan bisnis saya. Mulai dari mana?",
+  "faq10_a": "Dengan panggilan orientasi gratis 30 menit: Anda ceritakan cara kerja saat ini dan apa yang menghabiskan waktu atau uang, lalu kami sampaikan solusi yang cocok dan perkiraan biayanya. Jika perlu lebih rinci, diagnosis digital ekspres seharga USD 90 dan dipotong bila Anda mengambil proyeknya. Harga ada di <a href=\"/catalogo\">katalog</a>."
 };

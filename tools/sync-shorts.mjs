@@ -12,6 +12,10 @@
      Los que no, la cinta los abre en youtube.com en vez del visor.
    - Si el feed falla (sin red, YouTube caído), NO se borra el JSON que ya
      existe: se avisa y se sale con código 0 para no frenar el deploy.
+   - "servicio": si la descripción del Short enlaza a un producto del
+     catálogo (cdhmaker.com/catalogo#<id> o /en/catalog#<id>, lo escribe
+     ClipFactory al subirlo), la cinta muestra a qué servicio lleva. Así el
+     bot "publica" en la cinta sin llaves ni servidores: basta el deploy.
 
    Uso:  node tools/sync-shorts.mjs
    Lo corre firebase.json → hosting.predeploy, antes de build-i18n.
@@ -56,8 +60,11 @@ async function main() {
     const id = tag(entry, "yt:videoId");
     const link = (entry.match(/<link rel="alternate" href="([^"]+)"/) || [])[1] || "";
     if (!/^[\w-]{11}$/.test(id) || !link.includes("/shorts/")) continue;
+    const desc = tag(entry, "media:description");
+    const servicio = (desc.match(/cdhmaker\.com\/(?:catalogo|en\/catalog)#([a-z0-9-]{2,40})/i) || [])[1];
     shorts.push({
       id,
+      ...(servicio ? { servicio: servicio.toLowerCase() } : {}),
       titulo: tag(entry, "title"),
       fecha: tag(entry, "published"),
       url: `https://www.youtube.com/shorts/${id}`,

@@ -48,7 +48,7 @@
 {"@context":"https://schema.org","@graph":[
 {"@type":["ProfessionalService","Organization"],"@id":"https://cdhmaker.com/#org","name":"CDH Maker","url":"https://cdhmaker.com/","logo":"https://cdhmaker.com/icon.svg","email":"cdhmaker@gmail.com","address":{"@type":"PostalAddress","addressLocality":"Medellín","addressRegion":"Antioquia","addressCountry":"CO"}},
 {"@type":"Service","@id":"https://cdhmaker.com/en/services/iot-automation-medellin#service","name":"Electronics, IoT and automation","serviceType":"Electronics, IoT and automation","description":"Electronic prototypes, sensor monitoring, home automation and automation with Arduino, ESP32 and Raspberry Pi for homes, industry and agriculture in Medellín.","url":"https://cdhmaker.com/en/services/iot-automation-medellin","provider":{"@id":"https://cdhmaker.com/#org"},"areaServed":[{"@type":"City","name":"Medellín","containedInPlace":{"@type":"Country","name":"Colombia"}},{"@type":"Country","name":"Colombia"}],"availableChannel":{"@type":"ServiceChannel","serviceUrl":"https://cdhmaker.com/en/services/iot-automation-medellin#contacto","availableLanguage":["Spanish","English"]},"hasOfferCatalog":{"@type":"OfferCatalog","name":"What the service includes","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Embedded systems","description":"Development with Arduino, ESP32 and Raspberry Pi, from proof of concept to a complete working product.","provider":{"@id":"https://cdhmaker.com/#org"}}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Sensor monitoring","description":"Measurement, alerts and remote monitoring for homes, industry and agriculture.","provider":{"@id":"https://cdhmaker.com/#org"}}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Home and business automation","description":"Automation of your home or business with remote control, so you depend less on manual work.","provider":{"@id":"https://cdhmaker.com/#org"}}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Custom enclosures and parts","description":"Electronics need a place to live: the enclosure is designed and made in the same workshop with 3D printing, laser or CNC.","provider":{"@id":"https://cdhmaker.com/#org"}}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"The software that goes with it","description":"The app or cloud that receives the data is built by the same studio: you don't have to coordinate three different suppliers.","provider":{"@id":"https://cdhmaker.com/#org"}}}]}},
-{"@type":"WebPage","@id":"https://cdhmaker.com/en/services/iot-automation-medellin#webpage","url":"https://cdhmaker.com/en/services/iot-automation-medellin","name":"Electronics, IoT and automation in Medellín | CDH Maker","description":"Electronic prototypes, sensor monitoring, home automation and automation with Arduino, ESP32 and Raspberry Pi for homes, industry and agriculture in Medellín.","inLanguage":"en","isPartOf":{"@id":"https://cdhmaker.com/#website"},"about":{"@id":"https://cdhmaker.com/en/services/iot-automation-medellin#service"},"breadcrumb":{"@id":"https://cdhmaker.com/en/services/iot-automation-medellin#breadcrumb"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://cdhmaker.com/media/og.jpg","width":1200,"height":630},"dateModified":"2026-10-27"},
+{"@type":"WebPage","@id":"https://cdhmaker.com/en/services/iot-automation-medellin#webpage","url":"https://cdhmaker.com/en/services/iot-automation-medellin","name":"Electronics, IoT and automation in Medellín | CDH Maker","description":"Electronic prototypes, sensor monitoring, home automation and automation with Arduino, ESP32 and Raspberry Pi for homes, industry and agriculture in Medellín.","inLanguage":"en","isPartOf":{"@id":"https://cdhmaker.com/#website"},"about":{"@id":"https://cdhmaker.com/en/services/iot-automation-medellin#service"},"breadcrumb":{"@id":"https://cdhmaker.com/en/services/iot-automation-medellin#breadcrumb"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://cdhmaker.com/media/og.jpg","width":1200,"height":630},"dateModified":"2026-10-29"},
 {"@type":"BreadcrumbList","@id":"https://cdhmaker.com/en/services/iot-automation-medellin#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://cdhmaker.com/en"},{"@type":"ListItem","position":2,"name":"Services","item":"https://cdhmaker.com/en#servicios"},{"@type":"ListItem","position":3,"name":"Electronics, IoT and automation","item":"https://cdhmaker.com/en/services/iot-automation-medellin"}]},
 {"@type":"FAQPage","@id":"https://cdhmaker.com/en/services/iot-automation-medellin#faq","inLanguage":"en","mainEntity":[{"@type":"Question","name":"Which platforms do you work with?","acceptedAnswer":{"@type":"Answer","text":"For hardware, Arduino, ESP32 and Raspberry Pi. For software, JavaScript, Python, Firebase or Supabase, depending on the project."}},{"@type":"Question","name":"How long does an IoT project take?","acceptedAnswer":{"@type":"Answer","text":"As a reference, a prototype or proof of concept takes 1–2 weeks, a complete working product 3–6 weeks and a home or business automation 2–5 weeks."}},{"@type":"Question","name":"Do you work for industry and agriculture, or only homes?","acceptedAnswer":{"@type":"Answer","text":"All three: sensing, automation and remote monitoring systems are designed for homes, industry and agriculture."}},{"@type":"Question","name":"How much does an electronics or IoT project cost?","acceptedAnswer":{"@type":"Answer","text":"Every project is quoted individually and for free: tell us what you want to measure or automate and you get price and timeline in under 24 hours, with no commitment."}},{"@type":"Question","name":"What happens after delivery?","acceptedAnswer":{"@type":"Answer","text":"You get documentation and follow-up support: we answer questions, fine-tune details and leave everything working. The relationship doesn't end at delivery."}}]}
 ]}
@@ -75,6 +75,24 @@
 
   <!-- ===== FONDO OCÉANO ===== -->
   <canvas id="metaverse" aria-hidden="true"></canvas>
+
+  <!-- ===== CINTA FIJA: Shorts, clientes y ofertas (la llena ads.js) =====
+       Barra delgada pegada arriba, visible siempre aunque se haga scroll.
+       ads.js la llena con media/shorts.json (Shorts del bot ClipFactory,
+       tools/sync-shorts.mjs), catalogo.json (productos y servicios de CDH
+       Maker), los clientes del ecosistema (YAM incluido) y el feed público
+       de YAM con los productos y tiendas de sus comercios. -->
+  <aside class="cinta" id="cinta" aria-label="Ideas in 60 seconds and offers for your business" data-i18n-aria="cinta_t">
+    <span class="cinta-label" data-i18n="cinta_k">// On display</span>
+    <div class="cinta-viewport">
+      <ul class="cinta-track" role="list"></ul>
+    </div>
+    <button type="button" class="cinta-toggle" aria-pressed="false" hidden>
+      <svg class="i-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1" /><rect x="14" y="5" width="4" height="14" rx="1" /></svg>
+      <svg class="i-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" /></svg>
+      <span class="cinta-toggle-l">Pausar</span>
+    </button>
+  </aside>
 
   <!-- ===== SIDEBAR NAV ===== -->
   <header class="nav" id="top">
@@ -597,6 +615,7 @@
         <a href="/en/services/custom-software-medellin" data-i18n="fs_sw">Custom software and SaaS</a>
         <a href="/en/services/ai-integration-medellin" data-i18n="fs_ai">Artificial intelligence integration</a>
         <a href="/en/services/iot-automation-medellin" data-i18n="fs_iot">Electronics, IoT and automation</a>
+        <a href="/en/catalog" data-i18n="fs_cat2">Catalog and pricing</a>
       </div>
       <div>
         <h4 data-i18n="foot_contact_h">Contact</h4>
@@ -648,10 +667,10 @@
   <script src="/i18n.js?v=15"></script>
   <script src="/contact.js?v=1"></script>
   <script src="/script.js?v=9"></script>
-  <script src="/chat-widget.js?v=1"></script>
+  <script src="/chat-widget.js?v=2"></script>
   <script src="/estimator.js?v=3"></script>
   <script src="/viewer3d.js?v=2"></script>
-  <script src="/ads.js?v=8"></script>
+  <script src="/ads.js?v=9"></script>
   <script src="/ref.js" defer></script>
 </body>
 
