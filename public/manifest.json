@@ -1,13 +1,14 @@
 {
-  "name": "CDH Maker — Ingeniería y Fabricación Digital",
+  "name": "CDH Maker — Estudio de ingeniería",
   "short_name": "CDH Maker",
-  "description": "Desarrollo web y software, fabricación digital, electrónica e IoT, diseño y consultoría técnica.",
+  "description": "Estudio de ingeniería en Medellín: software y SaaS a la medida, inteligencia artificial, IoT y fabricación digital.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#06232e",
-  "theme_color": "#06232e",
+  "background_color": "#0A0F17",
+  "theme_color": "#0A0F17",
   "lang": "es",
   "icons": [
-    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "brand/isotipo.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any" }
   ]
 }

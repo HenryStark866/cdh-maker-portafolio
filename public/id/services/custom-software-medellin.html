@@ -56,15 +56,16 @@
   <!-- seo:end -->
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
   <meta name="author" content="Ing. Henry Taborda — CDH Maker" />
-  <meta name="theme-color" content="#06232e" />
+  <meta name="theme-color" content="#F5F4F0" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0A0F17" media="(prefers-color-scheme: dark)" />
   <link rel="manifest" href="/manifest.json" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@500&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="/styles.css?v=24" />
-  <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+  <link rel="stylesheet" href="/styles.css?v=25" />
+  <link rel="icon" type="image/svg+xml" href="/icon.svg?v=2" />
   <script src="/theme.js?v=5"></script>
   <script src="/security.js?v=4"></script>
 </head>
@@ -73,11 +74,8 @@
 
   <a href="#contenido" class="skip-link" data-i18n="skip">Lewati ke konten</a>
 
-  <!-- ===== FONDO OCÉANO ===== -->
-  <canvas id="metaverse" aria-hidden="true"></canvas>
-
   <!-- ===== CINTA FIJA: Shorts, clientes y ofertas (la llena ads.js) =====
-       Barra delgada pegada arriba, visible siempre aunque se haga scroll.
+       Franja delgada pegada arriba, visible siempre aunque se haga scroll.
        ads.js la llena con media/shorts.json (Shorts del bot ClipFactory,
        tools/sync-shorts.mjs), catalogo.json (productos y servicios de CDH
        Maker), los clientes del ecosistema (YAM incluido) y el feed público
@@ -94,236 +92,49 @@
     </button>
   </aside>
 
-  <!-- ===== SIDEBAR NAV ===== -->
+  <!-- ===== ENCABEZADO: lobo + navegación + idioma/tema ===== -->
   <header class="nav" id="top">
-
-    <!-- Logo -->
-    <a href="/id" class="nav-logo" aria-label="CDH Maker — beranda" data-i18n-aria="logo_home">
-      <!-- Estado colapsado: Solo la C con circuito -->
-      <span class="logo-mark">
-        <svg viewBox="0 0 70 70" fill="none">
-          <style>
-            .c-base {
-              stroke: currentColor;
-              stroke-width: 14;
-              stroke-linecap: square;
-            }
-
-            .c-circ {
-              stroke: var(--accent);
-              stroke-width: 2.5;
-              stroke-linecap: round;
-            }
-
-            .c-dot {
-              fill: var(--accent);
-            }
-          </style>
-          <path class="c-base" d="M 55 15 L 25 15 A 15 15 0 0 0 10 30 L 10 40 A 15 15 0 0 0 25 55 L 55 55" />
-          <path class="c-circ" d="M 55 15 L 25 15 A 15 15 0 0 0 10 30 L 10 32 L 25 32 L 25 22" />
-          <circle class="c-dot" cx="25" cy="22" r="3" />
-          <path class="c-circ" d="M 10 45 L 10 40 A 15 15 0 0 1 25 55 L 45 55 L 45 42" />
-          <circle class="c-dot" cx="45" cy="42" r="3" />
-          <circle class="c-dot" cx="10" cy="45" r="3" />
-        </svg>
-      </span>
-      <!-- Estado expandido: Logo completo -->
-      <span class="nav-logo-text">
-        <svg viewBox="0 0 280 118" width="160" height="67">
-          <style>
-            .l-main {
-              fill: currentColor;
-            }
-
-            .l-acc {
-              fill: var(--accent);
-            }
-
-            .l-circ {
-              fill: none;
-              stroke: var(--accent);
-              stroke-width: 2.5;
-              stroke-linecap: round;
-              stroke-linejoin: round;
-            }
-
-            .l-base {
-              fill: none;
-              stroke: currentColor;
-              stroke-width: 16;
-              stroke-linecap: square;
-              stroke-linejoin: miter;
-            }
-
-            .l-chip {
-              fill: none;
-              stroke: var(--accent);
-              stroke-width: 2;
-              stroke-linecap: round;
-              stroke-linejoin: round;
-            }
-          </style>
-          <g transform="translate(10, 20)">
-            <path class="l-base" d="M 60 15 L 25 15 A 15 15 0 0 0 10 30 L 10 45 A 15 15 0 0 0 25 60 L 60 60" />
-            <path class="l-base" d="M 75 15 L 105 15 A 22.5 22.5 0 0 1 127.5 37.5 A 22.5 22.5 0 0 1 105 60 L 75 60 Z" />
-            <path class="l-base" d="M 145 15 L 145 60 M 145 37.5 L 195 37.5 M 195 15 L 195 60" />
-
-            <path class="l-circ" d="M 60 15 L 25 15 A 15 15 0 0 0 10 30 L 10 35 L 25 35 L 25 25" />
-            <circle class="l-acc" cx="25" cy="25" r="2.5" />
-            <path class="l-circ" d="M 10 50 L 10 45 A 15 15 0 0 1 25 60 L 50 60 L 50 45" />
-            <circle class="l-acc" cx="50" cy="45" r="2.5" />
-            <circle class="l-acc" cx="10" cy="50" r="2.5" />
-
-            <path class="l-circ" d="M 75 60 L 105 60 A 22.5 22.5 0 0 0 127.5 37.5 L 115 37.5 L 115 50" />
-            <circle class="l-acc" cx="115" cy="50" r="2.5" />
-            <path class="l-circ" d="M 75 15 L 75 40 L 90 40 L 90 25" />
-            <circle class="l-acc" cx="90" cy="25" r="2.5" />
-            <circle class="l-acc" cx="75" cy="15" r="2.5" />
-
-            <path class="l-circ" d="M 145 60 L 145 37.5 L 170 37.5 L 170 50" />
-            <circle class="l-acc" cx="170" cy="50" r="2.5" />
-            <path class="l-circ" d="M 195 60 L 195 37.5 L 180 37.5 L 180 20" />
-            <circle class="l-acc" cx="180" cy="20" r="2.5" />
-
-            <g transform="translate(95, -18)">
-              <polygon class="l-chip" points="15,0 30,8 15,16 0,8" />
-              <polygon class="l-chip" points="0,8 15,16 15,22 0,14" />
-              <polygon class="l-chip" points="30,8 15,16 15,22 30,14" />
-              <line class="l-chip" x1="5" y1="18" x2="5" y2="28" />
-              <circle class="l-acc" cx="5" cy="28" r="2" />
-              <line class="l-chip" x1="15" y1="23" x2="15" y2="33" />
-              <circle class="l-acc" cx="15" cy="33" r="2" />
-              <line class="l-chip" x1="25" y1="18" x2="25" y2="28" />
-              <circle class="l-acc" cx="25" cy="28" r="2" />
-            </g>
-
-            <g transform="translate(150, -5)">
-              <line class="l-base" style="stroke-width:4;stroke-linecap:round;" x1="5" y1="20" x2="5" y2="0" />
-              <circle class="l-main" cx="5" cy="-2" r="3.5" />
-              <line class="l-base" style="stroke-width:4;stroke-linecap:round;" x1="20" y1="20" x2="20" y2="-10" />
-              <circle class="l-main" cx="20" cy="-12" r="3.5" />
-              <line class="l-base" style="stroke-width:4;stroke-linecap:round;" x1="35" y1="20" x2="35" y2="-5" />
-              <circle class="l-main" cx="35" cy="-7" r="3.5" />
-              <line class="l-base" style="stroke-width:4;stroke-linecap:round;" x1="50" y1="20" x2="50" y2="5" />
-              <circle class="l-main" cx="50" cy="3" r="3.5" />
-            </g>
-          </g>
-          <g transform="translate(14, 108)" font-family="'Space Grotesk', 'Inter', sans-serif" font-weight="700">
-            <text x="0" y="0" font-size="28" class="l-main" letter-spacing="1">Maker</text>
-            <text x="96" y="0" font-size="28" class="l-acc" letter-spacing="1">IT</text>
-          </g>
-        </svg>
-      </span>
-    </a>
-
-    <!-- Links de navegación -->
-    <nav class="nav-links" id="navLinks" aria-label="Navigasi utama" data-i18n-aria="nav_aria">
-      <a href="/id#servicios" class="nav-item">
-        <span class="nav-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-            stroke-linejoin="round">
-            <path d="m8 6-6 6 6 6" />
-            <path d="m16 6 6 6-6 6" />
-            <path d="m14 4-4 16" />
-          </svg>
-        </span>
-        <span class="nav-label" data-i18n="nav_serv">Layanan</span>
+    <div class="container nav-inner">
+      <a href="/id" class="nav-logo" aria-label="CDH Maker — beranda" data-i18n-aria="logo_home">
+        <svg class="wolf" viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="5.2" stroke-linejoin="round" stroke-linecap="round"><path d="M16 2L37 25H63L84 2L90 41L97 56L84 69V81L50 98L16 81V69L3 56L10 41Z"/><path d="M59 35H73L84 69L50 82"/><path d="M50 82V98"/></g><g fill="none" stroke="var(--accent)" stroke-width="5.7" stroke-linecap="round" stroke-linejoin="round"><path d="M41 35H27L16 69L50 82"/></g><path d="M42 60H58L54 66H46Z" fill="currentColor"/><path d="M27 39L41 42.5L43 48L31.5 45.5Z" fill="var(--eye)"/><path d="M73 39L59 42.5L57 48L68.5 45.5Z" fill="var(--eye)"/></svg>
+        <svg class="wordmark" viewBox="-4 -4 342 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="6.2"><path d="M30 0H10L0 10V30L10 40H30"/><path transform="translate(41 0)" d="M0 0H20L30 10V30L20 40H0Z"/><path transform="translate(82 0)" d="M0 0V40M30 0V40M0 20H30"/></g><g transform="translate(136 0)" fill="none" stroke="var(--accent)" stroke-width="6.2"><path d="M0 40V0L18 20L36 0V40"/><path transform="translate(47 0)" d="M0 40V10L10 0H22L32 10V40M0 25H32"/><path transform="translate(90 0)" d="M0 0V40M29 0L0 25M10 16L29 40"/><path transform="translate(130 0)" d="M27 0H0V40H27M0 20H21"/><path transform="translate(168 0)" d="M0 40V0H21L30 9V13L21 22H0M15 22L30 40"/></g></svg>
       </a>
-      <a href="/id#proceso" class="nav-item">
-        <span class="nav-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-            stroke-linejoin="round">
-            <path d="M12 20h9" />
-            <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
-          </svg>
-        </span>
-        <span class="nav-label" data-i18n="nav_proc">Proses</span>
-      </a>
-      <a href="/id#proyectos" class="nav-item">
-        <span class="nav-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-            stroke-linejoin="round">
-            <rect x="2" y="3" width="6" height="6" rx="1" />
-            <rect x="16" y="3" width="6" height="6" rx="1" />
-            <rect x="9" y="3" width="6" height="6" rx="1" />
-            <rect x="2" y="13" width="6" height="8" rx="1" />
-            <rect x="9" y="13" width="6" height="8" rx="1" />
-            <rect x="16" y="13" width="6" height="8" rx="1" />
-          </svg>
-        </span>
-        <span class="nav-label" data-i18n="nav_proj">Proyek</span>
-      </a>
-      <a href="/id#herramientas" class="nav-item">
-        <span class="nav-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-            stroke-linejoin="round">
-            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
-          </svg>
-        </span>
-        <span class="nav-label" data-i18n="nav_tools">Alat</span>
-      </a>
-      <a href="/id#sobre" class="nav-item">
-        <span class="nav-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-            stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-            <circle cx="12" cy="7" r="4" />
-          </svg>
-        </span>
-        <span class="nav-label" data-i18n="nav_about">Tentang</span>
-      </a>
-      <a href="/id#contacto" class="nav-item nav-item--accent">
-        <span class="nav-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-            stroke-linejoin="round">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-          </svg>
-        </span>
-        <span class="nav-label" data-i18n="nav_contact">Kontak</span>
-      </a>
-    </nav>
 
-    <!-- Controles: idioma, tema -->
-    <div class="nav-bottom">
+      <nav class="nav-links" id="navLinks" aria-label="Navigasi utama" data-i18n-aria="nav_aria">
+        <a href="/id#servicios" class="nav-item" data-i18n="nav_serv">Layanan</a>
+        <a href="/id#proyectos" class="nav-item" data-i18n="nav_proj">Proyek</a>
+        <a href="/id#proceso" class="nav-item" data-i18n="nav_proc">Proses</a>
+        <a href="/id#herramientas" class="nav-item" data-i18n="nav_tools">Alat</a>
+        <a href="/id#sobre" class="nav-item" data-i18n="nav_about">Tentang</a>
+      </nav>
 
-      <!-- Idioma -->
-      <div class="nav-item nav-item--control nav-lang-wrap">
-        <span class="nav-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-            stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10" />
-            <path d="M2 12h20" />
-            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+      <div class="nav-bottom">
+        <label class="nav-lang">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9.5" />
+            <path d="M2.5 12h19" />
+            <path d="M12 2.5a14.5 14.5 0 0 1 3.8 9.5 14.5 14.5 0 0 1-3.8 9.5 14.5 14.5 0 0 1-3.8-9.5A14.5 14.5 0 0 1 12 2.5z" />
           </svg>
-        </span>
-        <select id="langSelect" class="lang-select nav-label" data-i18n-aria="lang_label"
-          aria-label="Ganti bahasa"></select>
+          <select id="langSelect" class="lang-select" data-i18n-aria="lang_label" aria-label="Ganti bahasa"></select>
+        </label>
+        <button id="themeToggle" class="icon-btn" type="button" data-i18n-aria="theme_label"
+          aria-label="Ganti tema terang/gelap">
+          <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+            </svg></span>
+          <span class="sr-only" data-i18n="theme_short">Tema</span>
+        </button>
+        <a href="/id#contacto" class="btn btn-primary btn-sm nav-cta" data-i18n="nav_contact">Kontak</a>
       </div>
 
-      <!-- Tema -->
-      <button id="themeToggle" class="nav-item nav-item--control" data-i18n-aria="theme_label"
-        aria-label="Ganti tema terang/gelap">
-        <span class="nav-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-            stroke-linejoin="round" width="18" height="18">
-            <circle cx="12" cy="12" r="4" />
-            <path
-              d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-          </svg>
-        </span>
-        <span class="nav-label" data-i18n="theme_short">Tema</span>
+      <button class="nav-toggle" id="navToggle" type="button" data-i18n-aria="menu_label" aria-label="Buka menu"
+        aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span>
       </button>
-
     </div>
-
-    <!-- Toggle móvil -->
-    <button class="nav-toggle" id="navToggle" data-i18n-aria="menu_label" aria-label="Buka menu" aria-expanded="false"
-      aria-controls="navLinks">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <path d="M3 6h18M3 12h18M3 18h18" />
-      </svg>
-    </button>
-
   </header>
 
   <main id="contenido">
@@ -476,26 +287,42 @@
 
   <section class="section" id="proceso">
     <div class="container">
-      <p class="section-kicker" data-i18n="proc_k">// Proses</p>
-      <h2 data-i18n="proc_t">Cara saya bekerja</h2>
-      <p class="section-sub" data-i18n="proc_s">Alur yang jelas, dari awal sampai akhir.</p>
-      <div class="steps">
-        <div class="step"><span class="step-num">01</span>
-          <h3 data-i18n="pr1_t">Mendengar</h3>
-          <p data-i18n="pr1_p">Kami memahami kebutuhan, konteks, dan tujuan proyek Anda.</p>
-        </div>
-        <div class="step"><span class="step-num">02</span>
-          <h3 data-i18n="pr2_t">Merancang</h3>
-          <p data-i18n="pr2_p">Proposal teknis dan desain: sketsa, CAD, arsitektur perangkat lunak.</p>
-        </div>
-        <div class="step"><span class="step-num">03</span>
-          <h3 data-i18n="pr3_t">Membangun</h3>
-          <p data-i18n="pr3_p">Pengembangan, produksi, dan pengujian iteratif dengan masukan Anda.</p>
-        </div>
-        <div class="step"><span class="step-num">04</span>
-          <h3 data-i18n="pr4_t">Menyerahkan</h3>
-          <p data-i18n="pr4_p">Produk berfungsi, dokumentasi, dan dukungan lanjutan.</p>
-        </div>
+      <header class="section-head">
+        <p class="section-kicker" data-i18n="proc_k">// Proses</p>
+        <h2 data-i18n="proc_t">Satu percakapan. Satu proses lengkap.</h2>
+        <p class="section-sub" data-i18n="proc_s">Alur yang jelas, dari awal sampai akhir.</p>
+      </header>
+      <div class="process">
+        <aside class="founder">
+          <div class="founder-id">
+            <span class="founder-avatar" aria-hidden="true"><svg viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="4.4" stroke-linejoin="round" stroke-linecap="round"><path d="M16 2L37 25H63L84 2L90 41L97 56L84 69V81L50 98L16 81V69L3 56L10 41Z"/><path d="M59 35H73L84 69L50 82"/><path d="M50 82V98"/></g><g fill="none" stroke="var(--accent)" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round"><path d="M41 35H27L16 69L50 82"/></g><path d="M42 60H58L54 66H46Z" fill="currentColor"/><path d="M27 39L41 42.5L43 48L31.5 45.5Z" fill="var(--eye)"/><path d="M73 39L59 42.5L57 48L68.5 45.5Z" fill="var(--eye)"/></svg></span>
+            <div>
+              <strong>Henry Taborda</strong>
+              <span data-i18n="fnd_role">Insinyur · Maker · Pendiri</span>
+            </div>
+          </div>
+          <p data-i18n="fnd_p">Anda berbicara langsung dengan orang yang merancang dan membangun: lebih sedikit perantara, keputusan lebih cepat, dan kemajuan yang bisa Anda lihat.</p>
+          <p class="status" data-i18n="term_status">● Tersedia untuk proyek</p>
+          <a href="#contacto" class="btn btn-primary" data-contact="wa" target="_blank" rel="noopener noreferrer"><span data-i18n="hero_cta1">Mari bekerja sama</span> <span aria-hidden="true">→</span></a>
+        </aside>
+        <ol class="steps">
+          <li class="step"><span class="step-num">01</span>
+            <h3 data-i18n="pr1_t">Mendengar</h3>
+            <p data-i18n="pr1_p">Kami memahami kebutuhan, konteks, dan tujuan proyek Anda.</p>
+          </li>
+          <li class="step"><span class="step-num">02</span>
+            <h3 data-i18n="pr2_t">Merancang</h3>
+            <p data-i18n="pr2_p">Proposal teknis dan desain: sketsa, CAD, arsitektur perangkat lunak.</p>
+          </li>
+          <li class="step"><span class="step-num">03</span>
+            <h3 data-i18n="pr3_t">Membangun</h3>
+            <p data-i18n="pr3_p">Pengembangan, produksi, dan pengujian iteratif dengan masukan Anda.</p>
+          </li>
+          <li class="step"><span class="step-num">04</span>
+            <h3 data-i18n="pr4_t">Menyerahkan</h3>
+            <p data-i18n="pr4_p">Produk berfungsi, dokumentasi, dan dukungan lanjutan.</p>
+          </li>
+        </ol>
       </div>
     </div>
   </section>
@@ -559,28 +386,20 @@
   <section class="section section-alt" id="contacto">
     <div class="container contact">
       <p class="section-kicker" data-i18n="contact_k">// Kontak</p>
-      <h2 data-i18n="contact_t">Punya proyek dalam pikiran?</h2>
-      <p class="section-sub" data-i18n="contact_s">Ceritakan ide Anda dan mari cari cara terbaik mewujudkannya.</p>
-      <div class="contact-actions contact-actions-icons">
-        <a class="contact-icon-btn contact-wa" data-contact="wa" href="#" target="_blank" rel="noopener noreferrer"
-          aria-label="WhatsApp" title="WhatsApp">
-          <span class="contact-icon-ring">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path
-                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.019-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.297-.497.1-.198.05-.371-.025-.52-.074-.149-.668-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413" />
-            </svg>
-          </span>
-          <span class="contact-icon-label">WhatsApp</span>
+      <h2 data-i18n="contact_t" data-i18n-html>Proyek Anda tidak perlu dimulai dengan sempurna. <em>Proyek Anda perlu dimulai.</em></h2>
+      <p class="section-sub" data-i18n="contact_s">Ceritakan apa yang ingin Anda bangun atau masalah apa yang perlu diselesaikan. Saya akan membalas dengan arahan awal, tanpa kewajiban.</p>
+      <div class="contact-actions">
+        <a class="btn btn-primary btn-lg contact-wa" data-contact="wa" href="#" target="_blank" rel="noopener noreferrer">
+          <svg class="i-wa" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.019-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.297-.497.1-.198.05-.371-.025-.52-.074-.149-.668-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413" /></svg>
+          <span>WhatsApp</span>
         </a>
-        <a class="contact-icon-btn contact-mail" data-contact="mail" href="#" aria-label="Email" title="Email">
-          <span class="contact-icon-ring">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
-              stroke-linejoin="round" aria-hidden="true">
-              <rect x="2" y="4" width="20" height="16" rx="2" />
-              <path d="m22 7-10 6L2 7" />
-            </svg>
-          </span>
-          <span class="contact-icon-label" data-i18n="contact_email_label">Email</span>
+        <a class="btn btn-ghost btn-lg contact-mail" data-contact="mail" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="4" width="20" height="16" rx="2" />
+            <path d="m22 7-10 6L2 7" />
+          </svg>
+          <span data-i18n="contact_email_label">Email</span>
         </a>
       </div>
       <p class="contact-note" data-i18n="contact_note">Biasanya dibalas dalam kurang dari 24 jam.</p>
@@ -593,88 +412,10 @@
   <!-- ===== FOOTER ===== -->
   <footer class="footer">
     <div class="container footer-grid">
-      <div>
-        <!-- Logo completo de la marca, armado pieza a pieza cada vez que el
-             visitante llega al footer (script.js le añade la clase .play).
-             Reutiliza las clases l-* definidas en el logo del nav. -->
+      <div class="footer-brand">
         <a href="#top" class="footer-logo-link" aria-label="CDH Maker — kembali ke atas" data-i18n-aria="logo_top">
-          <svg id="footerLogo" class="footer-logo" viewBox="0 0 280 118" aria-hidden="true">
-            <g transform="translate(10, 20)">
-              <!-- Letras C · D · H (la estructura llega primero) -->
-              <g class="fl-piece" style="--i:0; --fx:-70px; --fy:0px; --fr:-6deg">
-                <path class="l-base" d="M 60 15 L 25 15 A 15 15 0 0 0 10 30 L 10 45 A 15 15 0 0 0 25 60 L 60 60" />
-              </g>
-              <g class="fl-piece" style="--i:1; --fx:0px; --fy:-70px; --fr:4deg">
-                <path class="l-base" d="M 75 15 L 105 15 A 22.5 22.5 0 0 1 127.5 37.5 A 22.5 22.5 0 0 1 105 60 L 75 60 Z" />
-              </g>
-              <g class="fl-piece" style="--i:2; --fx:70px; --fy:0px; --fr:6deg">
-                <path class="l-base" d="M 145 15 L 145 60 M 145 37.5 L 195 37.5 M 195 15 L 195 60" />
-              </g>
-              <!-- Circuitería de cada letra (el alma tecnológica) -->
-              <g class="fl-piece" style="--i:3; --fx:-30px; --fy:-24px; --fr:0deg">
-                <path class="l-circ" d="M 60 15 L 25 15 A 15 15 0 0 0 10 30 L 10 35 L 25 35 L 25 25" />
-                <circle class="l-acc" cx="25" cy="25" r="2.5" />
-                <path class="l-circ" d="M 10 50 L 10 45 A 15 15 0 0 1 25 60 L 50 60 L 50 45" />
-                <circle class="l-acc" cx="50" cy="45" r="2.5" />
-                <circle class="l-acc" cx="10" cy="50" r="2.5" />
-              </g>
-              <g class="fl-piece" style="--i:4; --fx:0px; --fy:36px; --fr:0deg">
-                <path class="l-circ" d="M 75 60 L 105 60 A 22.5 22.5 0 0 0 127.5 37.5 L 115 37.5 L 115 50" />
-                <circle class="l-acc" cx="115" cy="50" r="2.5" />
-                <path class="l-circ" d="M 75 15 L 75 40 L 90 40 L 90 25" />
-                <circle class="l-acc" cx="90" cy="25" r="2.5" />
-                <circle class="l-acc" cx="75" cy="15" r="2.5" />
-              </g>
-              <g class="fl-piece" style="--i:5; --fx:30px; --fy:-24px; --fr:0deg">
-                <path class="l-circ" d="M 145 60 L 145 37.5 L 170 37.5 L 170 50" />
-                <circle class="l-acc" cx="170" cy="50" r="2.5" />
-                <path class="l-circ" d="M 195 60 L 195 37.5 L 180 37.5 L 180 20" />
-                <circle class="l-acc" cx="180" cy="20" r="2.5" />
-              </g>
-              <!-- Chip 3D (aterriza sobre la D) -->
-              <g class="fl-piece" style="--i:6; --fx:0px; --fy:-46px; --fr:-8deg">
-                <g transform="translate(95, -18)">
-                  <polygon class="l-chip" points="15,0 30,8 15,16 0,8" />
-                  <polygon class="l-chip" points="0,8 15,16 15,22 0,14" />
-                  <polygon class="l-chip" points="30,8 15,16 15,22 30,14" />
-                  <line class="l-chip" x1="5" y1="18" x2="5" y2="28" />
-                  <circle class="l-acc" cx="5" cy="28" r="2" />
-                  <line class="l-chip" x1="15" y1="23" x2="15" y2="33" />
-                  <circle class="l-acc" cx="15" cy="33" r="2" />
-                  <line class="l-chip" x1="25" y1="18" x2="25" y2="28" />
-                  <circle class="l-acc" cx="25" cy="28" r="2" />
-                </g>
-              </g>
-              <!-- Antenas del ecualizador, una por una -->
-              <g transform="translate(150, -5)">
-                <g class="fl-piece" style="--i:7; --fx:0px; --fy:-30px; --fr:0deg">
-                  <line class="l-base" style="stroke-width:4;stroke-linecap:round;" x1="5" y1="20" x2="5" y2="0" />
-                  <circle class="l-main" cx="5" cy="-2" r="3.5" />
-                </g>
-                <g class="fl-piece" style="--i:8; --fx:0px; --fy:-38px; --fr:0deg">
-                  <line class="l-base" style="stroke-width:4;stroke-linecap:round;" x1="20" y1="20" x2="20" y2="-10" />
-                  <circle class="l-main" cx="20" cy="-12" r="3.5" />
-                </g>
-                <g class="fl-piece" style="--i:9; --fx:0px; --fy:-34px; --fr:0deg">
-                  <line class="l-base" style="stroke-width:4;stroke-linecap:round;" x1="35" y1="20" x2="35" y2="-5" />
-                  <circle class="l-main" cx="35" cy="-7" r="3.5" />
-                </g>
-                <g class="fl-piece" style="--i:10; --fx:0px; --fy:-42px; --fr:0deg">
-                  <line class="l-base" style="stroke-width:4;stroke-linecap:round;" x1="50" y1="20" x2="50" y2="5" />
-                  <circle class="l-main" cx="50" cy="3" r="3.5" />
-                </g>
-              </g>
-            </g>
-            <!-- La firma llega de última (más abajo que en el nav: aire a este tamaño) -->
-            <g transform="translate(14, 108)" font-family="'Space Grotesk', 'Inter', sans-serif" font-weight="700">
-              <g class="fl-piece" style="--i:11; --fx:0px; --fy:26px; --fr:0deg">
-                <text x="0" y="0" font-size="28" class="l-main" letter-spacing="1">Maker</text>
-              </g>
-              <g class="fl-piece" style="--i:12; --fx:0px; --fy:26px; --fr:0deg">
-                <text x="96" y="0" font-size="28" class="l-acc" letter-spacing="1">IT</text>
-              </g>
-            </g>
-          </svg>
+          <svg class="wolf" viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round"><path d="M17 3L37 25H63L83 3L89 41L96 56L84 69V81L50 97L16 81V69L4 56L11 41Z"/><path d="M59 35H73L84 69L50 82"/><path d="M41 35H59"/><path d="M50 82V97"/></g><g fill="none" stroke="var(--accent)" stroke-width="3.7" stroke-linecap="round" stroke-linejoin="round"><path d="M41 35H27L16 69L50 82"/></g><path d="M44.6 62H55.4L52.4 66.2H47.6Z" fill="currentColor"/><path d="M28 39.6L39.6 42.4L41.6 46.4L31.6 44.6Z" fill="var(--eye)"/><path d="M72 39.6L60.4 42.4L58.4 46.4L68.4 44.6Z" fill="var(--eye)"/></svg>
+          <svg class="wordmark" viewBox="-4 -4 342 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="6.2"><path d="M30 0H10L0 10V30L10 40H30"/><path transform="translate(41 0)" d="M0 0H20L30 10V30L20 40H0Z"/><path transform="translate(82 0)" d="M0 0V40M30 0V40M0 20H30"/></g><g transform="translate(136 0)" fill="none" stroke="var(--accent)" stroke-width="6.2"><path d="M0 40V0L18 20L36 0V40"/><path transform="translate(47 0)" d="M0 40V10L10 0H22L32 10V40M0 25H32"/><path transform="translate(90 0)" d="M0 0V40M29 0L0 25M10 16L29 40"/><path transform="translate(130 0)" d="M27 0H0V40H27M0 20H21"/><path transform="translate(168 0)" d="M0 40V0H21L30 9V13L21 22H0M15 22L30 40"/></g></svg>
         </a>
         <p class="footer-tagline" data-i18n="foot_tag" data-i18n-html>Jika Anda bisa membayangkannya,<br>kami bisa membangunnya.</p>
       </div>
@@ -700,7 +441,7 @@
         <a href="/id#contacto" data-i18n="foot_contact_cta">Buka kontak</a>
         <a href="https://github.com/HenryStark866" target="_blank" rel="noopener">GitHub</a>
         <span class="footer-loc"><svg class="loc-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z" />
             <circle cx="12" cy="10" r="3" />
           </svg> <span data-i18n="term_loc">Medellín, Kolombia</span></span>
@@ -732,19 +473,13 @@
     </nav>
   </footer>
 
-  <button id="to-top" aria-label="Kembali ke atas" data-i18n-aria="to_top">↑</button>
-  <div id="scroll-progress" aria-hidden="true"></div>
-  <div id="depth-hud" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 2v20" />
-      <path d="m7 17 5 5 5-5" />
-    </svg><span id="depth-val">0 m</span></div>
-  <div id="cursor-glow" aria-hidden="true"></div>
+  <button id="to-top" type="button" aria-label="Kembali ke atas" data-i18n-aria="to_top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5" /><path d="m6 11 6-6 6 6" /></svg>
+  </button>
 
-  <script src="/metaverse.js?v=11"></script>
-  <script src="/i18n.js?v=15"></script>
+  <script src="/i18n.js?v=16"></script>
   <script src="/contact.js?v=1"></script>
-  <script src="/script.js?v=9"></script>
+  <script src="/script.js?v=10"></script>
   <script src="/catalogo-vivo.js?v=1"></script>
   <script src="/chat-widget.js?v=3"></script>
   <script src="/estimator.js?v=3"></script>
