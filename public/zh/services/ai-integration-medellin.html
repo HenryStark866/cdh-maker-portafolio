@@ -64,7 +64,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@500&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="/styles.css?v=26" />
+  <link rel="stylesheet" href="/styles.css?v=27" />
   <link rel="icon" type="image/svg+xml" href="/icon.svg?v=2" />
   <script src="/theme.js?v=6"></script>
   <script src="/security.js?v=4"></script>
@@ -459,7 +459,18 @@
   <script src="/chat-widget.js?v=3"></script>
   <script src="/estimator.js?v=3"></script>
   <script src="/viewer3d.js?v=2"></script>
-  <script src="/ads.js?v=10"></script>
+  <script src="/ads.js?v=11"></script>
+  <!-- Textos del visor de proyectos (proyectos.js): van en el HTML para que el build los traduzca -->
+  <div id="pj-txt" hidden>
+    <span data-k="soon" data-i18n="pj_soon">我们正在录制该产品的视频介绍。在此期间，可以通过视频通话为您进行引导式演示。</span>
+    <span data-k="private" data-i18n="pj_private">客户的私有系统：出于对其业务的尊重，不向公众开放，仅以视频形式展示。</span>
+    <span data-k="apply" data-i18n="pj_apply">类似的系统适合您的公司吗？告诉我们您的工作方式，我们为您定制。</span>
+    <span data-k="demo" data-i18n="pj_demo">我想为我的公司做一个类似的</span>
+    <span data-k="live" data-i18n="pj_live">打开应用</span>
+    <span data-k="close" data-i18n="pj_close">关闭</span>
+    <span data-k="msg" data-i18n="pj_msg">您好，我在 cdhmaker.com 上看了 {p} 的介绍，想为我的公司做一个类似的。</span>
+  </div>
+  <script src="/proyectos.js?v=1"></script>
   <script src="/ref.js" defer></script>
 </body>
 

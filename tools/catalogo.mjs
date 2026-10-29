@@ -27,6 +27,13 @@
    - claves: palabras con las que el chat reconoce el servicio (sin tildes,
      en minúscula; es y en mezcladas).
    - La Consultoría va primero: la mayoría llega sin saber qué necesita.
+   - Campos opcionales que usa la vitrina de la portada (vitrina.js) y el
+     catálogo (desde 2026-10-29, ver docs/INVENTARIO.md):
+       estado: "produccion" | "demo" | "desarrollo"  (sin estado = servicio
+               que se contrata; los productos propios siempre lo llevan)
+       demo:   enlace a una demo o video público (https:// o /media/…)
+       pagina: página de servicio en español (/servicios/…); la vitrina la
+               cambia por la del idioma de la página
    ───────────────────────────────────────────────────────────────────────────
    Autor:    Ing. Henry Taborda — CDH Maker (Medellín, Colombia)
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -102,9 +109,30 @@ export let CATALOGO = [
     claves: ["cto", "acompanamiento", "asesor tecnico", "proveedor", "revisar cotizacion", "fractional cto", "advisor"],
   },
 
+  {
+    id: "talleres", cat: "consultoria",
+    nombre: { es: "Talleres y capacitaciones maker", en: "Maker workshops and training" },
+    para: { es: "Formación práctica para tu equipo, colegio o comunidad: impresión 3D, electrónica con Arduino y ESP32, automatización e IA aplicada, aprendiendo haciendo.",
+      en: "Hands-on training for your team, school or community: 3D printing, electronics with Arduino and ESP32, automation and applied AI, learning by doing." },
+    incluye: { es: ["Temario a la medida del grupo", "Práctica con equipos y proyectos reales", "Material de apoyo para seguir solos"],
+      en: ["Syllabus tailored to the group", "Practice with real equipment and projects", "Support material to keep going on your own"] },
+    precio: {}, plazo: { es: "Según el temario", en: "Depends on the syllabus" },
+    claves: ["taller", "talleres", "capacitacion", "curso", "formacion", "clases", "workshop", "training", "course"],
+  },
+  {
+    id: "auditoria-web", cat: "consultoria",
+    nombre: { es: "Auditoría de tu sitio web", en: "Website audit" },
+    para: { es: "Revisamos tu página actual (velocidad, SEO, celular, seguridad y cómo convierte visitas en clientes) y te entregamos un informe con lo que hay que corregir primero.",
+      en: "We review your current website (speed, SEO, mobile, security and how it turns visits into customers) and hand you a report with what to fix first." },
+    incluye: { es: ["Revisión técnica, de contenido y de SEO", "Informe con hallazgos priorizados", "Recomendaciones que puede ejecutar cualquier proveedor"],
+      en: ["Technical, content and SEO review", "Report with prioritized findings", "Recommendations any vendor can carry out"] },
+    precio: {}, plazo: { es: "Informe en pocos días", en: "Report within a few days" },
+    claves: ["auditoria", "auditoria web", "seo", "revisar mi pagina", "mi pagina no vende", "velocidad", "website audit", "seo audit"],
+  },
+
   // ── Software ──────────────────────────────────────────────────────────
   {
-    id: "landing", cat: "software",
+    id: "landing", cat: "software", pagina: "/servicios/software-a-la-medida-medellin",
     nombre: { es: "Página web / landing page", en: "Website / landing page" },
     para: { es: "Tu negocio en internet con una página rápida, que se ve bien en el celular y lleva clientes a tu WhatsApp.",
       en: "Your business online with a fast, mobile-friendly page that sends customers to your WhatsApp." },
@@ -114,7 +142,7 @@ export let CATALOGO = [
     claves: ["pagina web", "landing", "sitio web", "web", "pagina", "website", "site"],
   },
   {
-    id: "tienda", cat: "software",
+    id: "tienda", cat: "software", pagina: "/servicios/software-a-la-medida-medellin",
     nombre: { es: "Tienda en línea (e-commerce)", en: "Online store (e-commerce)" },
     para: { es: "Vende por internet con catálogo, carrito, pagos y envíos. Si estás en Medellín, con domicilios y contraentrega por YAM.",
       en: "Sell online with catalog, cart, payments and shipping. In Medellín, with delivery and cash on delivery through YAM." },
@@ -124,7 +152,7 @@ export let CATALOGO = [
     claves: ["tienda", "ecommerce", "e-commerce", "vender en linea", "carrito", "shopify", "online store", "shop"],
   },
   {
-    id: "app-medida", cat: "software", destacado: true,
+    id: "app-medida", cat: "software", destacado: true, pagina: "/servicios/software-a-la-medida-medellin",
     nombre: { es: "Aplicación web o SaaS a la medida", en: "Custom web app or SaaS" },
     para: { es: "Cuando Excel y WhatsApp ya no alcanzan: un sistema propio para tu operación (inventario, pedidos, mantenimiento, clientes, facturación).",
       en: "When spreadsheets and WhatsApp are no longer enough: your own system for operations (inventory, orders, maintenance, customers, billing)." },
@@ -134,9 +162,20 @@ export let CATALOGO = [
     claves: ["aplicacion", "app", "software", "saas", "sistema", "plataforma", "inventario", "crm", "erp", "a la medida", "custom software", "platform"],
   },
 
+  {
+    id: "mantenimiento", cat: "software", estado: "produccion", demo: "/media/refricom-demo.mp4", pagina: "/servicios/software-a-la-medida-medellin",
+    nombre: { es: "Sistema de mantenimiento preventivo", en: "Preventive maintenance system" },
+    para: { es: "Para empresas de mantenimiento y refrigeración: clientes, equipos, cronograma anual, servicios con checklist desde el celular (también sin señal) y reportes que tu cliente consulta en línea. Es el sistema que usa Refricom.",
+      en: "For maintenance and refrigeration companies: customers, equipment, yearly schedule, checklist-based service visits from the phone (even offline) and reports your customer checks online. It's the system Refricom runs on." },
+    incluye: { es: ["Roles de administrador, técnico y cliente", "Cronograma anual con reprogramación de visitas", "Checklist en el celular, sin señal", "Hoja de vida de cada equipo y reportes"],
+      en: ["Admin, technician and customer roles", "Yearly schedule with visit rescheduling", "Offline checklist on the phone", "Equipment history and reports"] },
+    precio: {}, plazo: { es: "Según tus equipos y procesos", en: "Depends on your equipment and processes" },
+    claves: ["mantenimiento", "mantenimiento preventivo", "cronograma", "equipos", "refrigeracion", "checklist", "orden de trabajo", "maintenance", "cmms"],
+  },
+
   // ── IA y automatización ──────────────────────────────────────────────
   {
-    id: "asistente-ia", cat: "ia", destacado: true,
+    id: "asistente-ia", cat: "ia", destacado: true, pagina: "/servicios/inteligencia-artificial-medellin",
     nombre: { es: "Asistente con IA para WhatsApp o tu web", en: "AI assistant for WhatsApp or your website" },
     para: { es: "Responde preguntas frecuentes, toma pedidos y agenda citas a cualquier hora, y te pasa la conversación cuando hace falta una persona.",
       en: "Answers FAQs, takes orders and books appointments around the clock, and hands the chat to a person when needed." },
@@ -146,7 +185,7 @@ export let CATALOGO = [
     claves: ["chatbot", "bot", "asistente", "ia", "inteligencia artificial", "whatsapp", "responder clientes", "ai", "assistant", "gpt", "claude", "gemini"],
   },
   {
-    id: "automatizacion", cat: "ia",
+    id: "automatizacion", cat: "ia", pagina: "/servicios/inteligencia-artificial-medellin",
     nombre: { es: "Automatización de procesos", en: "Process automation" },
     para: { es: "Lo que hoy se copia y pega a mano (facturas, reportes, recordatorios, inventario) pasa a hacerse solo.",
       en: "What you copy and paste by hand today (invoices, reports, reminders, inventory) starts running on its own." },
@@ -168,6 +207,16 @@ export let CATALOGO = [
     claves: ["shorts", "clips", "reels", "tiktok", "video", "videos cortos", "piloto", "short-form"],
   },
   {
+    id: "shorts-arranque", cat: "contenido",
+    nombre: { es: "Shorts cada mes (plan Arranque)", en: "Monthly Shorts (Starter plan)" },
+    para: { es: "12 clips al mes de hasta 4 videos largos tuyos (uno por semana), con subtítulos y textos listos para publicar.",
+      en: "12 clips a month from up to 4 of your long videos (one a week), with captions and copy ready to post." },
+    incluye: { es: ["12 clips 9:16 al mes", "Subtítulos con el estilo de tu marca", "Título, descripción y hashtags por clip", "Archivos para YouTube, TikTok y Reels"],
+      en: ["12 vertical 9:16 clips a month", "Captions in your brand style", "Title, description and hashtags per clip", "Files for YouTube, TikTok and Reels"] },
+    precio: { cop: 690000, usd: 250, unidad: { es: "al mes", en: "per month" } }, plazo: { es: "72 h hábiles por video", en: "72 business hours per video" },
+    claves: ["shorts", "clips", "reels", "tiktok", "plan arranque", "starter", "short-form"],
+  },
+  {
     id: "shorts-mensual", cat: "contenido",
     nombre: { es: "Shorts cada mes (plan Constante)", en: "Monthly Shorts (Steady plan)" },
     para: { es: "30 clips al mes de tus podcasts, clases o lives, publicados de forma programada. Hay plan desde 12 clips.",
@@ -178,9 +227,20 @@ export let CATALOGO = [
     claves: ["shorts", "clipping", "contenido", "redes sociales", "youtube", "community manager", "content", "social media"],
   },
 
+  {
+    id: "shorts-presencia", cat: "contenido",
+    nombre: { es: "Shorts cada mes (plan Presencia)", en: "Monthly Shorts (Presence plan)" },
+    para: { es: "60 clips al mes de hasta 12 videos largos, con prioridad de entrega, publicación programada y una llamada mensual de resultados.",
+      en: "60 clips a month from up to 12 long videos, with priority delivery, scheduled publishing and a monthly results call." },
+    incluye: { es: ["60 clips 9:16 al mes (20 a 90 s)", "Gancho de apertura con IA en 12 clips", "Publicación programada en tu canal", "Reporte y llamada mensual de 30 min"],
+      en: ["60 vertical clips a month (20 to 90 s)", "AI opening hook on 12 clips", "Scheduled publishing on your channel", "Monthly report and 30-min call"] },
+    precio: { cop: 2490000, usd: 850, unidad: { es: "al mes", en: "per month" } }, plazo: { es: "48 h hábiles, con prioridad", en: "48 business hours, priority" },
+    claves: ["shorts", "clipping", "contenido", "plan presencia", "agencia", "podcast", "content"],
+  },
+
   // ── Fabricación digital ───────────────────────────────────────────────
   {
-    id: "impresion-3d", cat: "fabricacion",
+    id: "impresion-3d", cat: "fabricacion", pagina: "/servicios/impresion-3d-medellin",
     nombre: { es: "Impresión 3D por encargo", en: "3D printing on demand" },
     para: { es: "Piezas, repuestos, prototipos y maquetas en FDM o resina, desde tu archivo STL o desde la idea.",
       en: "Parts, spare parts, prototypes and models in FDM or resin, from your STL file or just the idea." },
@@ -190,7 +250,7 @@ export let CATALOGO = [
     claves: ["impresion 3d", "3d", "stl", "prototipo", "pieza", "repuesto", "resina", "3d printing", "print"],
   },
   {
-    id: "laser-cnc", cat: "fabricacion",
+    id: "laser-cnc", cat: "fabricacion", pagina: "/servicios/impresion-3d-medellin",
     nombre: { es: "Corte láser y CNC", en: "Laser cutting and CNC" },
     para: { es: "Corte y grabado en MDF, acrílico, madera y más: señalética, empaques, piezas y regalos corporativos.",
       en: "Cutting and engraving in MDF, acrylic, wood and more: signage, packaging, parts and corporate gifts." },
@@ -200,7 +260,7 @@ export let CATALOGO = [
     claves: ["laser", "corte laser", "cnc", "grabado", "acrilico", "mdf", "laser cutting", "engraving"],
   },
   {
-    id: "cad", cat: "fabricacion",
+    id: "cad", cat: "fabricacion", pagina: "/servicios/impresion-3d-medellin",
     nombre: { es: "Diseño CAD 2D/3D", en: "2D/3D CAD design" },
     para: { es: "Llevamos tu idea, boceto o pieza física a un modelo listo para fabricar.",
       en: "We turn your idea, sketch or physical part into a model ready to manufacture." },
@@ -212,7 +272,7 @@ export let CATALOGO = [
 
   // ── Electrónica e IoT ─────────────────────────────────────────────────
   {
-    id: "iot", cat: "iot",
+    id: "iot", cat: "iot", pagina: "/servicios/iot-automatizacion-medellin",
     nombre: { es: "Prototipo electrónico o IoT", en: "Electronics or IoT prototype" },
     para: { es: "Sensores que miden y avisan al celular, control remoto de equipos, domótica y monitoreo de máquinas.",
       en: "Sensors that measure and alert your phone, remote equipment control, home automation and machine monitoring." },
@@ -224,7 +284,7 @@ export let CATALOGO = [
 
   // ── Productos propios ─────────────────────────────────────────────────
   {
-    id: "yam", cat: "productos", destacado: true, url: "https://yam.cdhmaker.com",
+    id: "yam", cat: "productos", destacado: true, estado: "produccion", url: "https://yam.cdhmaker.com",
     nombre: { es: "YAM — tienda en línea y envíos de última milla", en: "YAM — online store and last-mile delivery" },
     para: { es: "La plataforma de CDH Maker para que los comercios vendan en línea, despachen con mensajeros y cobren contraentrega en Medellín.",
       en: "CDH Maker's platform for merchants to sell online, dispatch with couriers and collect cash on delivery in Medellín." },
@@ -235,7 +295,7 @@ export let CATALOGO = [
     claves: ["yam", "envios", "domicilios", "mensajeria", "ultima milla", "contraentrega", "logistica", "delivery", "shipping"],
   },
   {
-    id: "incubapp", cat: "productos", url: "https://incubapp.cdhmaker.com",
+    id: "incubapp", cat: "productos", estado: "produccion", url: "https://incubapp.cdhmaker.com",
     nombre: { es: "IncubApp — operación de incubación con IA", en: "IncubApp — AI-assisted hatchery operations" },
     para: { es: "SaaS para plantas de incubación: lotes, máquinas, mantenimiento e indicadores en un solo lugar.",
       en: "SaaS for hatcheries: batches, machines, maintenance and KPIs in one place." },
@@ -243,6 +303,36 @@ export let CATALOGO = [
       en: ["Multi-tenant with your brand", "Dashboards and KPIs", "AI assistant"] },
     precio: {}, plazo: { es: "Implementación según la planta", en: "Rollout depends on the plant" },
     claves: ["incubapp", "incubadora", "incubacion", "avicola", "pollos", "hatchery", "poultry"],
+  },
+  {
+    id: "taxiya", cat: "productos", estado: "demo", url: "https://taxiya.vercel.app",
+    nombre: { es: "TaxiYa — plataforma para centrales de taxis", en: "TaxiYa — platform for taxi dispatch companies" },
+    para: { es: "Para que las empresas de taxis operen sin llamadas ni planes de datos costosos: apps para pasajero, conductor y central, con despacho en tiempo real.",
+      en: "So taxi companies can run without phone calls or expensive data plans: passenger, driver and dispatch apps with real-time dispatching." },
+    incluye: { es: ["App del pasajero", "App del conductor", "Consola de la central con despacho en vivo"],
+      en: ["Passenger app", "Driver app", "Dispatch console with live assignment"] },
+    precio: {}, plazo: { es: "Implementación según la flota", en: "Rollout depends on the fleet" },
+    claves: ["taxiya", "taxi", "taxis", "central de taxis", "despacho", "conductores", "flota", "dispatch", "ride hailing"],
+  },
+  {
+    id: "privacycheck", cat: "productos", estado: "demo", url: "https://privacycheck-co.vercel.app", demo: "/media/privacycheck-demo.mp4",
+    nombre: { es: "PrivacyCheck — cumplimiento de la Ley 1581", en: "PrivacyCheck — Colombian data-protection compliance" },
+    para: { es: "Autodiagnóstico de protección de datos personales para empresas en Colombia: registro de entidades, consulta al RNBD, puntaje, simulador y análisis con IA.",
+      en: "Personal-data protection self-assessment for companies in Colombia (Law 1581): entity registry, RNBD lookup, score, simulator and AI analysis." },
+    incluye: { es: ["Autodiagnóstico con puntaje", "Consulta al RNBD", "Simulador y análisis con IA"],
+      en: ["Self-assessment with a score", "RNBD registry lookup", "Simulator and AI analysis"] },
+    precio: {}, plazo: { es: "Úsalo hoy en la demo", en: "Try the demo today" },
+    claves: ["privacycheck", "ley 1581", "habeas data", "proteccion de datos", "datos personales", "rnbd", "sic", "cumplimiento", "data protection", "compliance"],
+  },
+  {
+    id: "evaia", cat: "productos", estado: "desarrollo",
+    nombre: { es: "EvaIA — asistente de IA que corre en tu equipo", en: "EvaIA — an AI assistant that runs on your own computer" },
+    para: { es: "Asistente con voz, respuesta hablada, visión por cámara, memoria y avatar animado propio que funciona 100 % en local: tus datos no salen del equipo.",
+      en: "Assistant with voice, spoken answers, camera vision, memory and its own animated avatar that runs 100% locally: your data never leaves the machine." },
+    incluye: { es: ["Voz y respuesta hablada", "Visión por cámara", "Memoria en base de datos local", "Avatar animado"],
+      en: ["Voice and spoken answers", "Camera vision", "Local database memory", "Animated avatar"] },
+    precio: {}, plazo: { es: "En desarrollo: escríbenos si te interesa", en: "In development: write to us if interested" },
+    claves: ["evaia", "eva", "asistente local", "ia local", "privacidad", "voz", "avatar", "local ai", "offline ai"],
   },
 ];
 
@@ -286,6 +376,7 @@ export const PREGUNTAS = {
     ["¿Cuánto cuesta un chatbot o asistente con IA para WhatsApp?", "Desde 2.500.000 COP (USD 780), entrenado con la información de tu negocio, conectado a WhatsApp Business o a tu web, con paso a una persona cuando hace falta."],
     ["¿Los precios incluyen IVA?", "No: son precios antes de impuestos y son orientativos. La cotización formal detalla impuestos, etapas y forma de pago por hitos."],
     ["¿Qué es YAM?", "YAM es la plataforma propia de CDH Maker para que los comercios vendan en línea y despachen con envíos de última milla y recaudo contraentrega en Medellín. Cobra el 2,5 % de las ventas pagadas, facturado cada mes, sin mensualidad fija."],
+    ["¿Cómo se paga?", "Por hitos, según la cotización. En Colombia puedes pagar desde cualquier banco con Bre-B: escaneas el QR o transfieres a la llave de Bancolombia @henry9866 o de Nequi Negocios 0089443902 (en la portada, sección Medios de pago). Si pagas desde fuera de Colombia, escríbenos y acordamos el medio."],
   ],
   en: [
     ["I don't know what my business needs. Where do I start?", "With the free 30-minute orientation call: you tell us how you work today and what hurts, and we tell you what kind of solution fits, whether it's worth it and roughly what it would cost. If more detail is needed, the express digital diagnosis costs USD 90 (290,000 COP) and is credited if you hire the project."],
@@ -294,6 +385,7 @@ export const PREGUNTAS = {
     ["How much does an AI assistant for WhatsApp cost?", "From USD 780 (2,500,000 COP), trained on your business information, connected to WhatsApp Business or your website, with handoff to a person when needed."],
     ["Do prices include taxes?", "No: prices are before taxes and indicative. The formal quote details taxes, stages and milestone payments."],
     ["What is YAM?", "YAM is CDH Maker's own platform for merchants to sell online with last-mile delivery and cash on delivery in Medellín. It charges 2.5% of paid sales, billed monthly, with no fixed monthly fee."],
+    ["How do I pay?", "By milestones, as set in the quote. In Colombia you can pay from any bank with Bre-B: scan the QR or transfer to the Bancolombia key @henry9866 or the Nequi Negocios key 0089443902 (Payment methods section on the home page). If you pay from outside Colombia, write to us and we'll agree on the method."],
   ],
 };
 

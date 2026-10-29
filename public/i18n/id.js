@@ -264,3 +264,21 @@ window.CDH_I18N_DICT["id"] = {
   "contact_t": "Proyek Anda tidak perlu dimulai dengan sempurna. <em>Proyek Anda perlu dimulai.</em>",
   "contact_s": "Ceritakan apa yang ingin Anda bangun atau masalah apa yang perlu diselesaikan. Saya akan membalas dengan arahan awal, tanpa kewajiban."
 };
+
+// Visor de proyectos (proyectos.js): textos nuevos y los que cambiaron al dejar de abrir los sistemas directo.
+Object.assign(window.CDH_I18N_DICT["id"], {
+  "proj_s": "Produk dan sistem yang dibangun untuk operasi nyata dengan tantangan nyata. Klik salah satunya untuk menonton video presentasinya.",
+  "pj_watch": "Tonton presentasi →",
+  "aria_at": "Tonton presentasi YAM, platform A Tiempo Logística",
+  "aria_inc": "Tonton presentasi IncubApp",
+  "aria_taxi": "Tonton presentasi TaxiYa",
+  "aria_ref": "Tonton video presentasi Refricom",
+  "alt_ref": "Dasbor sistem pemeliharaan Refricom",
+  "pj_soon": "Kami sedang merekam video presentasi produk ini. Sementara itu, kami tunjukkan lewat demo terpandu melalui panggilan video.",
+  "pj_private": "Sistem pribadi milik klien: demi menghormati operasional mereka, sistem ini tidak terbuka untuk umum dan hanya ditampilkan dalam video.",
+  "pj_apply": "Apakah sistem seperti ini cocok untuk perusahaan Anda? Ceritakan cara kerja Anda dan kami sesuaikan.",
+  "pj_demo": "Saya mau yang seperti ini untuk perusahaan saya",
+  "pj_live": "Buka aplikasi",
+  "pj_close": "Tutup",
+  "pj_msg": "Halo, saya menonton presentasi {p} di cdhmaker.com dan ingin yang serupa untuk perusahaan saya."
+});

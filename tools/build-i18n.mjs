@@ -117,7 +117,8 @@ const PROJECTS = [
   { name: "IncubApp", url: "https://incubapp.cdhmaker.com", t: "pj_inc_t", p: "pj_inc_p" },
   { name: "EvaIA", t: "pj_eva_t", p: "pj_eva_p" },
   { name: "SIGI", t: "pj_sigi_t", p: "pj_sigi_p" },
-  { name: "Refricom — Sistema de Gestión del Mantenimiento", url: "https://refricom.cdhmaker.com", t: "pj_ref_t", p: "pj_ref_p" },
+  // Refricom es el sistema privado de un cliente: se lista sin URL (solo se muestra en video)
+  { name: "Refricom — Sistema de Gestión del Mantenimiento", t: "pj_ref_t", p: "pj_ref_p" },
   // El autodiagnóstico Ley 1581 del reto CAVALTEC es el mismo PrivacyCheck,
   // hecho con el equipo Sintaxis TI: no se lista dos veces ni como obra solo propia.
 ];

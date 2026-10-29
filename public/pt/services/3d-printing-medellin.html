@@ -64,7 +64,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@500&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="/styles.css?v=26" />
+  <link rel="stylesheet" href="/styles.css?v=27" />
   <link rel="icon" type="image/svg+xml" href="/icon.svg?v=2" />
   <script src="/theme.js?v=6"></script>
   <script src="/security.js?v=4"></script>
@@ -414,7 +414,18 @@
   <script src="/chat-widget.js?v=3"></script>
   <script src="/estimator.js?v=3"></script>
   <script src="/viewer3d.js?v=2"></script>
-  <script src="/ads.js?v=10"></script>
+  <script src="/ads.js?v=11"></script>
+  <!-- Textos del visor de proyectos (proyectos.js): van en el HTML para que el build los traduzca -->
+  <div id="pj-txt" hidden>
+    <span data-k="soon" data-i18n="pj_soon">Estamos gravando o vídeo de apresentação deste produto. Enquanto isso, mostramos em uma demo guiada por videochamada.</span>
+    <span data-k="private" data-i18n="pj_private">Sistema privado de um cliente: por respeito à sua operação, não é aberto ao público e é mostrado apenas em vídeo.</span>
+    <span data-k="apply" data-i18n="pj_apply">Algo assim serviria para a sua empresa? Conte como vocês trabalham e nós adaptamos.</span>
+    <span data-k="demo" data-i18n="pj_demo">Quero algo assim para minha empresa</span>
+    <span data-k="live" data-i18n="pj_live">Abrir o aplicativo</span>
+    <span data-k="close" data-i18n="pj_close">Fechar</span>
+    <span data-k="msg" data-i18n="pj_msg">Olá, vi a apresentação de {p} em cdhmaker.com e quero algo assim para minha empresa.</span>
+  </div>
+  <script src="/proyectos.js?v=1"></script>
   <script src="/ref.js" defer></script>
 </body>
 

@@ -31,11 +31,14 @@ Page: https://cdhmaker.com/en/catalog
 - [Express digital diagnosis](https://cdhmaker.com/en/catalog#diagnostico): USD 90 (290,000 COP in Colombia). We review how your business works today (sales, inventory, customer service, processes) and tell you what to fix first and what it costs. Timeline: Report in 3 business days.
 - [Technology roadmap](https://cdhmaker.com/en/catalog#hoja-de-ruta): From USD 375 (1,200,000 COP in Colombia). For companies about to invest in technology that want to do it in order: what to build, what to buy, what to automate, and in which phases. Timeline: 1 to 2 weeks.
 - [Monthly technical advisory (fractional CTO)](https://cdhmaker.com/en/catalog#cto-por-horas): From USD 300 per month (950,000 COP in Colombia). An engineer on your side to make decisions, review vendors and quotes, and keep you from buying what you don't need. Timeline: Monthly.
+- [Maker workshops and training](https://cdhmaker.com/en/catalog#talleres): Quote on request. Hands-on training for your team, school or community: 3D printing, electronics with Arduino and ESP32, automation and applied AI, learning by doing. Timeline: Depends on the syllabus.
+- [Website audit](https://cdhmaker.com/en/catalog#auditoria-web): Quote on request. We review your current website (speed, SEO, mobile, security and how it turns visits into customers) and hand you a report with what to fix first. Timeline: Report within a few days.
 
 **Custom software and SaaS** — Websites, apps and platforms that work for your business.
 - [Website / landing page](https://cdhmaker.com/en/catalog#landing): From USD 470 (1,500,000 COP in Colombia). Your business online with a fast, mobile-friendly page that sends customers to your WhatsApp. Timeline: 1 to 2 weeks.
 - [Online store (e-commerce)](https://cdhmaker.com/en/catalog#tienda): From USD 875 (2,800,000 COP in Colombia). Sell online with catalog, cart, payments and shipping. In Medellín, with delivery and cash on delivery through YAM. Timeline: 2 to 4 weeks.
 - [Custom web app or SaaS](https://cdhmaker.com/en/catalog#app-medida): From USD 1,900 (6,000,000 COP in Colombia). When spreadsheets and WhatsApp are no longer enough: your own system for operations (inventory, orders, maintenance, customers, billing). Timeline: 4 to 10 weeks.
+- [Preventive maintenance system](https://cdhmaker.com/en/catalog#mantenimiento): Quote on request. For maintenance and refrigeration companies: customers, equipment, yearly schedule, checklist-based service visits from the phone (even offline) and reports your customer checks online. It's the system Refricom runs on. Timeline: Depends on your equipment and processes.
 
 **AI and automation** — Repetitive tasks that run themselves and assistants that answer for you.
 - [AI assistant for WhatsApp or your website](https://cdhmaker.com/en/catalog#asistente-ia): From USD 780 (2,500,000 COP in Colombia). Answers FAQs, takes orders and books appointments around the clock, and hands the chat to a person when needed. Timeline: 2 to 4 weeks.
@@ -43,7 +46,9 @@ Page: https://cdhmaker.com/en/catalog
 
 **Short-form video content** — Your long videos turned into vertical clips every week, with no editing on your side.
 - [Shorts pilot (2 weeks)](https://cdhmaker.com/en/catalog#shorts-piloto): USD 95 (290,000 COP in Colombia). Risk-free trial: 6 vertical clips from one of your long videos, with captions and copy ready to post. Timeline: 72 business hours.
+- [Monthly Shorts (Starter plan)](https://cdhmaker.com/en/catalog#shorts-arranque): USD 250 per month (690,000 COP in Colombia). 12 clips a month from up to 4 of your long videos (one a week), with captions and copy ready to post. Timeline: 72 business hours per video.
 - [Monthly Shorts (Steady plan)](https://cdhmaker.com/en/catalog#shorts-mensual): USD 520 per month (1,490,000 COP in Colombia). 30 clips a month from your podcasts, classes or lives, scheduled for you. Plans start at 12 clips. Timeline: 48 business hours per video.
+- [Monthly Shorts (Presence plan)](https://cdhmaker.com/en/catalog#shorts-presencia): USD 850 per month (2,490,000 COP in Colombia). 60 clips a month from up to 12 long videos, with priority delivery, scheduled publishing and a monthly results call. Timeline: 48 business hours, priority.
 
 **Digital fabrication** — 3D printing, laser cutting, CNC and CAD design in Medellín, shipping across Colombia.
 - [3D printing on demand](https://cdhmaker.com/en/catalog#impresion-3d): From COP 25,000 per part. Parts, spare parts, prototypes and models in FDM or resin, from your STL file or just the idea. Timeline: 1 to 5 days.
@@ -56,6 +61,9 @@ Page: https://cdhmaker.com/en/catalog
 **Our own products (SaaS)** — CDH Maker platforms, ready to use.
 - [YAM — online store and last-mile delivery](https://yam.cdhmaker.com): 2.5% of paid sales, billed monthly. CDH Maker's platform for merchants to sell online, dispatch with couriers and collect cash on delivery in Medellín. Timeline: Open your store the same day.
 - [IncubApp — AI-assisted hatchery operations](https://incubapp.cdhmaker.com): Quote on request. SaaS for hatcheries: batches, machines, maintenance and KPIs in one place. Timeline: Rollout depends on the plant.
+- [TaxiYa — platform for taxi dispatch companies](https://taxiya.vercel.app): Quote on request. So taxi companies can run without phone calls or expensive data plans: passenger, driver and dispatch apps with real-time dispatching. Timeline: Rollout depends on the fleet.
+- [PrivacyCheck — Colombian data-protection compliance](https://privacycheck-co.vercel.app): Quote on request. Personal-data protection self-assessment for companies in Colombia (Law 1581): entity registry, RNBD lookup, score, simulator and AI analysis. Timeline: Try the demo today.
+- [EvaIA — an AI assistant that runs on your own computer](https://cdhmaker.com/en/catalog#evaia): Quote on request. Assistant with voice, spoken answers, camera vision, memory and its own animated avatar that runs 100% locally: your data never leaves the machine. Timeline: In development: write to us if interested.
 
 - **I don't know what my business needs. Where do I start?** With the free 30-minute orientation call: you tell us how you work today and what hurts, and we tell you what kind of solution fits, whether it's worth it and roughly what it would cost. If more detail is needed, the express digital diagnosis costs USD 90 (290,000 COP) and is credited if you hire the project.
 - **What is CDH Maker's consulting and who is it for?** It is an engineer helping you decide before you spend: a business diagnosis, a technology roadmap (what to build, what to buy and in which order) and monthly fractional-CTO advisory. It is for small businesses, merchants and founders in Colombia and worldwide, in Spanish or English.
@@ -63,6 +71,7 @@ Page: https://cdhmaker.com/en/catalog
 - **How much does an AI assistant for WhatsApp cost?** From USD 780 (2,500,000 COP), trained on your business information, connected to WhatsApp Business or your website, with handoff to a person when needed.
 - **Do prices include taxes?** No: prices are before taxes and indicative. The formal quote details taxes, stages and milestone payments.
 - **What is YAM?** YAM is CDH Maker's own platform for merchants to sell online with last-mile delivery and cash on delivery in Medellín. It charges 2.5% of paid sales, billed monthly, with no fixed monthly fee.
+- **How do I pay?** By milestones, as set in the quote. In Colombia you can pay from any bank with Bre-B: scan the QR or transfer to the Bancolombia key @henry9866 or the Nequi Negocios key 0089443902 (Payment methods section on the home page). If you pay from outside Colombia, write to us and we'll agree on the method.
 
 ## What clients come for
 
@@ -83,7 +92,7 @@ Page: https://cdhmaker.com/en/catalog
 - [IncubApp](https://incubapp.cdhmaker.com): Multi-company SaaS for hatcheries and farms: photo rounds, work orders, sales, logistics, animal health and real-time management, with AI. A CDH Maker product.
 - EvaIA: AI assistant running 100% locally: voice, spoken replies, camera vision, database memory and its own animated avatar.
 - SIGI: System that drafts ideas, scripts and pieces for social media with AI (Gemini) and queues them for review: nothing publishes without my manual approval. FastAPI + Next.js + Supabase — in progress.
-- [Refricom — Sistema de Gestión del Mantenimiento](https://refricom.cdhmaker.com): System delivered to Refricom to plan and control the maintenance of its equipment: inventory, preventive schedule with alerts, corrective work, work orders and reports.
+- Refricom — Sistema de Gestión del Mantenimiento: System delivered to Refricom to plan and control the maintenance of its equipment: inventory, preventive schedule with alerts, corrective work, work orders and reports.
 
 ## FAQ
 
@@ -121,11 +130,14 @@ Página: https://cdhmaker.com/catalogo
 - [Diagnóstico digital express](https://cdhmaker.com/catalogo#diagnostico): $ 290.000 (USD 90 fuera de Colombia). Revisamos cómo trabaja hoy tu negocio (ventas, inventario, atención, procesos) y te decimos qué arreglar primero y qué cuesta. Tiempo: Informe en 3 días hábiles.
 - [Hoja de ruta tecnológica](https://cdhmaker.com/catalogo#hoja-de-ruta): Desde $ 1.200.000 (USD 375 fuera de Colombia). Para empresas que van a invertir en tecnología y quieren hacerlo en orden: qué construir, qué comprar, qué automatizar y en qué fases. Tiempo: 1 a 2 semanas.
 - [Acompañamiento técnico mensual (CTO por horas)](https://cdhmaker.com/catalogo#cto-por-horas): Desde $ 950.000 al mes (USD 300 fuera de Colombia). Un ingeniero de tu lado para decidir, revisar proveedores y cotizaciones, y que no te vendan lo que no necesitas. Tiempo: Mensual.
+- [Talleres y capacitaciones maker](https://cdhmaker.com/catalogo#talleres): A consultar. Formación práctica para tu equipo, colegio o comunidad: impresión 3D, electrónica con Arduino y ESP32, automatización e IA aplicada, aprendiendo haciendo. Tiempo: Según el temario.
+- [Auditoría de tu sitio web](https://cdhmaker.com/catalogo#auditoria-web): A consultar. Revisamos tu página actual (velocidad, SEO, celular, seguridad y cómo convierte visitas en clientes) y te entregamos un informe con lo que hay que corregir primero. Tiempo: Informe en pocos días.
 
 **Software y SaaS a la medida** — Páginas, aplicaciones y plataformas que trabajan por tu negocio.
 - [Página web / landing page](https://cdhmaker.com/catalogo#landing): Desde $ 1.500.000 (USD 470 fuera de Colombia). Tu negocio en internet con una página rápida, que se ve bien en el celular y lleva clientes a tu WhatsApp. Tiempo: 1 a 2 semanas.
 - [Tienda en línea (e-commerce)](https://cdhmaker.com/catalogo#tienda): Desde $ 2.800.000 (USD 875 fuera de Colombia). Vende por internet con catálogo, carrito, pagos y envíos. Si estás en Medellín, con domicilios y contraentrega por YAM. Tiempo: 2 a 4 semanas.
 - [Aplicación web o SaaS a la medida](https://cdhmaker.com/catalogo#app-medida): Desde $ 6.000.000 (USD 1900 fuera de Colombia). Cuando Excel y WhatsApp ya no alcanzan: un sistema propio para tu operación (inventario, pedidos, mantenimiento, clientes, facturación). Tiempo: 4 a 10 semanas.
+- [Sistema de mantenimiento preventivo](https://cdhmaker.com/catalogo#mantenimiento): A consultar. Para empresas de mantenimiento y refrigeración: clientes, equipos, cronograma anual, servicios con checklist desde el celular (también sin señal) y reportes que tu cliente consulta en línea. Es el sistema que usa Refricom. Tiempo: Según tus equipos y procesos.
 
 **Inteligencia artificial y automatización** — Tareas repetitivas que se hacen solas y asistentes que responden por ti.
 - [Asistente con IA para WhatsApp o tu web](https://cdhmaker.com/catalogo#asistente-ia): Desde $ 2.500.000 (USD 780 fuera de Colombia). Responde preguntas frecuentes, toma pedidos y agenda citas a cualquier hora, y te pasa la conversación cuando hace falta una persona. Tiempo: 2 a 4 semanas.
@@ -133,7 +145,9 @@ Página: https://cdhmaker.com/catalogo
 
 **Contenido en video (Shorts)** — Tus videos largos convertidos en clips verticales cada semana, sin editar nada.
 - [Piloto de Shorts (2 semanas)](https://cdhmaker.com/catalogo#shorts-piloto): $ 290.000 (USD 95 fuera de Colombia). Prueba sin riesgo: 6 clips verticales de un video largo tuyo, con subtítulos y textos listos para publicar. Tiempo: 72 h hábiles.
+- [Shorts cada mes (plan Arranque)](https://cdhmaker.com/catalogo#shorts-arranque): $ 690.000 al mes (USD 250 fuera de Colombia). 12 clips al mes de hasta 4 videos largos tuyos (uno por semana), con subtítulos y textos listos para publicar. Tiempo: 72 h hábiles por video.
 - [Shorts cada mes (plan Constante)](https://cdhmaker.com/catalogo#shorts-mensual): $ 1.490.000 al mes (USD 520 fuera de Colombia). 30 clips al mes de tus podcasts, clases o lives, publicados de forma programada. Hay plan desde 12 clips. Tiempo: 48 h hábiles por video.
+- [Shorts cada mes (plan Presencia)](https://cdhmaker.com/catalogo#shorts-presencia): $ 2.490.000 al mes (USD 850 fuera de Colombia). 60 clips al mes de hasta 12 videos largos, con prioridad de entrega, publicación programada y una llamada mensual de resultados. Tiempo: 48 h hábiles, con prioridad.
 
 **Fabricación digital** — Impresión 3D, corte láser, CNC y diseño CAD en Medellín, con envíos a toda Colombia.
 - [Impresión 3D por encargo](https://cdhmaker.com/catalogo#impresion-3d): Desde $ 25.000 por pieza. Piezas, repuestos, prototipos y maquetas en FDM o resina, desde tu archivo STL o desde la idea. Tiempo: 1 a 5 días.
@@ -146,6 +160,9 @@ Página: https://cdhmaker.com/catalogo
 **Productos propios (SaaS)** — Plataformas de CDH Maker listas para usar.
 - [YAM — tienda en línea y envíos de última milla](https://yam.cdhmaker.com): 2,5 % de las ventas pagadas, facturado al mes. La plataforma de CDH Maker para que los comercios vendan en línea, despachen con mensajeros y cobren contraentrega en Medellín. Tiempo: Abres tu tienda el mismo día.
 - [IncubApp — operación de incubación con IA](https://incubapp.cdhmaker.com): A consultar. SaaS para plantas de incubación: lotes, máquinas, mantenimiento e indicadores en un solo lugar. Tiempo: Implementación según la planta.
+- [TaxiYa — plataforma para centrales de taxis](https://taxiya.vercel.app): A consultar. Para que las empresas de taxis operen sin llamadas ni planes de datos costosos: apps para pasajero, conductor y central, con despacho en tiempo real. Tiempo: Implementación según la flota.
+- [PrivacyCheck — cumplimiento de la Ley 1581](https://privacycheck-co.vercel.app): A consultar. Autodiagnóstico de protección de datos personales para empresas en Colombia: registro de entidades, consulta al RNBD, puntaje, simulador y análisis con IA. Tiempo: Úsalo hoy en la demo.
+- [EvaIA — asistente de IA que corre en tu equipo](https://cdhmaker.com/catalogo#evaia): A consultar. Asistente con voz, respuesta hablada, visión por cámara, memoria y avatar animado propio que funciona 100 % en local: tus datos no salen del equipo. Tiempo: En desarrollo: escríbenos si te interesa.
 
 - **No sé qué necesito para mi negocio, ¿por dónde empiezo?** Por la sesión de orientación gratuita de 30 minutos: nos cuentas cómo trabajas hoy y qué te duele, y te decimos qué tipo de solución te sirve, si vale la pena y cuánto costaría más o menos. Si hace falta más detalle, el diagnóstico digital express cuesta 290.000 COP (USD 90) y se descuenta si contratas el proyecto.
 - **¿Qué es la consultoría de CDH Maker y para quién es?** Es acompañamiento de un ingeniero para decidir antes de gastar: diagnóstico del negocio, hoja de ruta tecnológica (qué construir, qué comprar y en qué orden) y acompañamiento mensual tipo CTO por horas. Es para pymes, comercios y emprendedores en Colombia y en cualquier país, en español o inglés.
@@ -153,6 +170,7 @@ Página: https://cdhmaker.com/catalogo
 - **¿Cuánto cuesta un chatbot o asistente con IA para WhatsApp?** Desde 2.500.000 COP (USD 780), entrenado con la información de tu negocio, conectado a WhatsApp Business o a tu web, con paso a una persona cuando hace falta.
 - **¿Los precios incluyen IVA?** No: son precios antes de impuestos y son orientativos. La cotización formal detalla impuestos, etapas y forma de pago por hitos.
 - **¿Qué es YAM?** YAM es la plataforma propia de CDH Maker para que los comercios vendan en línea y despachen con envíos de última milla y recaudo contraentrega en Medellín. Cobra el 2,5 % de las ventas pagadas, facturado cada mes, sin mensualidad fija.
+- **¿Cómo se paga?** Por hitos, según la cotización. En Colombia puedes pagar desde cualquier banco con Bre-B: escaneas el QR o transfieres a la llave de Bancolombia @henry9866 o de Nequi Negocios 0089443902 (en la portada, sección Medios de pago). Si pagas desde fuera de Colombia, escríbenos y acordamos el medio.
 
 - **¿Cuánto cuesta un proyecto?** Cada proyecto es único, por eso la cotización es personalizada y gratuita: describes tu idea, la revisamos y recibes precio y tiempos en menos de 24 horas, sin compromiso.
 - **¿Cómo es el proceso de trabajo y pago?** Trabajamos por etapas con entregas parciales: ves avances reales desde los primeros días y el pago se divide por hitos. Sin sorpresas ni letra pequeña.

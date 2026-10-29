@@ -264,3 +264,21 @@ window.CDH_I18N_DICT["zh"] = {
   "contact_t": "你的项目不必完美地开始。<em>它需要开始。</em>",
   "contact_s": "告诉我你想打造什么，或需要解决什么问题。我会给你初步建议，没有任何义务。"
 };
+
+// Visor de proyectos (proyectos.js): textos nuevos y los que cambiaron al dejar de abrir los sistemas directo.
+Object.assign(window.CDH_I18N_DICT["zh"], {
+  "proj_s": "为真实业务打造的产品和系统，应对真实挑战。点击任意项目即可观看视频介绍。",
+  "pj_watch": "观看介绍 →",
+  "aria_at": "观看 YAM（A Tiempo Logística 的平台）的介绍",
+  "aria_inc": "观看 IncubApp 的介绍",
+  "aria_taxi": "观看 TaxiYa 的介绍",
+  "aria_ref": "观看 Refricom 的视频介绍",
+  "alt_ref": "Refricom 维护系统的仪表板",
+  "pj_soon": "我们正在录制该产品的视频介绍。在此期间，可以通过视频通话为您进行引导式演示。",
+  "pj_private": "客户的私有系统：出于对其业务的尊重，不向公众开放，仅以视频形式展示。",
+  "pj_apply": "类似的系统适合您的公司吗？告诉我们您的工作方式，我们为您定制。",
+  "pj_demo": "我想为我的公司做一个类似的",
+  "pj_live": "打开应用",
+  "pj_close": "关闭",
+  "pj_msg": "您好，我在 cdhmaker.com 上看了 {p} 的介绍，想为我的公司做一个类似的。"
+});

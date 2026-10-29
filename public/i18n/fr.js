@@ -264,3 +264,21 @@ window.CDH_I18N_DICT["fr"] = {
   "contact_t": "Votre projet n'a pas besoin de commencer parfait. <em>Il a besoin de commencer.</em>",
   "contact_s": "Dites-moi ce que vous voulez construire ou quel problème vous devez résoudre. Je vous réponds avec une première orientation, sans engagement."
 };
+
+// Visor de proyectos (proyectos.js): textos nuevos y los que cambiaron al dejar de abrir los sistemas directo.
+Object.assign(window.CDH_I18N_DICT["fr"], {
+  "proj_s": "Des produits et systèmes conçus pour des opérations réelles, avec de vrais défis. Cliquez sur chacun pour voir sa présentation vidéo.",
+  "pj_watch": "Voir la présentation →",
+  "aria_at": "Voir la présentation de YAM, la plateforme d'A Tiempo Logística",
+  "aria_inc": "Voir la présentation d'IncubApp",
+  "aria_taxi": "Voir la présentation de TaxiYa",
+  "aria_ref": "Voir la vidéo de présentation de Refricom",
+  "alt_ref": "Tableau de bord du système de maintenance de Refricom",
+  "pj_soon": "Nous tournons la vidéo de présentation de ce produit. En attendant, nous vous le montrons lors d'une démo guidée en visioconférence.",
+  "pj_private": "Système privé d'un client : par respect pour son activité, il n'est pas ouvert au public et n'est présenté qu'en vidéo.",
+  "pj_apply": "Une solution comme celle-ci servirait-elle à votre entreprise ? Dites-nous comment vous travaillez et nous l'adaptons.",
+  "pj_demo": "Je veux quelque chose comme ça pour mon entreprise",
+  "pj_live": "Ouvrir l'application",
+  "pj_close": "Fermer",
+  "pj_msg": "Bonjour, j'ai vu la présentation de {p} sur cdhmaker.com et je veux quelque chose de similaire pour mon entreprise."
+});

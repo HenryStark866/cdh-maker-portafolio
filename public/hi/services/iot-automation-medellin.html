@@ -64,7 +64,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@500&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="/styles.css?v=26" />
+  <link rel="stylesheet" href="/styles.css?v=27" />
   <link rel="icon" type="image/svg+xml" href="/icon.svg?v=2" />
   <script src="/theme.js?v=6"></script>
   <script src="/security.js?v=4"></script>
@@ -406,7 +406,18 @@
   <script src="/chat-widget.js?v=3"></script>
   <script src="/estimator.js?v=3"></script>
   <script src="/viewer3d.js?v=2"></script>
-  <script src="/ads.js?v=10"></script>
+  <script src="/ads.js?v=11"></script>
+  <!-- Textos del visor de proyectos (proyectos.js): van en el HTML para que el build los traduzca -->
+  <div id="pj-txt" hidden>
+    <span data-k="soon" data-i18n="pj_soon">हम इस प्रोडक्ट का वीडियो प्रेज़ेंटेशन रिकॉर्ड कर रहे हैं। तब तक हम इसे वीडियो कॉल पर गाइडेड डेमो में दिखा देंगे।</span>
+    <span data-k="private" data-i18n="pj_private">एक क्लाइंट का निजी सिस्टम: उनके कामकाज के सम्मान में यह सार्वजनिक नहीं है और केवल वीडियो में दिखाया जाता है।</span>
+    <span data-k="apply" data-i18n="pj_apply">क्या ऐसा कुछ आपकी कंपनी के काम आएगा? बताइए आप कैसे काम करते हैं, हम इसे आपके हिसाब से ढाल देंगे।</span>
+    <span data-k="demo" data-i18n="pj_demo">मुझे अपनी कंपनी के लिए ऐसा कुछ चाहिए</span>
+    <span data-k="live" data-i18n="pj_live">ऐप खोलें</span>
+    <span data-k="close" data-i18n="pj_close">बंद करें</span>
+    <span data-k="msg" data-i18n="pj_msg">नमस्ते, मैंने cdhmaker.com पर {p} का प्रेज़ेंटेशन देखा और मुझे अपनी कंपनी के लिए ऐसा कुछ चाहिए।</span>
+  </div>
+  <script src="/proyectos.js?v=1"></script>
   <script src="/ref.js" defer></script>
 </body>
 

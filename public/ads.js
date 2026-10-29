@@ -47,15 +47,20 @@
   const MAX_STORES = 8;
   const SPEED = 36; // px por segundo
 
-  // Clientes del ecosistema (las mismas URL e imágenes de #proyectos).
+  // Clientes del ecosistema (las mismas imágenes de #proyectos). Cada uno lleva
+  // a su presentación en video en la portada (#proyecto-<id>, la abre
+  // proyectos.js), no al sistema: Refricom es privado de un cliente y no se enlaza.
   // YAM es producto de CDH Maker y va como un cliente más.
   const CLIENTS = [
-    { name: "YAM", url: "https://yam.cdhmaker.com/?ref=cdh-cinta", img: "/media/atiempo-logistica.webp" },
-    { name: "IncubApp", url: "https://incubapp.cdhmaker.com", img: "/media/incubapp.webp" },
-    { name: "TaxiYa", url: "https://taxiya.vercel.app", img: "/media/taxiya.webp" },
-    { name: "Refricom", url: "https://refricom.cdhmaker.com" },
-    { name: "PrivacyCheck", url: "https://privacycheck-co.vercel.app", img: "/media/privacycheck-poster.webp" },
+    { name: "YAM", pj: "yam", img: "/media/atiempo-logistica.webp" },
+    { name: "IncubApp", pj: "incubapp", img: "/media/incubapp.webp" },
+    { name: "TaxiYa", pj: "taxiya", img: "/media/taxiya.webp" },
+    { name: "Refricom", pj: "refricom", img: "/media/refricom-poster.webp" },
+    { name: "PrivacyCheck", pj: "privacycheck", img: "/media/privacycheck-poster.webp" },
   ];
+  // Presentación de un proyecto: en la portada basta el ancla; en las demás
+  // páginas (servicios, catálogo) va a la portada del idioma (el inglés es "/")
+  const pjHref = (id) => (document.getElementById("proyecto-" + id) ? "" : lang() === "en" ? "/" : "/" + lang()) + "#proyecto-" + id;
   // Etiquetas nuevas de la barra (el resto de textos sigue en T)
   const T2 = {
     es: { client: "Cliente", store: "Tienda", cdh: "CDH Maker" }, en: { client: "Client", store: "Store", cdh: "CDH Maker" },
@@ -258,6 +263,7 @@
       a.rel = "noopener";
       a.setAttribute("aria-label", `${o.title} — ${o.cta} (${t.newtab})`);
     }
+    if (o.pj) a.dataset.pjAbrir = o.pj; // en la portada abre el visor sin saltar
     if (o.text) a.title = o.text;
     if (o.msg) a.dataset.msg = o.msg;
     if (o.image) {
@@ -339,7 +345,7 @@
 
   function clientOffers(t) {
     return CLIENTS.map((c) => ({
-      kind: "client", tag: t.client, title: c.name, image: c.img || null, cta: t.see, href: c.url, external: true,
+      kind: "client", tag: t.client, title: c.name, image: c.img || null, cta: t.see, href: pjHref(c.pj), pj: c.pj,
     }));
   }
 
