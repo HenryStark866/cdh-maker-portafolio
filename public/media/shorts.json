@@ -1,7 +1,44 @@
 {
   "canal": "https://www.youtube.com/channel/UCrVy83mH6KNwWZpF5OjPibg",
-  "generado": "2026-10-27T13:13:31.372Z",
+  "generado": "2026-10-29T17:06:16.818Z",
   "shorts": [
+    {
+      "id": "kPv5rwZkQzE",
+      "servicio": "asistente-ia",
+      "titulo": "Respondes lo mismo todo el día 🤖",
+      "fecha": "2026-10-29T16:46:16+00:00",
+      "url": "https://www.youtube.com/shorts/kPv5rwZkQzE",
+      "embed": false
+    },
+    {
+      "id": "6LASQBzKO9s",
+      "servicio": "app-medida",
+      "titulo": "Excel ya no te alcanza 💻",
+      "fecha": "2026-10-29T16:46:08+00:00",
+      "url": "https://www.youtube.com/shorts/6LASQBzKO9s",
+      "embed": false
+    },
+    {
+      "id": "ax7iOmQPHzg",
+      "titulo": "La forma correcta de pedirle cosas a la IA para tu negocio",
+      "fecha": "2026-10-28T14:08:09+00:00",
+      "url": "https://www.youtube.com/shorts/ax7iOmQPHzg",
+      "embed": false
+    },
+    {
+      "id": "_6aBF1x6_18",
+      "titulo": "Cotiza en un minuto, no en una hora",
+      "fecha": "2026-10-27T14:07:44+00:00",
+      "url": "https://www.youtube.com/shorts/_6aBF1x6_18",
+      "embed": false
+    },
+    {
+      "id": "rIEs8g6vOzI",
+      "titulo": "Avisa promociones sin crear grupos incómodos",
+      "fecha": "2026-10-27T14:07:39+00:00",
+      "url": "https://www.youtube.com/shorts/rIEs8g6vOzI",
+      "embed": false
+    },
     {
       "id": "NxLM3-zOmy0",
       "titulo": "¿Tu negocio necesita un chatbot? Depende de esto",
@@ -71,34 +108,6 @@
       "fecha": "2026-10-22T16:09:49+00:00",
       "url": "https://www.youtube.com/shorts/GuiJIJtO-98",
       "embed": false
-    },
-    {
-      "id": "tsKHFmlVXBI",
-      "titulo": "Tu negocio responde aunque estés dormido (WhatsApp Business)",
-      "fecha": "2026-10-21T14:39:03+00:00",
-      "url": "https://www.youtube.com/shorts/tsKHFmlVXBI",
-      "embed": false
-    },
-    {
-      "id": "ON9k1l2S0kY",
-      "titulo": "Deja de responder lo mismo 10 veces al día (WhatsApp Business)",
-      "fecha": "2026-10-21T14:38:11+00:00",
-      "url": "https://www.youtube.com/shorts/ON9k1l2S0kY",
-      "embed": false
-    },
-    {
-      "id": "DGiarH3DoBA",
-      "titulo": "Si no mides, decides a ciegas: tu tablero de negocio",
-      "fecha": "2026-10-19T21:12:02+00:00",
-      "url": "https://www.youtube.com/shorts/DGiarH3DoBA",
-      "embed": true
-    },
-    {
-      "id": "0pcJBDIatKA",
-      "titulo": "Agenda sin ida y vuelta por chat: hazlo así",
-      "fecha": "2026-10-19T21:11:28+00:00",
-      "url": "https://www.youtube.com/shorts/0pcJBDIatKA",
-      "embed": true
     }
   ]
 }
