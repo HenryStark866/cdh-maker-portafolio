@@ -22,6 +22,9 @@
         public/<código>/services/<slug>.html, con textos de
         tools/servicios/<código>.mjs, tiempos leídos de public/estimator.js,
         hreflang propio y JSON-LD Service (provider = #org).
+     3c. Escribe el catálogo con precios (tools/catalogo.mjs): /catalogo (es),
+        /en/catalog (en) y public/catalogo.json (lo leen la cinta, el chat y
+        el bot de Shorts).
      4. Regenera public/sitemap.xml y public/llms.txt.
 
    Uso:  node tools/build-i18n.mjs            (avisa si faltan traducciones)
@@ -31,7 +34,8 @@
    Archivos que este script ESCRIBE (no editarlos a mano):
      public/{en,zh,hi,ar,pt,bn,ru,fr,id}.html, public/servicios/*.html,
      public/<código>/services/*.html, public/sitemap.xml,
-     public/llms.txt, public/i18n/es.js (solo las claves presentes en el HTML)
+     public/llms.txt, public/catalogo.html, public/en/catalog.html,
+     public/catalogo.json, public/i18n/es.js (solo las claves presentes en el HTML)
      y el bloque seo de public/index.html.
    ───────────────────────────────────────────────────────────────────────────
    Autor:    Ing. Henry Taborda — CDH Maker (Medellín, Colombia)
@@ -43,6 +47,7 @@ import fs from "node:fs";
 import path from "node:path";
 import vm from "node:vm";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { CATALOGO, CATEGORIAS, PREGUNTAS, PROVISIONAL, TEXTOS as CAT_T, catalogoPublico, precioTexto } from "./catalogo.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PUB = path.join(ROOT, "public");
@@ -102,16 +107,17 @@ const ENTITY = {
 // Proyectos del portafolio: claves del diccionario de su título y descripción
 const PROJECTS = [
   { name: "PrivacyCheck", url: "https://privacycheck-co.vercel.app", t: "pj_featured_t", p: "pj_featured_p" },
-  { name: "A Tiempo Logística", url: "https://atiempo-logistica.vercel.app", t: "pj_at_t", p: "pj_at_p" },
+  // YAM es el SaaS estrella de CDH Maker: la plataforma de A Tiempo Logística
+  { name: "YAM", url: "https://yam.cdhmaker.com", t: "pj_at_t", p: "pj_at_p" },
   { name: "TaxiYa", url: "https://taxiya.vercel.app", t: "pj_taxi_t", p: "pj_taxi_p" },
   { name: "IncubApp", url: "https://incubapp.cdhmaker.com", t: "pj_inc_t", p: "pj_inc_p" },
   { name: "EvaIA", t: "pj_eva_t", p: "pj_eva_p" },
   { name: "SIGI", t: "pj_sigi_t", p: "pj_sigi_p" },
-  { name: "Refricom — Sistema de Gestión del Mantenimiento", t: "pj_ref_t", p: "pj_ref_p" },
+  { name: "Refricom — Sistema de Gestión del Mantenimiento", url: "https://refricom.cdhmaker.com", t: "pj_ref_t", p: "pj_ref_p" },
   // El autodiagnóstico Ley 1581 del reto CAVALTEC es el mismo PrivacyCheck,
   // hecho con el equipo Sintaxis TI: no se lista dos veces ni como obra solo propia.
 ];
-const FAQ_COUNT = 9;   // faq1_q … faq9_q
+const FAQ_COUNT = 10;  // faq1_q … faq10_q
 // Claves que solo usan la cabecera y el JSON-LD (no aparecen en el <body>)
 const HEAD_KEYS = ["meta_title", "meta_desc", "person_job"];
 const NEEDS_COUNT = 8; // n1_t … n8_t
@@ -135,7 +141,7 @@ const SERVICES = [
 // principal (los mismos de #proyectos) y la imagen de public/media. La URL
 // en vivo sale de PROJECTS: se cambia en un solo lugar.
 const PROJECT_CARDS = {
-  at: { t: "pj_at_t", p: "pj_at_p", tag: "tag_saas", img: "atiempo-logistica", ext: "jpg", w: 1000, h: 625, alt: "alt_at" },
+  at: { t: "pj_at_t", p: "pj_at_p", tag: "tag_star", img: "atiempo-logistica", ext: "jpg", w: 1000, h: 625, alt: "alt_at" },
   taxi: { t: "pj_taxi_t", p: "pj_taxi_p", tag: "tag_saas", img: "taxiya", ext: "jpg", w: 1000, h: 625, alt: "alt_taxi" },
   inc: { t: "pj_inc_t", p: "pj_inc_p", tag: "tag_saas_ai", img: "incubapp", ext: "jpg", w: 1000, h: 625, alt: "alt_inc" },
   pc: { t: "pj_featured_t", p: "pj_featured_p", tag: "tag_web", img: "privacycheck-poster", ext: "jpg", w: 1280, h: 720, alt: "pj_featured_t" },
@@ -161,6 +167,11 @@ const urlOf = (code) => (code === "es" ? `${SITE}/` : `${SITE}/${code}`);
 const homePath = (code) => (code === "es" ? "/" : `/${code}`);
 const svcPath = (svc, code) => (code === "es" ? `/servicios/${svc.slug.es}` : `/${code}/services/${svc.slug.en}`);
 const svcUrl = (svc, code) => SITE + svcPath(svc, code);
+// Catálogo: solo español e inglés (los otros idiomas enlazan al inglés)
+const CAT_LANGS = ["es", "en"];
+const catLang = (code) => (code === "es" ? "es" : "en");
+const catPath = (code) => (catLang(code) === "es" ? "/catalogo" : "/en/catalog");
+const catUrl = (code) => SITE + catPath(code);
 
 // ── Utilidades de texto ──────────────────────────────────────────────────
 const escText = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -340,7 +351,11 @@ function jsonLd(code, d) {
       availableLanguage: ENTITY.serviceLanguages.map((l) => l.name),
       areaServed: "Worldwide",
     },
-    hasOfferCatalog: { "@type": "OfferCatalog", name: plain(d.nav_serv), itemListElement: services },
+    hasOfferCatalog: {
+      "@type": "OfferCatalog", name: plain(d.nav_serv),
+      // El catálogo con precios vive en su propia página (es / en)
+      itemListElement: [...services, { "@type": "OfferCatalog", "@id": `${catUrl(code)}#catalogo`, name: CAT_T[catLang(code)].crumb, url: catUrl(code) }],
+    },
   };
   if (ENTITY.sameAs.length) org.sameAs = ENTITY.sameAs;
 
@@ -499,6 +514,7 @@ function translatePage(src, code, d, es, missing) {
 function localizeSvcLinks(html, code) {
   if (code === "es") return html;
   for (const s of SERVICES) html = html.split(`href="${svcPath(s, "es")}"`).join(`href="${svcPath(s, code)}"`);
+  html = html.split('href="/catalogo').join(`href="${catPath(code)}`);
   return html;
 }
 
@@ -859,6 +875,252 @@ function buildServicePage(svc, code, home, sd, d, vars, langsWithPage) {
   return html.slice(0, start) + svcMain(svc, code, sd, d, vars, home) + html.slice(end + "</main>".length);
 }
 
+// ── 3c. Catálogo con precios (tools/catalogo.mjs) ────────────────────────
+// Mismo cascarón que las páginas de servicio: la portada ya traducida con
+// otro <main>, otro bloque seo y los enlaces de idioma apuntando al catálogo.
+
+// El precio en la otra moneda, para llms.txt
+function catOther(x, L) {
+  const p = x.precio || {};
+  if (typeof p.usd !== "number" || typeof p.cop !== "number") return "";
+  return L === "es" ? ` (USD ${p.usd} fuera de Colombia)` : ` (${p.cop.toLocaleString("en-US")} COP in Colombia)`;
+}
+
+function catJsonLd(L) {
+  const T = CAT_T[L];
+  const page = catUrl(L);
+  const ORG = `${SITE}/#org`, WEBSITE = `${SITE}/#website`;
+  const world = { "@type": "Place", name: "Worldwide" };
+  const colombia = { "@type": "Country", name: "Colombia" };
+  const physical = new Set(["fabricacion", "iot"]);
+  const offer = (x) => {
+    const p = x.precio || {};
+    const product = x.cat === "productos";
+    const o = {
+      "@type": "Offer",
+      name: x.nombre[L],
+      description: x.para[L],
+      url: x.url || `${page}#${x.id}`,
+      seller: { "@id": ORG },
+      itemOffered: {
+        "@type": product ? "SoftwareApplication" : "Service",
+        name: x.nombre[L],
+        description: x.para[L],
+        provider: { "@id": ORG },
+        ...(product
+          ? { applicationCategory: "BusinessApplication", operatingSystem: "Web", ...(x.url ? { url: x.url } : {}) }
+          : { areaServed: physical.has(x.cat) ? colombia : [colombia, world] }),
+      },
+    };
+    if (p.gratis) { o.price = 0; o.priceCurrency = "COP"; }
+    const specs = [];
+    for (const [cur, n] of [["COP", p.cop], ["USD", p.usd]]) {
+      if (typeof n !== "number") continue;
+      const sp = { "@type": "UnitPriceSpecification", priceCurrency: cur, valueAddedTaxIncluded: false };
+      if (p.desde) sp.minPrice = n; else sp.price = n;
+      if (p.unidad) sp.unitText = p.unidad[L];
+      specs.push(sp);
+    }
+    if (specs.length) o.priceSpecification = specs;
+    return o;
+  };
+  const catalog = {
+    "@type": "OfferCatalog",
+    "@id": `${page}#catalogo`,
+    name: T.crumb,
+    description: PROVISIONAL ? T.provisional : T.meta_desc,
+    provider: { "@id": ORG },
+    itemListElement: CATEGORIAS.map((c) => ({
+      "@type": "OfferCatalog",
+      "@id": `${page}#${c.id}`,
+      name: c.nombre[L],
+      description: c.lema[L],
+      itemListElement: CATALOGO.filter((x) => x.cat === c.id).map(offer),
+    })),
+  };
+  const org = {
+    "@type": ["ProfessionalService", "Organization"],
+    "@id": ORG,
+    name: ENTITY.name,
+    url: `${SITE}/`,
+    logo: `${SITE}/icon.svg`,
+    email: ENTITY.email,
+    address: { "@type": "PostalAddress", ...ENTITY.address },
+    hasOfferCatalog: { "@id": `${page}#catalogo` },
+  };
+  const webpage = {
+    "@type": "WebPage",
+    "@id": `${page}#webpage`,
+    url: page,
+    name: T.meta_title,
+    description: T.meta_desc,
+    inLanguage: L,
+    isPartOf: { "@id": WEBSITE },
+    about: { "@id": `${page}#catalogo` },
+    breadcrumb: { "@id": `${page}#breadcrumb` },
+    primaryImageOfPage: { "@type": "ImageObject", url: `${SITE}/media/og.jpg`, width: 1200, height: 630 },
+    dateModified: BUILD_DATE,
+  };
+  const breadcrumb = {
+    "@type": "BreadcrumbList",
+    "@id": `${page}#breadcrumb`,
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: T.crumb_home, item: urlOf(L) },
+      { "@type": "ListItem", position: 2, name: T.crumb, item: page },
+    ],
+  };
+  const faq = {
+    "@type": "FAQPage",
+    "@id": `${page}#faq`,
+    inLanguage: L,
+    mainEntity: PREGUNTAS[L].map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })),
+  };
+  const nodes = [org, catalog, webpage, breadcrumb, faq].map((n) => JSON.stringify(n));
+  return `{"@context":"https://schema.org","@graph":[\n${nodes.join(",\n")}\n]}`.replace(/</g, "\\u003c");
+}
+
+function catSeoBlock(L) {
+  const T = CAT_T[L];
+  const lang = LANGS.find((l) => l.code === L);
+  const page = catUrl(L);
+  const I = "  ";
+  const lines = [
+    `<!-- seo:start — bloque GENERADO por tools/build-i18n.mjs desde tools/catalogo.mjs: no editar a mano -->`,
+    `<title>${escText(T.meta_title)}</title>`,
+    `<meta name="description" content="${escAttr(T.meta_desc)}" />`,
+    `<link rel="canonical" href="${page}" />`,
+    ...CAT_LANGS.map((l) => `<link rel="alternate" hreflang="${l}" href="${catUrl(l)}" />`),
+    `<link rel="alternate" hreflang="x-default" href="${catUrl("en")}" />`,
+    `<meta property="og:type" content="website" />`,
+    `<meta property="og:site_name" content="${ENTITY.name}" />`,
+    `<meta property="og:title" content="${escAttr(T.meta_title)}" />`,
+    `<meta property="og:description" content="${escAttr(T.meta_desc)}" />`,
+    `<meta property="og:url" content="${page}" />`,
+    `<meta property="og:image" content="${SITE}/media/og.jpg" />`,
+    `<meta property="og:image:width" content="1200" />`,
+    `<meta property="og:image:height" content="630" />`,
+    `<meta property="og:locale" content="${lang.locale}" />`,
+    ...CAT_LANGS.filter((l) => l !== L).map((l) => `<meta property="og:locale:alternate" content="${LANGS.find((x) => x.code === l).locale}" />`),
+    `<meta name="twitter:card" content="summary_large_image" />`,
+    `<meta name="twitter:title" content="${escAttr(T.meta_title)}" />`,
+    `<meta name="twitter:description" content="${escAttr(T.meta_desc)}" />`,
+    `<meta name="twitter:image" content="${SITE}/media/og.jpg" />`,
+    `<script type="application/ld+json">`,
+    catJsonLd(L),
+    `</script>`,
+    `<!-- seo:end -->`,
+  ];
+  return lines.map((l) => (l.startsWith("{") ? l : I + l)).join("\n").trimStart();
+}
+
+// El <main> del catálogo: héroe, una sección por categoría (la Consultoría
+// primero), preguntas y la sección de contacto de la portada
+function catMain(L, d, home) {
+  const T = CAT_T[L];
+  const H = homePath(L);
+  const e = escText;
+  const card = (x) => {
+    const p = x.precio || {};
+    // En la página en español, la referencia en dólares para quien está afuera
+    const usd = L === "es" && typeof p.usd === "number" && typeof p.cop === "number"
+      ? `<small class="cat-usd">${e(T.usd)}: ${p.desde ? "desde " : ""}USD ${p.usd}</small>` : "";
+    const cta = x.url
+      ? `<a class="btn btn-ghost cat-cta" href="${x.url}" target="_blank" rel="noopener">${e(T.ver)} ↗</a>`
+      : `<a class="btn btn-primary cat-cta" href="#contacto" data-cat-item="${escAttr(x.nombre[L])}">${e(T.pedir)}</a>`;
+    return `        <article class="card cat-item${x.destacado ? " is-featured" : ""}" id="${x.id}">${x.destacado ? `
+          <span class="cat-badge">${e(T.destacado)}</span>` : ""}
+          <h3>${e(x.nombre[L])}</h3>
+          <p>${e(x.para[L])}</p>
+          <p class="cat-inc-t">${e(T.incluye)}</p>
+          <ul>
+${x.incluye[L].map((i) => `            <li>${e(i)}</li>`).join("\n")}
+          </ul>
+          <dl class="cat-meta">
+            <div><dt>${e(T.precio)}</dt><dd><strong class="cat-price">${e(precioTexto(x, L))}${PROVISIONAL && !p.gratis ? "*" : ""}</strong>${usd}</dd></div>
+            <div><dt>${e(T.plazo)}</dt><dd>${e(x.plazo[L])}</dd></div>
+          </dl>
+          ${cta}
+        </article>`;
+  };
+  const sections = CATEGORIAS.map((c) => `<section class="section" id="${c.id}">
+    <div class="container">
+      <p class="section-kicker">// ${e(c.nombre[L])}</p>
+      <h2>${e(c.nombre[L])}</h2>
+      <p class="section-sub">${e(c.lema[L])}</p>
+      <div class="cards cat-grid">
+${CATALOGO.filter((x) => x.cat === c.id).map(card).join("\n")}
+      </div>
+    </div>
+  </section>`);
+  sections.push(`<section class="section" id="faq">
+    <div class="container">
+      <p class="section-kicker">${e(plain(d.faq_k))}</p>
+      <h2>${e(T.dudas_t)}</h2>
+      <div class="faq-list">
+${PREGUNTAS[L].map(([q, a]) => `        <details class="faq-item">
+          <summary><span>${e(q)}</span><i class="faq-chev"></i></summary>
+          <p>${e(a)}</p>
+        </details>`).join("\n")}
+      </div>
+    </div>
+  </section>`);
+  sections.push(sectionById(home, "contacto"));
+  const body = sections.map((sec, i) =>
+    sec.replace(/<section class="section(?: section-alt)?"/, `<section class="section${i % 2 ? "" : " section-alt"}"`));
+  const hero = `<!-- ===== HÉROE DEL CATÁLOGO ===== -->
+  <section class="hero svc-hero">
+    <div class="orb orb-1" aria-hidden="true"></div>
+    <div class="orb orb-2" aria-hidden="true"></div>
+    <div class="container hero-inner">
+      <nav class="breadcrumb" aria-label="${escAttr(T.crumb_aria)}">
+        <ol>
+          <li><a href="${H}">${e(T.crumb_home)}</a></li>
+          <li aria-current="page">${e(T.crumb)}</li>
+        </ol>
+      </nav>
+      <p class="hero-kicker">${e(T.kicker)}</p>
+      <h1>${e(T.h1)}</h1>
+      <p class="hero-sub">${e(T.lead)}</p>
+      <div class="hero-cta">
+        <a href="#orientacion" class="btn btn-primary btn-glow">${ARROW_SVG}<span>${e(T.cta1)}</span></a>
+        <a href="#consultoria" class="btn btn-ghost">${e(T.cta2)}</a>
+      </div>${PROVISIONAL ? `
+      <p class="cat-provisional">* ${e(T.provisional)}</p>` : ""}
+    </div>
+  </section>`;
+  return `<main id="contenido">
+
+  ${hero}
+
+  ${body.join("\n\n  ")}
+
+  </main>`;
+}
+
+function buildCatalogPage(code, home, d) {
+  const L = catLang(code);
+  let html = home;
+  html = replaceSeo(html, catSeoBlock(L));
+  html = html.replace(/<html\b[^>]*>/, `<html lang="${L}" dir="ltr">`);
+  html = html.replace(
+    /^(<!DOCTYPE html>\s*)<!--[\s\S]*?-->/i,
+    `$1<!-- GENERADO por tools/build-i18n.mjs (catálogo) a partir de index.html,\n     i18n/${L}.js y tools/catalogo.mjs. No editar: los cambios se pierden en el próximo build. -->`
+  );
+  html = html.replace(/\s(src|href|poster|srcset)="(?!#|\/|[a-z][a-z0-9+.-]*:)([^"]+)"/gi, ` $1="/$2"`);
+  html = html.replace(/<a href="#servicios" class="skip-link"/, '<a href="#contenido" class="skip-link"');
+  html = html.replace(/<a href="#top" class="nav-logo"/, `<a href="${homePath(L)}" class="nav-logo"`);
+  // Anclas de la portada → la portada del idioma (las del catálogo se
+  // escriben después, en catMain, y no pasan por aquí)
+  html = html.replace(/href="#(?!top"|contenido")([a-zA-Z][\w-]*)"/g, `href="${homePath(L)}#$1"`);
+  for (const l of CAT_LANGS) {
+    html = html.split(`<a href="${homePath(l)}" hreflang="${l}"`).join(`<a href="${catPath(l)}" hreflang="${l}"`);
+  }
+  const start = html.indexOf('<main id="contenido">');
+  const end = html.indexOf("</main>", start);
+  if (start < 0 || end < 0) throw new Error('La portada debe tener <main id="contenido"> … </main>');
+  return html.slice(0, start) + catMain(L, d, home) + html.slice(end + "</main>".length);
+}
+
 // ── 4. sitemap.xml y llms.txt ────────────────────────────────────────────
 function sitemap(svcLangs) {
   // Un grupo = la misma página en varios idiomas: cada <url> lista a todas
@@ -876,6 +1138,7 @@ ${alts}
   const urls = [
     group(LANGS.map((l) => l.code), urlOf, `${SITE}/`),
     ...SERVICES.map((s) => group(svcLangs, (c) => svcUrl(s, c), svcUrl(s, "es"))),
+    group(CAT_LANGS, catUrl, catUrl("en")),
   ].join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>
 <!-- CDH Maker — mapa del sitio. GENERADO por tools/build-i18n.mjs: no editar.
@@ -907,6 +1170,14 @@ function llmsTxt(en, es, svcEn, svcEs) {
   const svcPages = (sd, code) => SERVICES.map((s) =>
     `- [${sd[s.id].name}](${svcUrl(s, code)}): ${sd[s.id].meta_desc} ${code === "es" ? "Incluye" : "Includes"}: ${sd[s.id].inc.map(([t]) => t).join("; ")}.`).join("\n");
 
+  // Catálogo: cada línea con precio, plazo y para qué sirve
+  const catLlms = (L) => [
+    `${L === "es" ? "Página" : "Page"}: ${catUrl(L)}${PROVISIONAL ? ` — ${CAT_T[L].provisional}` : ""}`,
+    ...CATEGORIAS.map((c) => `\n**${c.nombre[L]}** — ${c.lema[L]}\n` + CATALOGO.filter((x) => x.cat === c.id)
+      .map((x) => `- [${x.nombre[L]}](${x.url || `${catUrl(L)}#${x.id}`}): ${precioTexto(x, L)}${catOther(x, L)}. ${x.para[L]} ${CAT_T[L].plazo}: ${x.plazo[L]}.`).join("\n")),
+    `\n${PREGUNTAS[L].map(([q, a]) => `- **${q}** ${a}`).join("\n")}`,
+  ].join("\n");
+
   return `# CDH Maker
 
 > CDH Maker is an engineering studio founded by Ing. Henry Taborda in Medellín, Colombia. It builds custom software and SaaS platforms, integrates artificial intelligence, automates processes and delivers digital fabrication (3D printing, laser cutting, CNC machining), electronics and IoT, CAD design and technical consulting. Software, AI and design work is delivered remotely to clients worldwide; physical parts ship anywhere in Colombia. Service in Spanish and English.
@@ -924,6 +1195,10 @@ ${[1, 2, 3, 4].map((n) => `- [${p(en[`s${n}_t`])}](${urlOf("en")}#servicios): ${
 ## Service pages
 
 ${svcPages(svcEn, "en")}
+
+## Catalog and indicative prices
+
+${catLlms("en")}
 
 ## What clients come for
 
@@ -944,6 +1219,10 @@ ${p(es.meta_desc)}
 ${[1, 2, 3, 4].map((n) => `- [${p(es[`s${n}_t`])}](${urlOf("es")}#servicios): ${svc(es, n)}`).join("\n")}
 
 ${svcPages(svcEs, "es")}
+
+### Catálogo y precios orientativos
+
+${catLlms("es")}
 
 ${faqs(es)}
 
@@ -1014,6 +1293,15 @@ async function main() {
     }
   }
 
+  // 3c. Catálogo con precios (es y en) + public/catalogo.json
+  for (const code of CAT_LANGS) {
+    const home = code === "es" ? index : translatePage(index, code, dicts[code], es, new Set());
+    const file = path.join(PUB, ...catPath(code).split("/").filter(Boolean)) + ".html";
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(file, buildCatalogPage(code, home, { ...es, ...(dicts[code] || {}) }));
+  }
+  fs.writeFileSync(path.join(PUB, "catalogo.json"), JSON.stringify(catalogoPublico(), null, 2) + "\n");
+
   // 4. Mapa del sitio y llms.txt
   fs.writeFileSync(path.join(PUB, "sitemap.xml"), sitemap(svcLangs));
   fs.writeFileSync(path.join(PUB, "llms.txt"), llmsTxt({ ...es, ...dicts.en }, es, svcDicts.en || svcDicts.es, svcDicts.es));
@@ -1025,7 +1313,7 @@ async function main() {
     faltan += r.missing.length;
     console.warn(`⚠ ${r.code}: ${r.missing.length} clave(s) sin traducir (quedan en español): ${r.missing.join(", ")}`);
   }
-  console.log(`✓ ${LANGS.length} portadas, ${nSvc} páginas de servicio, sitemap.xml y llms.txt generados (${BUILD_DATE}).`);
+  console.log(`✓ ${LANGS.length} portadas, ${nSvc} páginas de servicio, catálogo (es/en), sitemap.xml y llms.txt generados (${BUILD_DATE}).`);
   if (faltan && STRICT) {
     console.error("✗ --strict: hay traducciones faltantes.");
     process.exit(1);

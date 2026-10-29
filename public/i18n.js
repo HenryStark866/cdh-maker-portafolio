@@ -56,7 +56,7 @@
 
   // Versión de los diccionarios: subirla invalida la caché del navegador
   // cuando se corrige una traducción (ver §10 del manual técnico).
-  const DICT_V = 5;
+  const DICT_V = 6;
 
   // Lo único que el español necesita cuando el HTML ya está en español:
   // las palabras del texto rotativo del hero, que no viven en el DOM.

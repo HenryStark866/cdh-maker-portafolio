@@ -66,7 +66,7 @@ export default {
     lead: "We design and build web applications, SaaS platforms and automations to run your company or launch your own product. You talk directly with the person who codes it, and we deliver it in the cloud for clients in Colombia and any other country.",
     inc: [
       ["Custom web applications", "Software to run your company: logistics, sales, inventory and work orders, built around your business logic, not a template's."],
-      ["SaaS platforms", "Your own cloud product, multi-tenant if you need it, like TaxiYa, A Tiempo Logística or IncubApp."],
+      ["SaaS platforms", "Your own cloud product, multi-tenant if you need it, like TaxiYa, YAM or IncubApp."],
       ["Websites and online stores", "Fast, mobile-friendly, search-ready sites: from a landing page to a full platform."],
       ["Process automation", "Less manual work: forms, reports, notifications and flows between your tools, connected and free of typing errors."],
       ["Compliance with Colombia's Law 1581", "Self-assessment and data protection compliance tools for companies in Colombia, like PrivacyCheck."],
@@ -81,7 +81,7 @@ export default {
     faq: [
       ["How long does it take to build a web application?", "As a reference, a custom web application takes {app}, a landing page {landing} and a process automation {auto}. We work in stages, so you see real progress from the first days."],
       ["Which technologies do you use?", "JavaScript, Next.js, Python, FastAPI, Supabase and Firebase, plus AI models like Gemini when the project needs them."],
-      ["Can you build my own SaaS product?", "Yes. TaxiYa and IncubApp are CDH Maker SaaS products, and A Tiempo Logística is a last-mile SaaS platform for e-commerce in Medellín. All three can be seen live."],
+      ["Can you build my own SaaS product?", "Yes. TaxiYa and IncubApp are CDH Maker SaaS products, and YAM (A Tiempo Logística) is a last-mile SaaS platform for e-commerce in Medellín. All three can be seen live."],
       ["Do you work with companies outside Medellín or Colombia?", "Yes. Software is delivered in the cloud anywhere in the world, and we work in Spanish and English."],
       ["How is development paid?", "By milestones: the project moves forward in stages with partial deliveries, and payment is split across those stages. The quote is free and arrives in under 24 hours, with no fine print."],
     ],

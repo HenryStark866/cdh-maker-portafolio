@@ -1003,75 +1003,131 @@ a:focus-visible, button:focus-visible, select:focus-visible, summary:focus-visib
   outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px;
 }
 
-/* ===== Ventana de anuncios (widget fijo, no modal) ===== */
-#cdh-ad-widget {
-  position: fixed; z-index: 90;
-  bottom: 84px; left: calc(var(--sidebar-w) + 16px);
-  opacity: 0; transform: translateY(10px);
-  transition: opacity 0.35s ease, transform 0.35s ease;
+/* ===== Cinta fija: Shorts + clientes + ofertas (ads.js) =====
+   Barra delgada pegada arriba (a la derecha de la barra lateral; en móvil,
+   debajo de la barra superior), visible siempre aunque se haga scroll. La
+   pista se mueve con transform (GPU) y se detiene con hover, foco, el botón
+   Pausar, el visor abierto o la pestaña oculta. Las reglas que mueven el
+   body y el scroll-padding están al final del archivo, para ganarle a las
+   del menú móvil. */
+:root { --cinta-h: 40px; }
+.cinta {
+  position: fixed; z-index: 45; top: 0; left: var(--sidebar-w); right: 0;
+  height: var(--cinta-h);
+  display: flex; align-items: center; gap: 10px; padding: 0 8px 0 14px;
+  background: var(--nav-bg); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-body);
 }
-#cdh-ad-widget.show { opacity: 1; transform: none; }
-.cdh-ad-card {
-  width: 264px;
-  background: rgba(10, 30, 41, 0.94); backdrop-filter: blur(10px);
-  border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
-  box-shadow: 0 16px 46px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(34, 211, 238, 0.06);
+.cinta-label {
+  flex-shrink: 0; font: 600 0.68rem var(--font-display); letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--accent); white-space: nowrap;
 }
-[data-theme="light"] .cdh-ad-card { background: rgba(255, 255, 255, 0.96); }
-.cdh-ad-head {
-  display: flex; align-items: center; gap: 7px;
-  padding: 9px 10px; border-bottom: 1px solid var(--border);
+.cinta-toggle {
+  flex-shrink: 0; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; cursor: pointer;
+  border: 1px solid var(--border); background: var(--surface); color: var(--accent);
+  transition: border-color 0.2s;
 }
-.cdh-ad-dot {
-  width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
-  box-shadow: 0 0 8px var(--accent); flex-shrink: 0;
-  animation: cdh-ad-pulse 2s ease-in-out infinite;
+.cinta-toggle:hover { border-color: var(--accent); }
+.cinta-toggle svg { width: 12px; height: 12px; }
+.cinta-toggle .i-play, .cinta-toggle[aria-pressed="true"] .i-pause { display: none; }
+.cinta-toggle[aria-pressed="true"] .i-play { display: block; }
+.cinta-toggle-l { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.cinta-viewport {
+  flex: 1; min-width: 0; height: 100%; overflow: hidden; display: flex; align-items: center;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 3%, #000 97%, transparent);
 }
-@keyframes cdh-ad-pulse { 50% { opacity: 0.4; } }
-.cdh-ad-tag {
-  font-family: var(--font-display); font-size: 0.64rem; letter-spacing: 1.2px;
-  text-transform: uppercase; color: var(--text-dim);
+.cinta-track {
+  list-style: none; display: flex; align-items: center; gap: 10px; width: max-content;
+  padding: 0 6px; margin: 0;
 }
-.cdh-ad-min {
-  margin-left: auto; width: 22px; height: 22px; border-radius: 50%;
+.cinta-track.is-anim { animation: cinta-scroll var(--cinta-dur, 60s) linear infinite; will-change: transform; }
+@keyframes cinta-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+[dir="rtl"] .cinta-track.is-anim { animation-name: cinta-scroll-rtl; }
+@keyframes cinta-scroll-rtl { from { transform: translateX(0); } to { transform: translateX(50%); } }
+.cinta:hover .cinta-track, .cinta:focus-within .cinta-track,
+.cinta.is-paused .cinta-track, .cinta.is-off .cinta-track, .cinta.is-modal .cinta-track {
+  animation-play-state: paused;
+}
+/* Reducir movimiento: fila fija con desplazamiento manual */
+.cinta.is-static .cinta-viewport { overflow-x: auto; scrollbar-width: none; -webkit-mask-image: none; mask-image: none; }
+.cinta.is-static .cinta-viewport::-webkit-scrollbar { display: none; }
+.cinta-item { flex: 0 0 auto; display: flex; }
+
+/* Cada pieza es una píldora: miniatura o ícono · etiqueta · título · precio · → */
+.cinta-card {
+  display: inline-flex; align-items: center; gap: 8px; height: 30px; max-width: 420px;
+  padding: 0 12px 0 3px; border-radius: 999px; white-space: nowrap;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  text-decoration: none; font: 500 0.8rem/1 var(--font-body); cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.cinta-card:hover, .cinta-card:focus-visible { border-color: var(--accent); background: var(--surface-2); }
+.cinta-thumb, .cinta-ico, .cinta-img {
+  position: relative; flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; overflow: hidden;
+  display: grid; place-items: center;
+  color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+.cinta-thumb img, .cinta-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cinta-ico svg { width: 14px; height: 14px; }
+.cinta-img.is-logo { border-radius: 7px; background: #fff; }
+.cinta-img.is-logo img { object-fit: contain; padding: 2px; }
+.cinta-initial { font: 700 0.72rem var(--font-display); color: var(--btn-fg); }
+.cinta-img.is-initial { background: var(--accent-2); }
+.cinta-badge {
+  flex-shrink: 0; padding: 3px 7px; border-radius: 999px;
+  font: 700 0.6rem/1 var(--font-display); letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+.cinta-ttl { min-width: 0; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
+.cinta-price { flex-shrink: 0; display: inline-flex; align-items: baseline; gap: 6px; }
+.cinta-price b { color: var(--accent); font: 700 0.8rem var(--font-display); }
+.cinta-price s { color: var(--text-dim); font-size: 0.72rem; }
+.cinta-store { flex-shrink: 0; color: var(--text-dim); font-size: 0.72rem; }
+.cinta-cta { flex-shrink: 0; color: var(--accent); font-weight: 700; }
+/* Short: miniatura con el punto rojo de "video" */
+.cinta-short .cinta-badge { color: #fff; background: rgba(204, 0, 41, 0.92); }
+.cinta-short .cinta-thumb::after {
+  content: ""; position: absolute; inset: 0; margin: auto; width: 0; height: 0;
+  border-left: 7px solid #fff; border-top: 4.5px solid transparent; border-bottom: 4.5px solid transparent;
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.8));
+}
+.cinta-yam .cinta-badge, .cinta-client .cinta-badge { color: var(--accent-2); background: color-mix(in srgb, var(--accent-2) 14%, transparent); }
+.cinta-cat .cinta-price b::after { content: "*"; opacity: 0.6; }
+
+/* Visor del Short (dialog nativo: foco atrapado y Esc para cerrar) */
+.cinta-modal {
+  margin: auto; padding: 0; border: none; background: transparent; color: var(--text);
+  max-width: min(400px, 94vw); width: 100%;
+}
+.cinta-modal::backdrop { background: rgba(2, 8, 12, 0.82); backdrop-filter: blur(4px); }
+.cinta-modal-box {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 18px; overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+}
+.cinta-modal-head { display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
+.cinta-modal-head strong {
+  flex: 1; min-width: 0; font: 600 0.92rem/1.3 var(--font-display);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.cinta-modal-x {
+  flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%; cursor: pointer;
   border: 1px solid var(--border); background: var(--surface-2); color: var(--text);
-  cursor: pointer; display: grid; place-items: center; line-height: 1; font-size: 1rem;
-  transition: border-color 0.2s, transform 0.2s;
+  font-size: 1.3rem; line-height: 1; display: grid; place-items: center;
 }
-.cdh-ad-min:hover { border-color: var(--accent); transform: scale(1.08); }
-.cdh-ad-media { position: relative; aspect-ratio: 16 / 9; background: #04141c; }
-.cdh-ad-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
-.cdh-ad-mute {
-  position: absolute; bottom: 8px; right: 8px; width: 28px; height: 28px;
-  border-radius: 50%; border: 1px solid rgba(255,255,255,0.25);
-  background: rgba(3, 10, 15, 0.55); backdrop-filter: blur(6px);
-  color: #fff; cursor: pointer; display: grid; place-items: center;
+.cinta-modal-x:hover { border-color: var(--accent); }
+.cinta-modal-frame {
+  position: relative; height: min(70vh, 620px); aspect-ratio: 9 / 16; max-width: 100%;
+  margin: 0 auto; background: #000;
 }
-.cdh-ad-mute:hover { border-color: var(--accent); }
-.cdh-ad-mute svg { width: 14px; height: 14px; }
-.cdh-ad-body { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 2px; }
-.cdh-ad-body strong { font-family: var(--font-display); font-size: 0.88rem; }
-.cdh-ad-body span { color: var(--text-dim); font-size: 0.76rem; line-height: 1.35; }
+.cinta-modal-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.cinta-modal-yt {
+  display: block; padding: 12px 14px; text-align: center;
+  color: var(--accent); font-weight: 600; font-size: 0.86rem; text-decoration: none;
+}
+.cinta-modal-yt:hover { text-decoration: underline; }
 
-.cdh-ad-pill {
-  display: flex; align-items: center; gap: 8px;
-  padding: 10px 16px 10px 12px; border-radius: 999px;
-  background: rgba(10, 30, 41, 0.94); backdrop-filter: blur(10px);
-  border: 1px solid var(--border); color: var(--accent); cursor: pointer;
-  font-family: var(--font-display); font-size: 0.82rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-  transition: border-color 0.2s, transform 0.2s;
-}
-[data-theme="light"] .cdh-ad-pill { background: rgba(255, 255, 255, 0.96); }
-.cdh-ad-pill:hover { border-color: var(--accent); transform: translateY(-2px); }
-.cdh-ad-pill svg { width: 16px; height: 16px; }
-.cdh-ad-pill span { color: var(--text); }
-
-@media (max-width: 760px) {
-  #cdh-ad-widget { left: 14px; bottom: 96px; }
-  .cdh-ad-card { width: 50vw; max-width: 210px; }
-  .cdh-ad-body span { display: none; }
-}
 
 /* ===== Responsive — sidebar → top bar en móvil ===== */
 @media (max-width: 760px) {
@@ -1118,7 +1174,6 @@ a:focus-visible, button:focus-visible, select:focus-visible, summary:focus-visib
   .about { grid-template-columns: 1fr; }
   .hero { padding: 70px 0 60px; }
   .footer-grid { grid-template-columns: 1fr; gap: 26px; }
-  .cdh-ad-window { max-width: 100%; }
 }
 
 /* ===== Páginas por servicio (/servicios/…, /<idioma>/services/…) =====
@@ -1329,3 +1384,67 @@ html { scroll-padding-top: 24px; }
   .card:hover, .why-item:hover, .project:hover { transform: none; }
   ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Cinta fija (ads.js) — lo que desplaza la página. Va al final para ganarle
+   a las reglas del menú (escritorio: barra lateral; móvil: barra de 60 px).
+   ═══════════════════════════════════════════════════════════════════════════ */
+body { padding-top: var(--cinta-h); }
+html { scroll-padding-top: calc(var(--cinta-h) + 24px); }
+#cdh-lang-suggest { top: calc(var(--cinta-h) + 12px); }
+@media (max-width: 760px) {
+  body { padding-top: calc(60px + var(--cinta-h)); }
+  .cinta { top: 60px; left: 0; padding: 0 6px; gap: 6px; }
+  .cinta-label { display: none; }
+  .cinta-card { max-width: 300px; }
+}
+@media (max-width: 700px) {
+  html { scroll-padding-top: calc(76px + var(--cinta-h)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cinta-track.is-anim { animation: none; }
+  .cinta-card { transition: none; }
+}
+@media print { .cinta { display: none; } body { padding-top: 0; } }
+
+/* ===== Catálogo (/catalogo, /en/catalog — tools/catalogo.mjs) ===== */
+.cat-grid { align-items: stretch; }
+.cat-item { position: relative; display: flex; flex-direction: column; gap: 10px; }
+.cat-item.is-featured { border-color: color-mix(in srgb, var(--accent) 55%, transparent); box-shadow: var(--shadow-card), 0 0 0 1px color-mix(in srgb, var(--accent) 25%, transparent); }
+.cat-badge {
+  align-self: flex-start; padding: 3px 10px; border-radius: 999px;
+  font: 700 0.66rem var(--font-display); letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--btn-fg); background: var(--accent);
+}
+.cat-inc-t { font: 600 0.78rem var(--font-display); letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-dim); margin-top: 4px; }
+.cat-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 6px 0 4px; padding-top: 12px; border-top: 1px solid var(--border); }
+.cat-meta dt { font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; }
+.cat-meta dd { font-size: 0.9rem; }
+.cat-price { display: block; color: var(--accent); font: 700 1.05rem var(--font-display); }
+.cat-usd { display: block; color: var(--text-dim); font-size: 0.76rem; }
+.cat-cta { margin-top: auto; align-self: flex-start; }
+.cat-provisional { margin-top: 18px; max-width: 720px; font-size: 0.82rem; color: var(--text-dim); }
+
+/* ===== Chat: atajos y sugerencias del catálogo (chat-widget.js) ===== */
+.cdh-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.cdh-chips button, .cdh-chips a {
+  padding: 6px 11px; border-radius: 999px; cursor: pointer; text-decoration: none;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  font: 500 0.78rem var(--font-body);
+}
+.cdh-chips button:hover { border-color: var(--accent); }
+.cdh-chips a { border-style: dashed; color: var(--accent); }
+.cdh-sug {
+  display: flex; flex-direction: column; gap: 3px; margin-top: 8px; padding: 10px 12px; border-radius: 12px;
+  background: var(--surface-2); border: 1px solid var(--border);
+}
+.cdh-sug strong { font-size: 0.86rem; }
+.cdh-sug-price { color: var(--accent); font-weight: 700; font-size: 0.84rem; }
+.cdh-sug small { color: var(--text-dim); font-size: 0.76rem; line-height: 1.4; }
+.cdh-sug-acts { display: flex; align-items: center; gap: 10px; margin-top: 4px; font-size: 0.78rem; }
+.cdh-sug-pick {
+  padding: 4px 10px; border-radius: 999px; border: 0; cursor: pointer;
+  background: var(--accent); color: var(--btn-fg); font: 600 0.76rem var(--font-body);
+}
+.cdh-sug-pick:disabled { opacity: 0.7; cursor: default; }
+.cdh-sug-note { display: block; margin-top: 6px; color: var(--text-dim); font-size: 0.72rem; }
