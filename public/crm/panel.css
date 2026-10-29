@@ -1,25 +1,12 @@
-/* Panel de administración de CDH Maker (/crm). Misma identidad del CRM: navy #0B3C5D + cian #68B8D0.
-   Tema: sigue al sistema; el botón ◐ lo fija (localStorage "cdh_crm_tema"). */
+/* Estilos de los módulos del panel (leads, pipeline, proyectos, afiliados, YAM) dentro de la consola /crm.
+   La consola (estilos en crm.html, que van después) solo tiene tema claro: aquí no hay modo oscuro, porque
+   sus variables pisarían las de la consola y dejarían texto claro sobre las tarjetas blancas. */
 :root {
   --marca:#0B3C5D; --marca-txt:#0B3C5D; --cian:#68B8D0; --fondo:#F2F7FA; --sup:#FFFFFF; --sup2:#F7FAFC; --linea:#D5E1E8; --borde-in:#B8C9D3;
   --txt:#10202B; --suave:#5B6F7C; --ok:#15803D; --err:#B91C1C; --warn:#A16207; --sel:#E3F0F6;
   --ok-bg:#E8F6EC; --ok-bd:#BFE5CB; --err-bg:#FDECEC; --err-bd:#F4C3C3; --warn-bg:#FFF8E6; --warn-bd:#F2D9A4; --info-bg:#EAF4F9; --info-bd:#C5DEEA;
   --cab:#0B3C5D; --cab-txt:#BFE3EE; --sombra:0 1px 2px rgba(11,60,93,.06);
   color-scheme: light;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-tema="claro"]) {
-    --marca:#68B8D0; --marca-txt:#9ED3E3; --fondo:#08141D; --sup:#0F1F2B; --sup2:#132634; --linea:#22394A; --borde-in:#2E4A5E;
-    --txt:#E4EEF3; --suave:#93A9B7; --ok:#4ADE80; --err:#F87171; --warn:#FBBF24; --sel:#173447;
-    --ok-bg:#0F2A1B; --ok-bd:#1E5133; --err-bg:#2D1414; --err-bd:#5A2525; --warn-bg:#2B2410; --warn-bd:#5C4A17; --info-bg:#11283A; --info-bd:#1F4560;
-    --cab:#061019; --cab-txt:#8CC6D8; --sombra:none; color-scheme: dark;
-  }
-}
-:root[data-tema="oscuro"] {
-  --marca:#68B8D0; --marca-txt:#9ED3E3; --fondo:#08141D; --sup:#0F1F2B; --sup2:#132634; --linea:#22394A; --borde-in:#2E4A5E;
-  --txt:#E4EEF3; --suave:#93A9B7; --ok:#4ADE80; --err:#F87171; --warn:#FBBF24; --sel:#173447;
-  --ok-bg:#0F2A1B; --ok-bd:#1E5133; --err-bg:#2D1414; --err-bd:#5A2525; --warn-bg:#2B2410; --warn-bd:#5C4A17; --info-bg:#11283A; --info-bd:#1F4560;
-  --cab:#061019; --cab-txt:#8CC6D8; --sombra:none; color-scheme: dark;
 }
 * { box-sizing: border-box; }
 body { margin:0; font-family: system-ui,'Segoe UI',Roboto,Arial,sans-serif; background: var(--fondo); color: var(--txt); line-height:1.45; font-size:14px; }
@@ -50,8 +37,6 @@ textarea.txt { font-family: inherit; font-size: 13px; min-height: 70px; }
 .grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 0 12px; }
 button { font: inherit; border-radius: 8px; padding: 7px 14px; border: 1px solid var(--marca); background:var(--sup); color: var(--marca-txt); cursor:pointer; font-weight:600; }
 button.primario { background: var(--marca); color:#fff; }
-:root[data-tema="oscuro"] button.primario { color:#06202E; }
-@media (prefers-color-scheme: dark) { :root:not([data-tema="claro"]) button.primario { color:#06202E; } }
 button.peligro { border-color: var(--err); color: var(--err); }
 button.mini { padding: 3px 9px; font-size: 12px; }
 button:disabled { opacity:.45; cursor:not-allowed; }

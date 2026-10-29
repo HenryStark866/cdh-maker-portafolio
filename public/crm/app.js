@@ -31,7 +31,7 @@ const bitacora = (...a) => import('./actividades.js?v=1').then((m) => m.bitacora
 
 const CLAVE_CORREO = 'cdh_crm_correo';
 
-$1
+// ───────── acceso ─────────
 async function completarEnlace() {
   if (!isSignInWithEmailLink(auth, location.href)) return;
   let correo = localStorage.getItem(CLAVE_CORREO);
@@ -149,7 +149,7 @@ async function vistaClientes(seg = 'proyecto') {
 
 const CAMPOS = [['nombre', 'Nombre o razón social'], ['tipo', 'Tipo (persona natural / empresa)'], ['documento', 'Cédula o NIT'], ['empresa', 'Empresa relacionada'],
   ['correo', 'Correo'], ['telefono', 'Teléfono / WhatsApp'], ['direccion', 'Ciudad y dirección'], ['proyecto', 'Proyecto o producto'], ['valor_total', 'Valor total (COP)'], ['estado', 'Estado (activo, pagado, cerrado)'],
-  ['afiliado', 'Código de afiliado que lo refirió (comisión)']]
+  ['afiliado', 'Código de afiliado que lo refirió (comisión)']];
 
 async function vistaCliente(id) {
   nav('clientes');
