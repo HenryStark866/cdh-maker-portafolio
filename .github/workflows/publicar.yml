@@ -1,0 +1,60 @@
+# Publica cdhmaker.com (Firebase Hosting) con el catálogo y los Shorts del día.
+#
+# Corre solo cada día a las 6:00 de Bogotá y cuando se pulsa «Publicar ahora» en
+# el CRM (Catálogo y precios → workflow_dispatch). El predeploy de firebase.json
+# hace el trabajo: tools/sync-shorts.mjs (Shorts del canal) y
+# tools/build-i18n.mjs (lee el catálogo del CRM en Firestore y regenera
+# /catalogo, el JSON-LD, llms.txt y el sitemap). Solo despliega Hosting: las
+# reglas de Firestore se siguen desplegando a mano.
+#
+# Necesita UNA vez el secreto FIREBASE_SERVICE_ACCOUNT (JSON de una cuenta de
+# servicio con el rol «Firebase Hosting Admin» del proyecto cdh-maker-portafolio).
+# Sin el secreto, el flujo lo avisa y termina sin desplegar.
+name: Publicar la web
+
+on:
+  schedule:
+    - cron: "0 11 * * *"   # 6:00 en Bogotá (UTC-5)
+  workflow_dispatch:
+
+concurrency:
+  group: publicar-hosting
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: ¿Hay credenciales?
+        id: llave
+        env:
+          SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          if [ -z "$SA" ]; then
+            echo "::warning::Falta el secreto FIREBASE_SERVICE_ACCOUNT: no se despliega. Ver el encabezado de este archivo."
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.llave.outputs.ok == 'true'
+
+      - uses: actions/setup-node@v4
+        if: steps.llave.outputs.ok == 'true'
+        with:
+          node-version: 20
+
+      - name: Desplegar Hosting (predeploy: Shorts + catálogo del CRM)
+        if: steps.llave.outputs.ok == 'true'
+        env:
+          SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          printf '%s' "$SA" > "$RUNNER_TEMP/sa.json"
+          export GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/sa.json"
+          npx --yes firebase-tools@13.29.1 deploy --only hosting --project cdh-maker-portafolio --non-interactive
+          node tools/indexnow.mjs || echo "::warning::IndexNow no respondió (no frena la publicación)."

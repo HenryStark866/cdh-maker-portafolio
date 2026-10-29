@@ -7,12 +7,17 @@
      · public/catalogo.json, que leen la cinta (ads.js), el chat
        (chat-widget.js) y el bot de Shorts (ClipFactory, guiones de oferta)
 
-   ⚠ PRECIOS PROVISIONALES. Son orientativos, los fijó el agente a partir de
-   las tarifas de referencia de ClipFactory (docs/OFERTA_SERVICIO.md) y del
-   mercado de Medellín, y Henry los ajusta. Mientras PROVISIONAL sea true, la
-   página y el JSON muestran el aviso «precios orientativos, sujetos a
-   ajuste». Para fijarlos: cambiar los números aquí, PROVISIONAL = false,
-   `node tools/build-i18n.mjs` y commit de lo generado.
+   ★ DESDE 2026-10-29 EL CATÁLOGO SE ADMINISTRA EN EL CRM (/crm → Catálogo):
+   productos, servicios, precios, imágenes y descripciones viven en Firestore
+   (catalogo/{id}, catalogo_imagenes/{id} y catalogo_config/general, lectura
+   pública). Este archivo es la SEMILLA (botón «Cargar el catálogo inicial»
+   del CRM) y el RESPALDO del build: si Firestore no responde al desplegar,
+   la web sale con estos datos. cargarRemoto() reemplaza CATALOGO, CATEGORIAS
+   y PROVISIONAL por lo del CRM (los importadores ven el cambio: son enlaces
+   vivos de los módulos ES).
+
+   Precios: Henry los aprobó el 2026-10-29 (PROVISIONAL = false). El aviso
+   «orientativos, antes de impuestos» se vuelve a encender desde el CRM.
 
    Reglas:
    - cop y usd son el precio DESDE (o el precio fijo si desde = false).
@@ -26,11 +31,11 @@
    Autor:    Ing. Henry Taborda — CDH Maker (Medellín, Colombia)
    ═══════════════════════════════════════════════════════════════════════════ */
 
-export const PROVISIONAL = true;
+export let PROVISIONAL = false;
 export const ACTUALIZADO = "2026-10-29";
 export const TRM_REFERENCIA = 3200;
 
-export const CATEGORIAS = [
+export let CATEGORIAS = [
   { id: "consultoria", nombre: { es: "Consultoría", en: "Consulting" },
     lema: { es: "Para cuando sabes que algo tiene que mejorar, pero no qué comprar ni por dónde empezar.",
       en: "For when you know something has to improve but not what to buy or where to start." } },
@@ -54,7 +59,7 @@ export const CATEGORIAS = [
       en: "CDH Maker platforms, ready to use." } },
 ];
 
-export const CATALOGO = [
+export let CATALOGO = [
   // ── Consultoría ───────────────────────────────────────────────────────
   {
     id: "orientacion", cat: "consultoria", destacado: true,
@@ -310,6 +315,64 @@ export function precioTexto(item, lang) {
   return `${desde}${monto}${unidad}`;
 }
 
+// ── El catálogo del CRM (Firestore) ────────────────────────────────────
+// Con FIRESTORE_EMULATOR_HOST (la variable estándar de Firebase) lee el emulador local
+const FIRESTORE = `${process.env.FIRESTORE_EMULATOR_HOST ? `http://${process.env.FIRESTORE_EMULATOR_HOST}` : "https://firestore.googleapis.com"}/v1/projects/cdh-maker-portafolio/databases/(default)/documents`;
+function valor(v) {
+  if (!v || typeof v !== "object") return null;
+  if ("stringValue" in v) return v.stringValue;
+  if ("integerValue" in v) return Number(v.integerValue);
+  if ("doubleValue" in v) return Number(v.doubleValue);
+  if ("booleanValue" in v) return v.booleanValue;
+  if ("timestampValue" in v) return v.timestampValue;
+  if ("arrayValue" in v) return (v.arrayValue.values || []).map(valor);
+  if ("mapValue" in v) return campos(v.mapValue.fields);
+  return null;
+}
+const campos = (f) => Object.fromEntries(Object.entries(f || {}).map(([k, v]) => [k, valor(v)]));
+async function leer(url) {
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), 15000);
+  try {
+    const r = await fetch(url, { signal: ctrl.signal });
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    return await r.json();
+  } finally {
+    clearTimeout(t);
+  }
+}
+
+// Trae el catálogo del CRM. Devuelve las imágenes para que el build las
+// escriba como archivos ({ id, v, d: dataUri }). Sin red o vacío: queda la semilla.
+export async function cargarRemoto(base = FIRESTORE) {
+  let docs, conf, imgs;
+  try {
+    [docs, conf, imgs] = await Promise.all([
+      leer(`${base}/catalogo?pageSize=300`),
+      leer(`${base}/catalogo_config/general`).catch(() => null),
+      leer(`${base}/catalogo_imagenes?pageSize=300`).catch(() => ({})),
+    ]);
+  } catch (e) {
+    return { origen: `semilla (Firestore no respondió: ${e.message})`, imagenes: [] };
+  }
+  const items = (docs.documents || []).map((d) => ({ id: d.name.split("/").pop(), ...campos(d.fields) }))
+    .filter((x) => x.activo !== false && x.nombre?.es && x.para?.es && x.cat);
+  if (!items.length) return { origen: "semilla (el catálogo del CRM está vacío)", imagenes: [] };
+  const c = conf?.fields ? campos(conf.fields) : {};
+  if (Array.isArray(c.categorias) && c.categorias.length) CATEGORIAS = c.categorias;
+  if (typeof c.provisional === "boolean") PROVISIONAL = c.provisional;
+  const orden = Object.fromEntries(CATEGORIAS.map((x, i) => [x.id, i]));
+  // Lo que falte en inglés sale en español: mejor un texto que un "undefined"
+  CATALOGO = items
+    .map((x) => ({ ...x, nombre: { en: x.nombre.es, ...x.nombre }, para: { en: x.para.es, ...x.para },
+      incluye: { es: x.incluye?.es || [], en: x.incluye?.en?.length ? x.incluye.en : x.incluye?.es || [] },
+      plazo: { es: x.plazo?.es || "", en: x.plazo?.en || x.plazo?.es || "" }, claves: x.claves || [] }))
+    .sort((a, b) => (orden[a.cat] ?? 99) - (orden[b.cat] ?? 99) || (a.orden ?? 999) - (b.orden ?? 999));
+  const imagenes = (imgs.documents || []).map((d) => ({ id: d.name.split("/").pop(), ...campos(d.fields) }))
+    .filter((x) => /^data:image\/(webp|jpeg|png);base64,/.test(x.d || ""));
+  return { origen: `CRM (${CATALOGO.length} ítems)`, imagenes };
+}
+
 // Lo que se publica en public/catalogo.json (sin las claves internas que no
 // necesita nadie de afuera, pero con las palabras para el chat)
 export function catalogoPublico() {
@@ -323,6 +386,6 @@ export function catalogoPublico() {
     paginas: { es: "https://cdhmaker.com/catalogo", en: "https://cdhmaker.com/en/catalog" },
     categorias: CATEGORIAS,
     preguntas: PREGUNTAS,
-    items: CATALOGO.map((x) => ({ ...x, precio_texto: { es: precioTexto(x, "es"), en: precioTexto(x, "en") } })),
+    items: CATALOGO.map(({ actualizado, actualizado_por, creado, creado_por, ...x }) => ({ ...x, precio_texto: { es: precioTexto(x, "es"), en: precioTexto(x, "en") } })),
   };
 }

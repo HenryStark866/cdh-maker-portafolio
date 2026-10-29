@@ -153,6 +153,34 @@ service cloud.firestore {
     match /crm_catalogo/{iid} {
       allow read, write: if esAdmin();
     }
+    // ── Catálogo PÚBLICO de productos y servicios (CRM → Catálogo) ──────────
+    // Lo lee cualquiera, sin sesión: la cinta, el chat, /catalogo y el bot de
+    // Shorts (es lo mismo que la web ya publica). Solo un administrador lo
+    // escribe, y con la forma mínima para que la web no se rompa.
+    match /catalogo/{id} {
+      allow read: if true;
+      allow create, update: if esAdmin() && id.matches('^[a-z0-9-]{2,40}$') && itemCatalogo(request.resource.data);
+      allow delete: if esAdmin();
+    }
+    // Imagen grande de cada ítem como data URI (Cloud Storage exige el plan Blaze)
+    match /catalogo_imagenes/{id} {
+      allow read: if true;
+      allow create, update: if esAdmin() && request.resource.data.d is string
+        && request.resource.data.d.matches('^data:image/(webp|jpeg|png);base64,.*') && request.resource.data.d.size() < 900000;
+      allow delete: if esAdmin();
+    }
+    match /catalogo_config/{cid} {
+      allow read: if true;
+      allow write: if esAdmin() && cid == 'general';
+    }
+    function itemCatalogo(d) {
+      return d.nombre is map && d.nombre.es is string && d.nombre.es.size() > 0 && d.nombre.es.size() <= 120
+        && d.para is map && d.para.es is string && d.para.es.size() <= 600
+        && d.cat is string && d.cat.matches('^[a-z0-9-]{2,30}$')
+        && d.precio is map
+        && (!('mini' in d) || (d.mini is string && d.mini.size() < 30000))
+        && (!('url' in d) || d.url == '' || (d.url is string && d.url.matches('^https://.*')));
+    }
     match /crm_config/{cid} {
       allow read, write: if esAdmin();
     }

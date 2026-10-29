@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    CDH MAKER — chat-widget.js
    Reemplazo del bot de menús: una cajita simple para escribirle a Henry.
-   Desde 2026-10-29 conoce el catálogo (/catalogo.json): atajos con las
+   Desde 2026-10-29 conoce el catálogo (el del CRM, vía catalogo-vivo.js): atajos con las
    dudas comunes y, según lo que se escriba, el servicio que sirve con su
    precio orientativo. Lo elegido viaja en el WhatsApp.
 
@@ -103,8 +103,8 @@
   // No es un bot que conversa: mientras el visitante escribe (o toca un
   // atajo) le muestra qué servicio del catálogo le sirve y su precio
   // orientativo, y lo que elija viaja en el mensaje de WhatsApp. Quien
-  // responde sigue siendo Henry. Datos: /catalogo.json (tools/catalogo.mjs).
-  const CAT_URL = "/catalogo.json";
+  // responde sigue siendo Henry. Datos: catalogo-vivo.js (lo que hay hoy en
+  // el CRM; /catalogo.json de respaldo).
   const C = {
     es: { suggest: "Esto podría servirte:", pick: "Me interesa", picked: "Agregado a tu mensaje ✓",
       more: "Ver en el catálogo", all: "Ver todos los precios", note: "* Precio orientativo, la cotización es gratis.",
@@ -125,8 +125,9 @@
   let catalogLoading = null;
   function loadCatalog() {
     if (catalog || catalogLoading) return catalogLoading || Promise.resolve(catalog);
-    catalogLoading = fetch(CAT_URL, { credentials: "omit" })
-      .then((r) => (r.ok ? r.json() : null))
+    const fuente = typeof window.CDH_CATALOGO === "function" ? window.CDH_CATALOGO()
+      : fetch("/catalogo.json", { credentials: "omit" }).then((r) => (r.ok ? r.json() : null));
+    catalogLoading = fuente
       .then((d) => { catalog = d && Array.isArray(d.items) ? d : null; return catalog; })
       .catch(() => null);
     return catalogLoading;

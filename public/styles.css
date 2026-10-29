@@ -1448,3 +1448,5 @@ html { scroll-padding-top: calc(var(--cinta-h) + 24px); }
 }
 .cdh-sug-pick:disabled { opacity: 0.7; cursor: default; }
 .cdh-sug-note { display: block; margin-top: 6px; color: var(--text-dim); font-size: 0.72rem; }
+.cat-img { display: block; width: calc(100% + 2px); max-width: none; height: auto; aspect-ratio: 16 / 9; object-fit: cover; margin: -1px -1px 4px; border-radius: var(--radius, 16px) var(--radius, 16px) 0 0; background: var(--surface-2); }
+.cat-item:has(.cat-img) { padding-top: 0; overflow: hidden; }

@@ -24,7 +24,7 @@
 
 ## Catalog and indicative prices
 
-Page: https://cdhmaker.com/en/catalog — Indicative, provisional prices before taxes, subject to change. Clients outside Colombia are quoted in US dollars (USD); Colombian clients in pesos (COP).
+Page: https://cdhmaker.com/en/catalog
 
 **Consulting** — For when you know something has to improve but not what to buy or where to start.
 - [Orientation call (30 min)](https://cdhmaker.com/en/catalog#orientacion): Free. You describe your situation and leave knowing whether we can help, what kind of solution fits and roughly what it would cost. Timeline: Booked within 1–2 business days.
@@ -114,7 +114,7 @@ Estudio de ingeniería en Medellín, Colombia: software y SaaS a la medida, inte
 
 ### Catálogo y precios orientativos
 
-Página: https://cdhmaker.com/catalogo — Precios orientativos y provisionales, en pesos colombianos (COP) antes de impuestos, sujetos a ajuste. Fuera de Colombia se cotiza en dólares (USD).
+Página: https://cdhmaker.com/catalogo
 
 **Consultoría** — Para cuando sabes que algo tiene que mejorar, pero no qué comprar ni por dónde empezar.
 - [Sesión de orientación (30 min)](https://cdhmaker.com/catalogo#orientacion): Gratis. Cuentas tu situación y sales sabiendo si te podemos ayudar, qué tipo de solución te sirve y cuánto costaría más o menos. Tiempo: Agenda en 1–2 días hábiles.

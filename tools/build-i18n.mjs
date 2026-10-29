@@ -47,7 +47,7 @@ import fs from "node:fs";
 import path from "node:path";
 import vm from "node:vm";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { CATALOGO, CATEGORIAS, PREGUNTAS, PROVISIONAL, TEXTOS as CAT_T, catalogoPublico, precioTexto } from "./catalogo.mjs";
+import { CATALOGO, CATEGORIAS, PREGUNTAS, PROVISIONAL, TEXTOS as CAT_T, cargarRemoto, catalogoPublico, precioTexto } from "./catalogo.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PUB = path.join(ROOT, "public");
@@ -879,6 +879,9 @@ function buildServicePage(svc, code, home, sd, d, vars, langsWithPage) {
 // Mismo cascarón que las páginas de servicio: la portada ya traducida con
 // otro <main>, otro bloque seo y los enlaces de idioma apuntando al catálogo.
 
+// Solo las categorías que tienen algo publicado (el CRM puede dejar una vacía)
+const catConItems = () => CATEGORIAS.filter((c) => CATALOGO.some((x) => x.cat === c.id));
+
 // El precio en la otra moneda, para llms.txt
 function catOther(x, L) {
   const p = x.precio || {};
@@ -901,6 +904,7 @@ function catJsonLd(L) {
       name: x.nombre[L],
       description: x.para[L],
       url: x.url || `${page}#${x.id}`,
+      ...(x.imagen ? { image: SITE + x.imagen } : {}),
       seller: { "@id": ORG },
       itemOffered: {
         "@type": product ? "SoftwareApplication" : "Service",
@@ -930,7 +934,7 @@ function catJsonLd(L) {
     name: T.crumb,
     description: PROVISIONAL ? T.provisional : T.meta_desc,
     provider: { "@id": ORG },
-    itemListElement: CATEGORIAS.map((c) => ({
+    itemListElement: catConItems().map((c) => ({
       "@type": "OfferCatalog",
       "@id": `${page}#${c.id}`,
       name: c.nombre[L],
@@ -1027,7 +1031,9 @@ function catMain(L, d, home) {
     const cta = x.url
       ? `<a class="btn btn-ghost cat-cta" href="${x.url}" target="_blank" rel="noopener">${e(T.ver)} ↗</a>`
       : `<a class="btn btn-primary cat-cta" href="#contacto" data-cat-item="${escAttr(x.nombre[L])}">${e(T.pedir)}</a>`;
-    return `        <article class="card cat-item${x.destacado ? " is-featured" : ""}" id="${x.id}">${x.destacado ? `
+    const img = x.imagen ? `
+          <img class="cat-img" src="${escAttr(x.imagen)}" alt="${escAttr(x.nombre[L])}" loading="lazy" decoding="async" width="640" height="360" />` : "";
+    return `        <article class="card cat-item${x.destacado ? " is-featured" : ""}" id="${x.id}">${img}${x.destacado ? `
           <span class="cat-badge">${e(T.destacado)}</span>` : ""}
           <h3>${e(x.nombre[L])}</h3>
           <p>${e(x.para[L])}</p>
@@ -1042,7 +1048,7 @@ ${x.incluye[L].map((i) => `            <li>${e(i)}</li>`).join("\n")}
           ${cta}
         </article>`;
   };
-  const sections = CATEGORIAS.map((c) => `<section class="section" id="${c.id}">
+  const sections = catConItems().map((c) => `<section class="section" id="${c.id}">
     <div class="container">
       <p class="section-kicker">// ${e(c.nombre[L])}</p>
       <h2>${e(c.nombre[L])}</h2>
@@ -1088,13 +1094,14 @@ ${PREGUNTAS[L].map(([q, a]) => `        <details class="faq-item">
       <p class="cat-provisional">* ${e(T.provisional)}</p>` : ""}
     </div>
   </section>`;
-  return `<main id="contenido">
+  return `<main id="contenido" data-catalogo="${L}">
 
   ${hero}
 
   ${body.join("\n\n  ")}
 
-  </main>`;
+  </main>
+  <script src="/catalogo-pagina.js?v=1" defer></script>`;
 }
 
 function buildCatalogPage(code, home, d) {
@@ -1119,6 +1126,22 @@ function buildCatalogPage(code, home, d) {
   const end = html.indexOf("</main>", start);
   if (start < 0 || end < 0) throw new Error('La portada debe tener <main id="contenido"> … </main>');
   return html.slice(0, start) + catMain(L, d, home) + html.slice(end + "</main>".length);
+}
+
+// Imágenes del catálogo (llegan del CRM como data URI): un archivo por
+// versión en public/media/catalogo/, y cada ítem apunta al suyo.
+function escribirImagenesCatalogo(imagenes) {
+  const porId = Object.fromEntries(imagenes.map((x) => [x.id, x]));
+  for (const item of CATALOGO) {
+    const img = porId[item.id];
+    if (!img) continue;
+    const [, mime, b64] = img.d.match(/^data:image\/(webp|jpeg|png);base64,(.+)$/);
+    const nombre = `${item.id}-${String(img.v || "1").replace(/[^\w-]/g, "")}.${mime === "jpeg" ? "jpg" : mime}`;
+    const file = path.join(PUB, "media", "catalogo", nombre);
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    if (!fs.existsSync(file)) fs.writeFileSync(file, Buffer.from(b64, "base64"));
+    item.imagen = `/media/catalogo/${nombre}`;
+  }
 }
 
 // ── 4. sitemap.xml y llms.txt ────────────────────────────────────────────
@@ -1173,7 +1196,7 @@ function llmsTxt(en, es, svcEn, svcEs) {
   // Catálogo: cada línea con precio, plazo y para qué sirve
   const catLlms = (L) => [
     `${L === "es" ? "Página" : "Page"}: ${catUrl(L)}${PROVISIONAL ? ` — ${CAT_T[L].provisional}` : ""}`,
-    ...CATEGORIAS.map((c) => `\n**${c.nombre[L]}** — ${c.lema[L]}\n` + CATALOGO.filter((x) => x.cat === c.id)
+    ...catConItems().map((c) => `\n**${c.nombre[L]}** — ${c.lema[L]}\n` + CATALOGO.filter((x) => x.cat === c.id)
       .map((x) => `- [${x.nombre[L]}](${x.url || `${catUrl(L)}#${x.id}`}): ${precioTexto(x, L)}${catOther(x, L)}. ${x.para[L]} ${CAT_T[L].plazo}: ${x.plazo[L]}.`).join("\n")),
     `\n${PREGUNTAS[L].map(([q, a]) => `- **${q}** ${a}`).join("\n")}`,
   ].join("\n");
@@ -1234,6 +1257,10 @@ ${pages}
 
 // ── Principal ────────────────────────────────────────────────────────────
 async function main() {
+  // 0. El catálogo que se publica es el del CRM (Firestore); sin red, la semilla
+  const remoto = process.argv.includes("--sin-crm") ? { origen: "semilla (--sin-crm)", imagenes: [] } : await cargarRemoto();
+  escribirImagenesCatalogo(remoto.imagenes);
+  console.log(`· catálogo: ${remoto.origen}`);
   const indexFile = path.join(PUB, "index.html");
   let index = fs.readFileSync(indexFile, "utf8");
 

@@ -9,8 +9,9 @@
        abre un visor con el embed de youtube-nocookie; el iframe se crea SOLO
        al abrirlo y se destruye al cerrarlo. Los Shorts subidos con la
        inserción desactivada ("embed": false) se abren en youtube.com.
-     · Productos y servicios de CDH Maker: /catalogo.json (lo genera
-       tools/build-i18n.mjs desde tools/catalogo.mjs, con precio orientativo).
+     · Productos y servicios de CDH Maker, tal como están HOY en el CRM
+       (catalogo-vivo.js: Firestore, con /catalogo.json de respaldo), con su
+       precio y su miniatura.
        Sin catálogo quedan las cuatro ofertas fijas de siempre (WhatsApp vía
        contact.js).
      · Clientes del ecosistema CDH Maker con su imagen: YAM (producto propio,
@@ -39,7 +40,6 @@
   if (!track || !viewport) return;
 
   const SHORTS_URL = "/media/shorts.json";
-  const CATALOG_URL = "/catalogo.json";
   const FEED_URL = "https://yam.cdhmaker.com/api/publico/vitrina";
   const FEED_TIMEOUT = 4000;
   const YAM_SIGNUP = "https://yam.cdhmaker.com/registro?ref=cdh-cinta";
@@ -325,6 +325,7 @@
       return {
         kind: catalog.provisional && !(x.precio && x.precio.gratis) && !(x.precio && x.precio.texto) ? "cat" : "cat-fijo",
         icon: CAT_ICON[x.cat] || "bag",
+        image: (x.mini && /^data:image\/(webp|jpeg|png);base64,/.test(x.mini) ? x.mini : null) || (x.imagen && /^\/media\//.test(x.imagen) ? x.imagen : safeUrl(x.imagen_url)),
         tag: x.cat === "productos" ? t.cdh : t.service,
         title: x.nombre[L],
         text: x.para ? x.para[L] : "",
@@ -578,7 +579,8 @@
   // Datos: primero lo local (rápido): Shorts, catálogo y clientes; el feed
   // de YAM llega después y, si trae algo, se vuelve a pintar.
   async function load() {
-    const [sh, cat] = await Promise.allSettled([getJSON(SHORTS_URL, 6000), getJSON(CATALOG_URL, 6000)]);
+    const catP = typeof window.CDH_CATALOGO === "function" ? window.CDH_CATALOGO() : Promise.reject(new Error("sin catalogo-vivo.js"));
+    const [sh, cat] = await Promise.allSettled([getJSON(SHORTS_URL, 6000), catP]);
     const data = sh.status === "fulfilled" ? sh.value : null;
     shorts = (Array.isArray(data && data.shorts) ? data.shorts : []).filter((s) => s && /^[\w-]{11}$/.test(s.id));
     if (cat.status === "fulfilled" && cat.value && Array.isArray(cat.value.items)) {

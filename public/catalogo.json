@@ -1,10 +1,7 @@
 {
   "generado": "2026-10-29",
-  "provisional": true,
-  "aviso": {
-    "es": "Precios orientativos y provisionales, antes de impuestos; sujetos a ajuste. La cotización final es gratis y llega en menos de 24 h.",
-    "en": "Indicative, provisional prices before taxes; subject to change. The final quote is free and arrives within 24 hours."
-  },
+  "provisional": false,
+  "aviso": null,
   "paginas": {
     "es": "https://cdhmaker.com/catalogo",
     "en": "https://cdhmaker.com/en/catalog"

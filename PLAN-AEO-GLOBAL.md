@@ -26,10 +26,11 @@ catálogo, ningún asistente tenía de dónde sacar una cifra ni un servicio par
 
 ## Hecho en el código (rama `feat/aeo-cinta-catalogo`)
 
-- **Catálogo con precios, fuente única** `tools/catalogo.mjs`: 17 productos y servicios en
-  7 categorías, la **Consultoría primero** (orientación gratis, diagnóstico express, hoja de
-  ruta, CTO por horas). Precios en COP y USD, **marcados como provisionales**
-  (`PROVISIONAL = true`): Henry los ajusta ahí y regenera.
+- **Catálogo con precios, administrado en el CRM** (`/crm` → *Catálogo y precios*): 17
+  productos y servicios en 7 categorías, la **Consultoría primero** (orientación gratis,
+  diagnóstico express, hoja de ruta, CTO por horas). Precios en COP y USD **aprobados por
+  Henry el 2026-10-29** (sin aviso de provisionales; se vuelve a encender desde el CRM).
+  `tools/catalogo.mjs` queda como semilla y respaldo del build.
 - **Páginas `/catalogo` (es) y `/en/catalog` (en)** generadas por `tools/build-i18n.mjs`,
   estáticas (los rastreadores no ejecutan JavaScript), con hreflang propio y entrada en el sitemap.
 - **schema.org**: `OfferCatalog` por categoría con `Offer` + `UnitPriceSpecification`
@@ -47,10 +48,10 @@ catálogo, ningún asistente tenía de dónde sacar una cifra ni un servicio par
 
 ## Falta, y solo lo puede hacer Henry
 
-1. **Fijar los precios** en `tools/catalogo.mjs` y, cuando estén firmes, `PROVISIONAL = false`.
-   Un asistente que cita "desde 290.000 COP" y luego el cliente oye otra cifra es peor que no
-   ser citado.
-2. **Desplegar** (`firebase deploy --only hosting`) y luego `node tools/indexnow.mjs`.
+1. **Mantener los precios al día en el CRM.** Un asistente que cita "desde 290.000 COP" y
+   luego el cliente oye otra cifra es peor que no ser citado.
+2. **Desplegar** las reglas (`firebase deploy --only firestore:rules`) y la web; después, el
+   flujo `publicar.yml` lo hace solo cada día (necesita el secreto `FIREBASE_SERVICE_ACCOUNT`).
 3. **Search Console y Bing Webmaster**: pedir indexación de `/catalogo` y `/en/catalog`;
    revisar en Bing el informe *AI Performance* a las 2 semanas.
 4. **Google Business Profile**: cargar los mismos servicios con su precio "desde" (Google

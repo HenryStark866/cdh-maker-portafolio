@@ -57,6 +57,7 @@ const RUTAS = {
   clientes: ([seg]) => vistaClientes(seg),
   cliente: ([id]) => vistaCliente(id),
   cotizador: ([f]) => vistaCotizador(f || 'cotizacion'),
+  catalogo: async (p) => (await import('./catalogo.js')).vistaCatalogo(p),
   doc: ([id, extra]) => vistaDocumento(id, extra || ''),
   docs: ([c]) => vistaDocs(c || ''),
   firmas: (p) => vistaFirmas(p),
@@ -446,7 +447,9 @@ async function vistaDocumento(id, clienteInicial) {
   const esCobro = previo?.data().tipo === 'factura';
   const [clientes, catalogo, emisor, CUENTAS_INGRESO] = await Promise.all([
     leerClientes(),
-    getDocs(query(collection(db, 'crm_catalogo'), orderBy('nombre'))).then((s) => s.docs.map((d) => d.data())),
+    // Ítems del cotizador + productos y servicios del catálogo público (CRM → Catálogo)
+    Promise.all([getDocs(query(collection(db, 'crm_catalogo'), orderBy('nombre'))).then((s) => s.docs.map((d) => d.data())),
+      import('./catalogo.js').then((m) => m.itemsParaCotizar()).catch(() => [])]).then(([a, b]) => [...a, ...b.filter((x) => !a.some((y) => y.nombre === x.nombre))]),
     leerEmisor({ pagos: esCobro }),
     libro().then((m) => m.CUENTAS_INGRESO).catch(() => CUENTAS_RESPALDO),
   ]);
