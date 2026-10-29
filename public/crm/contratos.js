@@ -9,7 +9,7 @@ import { collection, doc, getDoc, getDocs, setDoc, query, where, orderBy, limit 
 import { db, $app, esc, aviso, slug, descargar, hoyCO, sello, nav, fmtFecha } from './comun.js';
 import { rellenar } from './rellenar.js';
 import { htmlAPdf, cargarLibs } from './ensamblar.js?v=4';
-import { enLetras, EMISOR_BASE } from './comercial.js?v=3';
+import { enLetras, EMISOR_BASE } from './comercial.js?v=4';
 import { crearSolicitudFirma, mostrarEnlaces, botonesEnvio, enlazarCopiar } from './firmas.js';
 import { isotipo } from './marca.js';
 

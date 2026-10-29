@@ -7,7 +7,7 @@ import { collection, doc, getDoc, getDocs, updateDoc, setDoc, addDoc, query, whe
   from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 import { db, ctx, $app, esc, cop, fmtFecha, aviso, slug, descargar, hoyCO, mesDe, csv, sello, nombreDe, opcionesEquipo,
   nav, pestanas, kpi, guardarAdjunto, leerAdjunto, bajarAdjunto, bytesDe } from './comun.js';
-import { totales, claseDe, TIPOS } from './comercial.js?v=3';
+import { totales, claseDe, TIPOS } from './comercial.js?v=4';
 
 // ───────── plan de cuentas (códigos de 6 dígitos con la codificación del PUC, Decreto 2650/93) ─────────
 // Clase 4 ingresos (41 operacionales, 42 no operacionales), 6 costos de lo vendido, 51 administración,

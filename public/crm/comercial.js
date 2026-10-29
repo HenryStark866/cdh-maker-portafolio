@@ -95,9 +95,9 @@ ol{padding-left:18px;margin:4px 0}li{margin-bottom:3px;font-size:8.5pt;text-alig
 .firma-vacia{display:block;height:58px}.campo.vacio{color:#8aa1aa}.campo.ok{font-weight:600}
 .pagos{margin:14px 0 6px;padding:12px 14px;border:1px solid var(--linea);border-radius:10px;background:linear-gradient(180deg,#fff,#f6fbfc)}
 .pagos h2{margin:0 0 10px;border:0;padding:0;display:flex;justify-content:space-between;align-items:baseline}.pagos h2 small{font:500 8pt/1 "Inter",sans-serif;color:var(--suave)}
-.qrs{display:grid;grid-template-columns:repeat(auto-fit,minmax(70mm,1fr));gap:10px}
+.qrs{display:grid;grid-template-columns:repeat(auto-fit,minmax(84mm,1fr));gap:10px}
 .qr-t{display:flex;gap:10px;align-items:center;padding:8px;border:1px solid var(--linea);border-radius:10px;background:#fff;break-inside:avoid}
-.qr-t .qr{flex:none;width:34mm;height:34mm;padding:2px;border-radius:8px;border:1.5px solid var(--cian)}.qr-t .qr svg{width:100%;height:100%;display:block}
+.qr-t .qr{flex:none;width:44mm;height:44mm;padding:2px;border-radius:8px;border:1.5px solid var(--cian)}.qr-t .qr svg{width:100%;height:100%;display:block}
 .qr-t .ent{display:block;font-size:7.5pt;color:var(--suave);text-transform:uppercase;letter-spacing:.5px}
 .qr-t .llave{display:block;font:700 12pt/1.25 "Space Grotesk",sans-serif;color:var(--navy);word-break:break-all;margin:2px 0}
 .qr-t small{display:block;font-size:7.5pt;color:var(--suave)}
@@ -142,7 +142,9 @@ export function htmlDocumento(d, emisor = {}, { pdf = false, paraFirma = false }
     <tr class="total"><td colspan="${conDesc ? 5 : 4}">${cotiz ? 'Total cotizado' : 'Total a pagar' + (cobro ? ' (antes de retenciones que practique el pagador)' : '')}</td><td class="num">${pesos(t.total)}</td></tr></table>
     <div class="letras"><b>Son:</b> ${enLetras(t.total)}</div>`;
 
-  const qrs = cobro && (e.pagos || []).length ? `<section class="pagos"><h2>Paga fácil <small>Escanea el QR o copia la llave</small></h2><div class="qrs">${e.pagos.map((m) => `<div class="qr-t">${m.svg ? `<div class="qr">${m.svg}</div>` : ''}
+  // QR de pago: los medios marcados para este tipo de documento, salvo que el documento los quite.
+  const medios = cotiz || d.incluir_qr === false ? [] : (e.pagos || []).filter((m) => (cobro ? m.en_cobros : m.en_facturas) ?? true);
+  const qrs = medios.length ? `<section class="pagos"><h2>Paga fácil <small>Escanea el QR o copia la llave</small></h2><div class="qrs">${medios.map((m) => `<div class="qr-t">${m.svg ? `<div class="qr">${m.svg}</div>` : ''}
       <div><span class="ent">${esc(m.titulo || m.entidad)}</span><b class="llave" data-copiable>${esc(m.llave)}</b><small>${esc(m.nota || '')}${m.titular ? '<br>Titular: ' + esc(m.titular) : ''}</small></div></div>`).join('')}</div></section>` : '';
   const pago = !cotiz && (e.banco || e.cuenta) ? `<h2>Forma de pago</h2><table class="datos">
     <tr><th>Banco / entidad</th><td>${esc(e.banco)}</td></tr><tr><th>Tipo y número de cuenta</th><td>${esc(e.tipo_cuenta)} ${esc(e.cuenta)}</td></tr>

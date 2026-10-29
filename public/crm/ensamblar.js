@@ -84,7 +84,7 @@ export async function htmlAPdf(html) {
     const copiables = [...d.body.querySelectorAll('[data-copiable]')].map((e) => ({ txt: e.textContent.trim(), r: caja(e) }));
     const enlaces = [...d.body.querySelectorAll('a[href^="http"]')].map((e) => ({ url: e.href, r: caja(e) }));
 
-    const escala = Math.min(2, 32000 / total);
+    const escala = Math.min(3, 32000 / total); // 3×: los QR de pago necesitan resolución para leerse
     const lienzo = await window.html2canvas(d.documentElement, { scale: escala, width: ANCHO, height: total, windowWidth: ANCHO, windowHeight: total, backgroundColor: '#ffffff', logging: false });
     const pdf = new jsPDF({ unit: 'mm', format: 'a4', compress: true });
     for (let i = 1; i < cortes.length; i++) {

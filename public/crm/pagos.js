@@ -40,13 +40,14 @@ export function contenidoQR(m) {
 }
 
 // ───────── QR con la identidad de CDH Maker ─────────
-// Módulos como trazos redondeados (los vecinos horizontales se funden), ojos con esquina suave y el
-// isotipo al centro. Corrección de errores M: el logo tapa menos del 3 % y el código se sigue leyendo.
+// Módulos cuadrados (en un QR de pago la lectura manda: los redondeados fallaban en algunos tamaños),
+// ojos con esquina suave en los colores de la marca y el isotipo al centro. Corrección de errores M: el
+// logo tapa menos del 2 % del código.
 let nQR = 0;
-export async function qrSVG(texto, { tinta = '#060B14', acento = '#0891B2', logo = true, px = 0 } = {}) {
+export async function qrSVG(texto, { tinta = '#060B14', logo = true, px = 0, ec = 'M' } = {}) {
   await cargar('qr');
-  const qr = window.qrcode(0, 'M'); qr.addData(texto, 'Byte'); qr.make();
-  const n = qr.getModuleCount(), q = 2, T = n + 2 * q;
+  const qr = window.qrcode(0, ec); qr.addData(texto, 'Byte'); qr.make();
+  const n = qr.getModuleCount(), q = 4, T = n + 2 * q; // q: margen blanco estándar de 4 módulos
   const ojos = [[0, 0], [0, n - 7], [n - 7, 0]];
   const enOjo = (r, c) => ojos.some(([y, x]) => r >= y - 1 && r <= y + 7 && c >= x - 1 && c <= x + 7);
   const k = logo ? Math.max(7, Math.round(n * 0.14) | 1) : 0, c0 = (n - k) / 2;
@@ -55,9 +56,9 @@ export async function qrSVG(texto, { tinta = '#060B14', acento = '#0891B2', logo
   for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) {
     if (!qr.isDark(r, c) || enOjo(r, c) || enLogo(r, c)) continue;
     let l = 0; while (c + l + 1 < n && qr.isDark(r, c + l + 1) && !enOjo(r, c + l + 1) && !enLogo(r, c + l + 1)) l++;
-    d += `M${c + q + 0.5} ${r + q + 0.5}h${l || 0.01}`; c += l;
+    d += `M${c + q} ${r + q}h${l + 1}v1h-${l + 1}z`; c += l;
   }
-  const ojo = ([y, x]) => `<rect x="${x + q + 0.5}" y="${y + q + 0.5}" width="6" height="6" rx="1.7" fill="none" stroke="${tinta}"/><rect x="${x + q + 2}" y="${y + q + 2}" width="3" height="3" rx="0.9" fill="${acento}"/>`;
+  const ojo = ([y, x]) => `<rect x="${x + q + 0.5}" y="${y + q + 0.5}" width="6" height="6" fill="none" stroke="${tinta}"/><rect x="${x + q + 2}" y="${y + q + 2}" width="3" height="3" fill="${tinta}"/>`;
   let centro = '';
   if (logo) {
     const marca = await import('./marca.js').catch(() => null);
@@ -67,8 +68,8 @@ export async function qrSVG(texto, { tinta = '#060B14', acento = '#0891B2', logo
       : `<rect x="${x}" y="${x}" width="${t}" height="${t}" rx="${t * 0.22}" fill="${tinta}"/><text x="${x + t / 2}" y="${x + t * 0.64}" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="${t * 0.36}" fill="#22D3EE">CDH</text>`);
   }
   const tam = px ? ` width="${px}" height="${px}"` : '';
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${T} ${T}"${tam} shape-rendering="geometricPrecision" role="img" aria-label="Código QR de pago" data-qr="${++nQR}">
-    <rect width="${T}" height="${T}" rx="${T * 0.04}" fill="#fff"/><path d="${d}" stroke="${tinta}" stroke-width="1.02" stroke-linecap="round" fill="none"/>${ojos.map(ojo).join('')}${centro}</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${T} ${T}"${tam} role="img" aria-label="Código QR de pago" data-qr="${++nQR}">
+    <rect width="${T}" height="${T}" rx="${T * 0.04}" fill="#fff"/><path d="${d}" fill="${tinta}" shape-rendering="crispEdges"/>${ojos.map(ojo).join('')}${centro}</svg>`;
 }
 
 // Lee un QR desde la foto o captura de pantalla (BarcodeDetector si existe; si no, jsQR).
@@ -89,13 +90,24 @@ export async function leerQRImagen(file) {
 }
 
 // ───────── datos ─────────
+// Medios de cobro de CDH Maker por ahora (cuentas personales de Henry, por decisión suya): vienen
+// predeterminados para que las cuentas de cobro y facturas salgan con QR sin configurar nada. Son llaves de
+// recaudo, hechas para compartirse con quien paga. Al guardar cambios en Medios de pago, mandan los de Firestore.
+export const MEDIOS_BASE = [
+  { id: 'breb-bancolombia', tipo: 'breb', entidad: 'Bancolombia', negocio: 'CDH Maker', titulo: 'Bancolombia · Bre-B', llave: '@henry9866', titular: 'Henry Taborda',
+    payload: '00020101021126320014CO.COM.RBM.LLA0410@henry986649250014CO.COM.RBM.RED0103RBM50310013CO.COM.RBM.CU0110000000000051220013CO.COM.RBM.CA010105204000053031705802CO59010600106101062270710CC3CA115EA080200110363180270016CO.COM.RBM.CANAL0103APP81250015CO.COM.RBM.CIVA01020282260014CO.COM.RBM.IVA01040.0083270015CO.COM.RBM.BASE01040.0084250015CO.COM.RBM.CINC01020285260014CO.COM.RBM.INC01040.0090430016CO.COM.RBM.TRXID0119000001eUqMs6dG7C_1991460014CO.COM.RBM.SEC0124s8sGvdPw7/cKrOVG/qOzJ/1A6304E3E5',
+    nota: 'Desde cualquier banco con Bre-B', en_cobros: true, en_facturas: true },
+  { id: 'breb-nequi-negocios', tipo: 'breb', entidad: 'Nequi Negocios', negocio: 'CDH Maker', titulo: 'Nequi Negocios · Bre-B', llave: '0089443902', titular: 'CDH Maker · Henry Taborda',
+    payload: '00020101021126320014CO.COM.RBM.LLA0510008944390249250014CO.COM.RBM.RED0103RBM50310013CO.COM.RBM.CU0110008944390251250013CO.COM.RBM.CA010499995204999953031705802CO5922CDH MAKER HENRY TABORD60050500161050500162200703000080200110363180270016CO.COM.RBM.CANAL0103APP81250015CO.COM.RBM.CIVA01020382260014CO.COM.RBM.IVA01040.0083270015CO.COM.RBM.BASE01040.0084250015CO.COM.RBM.CINC01020385260014CO.COM.RBM.INC01040.0090430016CO.COM.RBM.TRXID011900000002E5cXGVRpIdf91460014CO.COM.RBM.SEC0124kS+7yLlc80o31iIjlfogq8/i6304BE4D',
+    nota: 'Desde Nequi o cualquier banco con Bre-B', en_cobros: true, en_facturas: true },
+];
 const REF = () => doc(db, 'crm_config', 'pagos');
-export async function cargarMedios() { return (await getDoc(REF())).data()?.metodos || []; }
+export async function cargarMedios() { const m = (await getDoc(REF())).data()?.metodos; return Array.isArray(m) ? m : MEDIOS_BASE; }
 const guardarMedios = (metodos) => setDoc(REF(), { metodos, ...sello() }, { merge: true });
 
-// Medios que van en las cuentas de cobro, con su QR ya dibujado (para comercial.js).
+// Medios que van en cuentas de cobro o facturas, con su QR ya dibujado (comercial.js elige según el documento).
 export async function mediosParaCobro() {
-  const ms = (await cargarMedios()).filter((m) => m.en_cobros);
+  const ms = (await cargarMedios()).filter((m) => m.en_cobros || m.en_facturas);
   return Promise.all(ms.map(async (m) => ({ ...m, nota: m.nota || TIPOS_PAGO[m.tipo]?.nota || '', svg: contenidoQR(m) && m.tipo !== 'cuenta' ? await qrSVG(contenidoQR(m)) : '' })));
 }
 
@@ -104,12 +116,12 @@ export async function vistaPagos() {
   nav('pagos');
   const metodos = await cargarMedios();
   const svgs = await Promise.all(metodos.map((m) => (contenidoQR(m) && m.tipo !== 'cuenta' ? qrSVG(contenidoQR(m)) : '')));
-  $app.innerHTML = `<h1 class="titulo">Medios de pago</h1><p class="bajada">QR y llaves para cobrar a CDH Maker y a la Tienda Medellín. Los marcados salen en las cuentas de cobro, con la llave al lado para copiarla.</p>
+  $app.innerHTML = `<h1 class="titulo">Medios de pago</h1><p class="bajada">QR y llaves para cobrar a CDH Maker y a la Tienda Medellín. Los marcados se agregan solos a las cuentas de cobro y facturas, con la llave al lado para copiarla (en cada documento se pueden quitar).</p>
     ${metodos.length ? '' : `<div class="card"><h2>Empieza con tus QR de Bancolombia y Nequi</h2><p class="suave">Sube las capturas de los QR Bre-B (las que te da la app del banco). Leo el código, verifico su dígito de control y lo redibujo con la marca: paga a la misma cuenta.</p>
       <input type="file" id="capturas" accept="image/*" multiple><div id="mCapturas"></div></div>`}
     <div class="grid" style="gap:16px">${metodos.map((m, i) => `<div class="card" style="display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap">
       ${svgs[i] ? `<div style="width:150px;flex:none">${svgs[i]}</div>` : ''}
-      <div style="flex:1;min-width:180px"><span class="chip info">${esc(m.entidad || TIPOS_PAGO[m.tipo]?.n || '')}</span> ${m.en_cobros ? '<span class="chip ok">en cuentas de cobro</span>' : ''}
+      <div style="flex:1;min-width:180px"><span class="chip info">${esc(m.entidad || TIPOS_PAGO[m.tipo]?.n || '')}</span> ${m.en_cobros ? '<span class="chip ok">cuentas de cobro</span>' : ''} ${m.en_facturas ? '<span class="chip ok">facturas</span>' : ''}
         <h2 style="margin:8px 0 2px">${esc(m.titulo || m.entidad)}</h2><span class="suave">${esc(m.negocio || '')}${m.titular ? ' · ' + esc(m.titular) : ''}</span>
         <p style="margin:10px 0 4px"><span class="suave">${m.tipo === 'breb' ? 'Llave' : m.tipo === 'cuenta' ? 'Cuenta' : 'Dirección'}</span><br><b style="font:600 16px/1.3 'Space Grotesk',sans-serif;word-break:break-all">${esc(m.llave || '—')}</b></p>
         ${m.tipo === 'wallet' && /test/.test(m.llave) ? '<p class="aviso warn">Es una wallet de la red de prueba de Interledger: no recibe dinero real.</p>' : ''}
@@ -126,7 +138,8 @@ export async function vistaPagos() {
       <label>Contenido del QR (opcional: se llena solo al leer la imagen; para wallets y enlaces basta la dirección)</label><textarea name="payload" style="min-height:60px"></textarea>
       <div class="acciones" style="margin-top:4px"><label class="boton" style="margin:0;cursor:pointer">Leer QR desde una imagen<input type="file" id="leerImg" accept="image/*" class="oculto"></label></div>
       <label>Nota bajo el QR (opcional)</label><input name="nota" placeholder="Desde cualquier banco con Bre-B">
-      <label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" name="en_cobros" checked> Mostrar en las cuentas de cobro</label>
+      <label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" name="en_cobros" checked> Agregar automáticamente a las cuentas de cobro</label>
+      <label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" name="en_facturas" checked> Agregar automáticamente a las facturas</label>
       <input type="hidden" name="i" value="">
       <div class="acciones"><button class="primario">Guardar</button><button type="button" id="cancelar" class="oculto">Cancelar edición</button></div></form><div id="mMedio"></div></div>`;
 
@@ -152,7 +165,7 @@ export async function vistaPagos() {
     e.preventDefault();
     const f = Object.fromEntries(new FormData($f));
     const x = { id: f.i !== '' ? metodos[Number(f.i)].id : slug(`${f.negocio}-${f.entidad || f.tipo}-${f.llave}`).slice(0, 40), tipo: f.tipo, entidad: f.entidad.trim(), negocio: f.negocio.trim(), titulo: f.titulo.trim() || f.entidad.trim(),
-      llave: f.llave.trim(), titular: f.titular.trim(), payload: f.payload.trim(), nota: f.nota.trim(), en_cobros: !!f.en_cobros };
+      llave: f.llave.trim(), titular: f.titular.trim(), payload: f.payload.trim(), nota: f.nota.trim(), en_cobros: !!f.en_cobros, en_facturas: !!f.en_facturas };
     if (x.tipo === 'breb' && x.payload && !leerEMV(x.payload)?.crcOk) return aviso(m, 'El contenido del QR Bre-B no es válido (CRC). Léelo de nuevo desde la imagen.', 'err');
     const lista = [...metodos];
     if (f.i !== '') lista[Number(f.i)] = x; else lista.push(x);
@@ -163,7 +176,7 @@ export async function vistaPagos() {
   $app.querySelectorAll('[data-editar]').forEach((b) => b.addEventListener('click', () => {
     const x = metodos[Number(b.dataset.editar)];
     for (const k of ['tipo', 'entidad', 'negocio', 'titulo', 'llave', 'titular', 'payload', 'nota']) $f[k].value = x[k] || '';
-    $f.en_cobros.checked = !!x.en_cobros; $f.i.value = b.dataset.editar;
+    $f.en_cobros.checked = !!x.en_cobros; $f.en_facturas.checked = !!x.en_facturas; $f.i.value = b.dataset.editar;
     document.getElementById('tituloForm').textContent = 'Editar ' + (x.titulo || x.entidad);
     document.getElementById('cancelar').classList.remove('oculto');
     $f.scrollIntoView({ behavior: 'smooth' });
@@ -196,7 +209,7 @@ export async function vistaPagos() {
         if (!x?.crcOk) { aviso(mc, `«${esc(file.name)}» no es un QR Bre-B válido.`, 'err'); continue; }
         const nequi = /^\d{10}$/.test(x.llave) || /nequi/i.test(file.name);
         nuevos.push({ id: slug('breb-' + x.llave), tipo: 'breb', entidad: nequi ? 'Nequi Negocios' : 'Bancolombia', negocio: nequi ? 'CDH Maker' : 'Henry Taborda (personal)',
-          titulo: nequi ? 'Nequi Negocios · Bre-B' : 'Bancolombia · Bre-B', llave: x.llave, titular: x.comercio || 'Henry Taborda', payload: texto, nota: '', en_cobros: true });
+          titulo: nequi ? 'Nequi Negocios · Bre-B' : 'Bancolombia · Bre-B', llave: x.llave, titular: x.comercio || 'Henry Taborda', payload: texto, nota: '', en_cobros: true, en_facturas: true });
       } catch (err) { aviso(mc, esc(err.message), 'err'); }
     }
     if (!nuevos.length) return;

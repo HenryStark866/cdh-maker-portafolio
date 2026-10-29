@@ -10,7 +10,7 @@ import { onAuthStateChanged, sendSignInLinkToEmail, isSignInWithEmailLink, signI
 import { db, auth, EMULADOR, ctx, $app, esc, cop, fecha, fmtFecha, aviso, slug, token, descargar, hoyCO, mesDe, sello, nav, pestanas, kpi, nombreDe, opcionesEquipo,
   guardarAdjunto, bajarAdjunto, borrarAdjunto, deB64 } from './comun.js';
 import { sha256Bytes, htmlAPdf, cargarLibs } from './ensamblar.js?v=4';
-import { htmlDocumento, totales, claseDe, sumarDias, TIPOS, EMISOR_BASE } from './comercial.js?v=3';
+import { htmlDocumento, totales, claseDe, sumarDias, TIPOS, EMISOR_BASE } from './comercial.js?v=4';
 import { ADMINS, cargarEquipo, vistaEquipo, firmaAutorizada } from './equipo.js';
 import { vistaFirmas, pintarSolicitudes, crearSolicitudFirma, mostrarEnlaces, marcarEnviado, estadoSolicitud } from './firmas.js';
 import { vistaPagos, mediosParaCobro } from './pagos.js';
@@ -394,7 +394,7 @@ async function vistaCotizador(filtro) {
   const cots = todos.filter((d) => d.tipo === 'cotizacion'), facs = todos.filter((d) => d.tipo === 'factura');
   const suma = (l) => l.reduce((s, d) => s + totales(d).total, 0);
   const lista = filtro === 'factura' ? facs : cots;
-  $app.innerHTML = `<div class="cab"><div><h1 class="titulo">Cotizador y cobros</h1><p class="bajada">Cotización → el cliente la acepta (o la firma) → cuenta de cobro con tu firma y los QR de pago → pago registrado en contabilidad.</p></div>
+  $app.innerHTML = `<div class="cab"><div><h1 class="titulo">Cotizador y cobros</h1><p class="bajada">Cotización → el cliente la acepta (o la firma) → cuenta de cobro o factura con tu firma y los QR de pago → pago registrado en contabilidad.</p></div>
     <a class="boton primario" href="#doc/nuevo">Nueva cotización</a></div>
     <div class="kpis">${kpi('En negociación (enviadas)', cop(suma(cots.filter((d) => d.estado === 'enviada'))), 'cian')}${kpi('Aceptadas sin cobrar', cop(suma(cots.filter((d) => d.estado === 'aceptada'))), 'ok')}
       ${kpi('Cobrado por recibir', cop(suma(facs.filter((d) => d.estado === 'emitida'))), 'warn')}${kpi('Cobrado y pagado', cop(suma(facs.filter((d) => d.estado === 'pagada'))))}</div>
@@ -470,7 +470,7 @@ async function vistaDocumento(id, clienteInicial) {
     ${d.factura ? `<p class="suave" style="margin:6px 0 0">Cobrada con <a href="#doc/${esc(d.factura)}">${esc(d.factura_numero || 'la cuenta de cobro')}</a>.</p>` : ''}
     ${d.pago ? `<p class="suave" style="margin:6px 0 0">Pagada el ${esc(d.pago.fecha)}${d.pago.referencia ? ' · ' + esc(d.pago.referencia) : ''}${d.pago.recibido !== undefined ? ' · recibido ' + cop(d.pago.recibido) : ''} — registrada en <a href="#libro">contabilidad</a>.</p>` : ''}
     ${d.estado === 'anulada' && d.motivo_anulacion ? `<p class="suave" style="margin:6px 0 0">Anulada: ${esc(d.motivo_anulacion)}</p>` : ''}
-    ${!cotiz && clase === 'cuenta_cobro' && !(emisor.pagos || []).length ? '<p class="aviso warn">Esta cuenta de cobro aún no lleva QR de pago: configúralos en <a href="#pagos">Medios de pago</a>.</p>' : ''}</div>
+    ${!cotiz && d.incluir_qr !== false && !(emisor.pagos || []).some((x) => (clase === 'cuenta_cobro' ? x.en_cobros : x.en_facturas)) ? '<p class="aviso warn">Este documento no lleva QR de pago: márcalos para este tipo de documento en <a href="#pagos">Medios de pago</a>.</p>' : ''}</div>
   <div class="editor"><form id="fDoc" class="card" autocomplete="off"><fieldset ${bloqueado ? 'disabled' : ''} style="border:0;padding:0;margin:0;min-width:0">
     <h3 style="margin-top:0">Cliente</h3>
     <select name="cliente"><option value="">— Cliente sin ficha en el CRM —</option>${clientes.map((c) => `<option value="${esc(c.id)}" ${c.id === d.cliente ? 'selected' : ''}>${esc(c.nombre)}</option>`).join('')}</select>
@@ -483,6 +483,7 @@ async function vistaDocumento(id, clienteInicial) {
         : `<div><label>Vence</label><input name="vence" type="date" value="${esc(d.vence || '')}"></div>
            <div><label>Emitir como</label><select name="modalidad"><option value="cuenta_cobro" ${clase === 'cuenta_cobro' ? 'selected' : ''}>Cuenta de cobro (no responsable de IVA)</option><option value="factura_venta" ${clase === 'factura_venta' ? 'selected' : ''}>Factura de venta</option></select></div>
            <div><label>Cuenta contable del ingreso</label><input name="cuenta_contable" list="ctasIng" value="${esc(d.cuenta_contable || CUENTAS_INGRESO[0])}"><datalist id="ctasIng">${CUENTAS_INGRESO.map((x) => `<option value="${esc(x)}">`).join('')}</datalist></div>`}
+      ${cotiz ? '' : `<div style="align-self:end"><label style="display:flex;gap:8px;align-items:center;font-weight:500;margin-bottom:9px"><input type="checkbox" name="incluir_qr" ${d.incluir_qr === false ? '' : 'checked'}> Incluir QR de pago (Bancolombia, Nequi)</label></div>`}
       <div><label>IVA</label><select name="iva"><option value="0">No causa</option><option value="19" ${Number(d.iva) === 19 ? 'selected' : ''}>19 %</option></select></div></div>
     <div id="dian" class="grid ${clase === 'factura_venta' ? '' : 'oculto'}"><div><label>N.º factura electrónica DIAN</label><input name="dian_numero" value="${esc(d.dian?.numero || '')}"></div><div><label>CUFE (opcional)</label><input name="dian_cufe" value="${esc(d.dian?.cufe || '')}"></div></div>
     <label>Introducción (opcional)</label><textarea name="notas" class="texto">${esc(d.notas || '')}</textarea>
@@ -510,7 +511,7 @@ async function vistaDocumento(id, clienteInicial) {
     d.cliente = f.cliente; d.titulo = f.titulo; d.fecha = f.fecha; d.iva = Number(f.iva) || 0; d.notas = f.notas; d.condiciones = f.condiciones;
     d.receptor = Object.fromEntries(['nombre', 'documento', 'correo', 'telefono', 'direccion'].map((k) => [k, (f['r_' + k] || '').trim()]));
     if (cotiz) d.validez_dias = Number(f.validez_dias) || 15;
-    else { d.vence = f.vence; d.modalidad = f.modalidad; d.cuenta_contable = f.cuenta_contable; d.dian = { numero: f.dian_numero || '', cufe: f.dian_cufe || '' }; }
+    else { d.incluir_qr = !!f.incluir_qr; d.vence = f.vence; d.modalidad = f.modalidad; d.cuenta_contable = f.cuenta_contable; d.dian = { numero: f.dian_numero || '', cufe: f.dian_cufe || '' }; }
     d.items = [...$items.rows].map((tr) => {
       const v = Object.fromEntries([...tr.querySelectorAll('[data-k]')].map((x) => [x.dataset.k, x.value]));
       return { tipo: v.tipo, descripcion: v.descripcion.trim(), cantidad: Number(v.cantidad) || 0, unidad: v.unidad.trim(), precio: Number(v.precio) || 0, descuento: Number(v.descuento) || 0 };
@@ -647,7 +648,7 @@ async function vistaDocumento(id, clienteInicial) {
     if (d.estado !== 'rechazada') boton(Number(d.iva) ? 'Convertir en factura' : 'Convertir en cuenta de cobro', async () => {
       await guardar();
       const f = { ...d, tipo: 'factura', modalidad: Number(d.iva) ? 'factura_venta' : 'cuenta_cobro', estado: 'borrador', numero: '', fecha: hoyCO(), vence: sumarDias(hoyCO(), 15),
-        cuenta_contable: CUENTAS_INGRESO[0], condiciones: '', origen: id, origen_numero: d.numero, dian: { numero: '', cufe: '' }, total: totales(d).total, firma_emisor: null, ...sello(true) };
+        cuenta_contable: CUENTAS_INGRESO[0], condiciones: '', incluir_qr: true, origen: id, origen_numero: d.numero, dian: { numero: '', cufe: '' }, total: totales(d).total, firma_emisor: null, ...sello(true) };
       delete f.validez_dias; delete f.pdf_sha256; delete f.pdf_en; delete f.firma_solicitud;
       const fRef = await addDoc(collection(db, 'crm_documentos'), f);
       await updateDoc(ref, { estado: 'facturada', factura: fRef.id, ...sello() });
