@@ -1,0 +1,992 @@
+{
+  "generado": "2026-10-29",
+  "provisional": false,
+  "aviso": null,
+  "paginas": {
+    "es": "https://cdhmaker.com/catalogo",
+    "en": "https://cdhmaker.com/en/catalog"
+  },
+  "categorias": [
+    {
+      "id": "consultoria",
+      "nombre": {
+        "es": "Consultoría",
+        "en": "Consulting"
+      },
+      "lema": {
+        "es": "Para cuando sabes que algo tiene que mejorar, pero no qué comprar ni por dónde empezar.",
+        "en": "For when you know something has to improve but not what to buy or where to start."
+      }
+    },
+    {
+      "id": "software",
+      "nombre": {
+        "es": "Software y SaaS a la medida",
+        "en": "Custom software and SaaS"
+      },
+      "lema": {
+        "es": "Páginas, aplicaciones y plataformas que trabajan por tu negocio.",
+        "en": "Websites, apps and platforms that work for your business."
+      }
+    },
+    {
+      "id": "ia",
+      "nombre": {
+        "es": "Inteligencia artificial y automatización",
+        "en": "AI and automation"
+      },
+      "lema": {
+        "es": "Tareas repetitivas que se hacen solas y asistentes que responden por ti.",
+        "en": "Repetitive tasks that run themselves and assistants that answer for you."
+      }
+    },
+    {
+      "id": "contenido",
+      "nombre": {
+        "es": "Contenido en video (Shorts)",
+        "en": "Short-form video content"
+      },
+      "lema": {
+        "es": "Tus videos largos convertidos en clips verticales cada semana, sin editar nada.",
+        "en": "Your long videos turned into vertical clips every week, with no editing on your side."
+      }
+    },
+    {
+      "id": "fabricacion",
+      "nombre": {
+        "es": "Fabricación digital",
+        "en": "Digital fabrication"
+      },
+      "lema": {
+        "es": "Impresión 3D, corte láser, CNC y diseño CAD en Medellín, con envíos a toda Colombia.",
+        "en": "3D printing, laser cutting, CNC and CAD design in Medellín, shipping across Colombia."
+      }
+    },
+    {
+      "id": "iot",
+      "nombre": {
+        "es": "Electrónica e IoT",
+        "en": "Electronics and IoT"
+      },
+      "lema": {
+        "es": "De la idea a un prototipo conectado que mide, avisa y controla.",
+        "en": "From idea to a connected prototype that measures, alerts and controls."
+      }
+    },
+    {
+      "id": "productos",
+      "nombre": {
+        "es": "Productos propios (SaaS)",
+        "en": "Our own products (SaaS)"
+      },
+      "lema": {
+        "es": "Plataformas de CDH Maker listas para usar.",
+        "en": "CDH Maker platforms, ready to use."
+      }
+    }
+  ],
+  "preguntas": {
+    "es": [
+      [
+        "No sé qué necesito para mi negocio, ¿por dónde empiezo?",
+        "Por la sesión de orientación gratuita de 30 minutos: nos cuentas cómo trabajas hoy y qué te duele, y te decimos qué tipo de solución te sirve, si vale la pena y cuánto costaría más o menos. Si hace falta más detalle, el diagnóstico digital express cuesta 290.000 COP (USD 90) y se descuenta si contratas el proyecto."
+      ],
+      [
+        "¿Qué es la consultoría de CDH Maker y para quién es?",
+        "Es acompañamiento de un ingeniero para decidir antes de gastar: diagnóstico del negocio, hoja de ruta tecnológica (qué construir, qué comprar y en qué orden) y acompañamiento mensual tipo CTO por horas. Es para pymes, comercios y emprendedores en Colombia y en cualquier país, en español o inglés."
+      ],
+      [
+        "¿Cuánto cuesta una página web, una tienda en línea o una app a la medida?",
+        "Como referencia: una landing page desde 1.500.000 COP, una tienda en línea desde 2.800.000 COP y una aplicación web o SaaS a la medida desde 6.000.000 COP. Son precios orientativos; el precio final depende del alcance y la cotización es gratis."
+      ],
+      [
+        "¿Cuánto cuesta un chatbot o asistente con IA para WhatsApp?",
+        "Desde 2.500.000 COP (USD 780), entrenado con la información de tu negocio, conectado a WhatsApp Business o a tu web, con paso a una persona cuando hace falta."
+      ],
+      [
+        "¿Los precios incluyen IVA?",
+        "No: son precios antes de impuestos y son orientativos. La cotización formal detalla impuestos, etapas y forma de pago por hitos."
+      ],
+      [
+        "¿Qué es YAM?",
+        "YAM es la plataforma propia de CDH Maker para que los comercios vendan en línea y despachen con envíos de última milla y recaudo contraentrega en Medellín. Cobra el 2,5 % de las ventas pagadas, facturado cada mes, sin mensualidad fija."
+      ]
+    ],
+    "en": [
+      [
+        "I don't know what my business needs. Where do I start?",
+        "With the free 30-minute orientation call: you tell us how you work today and what hurts, and we tell you what kind of solution fits, whether it's worth it and roughly what it would cost. If more detail is needed, the express digital diagnosis costs USD 90 (290,000 COP) and is credited if you hire the project."
+      ],
+      [
+        "What is CDH Maker's consulting and who is it for?",
+        "It is an engineer helping you decide before you spend: a business diagnosis, a technology roadmap (what to build, what to buy and in which order) and monthly fractional-CTO advisory. It is for small businesses, merchants and founders in Colombia and worldwide, in Spanish or English."
+      ],
+      [
+        "How much does a website, online store or custom app cost?",
+        "As a reference: a landing page from USD 470, an online store from USD 875 and a custom web app or SaaS from USD 1,900. Prices are indicative; the final price depends on scope and the quote is free."
+      ],
+      [
+        "How much does an AI assistant for WhatsApp cost?",
+        "From USD 780 (2,500,000 COP), trained on your business information, connected to WhatsApp Business or your website, with handoff to a person when needed."
+      ],
+      [
+        "Do prices include taxes?",
+        "No: prices are before taxes and indicative. The formal quote details taxes, stages and milestone payments."
+      ],
+      [
+        "What is YAM?",
+        "YAM is CDH Maker's own platform for merchants to sell online with last-mile delivery and cash on delivery in Medellín. It charges 2.5% of paid sales, billed monthly, with no fixed monthly fee."
+      ]
+    ]
+  },
+  "items": [
+    {
+      "id": "orientacion",
+      "cat": "consultoria",
+      "destacado": true,
+      "nombre": {
+        "es": "Sesión de orientación (30 min)",
+        "en": "Orientation call (30 min)"
+      },
+      "para": {
+        "es": "Cuentas tu situación y sales sabiendo si te podemos ayudar, qué tipo de solución te sirve y cuánto costaría más o menos.",
+        "en": "You describe your situation and leave knowing whether we can help, what kind of solution fits and roughly what it would cost."
+      },
+      "incluye": {
+        "es": [
+          "Videollamada o WhatsApp de 30 minutos",
+          "Qué sí y qué no vale la pena hacer",
+          "Siguiente paso concreto, sin compromiso"
+        ],
+        "en": [
+          "30-minute video call or WhatsApp chat",
+          "What is and isn't worth doing",
+          "A concrete next step, no commitment"
+        ]
+      },
+      "precio": {
+        "gratis": true
+      },
+      "plazo": {
+        "es": "Agenda en 1–2 días hábiles",
+        "en": "Booked within 1–2 business days"
+      },
+      "claves": [
+        "orientacion",
+        "no se que necesito",
+        "asesoria",
+        "gratis",
+        "por donde empiezo",
+        "ayuda",
+        "free call",
+        "advice"
+      ],
+      "precio_texto": {
+        "es": "Gratis",
+        "en": "Free"
+      }
+    },
+    {
+      "id": "diagnostico",
+      "cat": "consultoria",
+      "destacado": true,
+      "nombre": {
+        "es": "Diagnóstico digital express",
+        "en": "Express digital diagnosis"
+      },
+      "para": {
+        "es": "Revisamos cómo trabaja hoy tu negocio (ventas, inventario, atención, procesos) y te decimos qué arreglar primero y qué cuesta.",
+        "en": "We review how your business works today (sales, inventory, customer service, processes) and tell you what to fix first and what it costs."
+      },
+      "incluye": {
+        "es": [
+          "Reunión de 90 minutos con quien conoce la operación",
+          "Informe con las 3 prioridades y su impacto",
+          "Presupuesto estimado de cada prioridad",
+          "El valor se descuenta si contratas el proyecto"
+        ],
+        "en": [
+          "90-minute meeting with whoever runs the operation",
+          "Report with the top 3 priorities and their impact",
+          "Estimated budget for each priority",
+          "Fee credited if you hire the project"
+        ]
+      },
+      "precio": {
+        "cop": 290000,
+        "usd": 90
+      },
+      "plazo": {
+        "es": "Informe en 3 días hábiles",
+        "en": "Report in 3 business days"
+      },
+      "claves": [
+        "diagnostico",
+        "consultoria",
+        "consultor",
+        "auditoria",
+        "revisar mi negocio",
+        "que me recomiendas",
+        "consulting",
+        "assessment",
+        "audit"
+      ],
+      "precio_texto": {
+        "es": "$ 290.000",
+        "en": "USD 90"
+      }
+    },
+    {
+      "id": "hoja-de-ruta",
+      "cat": "consultoria",
+      "destacado": true,
+      "nombre": {
+        "es": "Hoja de ruta tecnológica",
+        "en": "Technology roadmap"
+      },
+      "para": {
+        "es": "Para empresas que van a invertir en tecnología y quieren hacerlo en orden: qué construir, qué comprar, qué automatizar y en qué fases.",
+        "en": "For companies about to invest in technology that want to do it in order: what to build, what to buy, what to automate, and in which phases."
+      },
+      "incluye": {
+        "es": [
+          "Levantamiento de procesos con tu equipo",
+          "Mapa de herramientas actuales y brechas",
+          "Comparativo construir vs. comprar (con proveedores reales)",
+          "Cronograma y presupuesto por fases",
+          "Presentación final a la gerencia"
+        ],
+        "en": [
+          "Process mapping with your team",
+          "Map of current tools and gaps",
+          "Build vs. buy comparison (with real vendors)",
+          "Phased timeline and budget",
+          "Final presentation to management"
+        ]
+      },
+      "precio": {
+        "cop": 1200000,
+        "usd": 375,
+        "desde": true
+      },
+      "plazo": {
+        "es": "1 a 2 semanas",
+        "en": "1 to 2 weeks"
+      },
+      "claves": [
+        "hoja de ruta",
+        "plan",
+        "transformacion digital",
+        "estrategia",
+        "estrategia digital",
+        "roadmap",
+        "digital transformation",
+        "strategy"
+      ],
+      "precio_texto": {
+        "es": "Desde $ 1.200.000",
+        "en": "From USD 375"
+      }
+    },
+    {
+      "id": "cto-por-horas",
+      "cat": "consultoria",
+      "nombre": {
+        "es": "Acompañamiento técnico mensual (CTO por horas)",
+        "en": "Monthly technical advisory (fractional CTO)"
+      },
+      "para": {
+        "es": "Un ingeniero de tu lado para decidir, revisar proveedores y cotizaciones, y que no te vendan lo que no necesitas.",
+        "en": "An engineer on your side to make decisions, review vendors and quotes, and keep you from buying what you don't need."
+      },
+      "incluye": {
+        "es": [
+          "8 horas al mes (reuniones, revisiones, respuestas)",
+          "Revisión de cotizaciones y contratos técnicos",
+          "Seguimiento de proveedores y proyectos",
+          "Sin permanencia: aviso de 15 días"
+        ],
+        "en": [
+          "8 hours a month (meetings, reviews, answers)",
+          "Review of technical quotes and contracts",
+          "Vendor and project follow-up",
+          "No lock-in: 15 days' notice"
+        ]
+      },
+      "precio": {
+        "cop": 950000,
+        "usd": 300,
+        "desde": true,
+        "unidad": {
+          "es": "al mes",
+          "en": "per month"
+        }
+      },
+      "plazo": {
+        "es": "Mensual",
+        "en": "Monthly"
+      },
+      "claves": [
+        "cto",
+        "acompanamiento",
+        "asesor tecnico",
+        "proveedor",
+        "revisar cotizacion",
+        "fractional cto",
+        "advisor"
+      ],
+      "precio_texto": {
+        "es": "Desde $ 950.000 al mes",
+        "en": "From USD 300 per month"
+      }
+    },
+    {
+      "id": "landing",
+      "cat": "software",
+      "nombre": {
+        "es": "Página web / landing page",
+        "en": "Website / landing page"
+      },
+      "para": {
+        "es": "Tu negocio en internet con una página rápida, que se ve bien en el celular y lleva clientes a tu WhatsApp.",
+        "en": "Your business online with a fast, mobile-friendly page that sends customers to your WhatsApp."
+      },
+      "incluye": {
+        "es": [
+          "Diseño a la medida y textos orientados a vender",
+          "Botón de WhatsApp y formulario",
+          "Optimizada para Google y asistentes de IA",
+          "Dominio y hosting configurados"
+        ],
+        "en": [
+          "Custom design and sales-oriented copy",
+          "WhatsApp button and form",
+          "Optimized for Google and AI assistants",
+          "Domain and hosting set up"
+        ]
+      },
+      "precio": {
+        "cop": 1500000,
+        "usd": 470,
+        "desde": true
+      },
+      "plazo": {
+        "es": "1 a 2 semanas",
+        "en": "1 to 2 weeks"
+      },
+      "claves": [
+        "pagina web",
+        "landing",
+        "sitio web",
+        "web",
+        "pagina",
+        "website",
+        "site"
+      ],
+      "precio_texto": {
+        "es": "Desde $ 1.500.000",
+        "en": "From USD 470"
+      }
+    },
+    {
+      "id": "tienda",
+      "cat": "software",
+      "nombre": {
+        "es": "Tienda en línea (e-commerce)",
+        "en": "Online store (e-commerce)"
+      },
+      "para": {
+        "es": "Vende por internet con catálogo, carrito, pagos y envíos. Si estás en Medellín, con domicilios y contraentrega por YAM.",
+        "en": "Sell online with catalog, cart, payments and shipping. In Medellín, with delivery and cash on delivery through YAM."
+      },
+      "incluye": {
+        "es": [
+          "Catálogo y carrito",
+          "Pagos en línea y contraentrega",
+          "Envíos integrados con YAM (Medellín)",
+          "Panel para ver y despachar pedidos"
+        ],
+        "en": [
+          "Catalog and cart",
+          "Online payments and cash on delivery",
+          "Shipping integrated with YAM (Medellín)",
+          "Dashboard to see and dispatch orders"
+        ]
+      },
+      "precio": {
+        "cop": 2800000,
+        "usd": 875,
+        "desde": true
+      },
+      "plazo": {
+        "es": "2 a 4 semanas",
+        "en": "2 to 4 weeks"
+      },
+      "claves": [
+        "tienda",
+        "ecommerce",
+        "e-commerce",
+        "vender en linea",
+        "carrito",
+        "shopify",
+        "online store",
+        "shop"
+      ],
+      "precio_texto": {
+        "es": "Desde $ 2.800.000",
+        "en": "From USD 875"
+      }
+    },
+    {
+      "id": "app-medida",
+      "cat": "software",
+      "destacado": true,
+      "nombre": {
+        "es": "Aplicación web o SaaS a la medida",
+        "en": "Custom web app or SaaS"
+      },
+      "para": {
+        "es": "Cuando Excel y WhatsApp ya no alcanzan: un sistema propio para tu operación (inventario, pedidos, mantenimiento, clientes, facturación).",
+        "en": "When spreadsheets and WhatsApp are no longer enough: your own system for operations (inventory, orders, maintenance, customers, billing)."
+      },
+      "incluye": {
+        "es": [
+          "Usuarios, roles y permisos",
+          "Base de datos en la nube y respaldos",
+          "Entregas por etapas con avances desde la primera semana",
+          "Documentación y acompañamiento posterior"
+        ],
+        "en": [
+          "Users, roles and permissions",
+          "Cloud database and backups",
+          "Staged delivery with progress from week one",
+          "Documentation and post-launch support"
+        ]
+      },
+      "precio": {
+        "cop": 6000000,
+        "usd": 1900,
+        "desde": true
+      },
+      "plazo": {
+        "es": "4 a 10 semanas",
+        "en": "4 to 10 weeks"
+      },
+      "claves": [
+        "aplicacion",
+        "app",
+        "software",
+        "saas",
+        "sistema",
+        "plataforma",
+        "inventario",
+        "crm",
+        "erp",
+        "a la medida",
+        "custom software",
+        "platform"
+      ],
+      "precio_texto": {
+        "es": "Desde $ 6.000.000",
+        "en": "From USD 1,900"
+      }
+    },
+    {
+      "id": "asistente-ia",
+      "cat": "ia",
+      "destacado": true,
+      "nombre": {
+        "es": "Asistente con IA para WhatsApp o tu web",
+        "en": "AI assistant for WhatsApp or your website"
+      },
+      "para": {
+        "es": "Responde preguntas frecuentes, toma pedidos y agenda citas a cualquier hora, y te pasa la conversación cuando hace falta una persona.",
+        "en": "Answers FAQs, takes orders and books appointments around the clock, and hands the chat to a person when needed."
+      },
+      "incluye": {
+        "es": [
+          "Entrenado con la información de tu negocio",
+          "Conexión a WhatsApp Business o a tu web",
+          "Paso a humano y reporte de conversaciones",
+          "Ajustes durante el primer mes"
+        ],
+        "en": [
+          "Trained on your business information",
+          "Connected to WhatsApp Business or your website",
+          "Human handoff and conversation reports",
+          "Tuning during the first month"
+        ]
+      },
+      "precio": {
+        "cop": 2500000,
+        "usd": 780,
+        "desde": true
+      },
+      "plazo": {
+        "es": "2 a 4 semanas",
+        "en": "2 to 4 weeks"
+      },
+      "claves": [
+        "chatbot",
+        "bot",
+        "asistente",
+        "ia",
+        "inteligencia artificial",
+        "whatsapp",
+        "responder clientes",
+        "ai",
+        "assistant",
+        "gpt",
+        "claude",
+        "gemini"
+      ],
+      "precio_texto": {
+        "es": "Desde $ 2.500.000",
+        "en": "From USD 780"
+      }
+    },
+    {
+      "id": "automatizacion",
+      "cat": "ia",
+      "nombre": {
+        "es": "Automatización de procesos",
+        "en": "Process automation"
+      },
+      "para": {
+        "es": "Lo que hoy se copia y pega a mano (facturas, reportes, recordatorios, inventario) pasa a hacerse solo.",
+        "en": "What you copy and paste by hand today (invoices, reports, reminders, inventory) starts running on its own."
+      },
+      "incluye": {
+        "es": [
+          "Mapa del proceso actual",
+          "Automatización con n8n, scripts o integraciones",
+          "Alertas cuando algo falla",
+          "Manual corto para tu equipo"
+        ],
+        "en": [
+          "Map of the current process",
+          "Automation with n8n, scripts or integrations",
+          "Alerts when something fails",
+          "Short manual for your team"
+        ]
+      },
+      "precio": {
+        "cop": 1800000,
+        "usd": 560,
+        "desde": true
+      },
+      "plazo": {
+        "es": "2 a 5 semanas",
+        "en": "2 to 5 weeks"
+      },
+      "claves": [
+        "automatizar",
+        "automatizacion",
+        "n8n",
+        "zapier",
+        "proceso",
+        "reportes",
+        "excel",
+        "automation",
+        "workflow"
+      ],
+      "precio_texto": {
+        "es": "Desde $ 1.800.000",
+        "en": "From USD 560"
+      }
+    },
+    {
+      "id": "shorts-piloto",
+      "cat": "contenido",
+      "nombre": {
+        "es": "Piloto de Shorts (2 semanas)",
+        "en": "Shorts pilot (2 weeks)"
+      },
+      "para": {
+        "es": "Prueba sin riesgo: 6 clips verticales de un video largo tuyo, con subtítulos y textos listos para publicar.",
+        "en": "Risk-free trial: 6 vertical clips from one of your long videos, with captions and copy ready to post."
+      },
+      "incluye": {
+        "es": [
+          "6 clips 9:16 con subtítulos",
+          "Título, descripción y hashtags por clip",
+          "Archivos para YouTube, TikTok y Reels",
+          "Se descuenta del primer mes si sigues"
+        ],
+        "en": [
+          "6 vertical 9:16 clips with captions",
+          "Title, description and hashtags per clip",
+          "Files for YouTube, TikTok and Reels",
+          "Credited to month one if you continue"
+        ]
+      },
+      "precio": {
+        "cop": 290000,
+        "usd": 95
+      },
+      "plazo": {
+        "es": "72 h hábiles",
+        "en": "72 business hours"
+      },
+      "claves": [
+        "shorts",
+        "clips",
+        "reels",
+        "tiktok",
+        "video",
+        "videos cortos",
+        "piloto",
+        "short-form"
+      ],
+      "precio_texto": {
+        "es": "$ 290.000",
+        "en": "USD 95"
+      }
+    },
+    {
+      "id": "shorts-mensual",
+      "cat": "contenido",
+      "nombre": {
+        "es": "Shorts cada mes (plan Constante)",
+        "en": "Monthly Shorts (Steady plan)"
+      },
+      "para": {
+        "es": "30 clips al mes de tus podcasts, clases o lives, publicados de forma programada. Hay plan desde 12 clips.",
+        "en": "30 clips a month from your podcasts, classes or lives, scheduled for you. Plans start at 12 clips."
+      },
+      "incluye": {
+        "es": [
+          "30 clips 9:16 al mes (hasta 8 videos largos)",
+          "Gancho de apertura con IA en 4 clips",
+          "Publicación programada en tu canal",
+          "Reporte mensual de qué funcionó"
+        ],
+        "en": [
+          "30 vertical clips a month (up to 8 long videos)",
+          "AI opening hook on 4 clips",
+          "Scheduled publishing on your channel",
+          "Monthly report of what worked"
+        ]
+      },
+      "precio": {
+        "cop": 1490000,
+        "usd": 520,
+        "unidad": {
+          "es": "al mes",
+          "en": "per month"
+        }
+      },
+      "plazo": {
+        "es": "48 h hábiles por video",
+        "en": "48 business hours per video"
+      },
+      "claves": [
+        "shorts",
+        "clipping",
+        "contenido",
+        "redes sociales",
+        "youtube",
+        "community manager",
+        "content",
+        "social media"
+      ],
+      "precio_texto": {
+        "es": "$ 1.490.000 al mes",
+        "en": "USD 520 per month"
+      }
+    },
+    {
+      "id": "impresion-3d",
+      "cat": "fabricacion",
+      "nombre": {
+        "es": "Impresión 3D por encargo",
+        "en": "3D printing on demand"
+      },
+      "para": {
+        "es": "Piezas, repuestos, prototipos y maquetas en FDM o resina, desde tu archivo STL o desde la idea.",
+        "en": "Parts, spare parts, prototypes and models in FDM or resin, from your STL file or just the idea."
+      },
+      "incluye": {
+        "es": [
+          "Revisión del archivo y del material adecuado",
+          "Impresión en PLA, PETG, TPU o resina",
+          "Envío a toda Colombia"
+        ],
+        "en": [
+          "File and material review",
+          "Printing in PLA, PETG, TPU or resin",
+          "Shipping across Colombia"
+        ]
+      },
+      "precio": {
+        "cop": 25000,
+        "usd": null,
+        "desde": true,
+        "unidad": {
+          "es": "por pieza",
+          "en": "per part"
+        }
+      },
+      "plazo": {
+        "es": "1 a 5 días",
+        "en": "1 to 5 days"
+      },
+      "claves": [
+        "impresion 3d",
+        "3d",
+        "stl",
+        "prototipo",
+        "pieza",
+        "repuesto",
+        "resina",
+        "3d printing",
+        "print"
+      ],
+      "precio_texto": {
+        "es": "Desde $ 25.000 por pieza",
+        "en": "From COP 25,000 per part"
+      }
+    },
+    {
+      "id": "laser-cnc",
+      "cat": "fabricacion",
+      "nombre": {
+        "es": "Corte láser y CNC",
+        "en": "Laser cutting and CNC"
+      },
+      "para": {
+        "es": "Corte y grabado en MDF, acrílico, madera y más: señalética, empaques, piezas y regalos corporativos.",
+        "en": "Cutting and engraving in MDF, acrylic, wood and more: signage, packaging, parts and corporate gifts."
+      },
+      "incluye": {
+        "es": [
+          "Preparación del archivo vectorial",
+          "Corte o grabado",
+          "Envío a toda Colombia"
+        ],
+        "en": [
+          "Vector file preparation",
+          "Cutting or engraving",
+          "Shipping across Colombia"
+        ]
+      },
+      "precio": {
+        "cop": 30000,
+        "usd": null,
+        "desde": true
+      },
+      "plazo": {
+        "es": "1 a 5 días",
+        "en": "1 to 5 days"
+      },
+      "claves": [
+        "laser",
+        "corte laser",
+        "cnc",
+        "grabado",
+        "acrilico",
+        "mdf",
+        "laser cutting",
+        "engraving"
+      ],
+      "precio_texto": {
+        "es": "Desde $ 30.000",
+        "en": "From COP 30,000"
+      }
+    },
+    {
+      "id": "cad",
+      "cat": "fabricacion",
+      "nombre": {
+        "es": "Diseño CAD 2D/3D",
+        "en": "2D/3D CAD design"
+      },
+      "para": {
+        "es": "Llevamos tu idea, boceto o pieza física a un modelo listo para fabricar.",
+        "en": "We turn your idea, sketch or physical part into a model ready to manufacture."
+      },
+      "incluye": {
+        "es": [
+          "Modelo 3D o plano 2D",
+          "Archivos STL, STEP o DXF",
+          "Una ronda de ajustes"
+        ],
+        "en": [
+          "3D model or 2D drawing",
+          "STL, STEP or DXF files",
+          "One round of changes"
+        ]
+      },
+      "precio": {
+        "cop": 180000,
+        "usd": 60,
+        "desde": true
+      },
+      "plazo": {
+        "es": "2 a 5 días",
+        "en": "2 to 5 days"
+      },
+      "claves": [
+        "cad",
+        "diseno",
+        "plano",
+        "modelo 3d",
+        "solidworks",
+        "fusion",
+        "design",
+        "drawing"
+      ],
+      "precio_texto": {
+        "es": "Desde $ 180.000",
+        "en": "From USD 60"
+      }
+    },
+    {
+      "id": "iot",
+      "cat": "iot",
+      "nombre": {
+        "es": "Prototipo electrónico o IoT",
+        "en": "Electronics or IoT prototype"
+      },
+      "para": {
+        "es": "Sensores que miden y avisan al celular, control remoto de equipos, domótica y monitoreo de máquinas.",
+        "en": "Sensors that measure and alert your phone, remote equipment control, home automation and machine monitoring."
+      },
+      "incluye": {
+        "es": [
+          "Diseño del circuito (ESP32, Arduino o Raspberry Pi)",
+          "Programación y tablero en la nube",
+          "Caja impresa en 3D",
+          "Documentación"
+        ],
+        "en": [
+          "Circuit design (ESP32, Arduino or Raspberry Pi)",
+          "Firmware and cloud dashboard",
+          "3D-printed enclosure",
+          "Documentation"
+        ]
+      },
+      "precio": {
+        "cop": 1400000,
+        "usd": 440,
+        "desde": true
+      },
+      "plazo": {
+        "es": "1 a 3 semanas",
+        "en": "1 to 3 weeks"
+      },
+      "claves": [
+        "iot",
+        "sensor",
+        "esp32",
+        "arduino",
+        "raspberry",
+        "domotica",
+        "electronica",
+        "monitoreo",
+        "electronics",
+        "home automation"
+      ],
+      "precio_texto": {
+        "es": "Desde $ 1.400.000",
+        "en": "From USD 440"
+      }
+    },
+    {
+      "id": "yam",
+      "cat": "productos",
+      "destacado": true,
+      "url": "https://yam.cdhmaker.com",
+      "nombre": {
+        "es": "YAM — tienda en línea y envíos de última milla",
+        "en": "YAM — online store and last-mile delivery"
+      },
+      "para": {
+        "es": "La plataforma de CDH Maker para que los comercios vendan en línea, despachen con mensajeros y cobren contraentrega en Medellín.",
+        "en": "CDH Maker's platform for merchants to sell online, dispatch with couriers and collect cash on delivery in Medellín."
+      },
+      "incluye": {
+        "es": [
+          "Tienda propia con catálogo",
+          "Pedidos, rutas y seguimiento en vivo",
+          "Recaudo contraentrega",
+          "Sin mensualidad fija"
+        ],
+        "en": [
+          "Your own storefront and catalog",
+          "Orders, routes and live tracking",
+          "Cash-on-delivery collection",
+          "No fixed monthly fee"
+        ]
+      },
+      "precio": {
+        "texto": {
+          "es": "2,5 % de las ventas pagadas, facturado al mes",
+          "en": "2.5% of paid sales, billed monthly"
+        }
+      },
+      "plazo": {
+        "es": "Abres tu tienda el mismo día",
+        "en": "Open your store the same day"
+      },
+      "claves": [
+        "yam",
+        "envios",
+        "domicilios",
+        "mensajeria",
+        "ultima milla",
+        "contraentrega",
+        "logistica",
+        "delivery",
+        "shipping"
+      ],
+      "precio_texto": {
+        "es": "2,5 % de las ventas pagadas, facturado al mes",
+        "en": "2.5% of paid sales, billed monthly"
+      }
+    },
+    {
+      "id": "incubapp",
+      "cat": "productos",
+      "url": "https://incubapp.cdhmaker.com",
+      "nombre": {
+        "es": "IncubApp — operación de incubación con IA",
+        "en": "IncubApp — AI-assisted hatchery operations"
+      },
+      "para": {
+        "es": "SaaS para plantas de incubación: lotes, máquinas, mantenimiento e indicadores en un solo lugar.",
+        "en": "SaaS for hatcheries: batches, machines, maintenance and KPIs in one place."
+      },
+      "incluye": {
+        "es": [
+          "Multiempresa con tu marca",
+          "Tableros e indicadores",
+          "Asistente con IA"
+        ],
+        "en": [
+          "Multi-tenant with your brand",
+          "Dashboards and KPIs",
+          "AI assistant"
+        ]
+      },
+      "precio": {},
+      "plazo": {
+        "es": "Implementación según la planta",
+        "en": "Rollout depends on the plant"
+      },
+      "claves": [
+        "incubapp",
+        "incubadora",
+        "incubacion",
+        "avicola",
+        "pollos",
+        "hatchery",
+        "poultry"
+      ],
+      "precio_texto": {
+        "es": "A consultar",
+        "en": "Quote on request"
+      }
+    }
+  ]
+}

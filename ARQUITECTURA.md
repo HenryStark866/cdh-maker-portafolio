@@ -92,7 +92,7 @@ eventos `cdh:*`.
 | `chat-widget.js` | Cajita "Escríbeme directo": el mensaje se abre en el WhatsApp del visitante | Final del `<body>` | `CDH_CONTACT`; `cdh:langchange` |
 | `estimator.js` | Cotizador instantáneo: preguntas → rango de tiempos (y costo de material en fabricación) calculado en el navegador | Final del `<body>`; el modal se abre a pedido | `CDH_CONTACT`; publica `CDH_ESTIMATOR`; sus constantes alimentan el build |
 | `viewer3d.js` | Visor STL local (nada se sube); medidas y paso al cotizador | Final del `<body>`; **Three.js desde unpkg al abrirlo** | `CDH_CONTACT`, `CDH_ESTIMATOR`; publica `CDH_VIEWER3D` |
-| `ads.js` | Widget flotante de anuncio con video | Final del `<body>`; el video (`preload="none"`) se pide al desplegarlo | Opcional `CDH_I18N_ADS` |
+| `ads.js` | Cinta `#cinta` tras el hero: Shorts del canal (`media/shorts.json`, de `tools/sync-shorts.mjs`) + ofertas (servicios, "Vende en YAM" y feed `yam.cdhmaker.com/api/publico/vitrina` con respaldo fijo) | Final del `<body>`; datos al terminar la carga; iframe de youtube-nocookie solo al abrir un Short | `CDH_CONTACT` (WhatsApp) |
 | `auth.js` | Registro/login, vault local PBKDF2, CRM, Firestore, FormSubmit, SDK de Firebase diferido | **No se carga en ninguna página** | Publicaría `CDH_AUTH` |
 | `voice.js` | Síntesis de voz (Web Speech API) para el antiguo asesor | **No se carga en ninguna página** | Publicaría `CDH_VOICE` |
 
@@ -124,8 +124,7 @@ sequenceDiagram
   nunca sale del equipo.
 - **Adónde van**: únicamente a WhatsApp, en la conversación que abre el propio visitante. El
   sitio no guarda ni envía nada por su cuenta.
-- **En el navegador** solo quedan preferencias: tema, idioma elegido, widget de anuncio
-  minimizado.
+- **En el navegador** solo quedan preferencias: tema e idioma elegido (la cinta de la portada no guarda nada).
 - **Flujo latente (auth.js)**: si se reactivara, un registro guardaría nombre, email, teléfono,
   empresa e interés en el CRM local, en Firestore (`clients/{uid}`) y enviaría un correo vía
   FormSubmit. Descrito en MANUAL §4.3; hoy no ocurre.
@@ -263,7 +262,7 @@ Deducidas del historial (`git log`). Formato corto: contexto → decisión → c
 - *Contexto*: ~300 KB de SDK en cada visita, aunque casi nadie creaba cuenta.
 - *Decisión*: `auth.js` descarga el SDK solo al abrir el área de clientes o si el navegador ya tuvo cuenta.
 - *Consecuencia*: carga inicial más liviana. Quedó superada por ADR-6, pero el mismo patrón
-  (cargar al primer uso) se repite en diccionarios, Three.js y el video del anuncio.
+  (cargar al primer uso) se repite en diccionarios, Three.js y el reproductor de los Shorts de la cinta.
 
 **ADR-4. Un diccionario por idioma, cargado bajo demanda** (`95a6551`)
 - *Contexto*: `i18n.js` pesaba 103 KB con los 10 idiomas dentro.

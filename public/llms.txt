@@ -22,10 +22,52 @@
 - [Artificial intelligence integration](https://cdhmaker.com/en/services/ai-integration-medellin): AI assistants, AI-generated content with human review and AI analysis integrated into your software. From Medellín, Colombia, for clients worldwide. Includes: AI assistants; AI content with human approval; AI analysis inside your software; AI in company operations.
 - [Electronics, IoT and automation](https://cdhmaker.com/en/services/iot-automation-medellin): Electronic prototypes, sensor monitoring, home automation and automation with Arduino, ESP32 and Raspberry Pi for homes, industry and agriculture in Medellín. Includes: Embedded systems; Sensor monitoring; Home and business automation; Custom enclosures and parts; The software that goes with it.
 
+## Catalog and indicative prices
+
+Page: https://cdhmaker.com/en/catalog
+
+**Consulting** — For when you know something has to improve but not what to buy or where to start.
+- [Orientation call (30 min)](https://cdhmaker.com/en/catalog#orientacion): Free. You describe your situation and leave knowing whether we can help, what kind of solution fits and roughly what it would cost. Timeline: Booked within 1–2 business days.
+- [Express digital diagnosis](https://cdhmaker.com/en/catalog#diagnostico): USD 90 (290,000 COP in Colombia). We review how your business works today (sales, inventory, customer service, processes) and tell you what to fix first and what it costs. Timeline: Report in 3 business days.
+- [Technology roadmap](https://cdhmaker.com/en/catalog#hoja-de-ruta): From USD 375 (1,200,000 COP in Colombia). For companies about to invest in technology that want to do it in order: what to build, what to buy, what to automate, and in which phases. Timeline: 1 to 2 weeks.
+- [Monthly technical advisory (fractional CTO)](https://cdhmaker.com/en/catalog#cto-por-horas): From USD 300 per month (950,000 COP in Colombia). An engineer on your side to make decisions, review vendors and quotes, and keep you from buying what you don't need. Timeline: Monthly.
+
+**Custom software and SaaS** — Websites, apps and platforms that work for your business.
+- [Website / landing page](https://cdhmaker.com/en/catalog#landing): From USD 470 (1,500,000 COP in Colombia). Your business online with a fast, mobile-friendly page that sends customers to your WhatsApp. Timeline: 1 to 2 weeks.
+- [Online store (e-commerce)](https://cdhmaker.com/en/catalog#tienda): From USD 875 (2,800,000 COP in Colombia). Sell online with catalog, cart, payments and shipping. In Medellín, with delivery and cash on delivery through YAM. Timeline: 2 to 4 weeks.
+- [Custom web app or SaaS](https://cdhmaker.com/en/catalog#app-medida): From USD 1,900 (6,000,000 COP in Colombia). When spreadsheets and WhatsApp are no longer enough: your own system for operations (inventory, orders, maintenance, customers, billing). Timeline: 4 to 10 weeks.
+
+**AI and automation** — Repetitive tasks that run themselves and assistants that answer for you.
+- [AI assistant for WhatsApp or your website](https://cdhmaker.com/en/catalog#asistente-ia): From USD 780 (2,500,000 COP in Colombia). Answers FAQs, takes orders and books appointments around the clock, and hands the chat to a person when needed. Timeline: 2 to 4 weeks.
+- [Process automation](https://cdhmaker.com/en/catalog#automatizacion): From USD 560 (1,800,000 COP in Colombia). What you copy and paste by hand today (invoices, reports, reminders, inventory) starts running on its own. Timeline: 2 to 5 weeks.
+
+**Short-form video content** — Your long videos turned into vertical clips every week, with no editing on your side.
+- [Shorts pilot (2 weeks)](https://cdhmaker.com/en/catalog#shorts-piloto): USD 95 (290,000 COP in Colombia). Risk-free trial: 6 vertical clips from one of your long videos, with captions and copy ready to post. Timeline: 72 business hours.
+- [Monthly Shorts (Steady plan)](https://cdhmaker.com/en/catalog#shorts-mensual): USD 520 per month (1,490,000 COP in Colombia). 30 clips a month from your podcasts, classes or lives, scheduled for you. Plans start at 12 clips. Timeline: 48 business hours per video.
+
+**Digital fabrication** — 3D printing, laser cutting, CNC and CAD design in Medellín, shipping across Colombia.
+- [3D printing on demand](https://cdhmaker.com/en/catalog#impresion-3d): From COP 25,000 per part. Parts, spare parts, prototypes and models in FDM or resin, from your STL file or just the idea. Timeline: 1 to 5 days.
+- [Laser cutting and CNC](https://cdhmaker.com/en/catalog#laser-cnc): From COP 30,000. Cutting and engraving in MDF, acrylic, wood and more: signage, packaging, parts and corporate gifts. Timeline: 1 to 5 days.
+- [2D/3D CAD design](https://cdhmaker.com/en/catalog#cad): From USD 60 (180,000 COP in Colombia). We turn your idea, sketch or physical part into a model ready to manufacture. Timeline: 2 to 5 days.
+
+**Electronics and IoT** — From idea to a connected prototype that measures, alerts and controls.
+- [Electronics or IoT prototype](https://cdhmaker.com/en/catalog#iot): From USD 440 (1,400,000 COP in Colombia). Sensors that measure and alert your phone, remote equipment control, home automation and machine monitoring. Timeline: 1 to 3 weeks.
+
+**Our own products (SaaS)** — CDH Maker platforms, ready to use.
+- [YAM — online store and last-mile delivery](https://yam.cdhmaker.com): 2.5% of paid sales, billed monthly. CDH Maker's platform for merchants to sell online, dispatch with couriers and collect cash on delivery in Medellín. Timeline: Open your store the same day.
+- [IncubApp — AI-assisted hatchery operations](https://incubapp.cdhmaker.com): Quote on request. SaaS for hatcheries: batches, machines, maintenance and KPIs in one place. Timeline: Rollout depends on the plant.
+
+- **I don't know what my business needs. Where do I start?** With the free 30-minute orientation call: you tell us how you work today and what hurts, and we tell you what kind of solution fits, whether it's worth it and roughly what it would cost. If more detail is needed, the express digital diagnosis costs USD 90 (290,000 COP) and is credited if you hire the project.
+- **What is CDH Maker's consulting and who is it for?** It is an engineer helping you decide before you spend: a business diagnosis, a technology roadmap (what to build, what to buy and in which order) and monthly fractional-CTO advisory. It is for small businesses, merchants and founders in Colombia and worldwide, in Spanish or English.
+- **How much does a website, online store or custom app cost?** As a reference: a landing page from USD 470, an online store from USD 875 and a custom web app or SaaS from USD 1,900. Prices are indicative; the final price depends on scope and the quote is free.
+- **How much does an AI assistant for WhatsApp cost?** From USD 780 (2,500,000 COP), trained on your business information, connected to WhatsApp Business or your website, with handoff to a person when needed.
+- **Do prices include taxes?** No: prices are before taxes and indicative. The formal quote details taxes, stages and milestone payments.
+- **What is YAM?** YAM is CDH Maker's own platform for merchants to sell online with last-mile delivery and cash on delivery in Medellín. It charges 2.5% of paid sales, billed monthly, with no fixed monthly fee.
+
 ## What clients come for
 
 - A website or online store for your business: Fast, mobile-friendly, search-ready websites: from a landing page to a full platform.
-- A custom system or SaaS: Software to run your company —logistics, sales, inventory, work orders— or your own SaaS product, like TaxiYa, A Tiempo Logística or IncubApp.
+- A custom system or SaaS: Software to run your company —logistics, sales, inventory, work orders— or your own SaaS product, like YAM, IncubApp or TaxiYa.
 - Integrating artificial intelligence: AI assistants, content generation and analytics built into your operation, with human review where it's needed, as in EvaIA and SIGI (in progress).
 - Automating repetitive processes: Less manual work: forms, reports, notifications and flows between your tools, connected and free of typing errors.
 - A prototype or a physical part: Made-to-order 3D printing (FDM and resin), laser cutting and engraving, and CNC machining in Medellín, shipped anywhere in Colombia.
@@ -36,12 +78,12 @@
 ## Projects (proof of work)
 
 - [PrivacyCheck](https://privacycheck-co.vercel.app): Real platform demo: entity registration, registry lookup, weighted self-assessment, simulator and AI analysis. Built with Next.js, in the cloud.
-- [A Tiempo Logística](https://atiempo-logistica.vercel.app): Last-mile logistics SaaS platform for e-commerce in Medellín: shipment tracking, warehouse, routes, cash-on-delivery collection and end-to-end traceability. Next.js + Supabase.
+- [YAM](https://yam.cdhmaker.com): CDH Maker's flagship SaaS and the platform of A Tiempo Logística in Medellín: pickup, warehouse, routing, cash-on-delivery collection, invoicing and online stores for merchants, with real-time tracking. Next.js + Supabase.
 - [TaxiYa](https://taxiya.vercel.app): Platform that lets taxi companies operate without phone calls or costly data plans: passenger, driver and dispatch apps with real-time dispatch. A CDH Maker product.
 - [IncubApp](https://incubapp.cdhmaker.com): Multi-company SaaS for hatcheries and farms: photo rounds, work orders, sales, logistics, animal health and real-time management, with AI. A CDH Maker product.
 - EvaIA: AI assistant running 100% locally: voice, spoken replies, camera vision, database memory and its own animated avatar.
 - SIGI: System that drafts ideas, scripts and pieces for social media with AI (Gemini) and queues them for review: nothing publishes without my manual approval. FastAPI + Next.js + Supabase — in progress.
-- Refricom — Sistema de Gestión del Mantenimiento: System delivered to Refricom to plan and control the maintenance of its equipment: inventory, preventive schedule with alerts, corrective work, work orders and reports.
+- [Refricom — Sistema de Gestión del Mantenimiento](https://refricom.cdhmaker.com): System delivered to Refricom to plan and control the maintenance of its equipment: inventory, preventive schedule with alerts, corrective work, work orders and reports.
 
 ## FAQ
 
@@ -54,6 +96,7 @@
 - **What technologies do you use?** Software: JavaScript, Next.js, Python, FastAPI, Supabase, Firebase and AI models such as Gemini. Hardware: Arduino, ESP32 and Raspberry Pi. Fabrication: FDM and resin 3D printing, laser cutting, CNC and 2D/3D CAD design.
 - **Do you offer made-to-order 3D printing, laser cutting or CNC?** Yes, in Medellín with shipping anywhere in Colombia. You can send us your STL file, your drawing or just the idea for us to design, and check your model first in this page's 3D viewer to estimate the printing time.
 - **Who is behind CDH Maker?** CDH Maker is the brand of Ing. Henry Taborda, an engineer and maker in Medellín, Colombia. You talk directly with the person who designs, builds and delivers your project, in Spanish or English.
+- **I don't know what my business needs. Where do I start?** With a free 30-minute orientation call: you tell us how you work today and what costs you time or money, and we tell you what kind of solution fits and roughly what it would cost. If more detail is needed, the express digital diagnosis costs USD 90 and is credited if you hire the project. Prices in the catalog.
 
 ## En español
 
@@ -69,6 +112,48 @@ Estudio de ingeniería en Medellín, Colombia: software y SaaS a la medida, inte
 - [Integración de inteligencia artificial](https://cdhmaker.com/servicios/inteligencia-artificial-medellin): Asistentes de IA, contenido generado con IA y revisión humana, y análisis con IA integrados a tu software. Desde Medellín, para Colombia y el mundo. Incluye: Asistentes de IA; Contenido con IA y aprobación humana; Análisis con IA dentro de tu software; IA en la operación de la empresa.
 - [Electrónica, IoT y automatización](https://cdhmaker.com/servicios/iot-automatizacion-medellin): Prototipos electrónicos, monitoreo con sensores, domótica y automatización con Arduino, ESP32 y Raspberry Pi para hogares, industria y agro, en Medellín. Incluye: Sistemas embebidos; Monitoreo con sensores; Domótica y automatización; Carcasas y piezas a medida; El software que lo acompaña.
 
+### Catálogo y precios orientativos
+
+Página: https://cdhmaker.com/catalogo
+
+**Consultoría** — Para cuando sabes que algo tiene que mejorar, pero no qué comprar ni por dónde empezar.
+- [Sesión de orientación (30 min)](https://cdhmaker.com/catalogo#orientacion): Gratis. Cuentas tu situación y sales sabiendo si te podemos ayudar, qué tipo de solución te sirve y cuánto costaría más o menos. Tiempo: Agenda en 1–2 días hábiles.
+- [Diagnóstico digital express](https://cdhmaker.com/catalogo#diagnostico): $ 290.000 (USD 90 fuera de Colombia). Revisamos cómo trabaja hoy tu negocio (ventas, inventario, atención, procesos) y te decimos qué arreglar primero y qué cuesta. Tiempo: Informe en 3 días hábiles.
+- [Hoja de ruta tecnológica](https://cdhmaker.com/catalogo#hoja-de-ruta): Desde $ 1.200.000 (USD 375 fuera de Colombia). Para empresas que van a invertir en tecnología y quieren hacerlo en orden: qué construir, qué comprar, qué automatizar y en qué fases. Tiempo: 1 a 2 semanas.
+- [Acompañamiento técnico mensual (CTO por horas)](https://cdhmaker.com/catalogo#cto-por-horas): Desde $ 950.000 al mes (USD 300 fuera de Colombia). Un ingeniero de tu lado para decidir, revisar proveedores y cotizaciones, y que no te vendan lo que no necesitas. Tiempo: Mensual.
+
+**Software y SaaS a la medida** — Páginas, aplicaciones y plataformas que trabajan por tu negocio.
+- [Página web / landing page](https://cdhmaker.com/catalogo#landing): Desde $ 1.500.000 (USD 470 fuera de Colombia). Tu negocio en internet con una página rápida, que se ve bien en el celular y lleva clientes a tu WhatsApp. Tiempo: 1 a 2 semanas.
+- [Tienda en línea (e-commerce)](https://cdhmaker.com/catalogo#tienda): Desde $ 2.800.000 (USD 875 fuera de Colombia). Vende por internet con catálogo, carrito, pagos y envíos. Si estás en Medellín, con domicilios y contraentrega por YAM. Tiempo: 2 a 4 semanas.
+- [Aplicación web o SaaS a la medida](https://cdhmaker.com/catalogo#app-medida): Desde $ 6.000.000 (USD 1900 fuera de Colombia). Cuando Excel y WhatsApp ya no alcanzan: un sistema propio para tu operación (inventario, pedidos, mantenimiento, clientes, facturación). Tiempo: 4 a 10 semanas.
+
+**Inteligencia artificial y automatización** — Tareas repetitivas que se hacen solas y asistentes que responden por ti.
+- [Asistente con IA para WhatsApp o tu web](https://cdhmaker.com/catalogo#asistente-ia): Desde $ 2.500.000 (USD 780 fuera de Colombia). Responde preguntas frecuentes, toma pedidos y agenda citas a cualquier hora, y te pasa la conversación cuando hace falta una persona. Tiempo: 2 a 4 semanas.
+- [Automatización de procesos](https://cdhmaker.com/catalogo#automatizacion): Desde $ 1.800.000 (USD 560 fuera de Colombia). Lo que hoy se copia y pega a mano (facturas, reportes, recordatorios, inventario) pasa a hacerse solo. Tiempo: 2 a 5 semanas.
+
+**Contenido en video (Shorts)** — Tus videos largos convertidos en clips verticales cada semana, sin editar nada.
+- [Piloto de Shorts (2 semanas)](https://cdhmaker.com/catalogo#shorts-piloto): $ 290.000 (USD 95 fuera de Colombia). Prueba sin riesgo: 6 clips verticales de un video largo tuyo, con subtítulos y textos listos para publicar. Tiempo: 72 h hábiles.
+- [Shorts cada mes (plan Constante)](https://cdhmaker.com/catalogo#shorts-mensual): $ 1.490.000 al mes (USD 520 fuera de Colombia). 30 clips al mes de tus podcasts, clases o lives, publicados de forma programada. Hay plan desde 12 clips. Tiempo: 48 h hábiles por video.
+
+**Fabricación digital** — Impresión 3D, corte láser, CNC y diseño CAD en Medellín, con envíos a toda Colombia.
+- [Impresión 3D por encargo](https://cdhmaker.com/catalogo#impresion-3d): Desde $ 25.000 por pieza. Piezas, repuestos, prototipos y maquetas en FDM o resina, desde tu archivo STL o desde la idea. Tiempo: 1 a 5 días.
+- [Corte láser y CNC](https://cdhmaker.com/catalogo#laser-cnc): Desde $ 30.000. Corte y grabado en MDF, acrílico, madera y más: señalética, empaques, piezas y regalos corporativos. Tiempo: 1 a 5 días.
+- [Diseño CAD 2D/3D](https://cdhmaker.com/catalogo#cad): Desde $ 180.000 (USD 60 fuera de Colombia). Llevamos tu idea, boceto o pieza física a un modelo listo para fabricar. Tiempo: 2 a 5 días.
+
+**Electrónica e IoT** — De la idea a un prototipo conectado que mide, avisa y controla.
+- [Prototipo electrónico o IoT](https://cdhmaker.com/catalogo#iot): Desde $ 1.400.000 (USD 440 fuera de Colombia). Sensores que miden y avisan al celular, control remoto de equipos, domótica y monitoreo de máquinas. Tiempo: 1 a 3 semanas.
+
+**Productos propios (SaaS)** — Plataformas de CDH Maker listas para usar.
+- [YAM — tienda en línea y envíos de última milla](https://yam.cdhmaker.com): 2,5 % de las ventas pagadas, facturado al mes. La plataforma de CDH Maker para que los comercios vendan en línea, despachen con mensajeros y cobren contraentrega en Medellín. Tiempo: Abres tu tienda el mismo día.
+- [IncubApp — operación de incubación con IA](https://incubapp.cdhmaker.com): A consultar. SaaS para plantas de incubación: lotes, máquinas, mantenimiento e indicadores en un solo lugar. Tiempo: Implementación según la planta.
+
+- **No sé qué necesito para mi negocio, ¿por dónde empiezo?** Por la sesión de orientación gratuita de 30 minutos: nos cuentas cómo trabajas hoy y qué te duele, y te decimos qué tipo de solución te sirve, si vale la pena y cuánto costaría más o menos. Si hace falta más detalle, el diagnóstico digital express cuesta 290.000 COP (USD 90) y se descuenta si contratas el proyecto.
+- **¿Qué es la consultoría de CDH Maker y para quién es?** Es acompañamiento de un ingeniero para decidir antes de gastar: diagnóstico del negocio, hoja de ruta tecnológica (qué construir, qué comprar y en qué orden) y acompañamiento mensual tipo CTO por horas. Es para pymes, comercios y emprendedores en Colombia y en cualquier país, en español o inglés.
+- **¿Cuánto cuesta una página web, una tienda en línea o una app a la medida?** Como referencia: una landing page desde 1.500.000 COP, una tienda en línea desde 2.800.000 COP y una aplicación web o SaaS a la medida desde 6.000.000 COP. Son precios orientativos; el precio final depende del alcance y la cotización es gratis.
+- **¿Cuánto cuesta un chatbot o asistente con IA para WhatsApp?** Desde 2.500.000 COP (USD 780), entrenado con la información de tu negocio, conectado a WhatsApp Business o a tu web, con paso a una persona cuando hace falta.
+- **¿Los precios incluyen IVA?** No: son precios antes de impuestos y son orientativos. La cotización formal detalla impuestos, etapas y forma de pago por hitos.
+- **¿Qué es YAM?** YAM es la plataforma propia de CDH Maker para que los comercios vendan en línea y despachen con envíos de última milla y recaudo contraentrega en Medellín. Cobra el 2,5 % de las ventas pagadas, facturado cada mes, sin mensualidad fija.
+
 - **¿Cuánto cuesta un proyecto?** Cada proyecto es único, por eso la cotización es personalizada y gratuita: describes tu idea, la revisamos y recibes precio y tiempos en menos de 24 horas, sin compromiso.
 - **¿Cómo es el proceso de trabajo y pago?** Trabajamos por etapas con entregas parciales: ves avances reales desde los primeros días y el pago se divide por hitos. Sin sorpresas ni letra pequeña.
 - **¿Atienden clientes fuera de Medellín?** Sí. El software se entrega en la nube para cualquier parte del mundo, y las piezas físicas (3D, láser, CNC) se envían por mensajería a todo Colombia.
@@ -78,6 +163,7 @@ Estudio de ingeniería en Medellín, Colombia: software y SaaS a la medida, inte
 - **¿Qué tecnologías usan?** En software: JavaScript, Next.js, Python, FastAPI, Supabase, Firebase y modelos de IA como Gemini. En hardware: Arduino, ESP32 y Raspberry Pi. En fabricación: impresión 3D FDM y de resina, corte láser, CNC y diseño CAD 2D/3D.
 - **¿Hacen impresión 3D, corte láser o CNC por encargo?** Sí, en Medellín y con envíos a toda Colombia. Puedes enviarnos tu archivo STL, tu plano o solo la idea para diseñarla, y revisar antes tu modelo en el visor 3D de esta página para estimar el tiempo de impresión.
 - **¿Quién está detrás de CDH Maker?** CDH Maker es la marca del Ing. Henry Taborda, ingeniero y maker en Medellín, Colombia. Hablas directamente con quien diseña, construye y entrega tu proyecto, en español o en inglés.
+- **No sé qué necesito para mi negocio, ¿por dónde empiezo?** Por una sesión de orientación gratuita de 30 minutos: nos cuentas cómo trabajas hoy y qué te quita tiempo o dinero, y te decimos qué tipo de solución te sirve y cuánto costaría más o menos. Si hace falta más detalle, el diagnóstico digital express cuesta 290.000 COP (USD 90) y se descuenta si contratas el proyecto. Precios en el catálogo.
 
 ## Optional
 

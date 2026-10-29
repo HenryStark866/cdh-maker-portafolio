@@ -40,8 +40,18 @@ firebase deploy --only firestore:rules,hosting
 - **Fondo animado**: canvas de seis capas (malla en perspectiva, red neuronal con paquetes
   de datos, partículas 3D y HUD holográfico). Se adapta al tema y respeta *reducir movimiento*.
 - **Asesor "Maker" (100% texto con memoria avanzada)**: recuerda el contexto de la conversación (servicio elegido, productos de interés, detalles técnicos y alcance) durante toda la sesión. Construye enlaces de cotización personalizados para WhatsApp con todo el requerimiento acumulado.
+- **Cinta fija arriba** (`ads.js`): barra delgada visible siempre, que rota los Shorts del bot
+  ClipFactory, el catálogo con precios, los clientes del ecosistema (YAM incluido) y los
+  productos y tiendas de los comercios de YAM.
+- **Catálogo con precios, administrado en el CRM** (`/crm` → *Catálogo y precios*): productos,
+  servicios, precios, imágenes y descripciones (es/en) en Firestore. Sale **al instante** en la
+  cinta, el chat y `/catalogo` (`catalogo-vivo.js`), y en el HTML estático, el JSON-LD, `llms.txt`
+  y el bot de Shorts en el siguiente deploy (`build-i18n.mjs` lo lee del CRM; `tools/catalogo.mjs`
+  es la semilla y el respaldo). El deploy corre solo cada día (`.github/workflows/publicar.yml`)
+  y con «Publicar ahora» del CRM. Plan AEO: [PLAN-AEO-GLOBAL.md](PLAN-AEO-GLOBAL.md).
 - **Carga liviana**: el SDK de Firebase (~300 KB) solo se descarga si el visitante abre el
-  área de clientes; imágenes en WebP y el video del anuncio se pide recién al desplegarlo.
+  área de clientes; imágenes en WebP, y la cinta de Shorts y ofertas carga tras la página
+  (el reproductor de YouTube solo al abrir un Short).
 - **10 idiomas, cada uno con su URL** (`/`, `/en`, `/pt`, `/fr`…): páginas estáticas
   generadas por `tools/build-i18n.mjs`, para que buscadores y asistentes de IA (que no
   ejecutan JavaScript) lean el sitio completo en todos los idiomas, con su JSON-LD,

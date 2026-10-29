@@ -12,7 +12,7 @@
   "hosting": {
     "public": "public",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-    "predeploy": ["node tools/build-i18n.mjs"],
+    "predeploy": ["node tools/sync-shorts.mjs", "node tools/build-i18n.mjs"],
     "cleanUrls": true,
     "redirects": [
       {
@@ -64,6 +64,16 @@
       },
       {
         "source": "/@(en|zh|hi|ar|pt|bn|ru|fr|id)/services/**",
+        "headers": [
+          { "key": "Cache-Control", "value": "no-cache" },
+          { "key": "X-Content-Type-Options", "value": "nosniff" },
+          { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+          { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+          { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+        ]
+      },
+      {
+        "source": "/@(catalogo|en/catalog)",
         "headers": [
           { "key": "Cache-Control", "value": "no-cache" },
           { "key": "X-Content-Type-Options", "value": "nosniff" },
