@@ -15,7 +15,7 @@ Funcionalidades principales:
 
 | Funcionalidad | Archivo responsable |
 |---|---|
-| Página principal del portafolio | `public/index.html` |
+| Página principal del portafolio | `public/es.html` |
 | Estilos y sistema de temas claro/oscuro | `public/styles.css` + `public/theme.js` |
 | Fondo animado: construcción LEGO de los productos | `public/metaverse.js` |
 | Interacciones (scroll, animaciones, FAQ…) | `public/script.js` |
@@ -43,7 +43,8 @@ PORTAFOLIO HCT/
 │   └── servicios/         # Textos de las páginas por servicio: es.mjs (fuente) + un archivo por idioma (§8.4)
 │   └── indexnow.mjs       # Avisa a Bing/IndexNow tras cada deploy (§11)
 └── public/                # TODO lo que se publica en el hosting
-    ├── index.html         # Página principal en español (FUENTE de las demás)
+    ├── es.html            # Portada en español, servida en /es (FUENTE de las demás)
+    ├── index.html         # Portada en inglés, "/" (GENERADA: idioma por defecto)
     ├── en.html … id.html  # GENERADAS: una por idioma (/en, /zh, /hi, /ar, /pt, /bn, /ru, /fr, /id)
     ├── 404.html           # Página de "no encontrado" (Firebase la sirve sola)
     ├── llms.txt           # GENERADO: resumen del negocio para modelos de lenguaje
@@ -54,7 +55,7 @@ PORTAFOLIO HCT/
     ├── theme.js           # Alternancia claro/oscuro (localStorage: cdh-theme)
     ├── security.js        # Capa anti-inspección (solo en producción)
     ├── metaverse.js       # Canvas de fondo animado (núcleo tecnológico)
-    ├── script.js          # Interacciones de index.html
+    ├── script.js          # Interacciones de la portada
     ├── i18n.js            # Motor de idiomas (los diccionarios van aparte)
     ├── i18n/              # Un diccionario por idioma, cargado bajo demanda
     │   ├── es.js  en.js  zh.js  hi.js  ar.js
@@ -75,7 +76,7 @@ PORTAFOLIO HCT/
 
 > **Nota:** `firebase.json`, `.firebaserc` y `manifest.json` son JSON puro y **no admiten comentarios**; su documentación vive en este manual.
 
-## 3. Orden de carga de scripts (index.html)
+## 3. Orden de carga de scripts (es.html)
 
 El orden **importa** y no debe cambiarse sin revisar dependencias:
 
@@ -208,7 +209,7 @@ node -e "console.log(require('crypto').createHash('sha256').update('TU_NUEVA_CLA
 - 10 idiomas: es, en, zh, hi, ar, pt, bn, ru, fr, id. El árabe activa `dir="rtl"`.
 - **Cada idioma tiene su propia URL y su propio HTML estático**: `/` (español), `/en`,
   `/zh`, `/hi`, `/ar`, `/pt`, `/bn`, `/ru`, `/fr`, `/id`. Los generan `tools/build-i18n.mjs`
-  a partir de `index.html` + `i18n/<código>.js` (§8.3). Así los rastreadores de IA, que no
+  a partir de `es.html` + `i18n/<código>.js` (§8.3). Así los rastreadores de IA, que no
   ejecutan JavaScript, leen el sitio completo en todos los idiomas.
 - Todo texto traducible lleva `data-i18n="clave"` en el HTML (o `data-i18n-aria` para
   aria-labels, `data-i18n-alt` para el texto alternativo de imágenes y `data-i18n-html` si
@@ -256,23 +257,23 @@ a su valor anterior y se avisa por consola; la página nunca queda a medio tradu
 
 ### 8.2 Editar o añadir traducciones
 
-- **Cambiar un texto en español:** edítalo directamente en `public/index.html` y corre
+- **Cambiar un texto en español:** edítalo directamente en `public/es.html` y corre
   `node tools/build-i18n.mjs`. El HTML manda: el script copia el texto a `i18n/es.js`.
 - **Corregir otro idioma:** abre `public/i18n/<código>.js`, busca la clave, edítala, sube
   `DICT_V` en `i18n.js` y corre `node tools/build-i18n.mjs`.
-- **Añadir un texto nuevo:** márcalo en `index.html` con `data-i18n="clave_nueva"` y agrega
+- **Añadir un texto nuevo:** márcalo en `es.html` con `data-i18n="clave_nueva"` y agrega
   `clave_nueva` a los 9 diccionarios restantes. El build avisa con `⚠ <idioma>: N clave(s)
   sin traducir` si alguno falta (en esa página el texto queda en español).
 - **Añadir un idioma:** agrégalo a `LANGS` en `i18n.js` **y** en `tools/build-i18n.mjs`,
   crea `public/i18n/<código>.js` copiando la estructura de otro, agrega su enlace a la fila
-  de idiomas del footer de `index.html` y a la regla de `firebase.json` que le pone
+  de idiomas del footer de `es.html` y a la regla de `firebase.json` que le pone
   cabeceras a `/@(en|zh|…)`.
 
 ### 8.3 Páginas por idioma, SEO y visibilidad en asistentes de IA (tools/build-i18n.mjs)
 
 `node tools/build-i18n.mjs` (Node ≥ 18, sin dependencias) hace, en orden:
 
-1. Sincroniza `i18n/es.js` con los textos de `index.html`.
+1. Sincroniza `i18n/es.js` con los textos de `es.html`.
 2. Rellena el bloque `seo:start … seo:end` del `<head>` de cada página: title, description,
    canonical, los 11 `hreflang` (10 idiomas + `x-default`), Open Graph, Twitter y el JSON-LD.
    **Ese bloque no se edita a mano**: se regenera en cada build.
@@ -336,11 +337,11 @@ incluye", **tiempos de referencia**, proyectos relacionados (solo los que existe
   `projects` del servicio.
 - **Enlaces desde la portada:** tarjetas de `#servicios` (`card-link`), necesidades de
   `#soluciones` (`need-link`) y columna "Servicios" del footer, con las claves `fs_3d`,
-  `fs_sw`, `fs_ai`, `fs_iot`. Los `href` se escriben en español en `index.html`; el build
+  `fs_sw`, `fs_ai`, `fs_iot`. Los `href` se escriben en español en `es.html`; el build
   los cambia por la ruta de cada idioma.
 - **Agregar un servicio:** una entrada en `SERVICES` (slug `es` y `en`, área, proyectos),
   su ícono en `SVC_ICON`, su bloque en los 10 `tools/servicios/<código>.mjs` y, si se quiere
-  enlazar desde la portada, el enlace en `index.html` con `href="/servicios/<slug.es>"`
+  enlazar desde la portada, el enlace en `es.html` con `href="/servicios/<slug.es>"`
   (el build lo cambia solo por la ruta de cada idioma).
 - **Hosting:** `firebase.json` aplica las cabeceras de seguridad también a `/servicios/**`
   y `/<código>/services/**`. Con `cleanUrls`, `/en` sigue sirviendo `en.html` aunque exista
@@ -427,7 +428,7 @@ Una URL con barra final (`/en/`) se redirige con 301 a `/en`.
 
 La columna **Nuestros aliados** del footer se mantiene directamente en el código. Para agregar uno nuevo:
 
-1. Abre `public/index.html` y busca el comentario `<!-- Aliados: ... -->` (es la columna cuyo título lleva `data-i18n="foot_allies_h"`).
+1. Abre `public/es.html` y busca el comentario `<!-- Aliados: ... -->` (es la columna cuyo título lleva `data-i18n="foot_allies_h"`).
 2. Debajo del último aliado, duplica la línea `<a>` y cambia la URL y el nombre:
 
    ```html
@@ -437,7 +438,7 @@ La columna **Nuestros aliados** del footer se mantiene directamente en el códig
 
    Conserva siempre `target="_blank" rel="noopener"` (abre en pestaña nueva de forma segura).
 3. El nombre del aliado es una marca propia: **no se traduce** (por eso el `<a>` no lleva `data-i18n`). El título de la columna sí está traducido a los 10 idiomas en `i18n.js`, bajo la clave `foot_allies_h`.
-4. Guarda y despliega: `firebase deploy --only hosting`. Como `index.html` se sirve sin caché (§10), el cambio se ve de inmediato y **no** hace falta subir versiones de `.js`/`.css` si solo tocaste esta lista.
+4. Guarda y despliega: `firebase deploy --only hosting`. Como `es.html` se sirve sin caché (§10), el cambio se ve de inmediato y **no** hace falta subir versiones de `.js`/`.css` si solo tocaste esta lista.
 
 Nota: si algún día prefieres logos en vez de texto, sube la imagen a `public/media/` y sustituye el texto del `<a>` por `<img src="media/logo-aliado.png" alt="Nombre del Aliado" />`.
 
@@ -445,14 +446,14 @@ Nota: si algún día prefieres logos en vez de texto, sube la imagen a `public/m
 
 | Quiero… | Dónde |
 |---|---|
-| Cambiar un texto del sitio | Español: `index.html`. Otro idioma: `i18n/<código>.js`. Luego `node tools/build-i18n.mjs` (§8.2) |
+| Cambiar un texto del sitio | Español: `es.html`. Otro idioma: `i18n/<código>.js`. Luego `node tools/build-i18n.mjs` (§8.2) |
 | Cambiar title / description de Google | `i18n/<código>.js` → `meta_title`, `meta_desc` + build |
 | Agregar un perfil (LinkedIn, Google Business…) a los datos para IA | `tools/build-i18n.mjs` → `ENTITY.sameAs` + build |
 | Cambiar textos del chatbot | `chatbot.js` → objeto `TEXT` (bloques es/en) |
 | Enseñar un tema nuevo al chatbot | `chatbot.js` → `INTENTS` + respuesta en `TEXT` |
 | Cambiar el texto de una página de servicio | `tools/servicios/<código>.mjs` (español: `es.mjs`) + build (§8.4) |
-| Añadir un proyecto al portafolio | `index.html` sección Proyectos + imagen en `media/` + claves en los 9 `i18n/<código>.js` + entrada en `PROJECTS` de `tools/build-i18n.mjs` + build |
-| Agregar un aliado al footer | `index.html` columna "Nuestros aliados" (pasos completos en §12) |
+| Añadir un proyecto al portafolio | `es.html` sección Proyectos + imagen en `media/` + claves en los 9 `i18n/<código>.js` + entrada en `PROJECTS` de `tools/build-i18n.mjs` + build |
+| Agregar un aliado al footer | `es.html` columna "Nuestros aliados" (pasos completos en §12) |
 | Cambiar colores / tema | `styles.css` → variables `:root` (dark y light) |
 | Autorizar otro email como admin | `perfil.html` → array `ADMIN_EMAILS` |
 | Cambiar la clave del panel CRM | `admin-clientes.html` → `ADMIN_KEY_HASH` (ver §6) |

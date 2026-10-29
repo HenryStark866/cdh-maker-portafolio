@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<!-- ═══════════════════════════════════════════════════════════════════════════
+  CDH MAKER — index.html
+  Página principal del portafolio de servicios de CDH Maker.
+
+  Estructura del documento (cada zona está marcada con comentarios de sección):
+    <head>   → bloque SEO GENERADO (title, meta, hreflang, OG, JSON-LD), fuentes,
+               estilos, tema y seguridad (cargan primero)
+    Cinta    → franja fija de Shorts, ofertas y clientes (ads.js)
+    Nav      → encabezado con el lobo, secciones, idioma, tema y CTA
+    Hero     → titular, CTA a WhatsApp, lámina técnica del lobo y cifras
+    Secciones→ Clientes · Servicios · Proyectos · Soluciones · Proceso +
+               fundador · Por qué · Herramientas · Sobre mí · FAQ · Contacto
+    Scripts  → i18n, contacto, interacciones, chat, cotizador, visor 3D, cinta
+    Marca    → docs/MARCA.md (concepto, paleta y tipografía)
+
+  Convenciones importantes:
+    - data-i18n="clave"        → texto traducible (ver i18n.js)
+    - data-contact="wa|mail"   → botones de contacto (públicos, sin cuenta)
+    - ?v=N en scripts/estilos  → control de versión de caché (subir al editar)
+    - Este archivo es la FUENTE del sitio en español. Tras editarlo, correr
+      `node tools/build-i18n.mjs`: sincroniza i18n/es.js, rellena el bloque
+      seo:start / seo:end del head y genera /en, /pt, /fr… (el deploy lo
+      corre solo).
+  ───────────────────────────────────────────────────────────────────────────
+  Autor:    Ing. Henry Taborda — CDH Maker (Medellín, Colombia)
+  Contacto: cdhmaker@gmail.com
+  Última actualización: 2026-10-29
+  ═══════════════════════════════════════════════════════════════════════════ -->
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- seo:start — bloque GENERADO por tools/build-i18n.mjs desde i18n/es.js: no editar a mano -->
+  <title>CDH Maker — Software, IA, impresión 3D e IoT · Medellín</title>
+  <meta name="description" content="Estudio de ingeniería en Medellín, Colombia: software y SaaS a la medida, inteligencia artificial, impresión 3D, corte láser, CNC, electrónica e IoT. Atención remota en todo el mundo." />
+  <link rel="canonical" href="https://cdhmaker.com/es" />
+  <link rel="alternate" hreflang="es" href="https://cdhmaker.com/es" />
+  <link rel="alternate" hreflang="en" href="https://cdhmaker.com/" />
+  <link rel="alternate" hreflang="zh" href="https://cdhmaker.com/zh" />
+  <link rel="alternate" hreflang="hi" href="https://cdhmaker.com/hi" />
+  <link rel="alternate" hreflang="ar" href="https://cdhmaker.com/ar" />
+  <link rel="alternate" hreflang="pt" href="https://cdhmaker.com/pt" />
+  <link rel="alternate" hreflang="bn" href="https://cdhmaker.com/bn" />
+  <link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru" />
+  <link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr" />
+  <link rel="alternate" hreflang="id" href="https://cdhmaker.com/id" />
+  <link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="CDH Maker" />
+  <meta property="og:title" content="CDH Maker — Software, IA, impresión 3D e IoT · Medellín" />
+  <meta property="og:description" content="Estudio de ingeniería en Medellín, Colombia: software y SaaS a la medida, inteligencia artificial, impresión 3D, corte láser, CNC, electrónica e IoT. Atención remota en todo el mundo." />
+  <meta property="og:url" content="https://cdhmaker.com/es" />
+  <meta property="og:image" content="https://cdhmaker.com/media/og.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="CDH Maker — Software, IA, impresión 3D e IoT · Medellín" />
+  <meta property="og:locale" content="es_CO" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:locale:alternate" content="zh_CN" />
+  <meta property="og:locale:alternate" content="hi_IN" />
+  <meta property="og:locale:alternate" content="ar_AR" />
+  <meta property="og:locale:alternate" content="pt_BR" />
+  <meta property="og:locale:alternate" content="bn_BD" />
+  <meta property="og:locale:alternate" content="ru_RU" />
+  <meta property="og:locale:alternate" content="fr_FR" />
+  <meta property="og:locale:alternate" content="id_ID" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="CDH Maker — Software, IA, impresión 3D e IoT · Medellín" />
+  <meta name="twitter:description" content="Estudio de ingeniería en Medellín, Colombia: software y SaaS a la medida, inteligencia artificial, impresión 3D, corte láser, CNC, electrónica e IoT. Atención remota en todo el mundo." />
+  <meta name="twitter:image" content="https://cdhmaker.com/media/og.jpg" />
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":["ProfessionalService","Organization"],"@id":"https://cdhmaker.com/#org","name":"CDH Maker","alternateName":["CDH Maker IT","CDHMaker"],"url":"https://cdhmaker.com/","logo":"https://cdhmaker.com/icon.svg","image":"https://cdhmaker.com/media/og.jpg","description":"Estudio de ingeniería en Medellín, Colombia: software y SaaS a la medida, inteligencia artificial, impresión 3D, corte láser, CNC, electrónica e IoT. Atención remota en todo el mundo.","slogan":"Si lo puedes imaginar, lo podemos construir.","email":"cdhmaker@gmail.com","founder":{"@id":"https://cdhmaker.com/#henry"},"address":{"@type":"PostalAddress","addressLocality":"Medellín","addressRegion":"Antioquia","addressCountry":"CO"},"areaServed":[{"@type":"Place","name":"Worldwide"},{"@type":"Country","name":"Colombia"}],"knowsAbout":["Sitios web y landing pages","Aplicaciones web a la medida","Automatización de procesos","Impresión 3D (FDM / resina)","Corte y grabado láser","Mecanizado CNC y prototipado","Sistemas embebidos (Arduino, ESP32, Raspberry Pi)","Domótica y automatización","Monitoreo con sensores e IoT","Diseño CAD 2D/3D","Asesorías y consultoría de proyectos","Capacitaciones y talleres maker","Inteligencia Artificial","Next.js","JavaScript","Python","FastAPI","Supabase","Firebase","Gemini","Arduino","ESP32","Raspberry Pi"],"knowsLanguage":["es","en"],"contactPoint":{"@type":"ContactPoint","contactType":"sales","email":"cdhmaker@gmail.com","url":"https://cdhmaker.com/es#contacto","availableLanguage":["Spanish","English"],"areaServed":"Worldwide"},"hasOfferCatalog":{"@type":"OfferCatalog","name":"Servicios","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","url":"https://cdhmaker.com/servicios/software-a-la-medida-medellin","name":"Desarrollo web y software","description":"Páginas web, aplicaciones y sistemas a la medida. Sitios modernos, rápidos y pensados para hacer crecer tu negocio o proyecto.","serviceType":["Sitios web y landing pages","Aplicaciones web a la medida","Automatización de procesos"],"provider":{"@id":"https://cdhmaker.com/#org"},"areaServed":{"@type":"Place","name":"Worldwide"}}},{"@type":"Offer","itemOffered":{"@type":"Service","url":"https://cdhmaker.com/servicios/impresion-3d-medellin","name":"Fabricación digital / Maker","description":"Prototipado y fabricación con tecnologías digitales: de tu idea o plano a la pieza terminada.","serviceType":["Impresión 3D (FDM / resina)","Corte y grabado láser","Mecanizado CNC y prototipado"],"provider":{"@id":"https://cdhmaker.com/#org"},"areaServed":{"@type":"Country","name":"Colombia"}}},{"@type":"Offer","itemOffered":{"@type":"Service","url":"https://cdhmaker.com/servicios/iot-automatizacion-medellin","name":"Electrónica e IoT","description":"Sistemas electrónicos y conectados: sensórica, automatización y monitoreo remoto para hogares, industria y agro.","serviceType":["Sistemas embebidos (Arduino, ESP32, Raspberry Pi)","Domótica y automatización","Monitoreo con sensores e IoT"],"provider":{"@id":"https://cdhmaker.com/#org"},"areaServed":{"@type":"Country","name":"Colombia"}}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Diseño y consultoría técnica","description":"Acompañamiento experto para materializar tu proyecto: diseño, asesoría y formación.","serviceType":["Diseño CAD 2D/3D","Asesorías y consultoría de proyectos","Capacitaciones y talleres maker"],"provider":{"@id":"https://cdhmaker.com/#org"},"areaServed":{"@type":"Place","name":"Worldwide"}}},{"@type":"OfferCatalog","@id":"https://cdhmaker.com/catalogo#catalogo","name":"Catálogo y precios","url":"https://cdhmaker.com/catalogo"}]}},
+{"@type":"Person","@id":"https://cdhmaker.com/#henry","name":"Henry Taborda","honorificPrefix":"Ing.","jobTitle":"Ingeniero y fundador de CDH Maker","worksFor":{"@id":"https://cdhmaker.com/#org"},"address":{"@type":"PostalAddress","addressLocality":"Medellín","addressRegion":"Antioquia","addressCountry":"CO"},"knowsLanguage":["es","en"],"knowsAbout":["Sitios web y landing pages","Aplicaciones web a la medida","Automatización de procesos","Impresión 3D (FDM / resina)","Corte y grabado láser","Mecanizado CNC y prototipado","Sistemas embebidos (Arduino, ESP32, Raspberry Pi)","Domótica y automatización","Monitoreo con sensores e IoT","Diseño CAD 2D/3D","Asesorías y consultoría de proyectos","Capacitaciones y talleres maker","Inteligencia Artificial","Next.js","JavaScript","Python","FastAPI","Supabase","Firebase","Gemini","Arduino","ESP32","Raspberry Pi"],"sameAs":["https://github.com/HenryStark866"]},
+{"@type":"WebSite","@id":"https://cdhmaker.com/#website","url":"https://cdhmaker.com/","name":"CDH Maker","inLanguage":["es","en","zh","hi","ar","pt","bn","ru","fr","id"],"publisher":{"@id":"https://cdhmaker.com/#org"}},
+{"@type":"WebPage","@id":"https://cdhmaker.com/es#webpage","url":"https://cdhmaker.com/es","name":"CDH Maker — Software, IA, impresión 3D e IoT · Medellín","description":"Estudio de ingeniería en Medellín, Colombia: software y SaaS a la medida, inteligencia artificial, impresión 3D, corte láser, CNC, electrónica e IoT. Atención remota en todo el mundo.","inLanguage":"es","isPartOf":{"@id":"https://cdhmaker.com/#website"},"about":{"@id":"https://cdhmaker.com/#org"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://cdhmaker.com/media/og.jpg","width":1200,"height":630},"dateModified":"2026-10-29"},
+{"@type":"ItemList","@id":"https://cdhmaker.com/es#proyectos","name":"No solo lo imaginamos. Ya está funcionando.","itemListElement":[{"@type":"ListItem","position":1,"item":{"@type":"CreativeWork","name":"PrivacyCheck","headline":"PrivacyCheck — Cumplimiento Ley 1581 en acción","description":"Demo real de la plataforma: registro de entidades, consulta al RNBD, autodiagnóstico con puntaje, simulador y análisis con IA. Next.js, en la nube.","creator":{"@id":"https://cdhmaker.com/#org"},"url":"https://privacycheck-co.vercel.app"}},{"@type":"ListItem","position":2,"item":{"@type":"CreativeWork","name":"YAM","headline":"YAM — Última milla para e-commerce","description":"El SaaS estrella de CDH Maker y la plataforma de A Tiempo Logística en Medellín: recogida, CEDI, ruteo, recaudo contraentrega, facturación y tiendas en línea para comercios, con trazabilidad en tiempo real. Next.js + Supabase.","creator":{"@id":"https://cdhmaker.com/#org"},"url":"https://yam.cdhmaker.com"}},{"@type":"ListItem","position":3,"item":{"@type":"CreativeWork","name":"TaxiYa","headline":"TaxiYa — Central de taxis","description":"Plataforma para que empresas de taxis operen sin llamadas ni planes de datos costosos: apps para pasajero, conductor y central, con despacho en tiempo real. Producto de CDH Maker.","creator":{"@id":"https://cdhmaker.com/#org"},"url":"https://taxiya.vercel.app"}},{"@type":"ListItem","position":4,"item":{"@type":"CreativeWork","name":"IncubApp","headline":"IncubApp — Operación industrial","description":"SaaS multi-empresa para plantas de incubación y granjas: rondas con foto, órdenes de trabajo, ventas, logística, sanidad y gerencia en tiempo real, con IA. Producto de CDH Maker.","creator":{"@id":"https://cdhmaker.com/#org"},"url":"https://incubapp.cdhmaker.com"}},{"@type":"ListItem","position":5,"item":{"@type":"CreativeWork","name":"EvaIA","headline":"EvaIA — Asistente de IA local","description":"Asistente de IA que corre 100% en local: voz, respuesta hablada, visión por cámara, memoria en base de datos y avatar animado propio.","creator":{"@id":"https://cdhmaker.com/#org"}}},{"@type":"ListItem","position":6,"item":{"@type":"CreativeWork","name":"SIGI","headline":"SIGI — Contenido con IA, aprobado por mí","description":"Sistema que genera ideas, guiones y piezas para redes sociales con IA (Gemini) y las deja en cola de revisión: nada se publica sin mi aprobación manual. FastAPI + Next.js + Supabase — en construcción.","creator":{"@id":"https://cdhmaker.com/#org"}}},{"@type":"ListItem","position":7,"item":{"@type":"CreativeWork","name":"Refricom — Sistema de Gestión del Mantenimiento","headline":"Refricom — Gestión del mantenimiento","description":"Sistema entregado a Refricom para planear y controlar el mantenimiento de sus equipos: inventario, cronograma preventivo con alertas, correctivos, órdenes de trabajo y reportes.","creator":{"@id":"https://cdhmaker.com/#org"},"url":"https://refricom.cdhmaker.com"}}]},
+{"@type":"FAQPage","@id":"https://cdhmaker.com/es#faq","inLanguage":"es","mainEntity":[{"@type":"Question","name":"¿Cuánto cuesta un proyecto?","acceptedAnswer":{"@type":"Answer","text":"Cada proyecto es único, por eso la cotización es personalizada y gratuita: describes tu idea, la revisamos y recibes precio y tiempos en menos de 24 horas, sin compromiso."}},{"@type":"Question","name":"¿Cómo es el proceso de trabajo y pago?","acceptedAnswer":{"@type":"Answer","text":"Trabajamos por etapas con entregas parciales: ves avances reales desde los primeros días y el pago se divide por hitos. Sin sorpresas ni letra pequeña."}},{"@type":"Question","name":"¿Atienden clientes fuera de Medellín?","acceptedAnswer":{"@type":"Answer","text":"Sí. El software se entrega en la nube para cualquier parte del mundo, y las piezas físicas (3D, láser, CNC) se envían por mensajería a todo Colombia."}},{"@type":"Question","name":"¿Qué pasa después de la entrega?","acceptedAnswer":{"@type":"Answer","text":"Recibes documentación y acompañamiento posterior: resolvemos dudas, ajustamos detalles y te dejamos todo funcionando. La relación no termina con la entrega."}},{"@type":"Question","name":"¿Cuánto tiempo toma un proyecto?","acceptedAnswer":{"@type":"Answer","text":"Depende del alcance. Como referencia: una landing page toma de 1 a 2 semanas, una aplicación web a la medida de 4 a 10, una automatización de procesos de 2 a 5, un prototipo electrónico o IoT de 1 a 2 semanas y un diseño CAD de 2 a 5 días. El cotizador de esta página te da un estimado para tu caso."}},{"@type":"Question","name":"¿Pueden integrar inteligencia artificial en mi empresa o producto?","acceptedAnswer":{"@type":"Answer","text":"Sí. Desarrollamos asistentes de IA, generación de contenido y análisis con IA integrados a sistemas reales: por ejemplo EvaIA (asistente local con voz y visión), SIGI (en construcción; contenido con IA y aprobación humana) e IncubApp (operación industrial con IA)."}},{"@type":"Question","name":"¿Qué tecnologías usan?","acceptedAnswer":{"@type":"Answer","text":"En software: JavaScript, Next.js, Python, FastAPI, Supabase, Firebase y modelos de IA como Gemini. En hardware: Arduino, ESP32 y Raspberry Pi. En fabricación: impresión 3D FDM y de resina, corte láser, CNC y diseño CAD 2D/3D."}},{"@type":"Question","name":"¿Hacen impresión 3D, corte láser o CNC por encargo?","acceptedAnswer":{"@type":"Answer","text":"Sí, en Medellín y con envíos a toda Colombia. Puedes enviarnos tu archivo STL, tu plano o solo la idea para diseñarla, y revisar antes tu modelo en el visor 3D de esta página para estimar el tiempo de impresión."}},{"@type":"Question","name":"¿Quién está detrás de CDH Maker?","acceptedAnswer":{"@type":"Answer","text":"CDH Maker es la marca del Ing. Henry Taborda, ingeniero y maker en Medellín, Colombia. Hablas directamente con quien diseña, construye y entrega tu proyecto, en español o en inglés."}},{"@type":"Question","name":"No sé qué necesito para mi negocio, ¿por dónde empiezo?","acceptedAnswer":{"@type":"Answer","text":"Por una sesión de orientación gratuita de 30 minutos: nos cuentas cómo trabajas hoy y qué te quita tiempo o dinero, y te decimos qué tipo de solución te sirve y cuánto costaría más o menos. Si hace falta más detalle, el diagnóstico digital express cuesta 290.000 COP (USD 90) y se descuenta si contratas el proyecto. Precios en el catálogo."}}]}
+]}
+  </script>
+  <!-- seo:end -->
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+  <meta name="author" content="Ing. Henry Taborda — CDH Maker" />
+  <meta name="theme-color" content="#F5F4F0" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0A0F17" media="(prefers-color-scheme: dark)" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=26" />
+  <link rel="icon" type="image/svg+xml" href="icon.svg?v=2" />
+  <script src="theme.js?v=6"></script>
+  <script src="security.js?v=4"></script>
+</head>
+
+<body>
+
+  <a href="#servicios" class="skip-link" data-i18n="skip">Saltar al contenido</a>
+
+  <!-- ===== CINTA FIJA: Shorts, clientes y ofertas (la llena ads.js) =====
+       Franja delgada pegada arriba, visible siempre aunque se haga scroll.
+       ads.js la llena con media/shorts.json (Shorts del bot ClipFactory,
+       tools/sync-shorts.mjs), catalogo.json (productos y servicios de CDH
+       Maker), los clientes del ecosistema (YAM incluido) y el feed público
+       de YAM con los productos y tiendas de sus comercios. -->
+  <aside class="cinta" id="cinta" aria-label="Ideas en 60 segundos y ofertas para tu negocio" data-i18n-aria="cinta_t">
+    <span class="cinta-label" data-i18n="cinta_k">// En vitrina</span>
+    <div class="cinta-viewport">
+      <ul class="cinta-track" role="list"></ul>
+    </div>
+    <button type="button" class="cinta-toggle" aria-pressed="false" hidden>
+      <svg class="i-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1" /><rect x="14" y="5" width="4" height="14" rx="1" /></svg>
+      <svg class="i-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" /></svg>
+      <span class="cinta-toggle-l">Pausar</span>
+    </button>
+  </aside>
+
+  <!-- ===== ENCABEZADO: lobo + navegación + idioma/tema ===== -->
+  <header class="nav" id="top">
+    <div class="container nav-inner">
+      <a href="#top" class="nav-logo" aria-label="CDH Maker — inicio" data-i18n-aria="logo_home">
+        <svg class="wolf" viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="5.2" stroke-linejoin="round" stroke-linecap="round"><path d="M16 2L37 25H63L84 2L90 41L97 56L84 69V81L50 98L16 81V69L3 56L10 41Z"/><path d="M59 35H73L84 69L50 82"/><path d="M50 82V98"/></g><g fill="none" stroke="var(--accent)" stroke-width="5.7" stroke-linecap="round" stroke-linejoin="round"><path d="M41 35H27L16 69L50 82"/></g><path d="M42 60H58L54 66H46Z" fill="currentColor"/><path d="M27 39L41 42.5L43 48L31.5 45.5Z" fill="var(--eye)"/><path d="M73 39L59 42.5L57 48L68.5 45.5Z" fill="var(--eye)"/></svg>
+        <svg class="wordmark" viewBox="-4 -4 342 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="6.2"><path d="M30 0H10L0 10V30L10 40H30"/><path transform="translate(41 0)" d="M0 0H20L30 10V30L20 40H0Z"/><path transform="translate(82 0)" d="M0 0V40M30 0V40M0 20H30"/></g><g transform="translate(136 0)" fill="none" stroke="var(--accent)" stroke-width="6.2"><path d="M0 40V0L18 20L36 0V40"/><path transform="translate(47 0)" d="M0 40V10L10 0H22L32 10V40M0 25H32"/><path transform="translate(90 0)" d="M0 0V40M29 0L0 25M10 16L29 40"/><path transform="translate(130 0)" d="M27 0H0V40H27M0 20H21"/><path transform="translate(168 0)" d="M0 40V0H21L30 9V13L21 22H0M15 22L30 40"/></g></svg>
+      </a>
+
+      <nav class="nav-links" id="navLinks" aria-label="Navegación principal" data-i18n-aria="nav_aria">
+        <a href="#servicios" class="nav-item" data-i18n="nav_serv">Servicios</a>
+        <a href="#proyectos" class="nav-item" data-i18n="nav_proj">Proyectos</a>
+        <a href="#proceso" class="nav-item" data-i18n="nav_proc">Proceso</a>
+        <a href="#herramientas" class="nav-item" data-i18n="nav_tools">Herramientas</a>
+        <a href="#sobre" class="nav-item" data-i18n="nav_about">Sobre mí</a>
+      </nav>
+
+      <div class="nav-bottom">
+        <label class="nav-lang">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9.5" />
+            <path d="M2.5 12h19" />
+            <path d="M12 2.5a14.5 14.5 0 0 1 3.8 9.5 14.5 14.5 0 0 1-3.8 9.5 14.5 14.5 0 0 1-3.8-9.5A14.5 14.5 0 0 1 12 2.5z" />
+          </svg>
+          <select id="langSelect" class="lang-select" data-i18n-aria="lang_label" aria-label="Cambiar idioma"></select>
+        </label>
+        <button id="themeToggle" class="icon-btn" type="button" data-i18n-aria="theme_label"
+          aria-label="Cambiar tema (claro, oscuro, inmersivo)">
+          <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+            </svg></span>
+          <span class="sr-only" data-i18n="theme_short">Tema</span>
+        </button>
+        <a href="#contacto" class="btn btn-primary btn-sm nav-cta" data-i18n="nav_contact">Contacto</a>
+      </div>
+
+      <button class="nav-toggle" id="navToggle" type="button" data-i18n-aria="menu_label" aria-label="Abrir menú"
+        aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="contenido">
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="inicio">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="dot" aria-hidden="true"></span><span data-i18n="hero_eyebrow">Estudio de ingeniería · Medellín + remoto</span></p>
+        <h1 data-i18n="hero_h1" data-i18n-html>Construimos la tecnología que tu idea <em>necesita</em>.</h1>
+        <p class="hero-sub" data-i18n="hero_sub" data-i18n-html>Somos <strong>CDH Maker</strong>, estudio de
+          ingeniería en Medellín, Colombia: convertimos ideas en soluciones reales para clientes de todo el mundo —
+          software a la medida, inteligencia artificial, fabricación digital, electrónica, IoT y consultoría técnica.</p>
+        <div class="hero-cta">
+          <a href="#contacto" class="btn btn-primary btn-lg" data-contact="wa" target="_blank" rel="noopener noreferrer">
+            <svg class="i-wa" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.019-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.297-.497.1-.198.05-.371-.025-.52-.074-.149-.668-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413" /></svg>
+            <span data-i18n="hero_cta_wa">Cuéntame tu idea por WhatsApp</span></a>
+          <a href="#proyectos" class="btn btn-ghost btn-lg"><span data-i18n="hero_cta2">Ver mi trabajo</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14" /><path d="m6 13 6 6 6-6" /></svg></a>
+        </div>
+        <ul class="hero-trust">
+          <li data-i18n="trust1">Trato directo con el fundador</li>
+          <li data-i18n="trust2">Cotización gratis en menos de 24 h</li>
+          <li data-i18n="trust3">Entregas por etapas</li>
+        </ul>
+      </div>
+
+      <!-- Lámina técnica: el lobo dibujado como un plano de ingeniería
+           (decorativa: el contenido real está en el texto de al lado) -->
+      <figure class="plate" aria-hidden="true">
+        <div class="plate-head"><span>CDH-MKR / 01</span><span>1 : 1</span></div>
+        <div class="plate-stage">
+          <svg class="plate-guides" viewBox="0 0 400 400" preserveAspectRatio="none">
+            <circle cx="200" cy="200" r="150" />
+            <circle cx="200" cy="200" r="104" />
+            <path d="M200 20V380M20 200H380" />
+          </svg>
+          <svg class="plate-wolf" viewBox="0 0 100 100"><g class="pw-l" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-linecap="round"><path d="M17 3L37 25H63L83 3L89 41L96 56L84 69V81L50 97L16 81V69L4 56L11 41Z"/><path d="M20.5 13L27 35L37 25"/><path d="M79.5 13L73 35L63 25"/><path d="M11 41L27 35"/><path d="M89 41L73 35"/><path d="M41 35H59"/><path d="M59 35H73L84 69L50 82"/><path d="M41 35L46 62"/><path d="M59 35L54 62"/><path d="M50 66V70.5M44 73.5L50 70.5L56 73.5"/><path d="M50 82V97"/></g><g class="pw-c" fill="none" stroke="var(--accent)" stroke-linecap="round" stroke-linejoin="round"><path d="M41 35H27L16 69L50 82"/><path d="M21.8 52H30.5"/></g><g class="pw-n"><circle cx="41" cy="35" r="1.6"/><circle cx="50" cy="82" r="1.6"/><circle cx="30.5" cy="52" r="1.4"/></g><path d="M44.6 62H55.4L52.4 66.2H47.6Z" fill="currentColor"/><path d="M28 39.6L39.6 42.4L41.6 46.4L31.6 44.6Z" fill="var(--eye)"/><path d="M72 39.6L60.4 42.4L58.4 46.4L68.4 44.6Z" fill="var(--eye)"/></svg>
+          <span class="plate-tag t1"><i>01</i><span data-i18n="pl_1">Software</span></span>
+          <span class="plate-tag t2"><i>02</i><span data-i18n="pl_2">IA aplicada</span></span>
+          <span class="plate-tag t3"><i>03</i><span data-i18n="pl_3">IoT</span></span>
+          <span class="plate-tag t4"><i>04</i><span data-i18n="pl_4">Fabricación digital</span></span>
+        </div>
+        <figcaption class="plate-foot"><span data-i18n="pl_fig">Fig. 01 — De la idea a la solución</span><span>MDE · 6.24° N</span></figcaption>
+      </figure>
+    </div>
+
+    <div class="container">
+      <dl class="hero-stats">
+        <div><dt data-i18n="stat2_l">proyectos construidos</dt><dd><span class="count" data-count="10">10</span>+</dd></div>
+        <div><dt data-i18n="stat3_l">tiempo de respuesta</dt><dd>&lt;<span class="count" data-count="24">24</span> h</dd></div>
+        <div><dt data-i18n="stat1_l">líneas de servicio</dt><dd><span class="count" data-count="4">4</span></dd></div>
+        <div><dt data-i18n="stat5_l">atención en español e inglés</dt><dd>ES · EN</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ===== PRUEBA SOCIAL: sistemas reales en operación ===== -->
+  <div class="clients">
+    <div class="container clients-inner">
+      <p class="clients-t" data-i18n="clients_t">Construido por CDH Maker y en operación</p>
+      <ul class="clients-list">
+        <li><a href="https://yam.cdhmaker.com" target="_blank" rel="noopener">A Tiempo Logística</a></li>
+        <li><a href="https://incubapp.cdhmaker.com" target="_blank" rel="noopener">IncubApp</a></li>
+        <li><a href="https://taxiya.vercel.app" target="_blank" rel="noopener">TaxiYa</a></li>
+        <li><a href="https://refricom.cdhmaker.com" target="_blank" rel="noopener">Refricom</a></li>
+        <li><a href="https://privacycheck-co.vercel.app" target="_blank" rel="noopener">PrivacyCheck</a></li>
+        <li><a href="#proyectos">EvaIA</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== SERVICIOS, contados como lo que el cliente necesita construir =====
+       Cada fila: el problema (sv*_q), el servicio que lo resuelve (s*_t) y su
+       página. Las claves s1…s4 alimentan el JSON-LD (OfferCatalog). -->
+  <section class="section" id="servicios">
+    <div class="container">
+      <header class="section-head">
+        <p class="section-kicker" data-i18n="serv_k">// Servicios</p>
+        <h2 data-i18n="serv_t">¿Qué necesitas construir?</h2>
+        <p class="section-sub" data-i18n="serv_s">No empezamos por la tecnología: primero entendemos qué necesitas
+          resolver y luego conectamos las capacidades correctas.</p>
+      </header>
+
+      <div class="svc-list">
+        <article class="card svc-row">
+          <span class="svc-num" aria-hidden="true">01</span>
+          <div class="svc-main">
+            <h3 data-i18n="sv1_q">Lanzar o mejorar un producto digital</h3>
+            <p class="svc-name" data-i18n="s1_t">Desarrollo web y software</p>
+          </div>
+          <div class="svc-detail">
+            <p data-i18n="s1_p">Páginas web, aplicaciones y sistemas a la medida. Sitios modernos, rápidos y pensados para
+              hacer crecer tu negocio o proyecto.</p>
+            <ul class="tags">
+              <li data-i18n="s1_a">Sitios web y landing pages</li>
+              <li data-i18n="s1_b">Aplicaciones web a la medida</li>
+              <li data-i18n="s1_c">Automatización de procesos</li>
+            </ul>
+          </div>
+          <a class="card-link" href="/servicios/software-a-la-medida-medellin"><span data-i18n="fs_sw">Software y SaaS a la medida</span> <span aria-hidden="true">→</span></a>
+        </article>
+
+        <article class="card svc-row">
+          <span class="svc-num" aria-hidden="true">02</span>
+          <div class="svc-main">
+            <h3 data-i18n="sv5_q">Automatizar con inteligencia artificial</h3>
+            <p class="svc-name" data-i18n="s5_t">Inteligencia artificial aplicada</p>
+          </div>
+          <div class="svc-detail">
+            <p data-i18n="n3_p">Asistentes de IA, generación de contenido y análisis integrados a tu operación, con
+              revisión humana donde hace falta, como en EvaIA y SIGI (en construcción).</p>
+            <ul class="tags">
+              <li data-i18n="s5_a">Asistentes de IA</li>
+              <li data-i18n="s5_b">Análisis y contenido con IA</li>
+              <li data-i18n="s5_c">Revisión humana</li>
+            </ul>
+          </div>
+          <a class="card-link" href="/servicios/inteligencia-artificial-medellin"><span data-i18n="fs_ai">Integración de inteligencia artificial</span> <span aria-hidden="true">→</span></a>
+        </article>
+
+        <article class="card svc-row">
+          <span class="svc-num" aria-hidden="true">03</span>
+          <div class="svc-main">
+            <h3 data-i18n="sv3_q">Conectar el mundo físico</h3>
+            <p class="svc-name" data-i18n="s3_t">Electrónica e IoT</p>
+          </div>
+          <div class="svc-detail">
+            <p data-i18n="s3_p">Sistemas electrónicos y conectados: sensórica, automatización y monitoreo remoto para
+              hogares, industria y agro.</p>
+            <ul class="tags">
+              <li data-i18n="s3_a">Sistemas embebidos (Arduino, ESP32, Raspberry Pi)</li>
+              <li data-i18n="s3_b">Domótica y automatización</li>
+              <li data-i18n="s3_c">Monitoreo con sensores e IoT</li>
+            </ul>
+          </div>
+          <a class="card-link" href="/servicios/iot-automatizacion-medellin"><span data-i18n="fs_iot">Electrónica, IoT y automatización</span> <span aria-hidden="true">→</span></a>
+        </article>
+
+        <article class="card svc-row">
+          <span class="svc-num" aria-hidden="true">04</span>
+          <div class="svc-main">
+            <h3 data-i18n="sv2_q">Convertir un diseño en una pieza</h3>
+            <p class="svc-name" data-i18n="s2_t">Fabricación digital / Maker</p>
+          </div>
+          <div class="svc-detail">
+            <p data-i18n="s2_p">Prototipado y fabricación con tecnologías digitales: de tu idea o plano a la pieza
+              terminada.</p>
+            <ul class="tags">
+              <li data-i18n="s2_a">Impresión 3D (FDM / resina)</li>
+              <li data-i18n="s2_b">Corte y grabado láser</li>
+              <li data-i18n="s2_c">Mecanizado CNC y prototipado</li>
+            </ul>
+          </div>
+          <a class="card-link" href="/servicios/impresion-3d-medellin"><span data-i18n="fs_3d">Impresión 3D en Medellín</span> <span aria-hidden="true">→</span></a>
+        </article>
+
+        <article class="card svc-row">
+          <span class="svc-num" aria-hidden="true">05</span>
+          <div class="svc-main">
+            <h3 data-i18n="sv4_q">Planear bien antes de construir</h3>
+            <p class="svc-name" data-i18n="s4_t">Diseño y consultoría técnica</p>
+          </div>
+          <div class="svc-detail">
+            <p data-i18n="s4_p">Acompañamiento experto para materializar tu proyecto: diseño, asesoría y formación.</p>
+            <ul class="tags">
+              <li data-i18n="s4_a">Diseño CAD 2D/3D</li>
+              <li data-i18n="s4_b">Asesorías y consultoría de proyectos</li>
+              <li data-i18n="s4_c">Capacitaciones y talleres maker</li>
+            </ul>
+          </div>
+          <a class="card-link" href="/catalogo#consultoria"><span data-i18n="fs_cat">Consultoría y catálogo con precios</span> <span aria-hidden="true">→</span></a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROYECTOS ===== -->
+  <section class="section section-alt" id="proyectos">
+    <div class="container">
+      <header class="section-head">
+        <p class="section-kicker" data-i18n="proj_k">// Proyectos</p>
+        <h2 data-i18n="proj_t">No solo lo imaginamos. Ya está funcionando.</h2>
+        <p class="section-sub" data-i18n="proj_s">Productos y sistemas construidos para operaciones reales, con retos
+          reales. Haz clic para verlos en vivo.</p>
+      </header>
+
+      <div class="work">
+        <!-- Destacado: YAM, la plataforma de A Tiempo Logística -->
+        <article class="project project-with-media work-lead">
+          <a class="project-media shot" href="https://yam.cdhmaker.com" target="_blank" rel="noopener"
+            aria-label="Abrir YAM, la plataforma de A Tiempo Logística (se abre en una pestaña nueva)" data-i18n-aria="aria_at">
+            <span class="shot-bar" aria-hidden="true"><i></i><i></i><i></i><em>yam.cdhmaker.com</em></span>
+            <picture>
+              <source srcset="media/atiempo-logistica.webp" type="image/webp" />
+              <img src="media/atiempo-logistica.jpg" alt="Captura de YAM, la plataforma SaaS de última milla de A Tiempo Logística"
+                data-i18n-alt="alt_at" loading="lazy" decoding="async" width="1000" height="625" />
+            </picture>
+          </a>
+          <div class="project-body">
+            <div class="project-tag" data-i18n="tag_star">Web · SaaS · Producto estrella</div>
+            <h3 data-i18n="pj_at_t">YAM — Última milla para e-commerce</h3>
+            <p data-i18n="pj_at_p">El SaaS estrella de CDH Maker y la plataforma de A Tiempo Logística en Medellín:
+              recogida, CEDI, ruteo, recaudo contraentrega, facturación y tiendas en línea para comercios, con
+              trazabilidad en tiempo real. Next.js + Supabase.</p>
+            <a class="project-link" href="https://yam.cdhmaker.com" target="_blank" rel="noopener"
+              data-i18n="live">Ver en vivo →</a>
+          </div>
+        </article>
+
+        <article class="project project-with-media">
+          <a class="project-media shot" href="https://incubapp.cdhmaker.com" target="_blank" rel="noopener"
+            aria-label="Abrir la demo de IncubApp (se abre en una pestaña nueva)" data-i18n-aria="aria_inc">
+            <span class="shot-bar" aria-hidden="true"><i></i><i></i><i></i><em>incubapp.cdhmaker.com</em></span>
+            <picture>
+              <source srcset="media/incubapp.webp" type="image/webp" />
+              <img src="media/incubapp.jpg" alt="Captura de IncubApp, SaaS de operación para plantas de incubación y granjas"
+                data-i18n-alt="alt_inc" loading="lazy" decoding="async" width="1000" height="625" />
+            </picture>
+          </a>
+          <div class="project-body">
+            <div class="project-tag" data-i18n="tag_saas_ai">Web · SaaS · IA</div>
+            <h3 data-i18n="pj_inc_t">IncubApp — Operación industrial</h3>
+            <p data-i18n="pj_inc_p">SaaS multi-empresa para plantas de incubación y granjas: rondas con foto, órdenes de
+              trabajo, ventas, logística, sanidad y gerencia en tiempo real, con IA. Producto de CDH Maker.</p>
+            <a class="project-link" href="https://incubapp.cdhmaker.com" target="_blank" rel="noopener"
+              data-i18n="live">Ver en vivo →</a>
+          </div>
+        </article>
+
+        <article class="project project-with-media">
+          <a class="project-media shot" href="https://taxiya.vercel.app" target="_blank" rel="noopener"
+            aria-label="Abrir la demo de TaxiYa (se abre en una pestaña nueva)" data-i18n-aria="aria_taxi">
+            <span class="shot-bar" aria-hidden="true"><i></i><i></i><i></i><em>taxiya.vercel.app</em></span>
+            <picture>
+              <source srcset="media/taxiya.webp" type="image/webp" />
+              <img src="media/taxiya.jpg" alt="Captura de TaxiYa, plataforma para centrales de taxis" data-i18n-alt="alt_taxi"
+                loading="lazy" decoding="async" width="1000" height="625" />
+            </picture>
+          </a>
+          <div class="project-body">
+            <div class="project-tag" data-i18n="tag_saas">Web · SaaS</div>
+            <h3 data-i18n="pj_taxi_t">TaxiYa — Central de taxis</h3>
+            <p data-i18n="pj_taxi_p">Plataforma para que empresas de taxis operen sin llamadas ni planes de datos
+              costosos: apps para pasajero, conductor y central, con despacho en tiempo real. Producto de CDH Maker.</p>
+            <a class="project-link" href="https://taxiya.vercel.app" target="_blank" rel="noopener" data-i18n="live">Ver
+              en vivo →</a>
+          </div>
+        </article>
+
+        <!-- PrivacyCheck: demo en video -->
+        <article class="project project-featured work-video">
+          <video controls preload="metadata" poster="media/privacycheck-poster.webp"
+            width="1280" height="720" aria-label="Video demo de PrivacyCheck, plataforma de cumplimiento de la Ley 1581"
+            data-i18n-aria="aria_pc_video">
+            <source src="media/privacycheck-demo.mp4" type="video/mp4" />
+          </video>
+          <div class="project-body">
+            <div class="project-tag" data-i18n="tag_video">Demo en video</div>
+            <h3 data-i18n="pj_featured_t">PrivacyCheck — Cumplimiento Ley 1581 en acción</h3>
+            <p data-i18n="pj_featured_p">Demo real de la plataforma: registro de entidades, consulta al RNBD,
+              autodiagnóstico con puntaje, simulador y análisis con IA. Next.js, en la nube.</p>
+            <a class="btn btn-ghost pc-cta" href="https://privacycheck-co.vercel.app" target="_blank" rel="noopener"><span data-i18n="pc_cta">Usar PrivacyCheck gratis</span> <span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+      </div>
+
+      <h3 class="work-more-t" data-i18n="proj_more">También hemos construido</h3>
+      <div class="work-more">
+        <article class="project mini">
+          <a class="mini-media" href="media/evaia-avatar.png" target="_blank" rel="noopener"
+            aria-label="Ver la imagen de EvaIA en tamaño completo (se abre en una pestaña nueva)" data-i18n-aria="aria_eva">
+            <picture>
+              <source srcset="media/evaia-avatar.webp" type="image/webp" />
+              <img src="media/evaia-avatar.png" alt="Avatar animado de EvaIA, asistente de inteligencia artificial local"
+                data-i18n-alt="alt_eva" loading="lazy" decoding="async" width="640" height="640" />
+            </picture>
+          </a>
+          <div class="project-body">
+            <div class="project-tag" data-i18n="tag_ai">Inteligencia Artificial</div>
+            <h3 data-i18n="pj_eva_t">EvaIA — Asistente de IA local</h3>
+            <p data-i18n="pj_eva_p">Asistente de IA que corre 100% en local: voz, respuesta hablada, visión por cámara,
+              memoria en base de datos y avatar animado propio.</p>
+          </div>
+        </article>
+        <article class="project mini">
+          <span class="mini-media mono" aria-hidden="true">Rf</span>
+          <div class="project-body">
+            <div class="project-tag" data-i18n="tag_client">Software · Cliente</div>
+            <h3 data-i18n="pj_ref_t">Refricom — Gestión del mantenimiento</h3>
+            <p data-i18n="pj_ref_p">Sistema entregado a Refricom para planear y controlar el mantenimiento de sus
+              equipos: inventario, cronograma preventivo con alertas, correctivos, órdenes de trabajo y reportes.</p>
+            <a class="project-link" href="https://refricom.cdhmaker.com" target="_blank" rel="noopener"
+              data-i18n="live">Ver en vivo →</a>
+          </div>
+        </article>
+        <article class="project mini">
+          <span class="mini-media mono" aria-hidden="true">Sg</span>
+          <div class="project-body">
+            <div class="project-tag" data-i18n="tag_sigi">IA · Automatización</div>
+            <h3 data-i18n="pj_sigi_t">SIGI — Contenido con IA, aprobado por mí</h3>
+            <p data-i18n="pj_sigi_p">Sistema que genera ideas, guiones y piezas para redes sociales con IA (Gemini) y
+              las deja en cola de revisión: nada se publica sin mi aprobación manual. FastAPI + Next.js + Supabase —
+              en construcción.</p>
+          </div>
+        </article>
+        <article class="project mini">
+          <a class="mini-media is-logo" href="media/sintaxis-ti.png" target="_blank" rel="noopener"
+            aria-label="Ver la imagen de Sintaxis TI en tamaño completo (se abre en una pestaña nueva)" data-i18n-aria="aria_sint">
+            <picture>
+              <source srcset="media/sintaxis-ti.webp" type="image/webp" />
+              <img src="media/sintaxis-ti.png" alt="Logo de Sintaxis TI, equipo del reto CAVALTEC" data-i18n-alt="alt_sint"
+                loading="lazy" decoding="async" width="500" height="500" />
+            </picture>
+          </a>
+          <div class="project-body">
+            <div class="project-tag" data-i18n="tag_web">Web</div>
+            <h3 data-i18n="pj_cav_t">Autodiagnóstico Ley 1581 — Reto CAVALTEC</h3>
+            <p data-i18n="pj_cav_p">Plataforma web de autodiagnóstico de cumplimiento en protección de datos (Ley 1581),
+              con el equipo Sintaxis TI para el reto CAVALTEC.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SOLUCIONES (lo que el cliente necesita resolver → qué hacemos) =====
+       Escrito en el lenguaje en que la gente pregunta ("necesito una página
+       web", "quiero integrar IA"): es lo que buscadores y asistentes de IA
+       comparan con la consulta. Donde aplica, se nombra un proyecto real como prueba. -->
+  <section class="section" id="soluciones">
+    <div class="container needs-layout">
+      <header class="section-head">
+        <p class="section-kicker" data-i18n="needs_k">// Soluciones</p>
+        <h2 data-i18n="needs_t">¿Qué necesitas resolver?</h2>
+        <p class="section-sub" data-i18n="needs_s">Si buscas alguno de estos resultados, puedo ayudarte: en Colombia o de
+          forma remota desde cualquier país.</p>
+        <p class="needs-cta"><span data-i18n="needs_cta_q">¿Tu caso no aparece aquí?</span> <a href="#contacto"
+            data-i18n="needs_cta">Cuéntame qué necesitas →</a></p>
+      </header>
+      <div class="needs-grid">
+        <div class="need-item">
+          <h3><a href="/servicios/software-a-la-medida-medellin" data-i18n="n1_t">Una página web o tienda en línea para tu negocio</a></h3>
+          <p data-i18n="n1_p">Sitios rápidos, adaptados a celular y listos para buscadores: desde una landing page
+            hasta una plataforma completa.</p>
+        </div>
+        <div class="need-item">
+          <h3><a href="/servicios/software-a-la-medida-medellin" data-i18n="n2_t">Un sistema o SaaS a la medida</a></h3>
+          <p data-i18n="n2_p">Software para operar tu empresa —logística, ventas, inventarios, órdenes de trabajo— o tu
+            propio producto SaaS, como YAM, IncubApp o TaxiYa.</p>
+        </div>
+        <div class="need-item">
+          <h3><a href="/servicios/inteligencia-artificial-medellin" data-i18n="n3_t">Integrar inteligencia artificial</a></h3>
+          <p data-i18n="n3_p">Asistentes de IA, generación de contenido y análisis integrados a tu operación, con
+            revisión humana donde hace falta, como en EvaIA y SIGI (en construcción).</p>
+        </div>
+        <div class="need-item">
+          <h3><a href="/servicios/software-a-la-medida-medellin" data-i18n="n4_t">Automatizar procesos repetitivos</a></h3>
+          <p data-i18n="n4_p">Menos trabajo manual: formularios, reportes, notificaciones y flujos entre tus
+            herramientas, conectados y sin errores de digitación.</p>
+        </div>
+        <div class="need-item">
+          <h3><a href="/servicios/impresion-3d-medellin" data-i18n="n5_t">Un prototipo o una pieza física</a></h3>
+          <p data-i18n="n5_p">Impresión 3D (FDM y resina), corte y grabado láser y mecanizado CNC por encargo en
+            Medellín, con envíos a toda Colombia.</p>
+        </div>
+        <div class="need-item">
+          <h3><a href="/servicios/iot-automatizacion-medellin" data-i18n="n6_t">Monitorear o automatizar con sensores (IoT)</a></h3>
+          <p data-i18n="n6_p">Sistemas con Arduino, ESP32 y Raspberry Pi para hogares, industria y agro: medición,
+            alertas y control remoto.</p>
+        </div>
+        <div class="need-item">
+          <h3><a href="/servicios/software-a-la-medida-medellin" data-i18n="n7_t">Cumplir la Ley 1581 de protección de datos</a></h3>
+          <p data-i18n="n7_p">Herramientas de autodiagnóstico y cumplimiento para empresas en Colombia, como
+            PrivacyCheck.</p>
+        </div>
+        <div class="need-item">
+          <h3><a href="/servicios/impresion-3d-medellin" data-i18n="n8_t">Diseño CAD, asesoría técnica o capacitación</a></h3>
+          <p data-i18n="n8_p">Modelos y planos 2D/3D listos para fabricar, consultoría de proyectos técnicos y
+            talleres maker para tu equipo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROCESO + FUNDADOR (esta sección se reutiliza tal cual en las
+       páginas de servicio: build-i18n.mjs la copia por su id) ===== -->
+  <section class="section section-alt" id="proceso">
+    <div class="container">
+      <header class="section-head">
+        <p class="section-kicker" data-i18n="proc_k">// Proceso</p>
+        <h2 data-i18n="proc_t">Una sola conversación. Un proceso completo.</h2>
+        <p class="section-sub" data-i18n="proc_s">Un flujo claro, de principio a fin.</p>
+      </header>
+      <div class="process">
+        <aside class="founder">
+          <div class="founder-id">
+            <span class="founder-avatar" aria-hidden="true"><svg viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="4.4" stroke-linejoin="round" stroke-linecap="round"><path d="M16 2L37 25H63L84 2L90 41L97 56L84 69V81L50 98L16 81V69L3 56L10 41Z"/><path d="M59 35H73L84 69L50 82"/><path d="M50 82V98"/></g><g fill="none" stroke="var(--accent)" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round"><path d="M41 35H27L16 69L50 82"/></g><path d="M42 60H58L54 66H46Z" fill="currentColor"/><path d="M27 39L41 42.5L43 48L31.5 45.5Z" fill="var(--eye)"/><path d="M73 39L59 42.5L57 48L68.5 45.5Z" fill="var(--eye)"/></svg></span>
+            <div>
+              <strong>Henry Taborda</strong>
+              <span data-i18n="fnd_role">Ingeniero · Maker · Fundador</span>
+            </div>
+          </div>
+          <p data-i18n="fnd_p">Hablas directamente con quien diseña y construye: menos intermediarios, decisiones más
+            rápidas y avances que puedes ver.</p>
+          <p class="status" data-i18n="term_status">● Disponible para proyectos</p>
+          <a href="#contacto" class="btn btn-primary" data-contact="wa" target="_blank" rel="noopener noreferrer"><span data-i18n="hero_cta1">Trabajemos juntos</span> <span aria-hidden="true">→</span></a>
+        </aside>
+        <ol class="steps">
+          <li class="step"><span class="step-num">01</span>
+            <h3 data-i18n="pr1_t">Escucha</h3>
+            <p data-i18n="pr1_p">Entendemos tu necesidad, el contexto y los objetivos del proyecto.</p>
+          </li>
+          <li class="step"><span class="step-num">02</span>
+            <h3 data-i18n="pr2_t">Diseño</h3>
+            <p data-i18n="pr2_p">Propuesta técnica y de diseño: bocetos, CAD, arquitectura de software.</p>
+          </li>
+          <li class="step"><span class="step-num">03</span>
+            <h3 data-i18n="pr3_t">Construcción</h3>
+            <p data-i18n="pr3_p">Desarrollo, fabricación y pruebas iterativas con tu retroalimentación.</p>
+          </li>
+          <li class="step"><span class="step-num">04</span>
+            <h3 data-i18n="pr4_t">Entrega</h3>
+            <p data-i18n="pr4_p">Producto funcionando, documentación y acompañamiento posterior.</p>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== POR QUÉ ===== -->
+  <section class="section" id="porque">
+    <div class="container">
+      <header class="section-head">
+        <p class="section-kicker" data-i18n="why_k">// ¿Por qué CDH Maker?</p>
+        <h2 data-i18n="why_t" data-i18n-html>Una sola persona, un <em>taller completo</em></h2>
+        <p class="section-sub" data-i18n="why_s">Lo que hace diferente trabajar conmigo.</p>
+      </header>
+      <div class="why-grid">
+        <div class="why-item">
+          <h3 data-i18n="w1_t">Todo bajo un mismo techo</h3>
+          <p data-i18n="w1_p">Software, electrónica y fabricación en un solo lugar: no necesitas coordinar tres
+            proveedores distintos.</p>
+        </div>
+        <div class="why-item">
+          <h3 data-i18n="w2_t">Prototipado rápido</h3>
+          <p data-i18n="w2_p">Filosofía maker: construir, probar y mejorar. Ves avances reales desde los primeros días.
+          </p>
+        </div>
+        <div class="why-item">
+          <h3 data-i18n="w3_t">Trato directo y honesto</h3>
+          <p data-i18n="w3_p">Hablas directamente con quien construye tu proyecto. Cotización gratis y sin letra
+            pequeña.</p>
+        </div>
+        <div class="why-item">
+          <h3 data-i18n="w4_t">Tecnología de punta</h3>
+          <p data-i18n="w4_p">IA, IoT y nube aplicadas a problemas reales — las mismas herramientas de mis propios
+            proyectos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HERRAMIENTAS (corren 100% en el navegador, nada se sube) ===== -->
+  <section class="section section-alt" id="herramientas">
+    <div class="container">
+      <header class="section-head">
+        <p class="section-kicker" data-i18n="tools_k">// Herramientas</p>
+        <h2 data-i18n="tools_t">Pruébalas tú mismo</h2>
+        <p class="section-sub" data-i18n="tools_s">Dos herramientas reales, corriendo 100% en tu navegador: no se sube
+          nada a ningún servidor ni necesitas crear cuenta.</p>
+      </header>
+      <div class="tools-cards">
+        <button type="button" class="card tool-card" id="openEstimator">
+          <span class="tool-ill" aria-hidden="true">
+            <svg viewBox="0 0 120 80" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+              <rect x="8" y="10" width="104" height="60" rx="6" />
+              <path d="M22 54V40M38 54V30M54 54V36M70 54V22" />
+              <path class="acc" d="M86 30h14M86 40h10M86 50h14" />
+            </svg>
+          </span>
+          <h3 data-i18n="tool_est_t">Cotizador instantáneo</h3>
+          <p data-i18n="tool_est_p">Responde 3 preguntas rápidas sobre tu proyecto (web, impresión 3D, electrónica o
+            diseño) y recibe al instante un estimado de tiempos, sin esperar mi respuesta.</p>
+          <span class="tool-card-cta" data-i18n="tool_est_open">Abrir cotizador →</span>
+        </button>
+        <button type="button" class="card tool-card" id="openViewer3d">
+          <span class="tool-ill" aria-hidden="true">
+            <svg viewBox="0 0 120 80" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round">
+              <path d="M60 10 92 26v30L60 72 28 56V26z" />
+              <path d="M28 26l32 16 32-16M60 42v30" />
+              <path class="acc" d="M100 20v44M96 20h8M96 64h8" />
+            </svg>
+          </span>
+          <h3 data-i18n="tool_view_t">Visor 3D</h3>
+          <p data-i18n="tool_view_p">Sube tu archivo STL y gíralo, acércate e inspecciónalo en 3D directo en el
+            navegador — y pásalo directo al cotizador para saber cuánto tardaría imprimirlo.</p>
+          <span class="tool-card-cta" data-i18n="tool_view_open">Abrir visor 3D →</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SOBRE MÍ ===== -->
+  <section class="section" id="sobre">
+    <div class="container about">
+      <div>
+        <p class="section-kicker" data-i18n="about_k">// Sobre mí</p>
+        <h2 data-i18n="about_t">Henry Taborda — CDH Maker</h2>
+        <p data-i18n="about_p1" data-i18n-html>CDH Maker es el estudio de ingeniería que fundó el <strong>Ing. Henry
+            Taborda</strong> en Medellín, Colombia. Combinamos ingeniería, fabricación digital y desarrollo de
+          software para resolver problemas reales con un enfoque práctico: prototipar rápido, iterar y entregar
+          soluciones que funcionan. Atendemos en español e inglés.</p>
+        <p data-i18n="about_p2" data-i18n-html>
+          Creemos en el poder de <em>aprender haciendo</em> y en que la tecnología debe estar al alcance de
+          todos: por eso también compartimos conocimiento con talleres y capacitaciones.
+        </p>
+      </div>
+      <aside class="spec">
+        <p class="spec-h">CDH Maker · Medellín</p>
+        <ul class="spec-list">
+          <li data-i18n="term_name">Ing. Henry Taborda — fundador</li>
+          <li data-i18n="term_role" data-i18n-html>Ingeniero &amp; Maker</li>
+          <li data-i18n="term_loc">Medellín, Colombia</li>
+        </ul>
+        <div class="chips">
+          <span data-i18n="t_3d">Impresión 3D</span><span data-i18n="t_laser">Corte láser</span><span>CNC</span><span>CAD</span>
+          <span>Arduino / ESP32</span><span>Raspberry Pi</span><span>IoT</span>
+          <span>Next.js</span><span>Python</span><span>Supabase</span><span>Firebase</span>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section class="section section-alt" id="faq">
+    <div class="container faq-layout">
+      <header class="section-head">
+        <p class="section-kicker" data-i18n="faq_k">// Preguntas frecuentes</p>
+        <h2 data-i18n="faq_t">Lo que todos quieren saber</h2>
+        <p class="section-sub" data-i18n="faq_s">Respuestas claras antes de empezar.</p>
+      </header>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary><span data-i18n="faq1_q">¿Cuánto cuesta un proyecto?</span><i class="faq-chev"></i></summary>
+          <p data-i18n="faq1_a">Cada proyecto es único, por eso la cotización es personalizada y gratuita: describes tu
+            idea, la revisamos y recibes precio y tiempos en menos de 24 horas, sin compromiso.</p>
+        </details>
+        <details class="faq-item">
+          <summary><span data-i18n="faq2_q">¿Cómo es el proceso de trabajo y pago?</span><i class="faq-chev"></i>
+          </summary>
+          <p data-i18n="faq2_a">Trabajamos por etapas con entregas parciales: ves avances reales desde los primeros días
+            y el pago se divide por hitos. Sin sorpresas ni letra pequeña.</p>
+        </details>
+        <details class="faq-item">
+          <summary><span data-i18n="faq3_q">¿Atienden clientes fuera de Medellín?</span><i class="faq-chev"></i>
+          </summary>
+          <p data-i18n="faq3_a">Sí. El software se entrega en la nube para cualquier parte del mundo, y las piezas
+            físicas (3D, láser, CNC) se envían por mensajería a todo Colombia.</p>
+        </details>
+        <details class="faq-item">
+          <summary><span data-i18n="faq4_q">¿Qué pasa después de la entrega?</span><i class="faq-chev"></i></summary>
+          <p data-i18n="faq4_a">Recibes documentación y acompañamiento posterior: resolvemos dudas, ajustamos detalles y
+            te dejamos todo funcionando. La relación no termina con la entrega.</p>
+        </details>
+        <details class="faq-item">
+          <summary><span data-i18n="faq5_q">¿Cuánto tiempo toma un proyecto?</span><i class="faq-chev"></i></summary>
+          <p data-i18n="faq5_a">Depende del alcance. Como referencia: una landing page toma de 1 a 2 semanas, una
+            aplicación web a la medida de 4 a 10, una automatización de procesos de 2 a 5, un prototipo electrónico o
+            IoT de 1 a 2 semanas y un diseño CAD de 2 a 5 días. El cotizador de esta página te da un estimado para tu
+            caso.</p>
+        </details>
+        <details class="faq-item">
+          <summary><span data-i18n="faq6_q">¿Pueden integrar inteligencia artificial en mi empresa o
+              producto?</span><i class="faq-chev"></i></summary>
+          <p data-i18n="faq6_a">Sí. Desarrollamos asistentes de IA, generación de contenido y análisis con IA
+            integrados a sistemas reales: por ejemplo EvaIA (asistente local con voz y visión), SIGI (en construcción;
+            contenido con IA y aprobación humana) e IncubApp (operación industrial con IA).</p>
+        </details>
+        <details class="faq-item">
+          <summary><span data-i18n="faq7_q">¿Qué tecnologías usan?</span><i class="faq-chev"></i></summary>
+          <p data-i18n="faq7_a">En software: JavaScript, Next.js, Python, FastAPI, Supabase, Firebase y modelos de IA
+            como Gemini. En hardware: Arduino, ESP32 y Raspberry Pi. En fabricación: impresión 3D FDM y de resina,
+            corte láser, CNC y diseño CAD 2D/3D.</p>
+        </details>
+        <details class="faq-item">
+          <summary><span data-i18n="faq8_q">¿Hacen impresión 3D, corte láser o CNC por encargo?</span><i
+              class="faq-chev"></i></summary>
+          <p data-i18n="faq8_a">Sí, en Medellín y con envíos a toda Colombia. Puedes enviarnos tu archivo STL, tu plano
+            o solo la idea para diseñarla, y revisar antes tu modelo en el visor 3D de esta página para estimar el
+            tiempo de impresión.</p>
+        </details>
+        <details class="faq-item">
+          <summary><span data-i18n="faq9_q">¿Quién está detrás de CDH Maker?</span><i class="faq-chev"></i></summary>
+          <p data-i18n="faq9_a">CDH Maker es la marca del Ing. Henry Taborda, ingeniero y maker en Medellín, Colombia.
+            Hablas directamente con quien diseña, construye y entrega tu proyecto, en español o en inglés.</p>
+        </details>
+        <details class="faq-item">
+          <summary><span data-i18n="faq10_q">No sé qué necesito para mi negocio, ¿por dónde empiezo?</span><i class="faq-chev"></i></summary>
+          <p data-i18n="faq10_a">Por una sesión de orientación gratuita de 30 minutos: nos cuentas cómo trabajas hoy y qué
+            te quita tiempo o dinero, y te decimos qué tipo de solución te sirve y cuánto costaría más o menos. Si hace
+            falta más detalle, el diagnóstico digital express cuesta 290.000 COP (USD 90) y se descuenta si contratas
+            el proyecto. Precios en el <a href="/catalogo">catálogo</a>.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACTO / CIERRE (público, sin cuenta; se reutiliza en las
+       páginas de servicio y en el catálogo) ===== -->
+  <section class="section" id="contacto">
+    <div class="container contact">
+      <p class="section-kicker" data-i18n="contact_k">// Contacto</p>
+      <h2 data-i18n="contact_t" data-i18n-html>Tu proyecto no necesita empezar perfecto. <em>Necesita empezar.</em></h2>
+      <p class="section-sub" data-i18n="contact_s">Cuéntame qué quieres construir o qué problema necesitas resolver.
+        Te respondo con una primera orientación, sin compromiso.</p>
+      <div class="contact-actions">
+        <a class="btn btn-primary btn-lg contact-wa" data-contact="wa" href="#" target="_blank" rel="noopener noreferrer">
+          <svg class="i-wa" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.019-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.297-.497.1-.198.05-.371-.025-.52-.074-.149-.668-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413" /></svg>
+          <span>WhatsApp</span>
+        </a>
+        <a class="btn btn-ghost btn-lg contact-mail" data-contact="mail" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="4" width="20" height="16" rx="2" />
+            <path d="m22 7-10 6L2 7" />
+          </svg>
+          <span data-i18n="contact_email_label">Correo</span>
+        </a>
+      </div>
+      <p class="contact-note" data-i18n="contact_note">Respuesta usualmente en menos de 24 horas.</p>
+      <p class="contact-privacy" data-i18n="contact_privacy">No publicamos el número ni el correo directamente en la
+        página para evitar spam: los botones de arriba te llevan directo, sin registros.</p>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a href="#top" class="footer-logo-link" aria-label="CDH Maker — volver arriba" data-i18n-aria="logo_top">
+          <svg class="wolf" viewBox="0 0 100 100" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round"><path d="M17 3L37 25H63L83 3L89 41L96 56L84 69V81L50 97L16 81V69L4 56L11 41Z"/><path d="M59 35H73L84 69L50 82"/><path d="M41 35H59"/><path d="M50 82V97"/></g><g fill="none" stroke="var(--accent)" stroke-width="3.7" stroke-linecap="round" stroke-linejoin="round"><path d="M41 35H27L16 69L50 82"/></g><path d="M44.6 62H55.4L52.4 66.2H47.6Z" fill="currentColor"/><path d="M28 39.6L39.6 42.4L41.6 46.4L31.6 44.6Z" fill="var(--eye)"/><path d="M72 39.6L60.4 42.4L58.4 46.4L68.4 44.6Z" fill="var(--eye)"/></svg>
+          <svg class="wordmark" viewBox="-4 -4 342 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="6.2"><path d="M30 0H10L0 10V30L10 40H30"/><path transform="translate(41 0)" d="M0 0H20L30 10V30L20 40H0Z"/><path transform="translate(82 0)" d="M0 0V40M30 0V40M0 20H30"/></g><g transform="translate(136 0)" fill="none" stroke="var(--accent)" stroke-width="6.2"><path d="M0 40V0L18 20L36 0V40"/><path transform="translate(47 0)" d="M0 40V10L10 0H22L32 10V40M0 25H32"/><path transform="translate(90 0)" d="M0 0V40M29 0L0 25M10 16L29 40"/><path transform="translate(130 0)" d="M27 0H0V40H27M0 20H21"/><path transform="translate(168 0)" d="M0 40V0H21L30 9V13L21 22H0M15 22L30 40"/></g></svg>
+        </a>
+        <p class="footer-tagline" data-i18n="foot_tag" data-i18n-html>Si lo puedes imaginar,<br />lo podemos construir.
+        </p>
+      </div>
+      <div>
+        <h4 data-i18n="foot_nav_h">Navegación</h4>
+        <a href="#servicios" data-i18n="nav_serv">Servicios</a>
+        <a href="#soluciones" data-i18n="foot_needs">Soluciones</a>
+        <a href="#porque" data-i18n="foot_why">¿Por qué CDH Maker?</a>
+        <a href="#proyectos" data-i18n="nav_proj">Proyectos</a>
+        <a href="#sobre" data-i18n="nav_about">Sobre mí</a>
+        <a href="#faq" data-i18n="foot_faq">Preguntas frecuentes</a>
+      </div>
+      <div>
+        <h4 data-i18n="nav_serv">Servicios</h4>
+        <a href="/servicios/impresion-3d-medellin" data-i18n="fs_3d">Impresión 3D en Medellín</a>
+        <a href="/servicios/software-a-la-medida-medellin" data-i18n="fs_sw">Software y SaaS a la medida</a>
+        <a href="/servicios/inteligencia-artificial-medellin" data-i18n="fs_ai">Integración de inteligencia artificial</a>
+        <a href="/servicios/iot-automatizacion-medellin" data-i18n="fs_iot">Electrónica, IoT y automatización</a>
+        <a href="/catalogo" data-i18n="fs_cat2">Catálogo y precios</a>
+      </div>
+      <div>
+        <h4 data-i18n="foot_contact_h">Contacto</h4>
+        <a href="#contacto" data-i18n="foot_contact_cta">Acceder a contacto</a>
+        <a href="https://github.com/HenryStark866" target="_blank" rel="noopener">GitHub</a>
+        <span class="footer-loc"><svg class="loc-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg> <span data-i18n="term_loc">Medellín, Colombia</span></span>
+      </div>
+      <div>
+        <h4 data-i18n="foot_allies_h">Nuestros aliados</h4>
+        <!-- Aliados: para agregar uno nuevo, duplica una línea <a> de este
+             bloque (pasos completos en MANUAL-TECNICO.md, sección "Aliados") -->
+        <a href="https://www.galacticaima.com" target="_blank" rel="noopener">Galactic AIMA</a>
+      </div>
+    </div>
+    <div class="container footer-inner">
+      <p>© <span id="year">2026</span> <span data-i18n="foot_copy">CDH Maker. Hecho con 💜 en Colombia.</span></p>
+      <a href="#top" data-i18n="foot_backtop">Volver arriba ↑</a>
+    </div>
+    <!-- Enlaces a cada idioma: los rastreadores descubren así las 10 versiones
+         (el selector del menú se arma con JS y ellos no lo ven) -->
+    <nav class="container footer-langs" aria-label="Cambiar idioma" data-i18n-aria="lang_label">
+      <a href="/es" hreflang="es" lang="es" aria-current="page">Español</a>
+      <a href="/" hreflang="en" lang="en">English</a>
+      <a href="/zh" hreflang="zh" lang="zh">中文</a>
+      <a href="/hi" hreflang="hi" lang="hi">हिन्दी</a>
+      <a href="/ar" hreflang="ar" lang="ar" dir="rtl">العربية</a>
+      <a href="/pt" hreflang="pt" lang="pt">Português</a>
+      <a href="/bn" hreflang="bn" lang="bn">বাংলা</a>
+      <a href="/ru" hreflang="ru" lang="ru">Русский</a>
+      <a href="/fr" hreflang="fr" lang="fr">Français</a>
+      <a href="/id" hreflang="id" lang="id">Bahasa Indonesia</a>
+    </nav>
+  </footer>
+
+  <button id="to-top" type="button" aria-label="Volver arriba" data-i18n-aria="to_top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5" /><path d="m6 11 6-6 6 6" /></svg>
+  </button>
+
+  <script src="i18n.js?v=17"></script>
+  <script src="contact.js?v=2"></script>
+  <script src="script.js?v=10"></script>
+  <script src="catalogo-vivo.js?v=1"></script>
+  <script src="chat-widget.js?v=3"></script>
+  <script src="estimator.js?v=3"></script>
+  <script src="viewer3d.js?v=2"></script>
+  <script src="ads.js?v=10"></script>
+  <script src="/ref.js" defer></script>
+</body>
+
+</html>

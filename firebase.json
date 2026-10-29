@@ -16,8 +16,13 @@
     "cleanUrls": true,
     "redirects": [
       {
-        "regex": "^/(?P<lang>en|zh|hi|ar|pt|bn|ru|fr|id)/$",
+        "regex": "^/(?P<lang>es|zh|hi|ar|pt|bn|ru|fr|id)/$",
         "destination": "/:lang",
+        "type": 301
+      },
+      {
+        "regex": "^/en/?$",
+        "destination": "/",
         "type": 301
       },
       {
@@ -48,7 +53,7 @@
         ]
       },
       {
-        "source": "/@(en|zh|hi|ar|pt|bn|ru|fr|id)",
+        "source": "/@(es|zh|hi|ar|pt|bn|ru|fr|id)",
         "headers": [
           { "key": "Cache-Control", "value": "no-cache" },
           { "key": "X-Content-Type-Options", "value": "nosniff" },

@@ -5,10 +5,10 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://cdhmaker.com/</loc>
+    <loc>https://cdhmaker.com/es</loc>
     <lastmod>2026-10-29</lastmod>
-    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/en" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/es" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/" />
     <xhtml:link rel="alternate" hreflang="zh" href="https://cdhmaker.com/zh" />
     <xhtml:link rel="alternate" hreflang="hi" href="https://cdhmaker.com/hi" />
     <xhtml:link rel="alternate" hreflang="ar" href="https://cdhmaker.com/ar" />
@@ -20,10 +20,10 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/" />
   </url>
   <url>
-    <loc>https://cdhmaker.com/en</loc>
+    <loc>https://cdhmaker.com/</loc>
     <lastmod>2026-10-29</lastmod>
-    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/en" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/es" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/" />
     <xhtml:link rel="alternate" hreflang="zh" href="https://cdhmaker.com/zh" />
     <xhtml:link rel="alternate" hreflang="hi" href="https://cdhmaker.com/hi" />
     <xhtml:link rel="alternate" hreflang="ar" href="https://cdhmaker.com/ar" />
@@ -37,8 +37,8 @@
   <url>
     <loc>https://cdhmaker.com/zh</loc>
     <lastmod>2026-10-29</lastmod>
-    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/en" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/es" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/" />
     <xhtml:link rel="alternate" hreflang="zh" href="https://cdhmaker.com/zh" />
     <xhtml:link rel="alternate" hreflang="hi" href="https://cdhmaker.com/hi" />
     <xhtml:link rel="alternate" hreflang="ar" href="https://cdhmaker.com/ar" />
@@ -52,8 +52,8 @@
   <url>
     <loc>https://cdhmaker.com/hi</loc>
     <lastmod>2026-10-29</lastmod>
-    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/en" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/es" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/" />
     <xhtml:link rel="alternate" hreflang="zh" href="https://cdhmaker.com/zh" />
     <xhtml:link rel="alternate" hreflang="hi" href="https://cdhmaker.com/hi" />
     <xhtml:link rel="alternate" hreflang="ar" href="https://cdhmaker.com/ar" />
@@ -67,8 +67,8 @@
   <url>
     <loc>https://cdhmaker.com/ar</loc>
     <lastmod>2026-10-29</lastmod>
-    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/en" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/es" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/" />
     <xhtml:link rel="alternate" hreflang="zh" href="https://cdhmaker.com/zh" />
     <xhtml:link rel="alternate" hreflang="hi" href="https://cdhmaker.com/hi" />
     <xhtml:link rel="alternate" hreflang="ar" href="https://cdhmaker.com/ar" />
@@ -82,8 +82,8 @@
   <url>
     <loc>https://cdhmaker.com/pt</loc>
     <lastmod>2026-10-29</lastmod>
-    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/en" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/es" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/" />
     <xhtml:link rel="alternate" hreflang="zh" href="https://cdhmaker.com/zh" />
     <xhtml:link rel="alternate" hreflang="hi" href="https://cdhmaker.com/hi" />
     <xhtml:link rel="alternate" hreflang="ar" href="https://cdhmaker.com/ar" />
@@ -97,8 +97,8 @@
   <url>
     <loc>https://cdhmaker.com/bn</loc>
     <lastmod>2026-10-29</lastmod>
-    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/en" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/es" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/" />
     <xhtml:link rel="alternate" hreflang="zh" href="https://cdhmaker.com/zh" />
     <xhtml:link rel="alternate" hreflang="hi" href="https://cdhmaker.com/hi" />
     <xhtml:link rel="alternate" hreflang="ar" href="https://cdhmaker.com/ar" />
@@ -112,8 +112,8 @@
   <url>
     <loc>https://cdhmaker.com/ru</loc>
     <lastmod>2026-10-29</lastmod>
-    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/en" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/es" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/" />
     <xhtml:link rel="alternate" hreflang="zh" href="https://cdhmaker.com/zh" />
     <xhtml:link rel="alternate" hreflang="hi" href="https://cdhmaker.com/hi" />
     <xhtml:link rel="alternate" hreflang="ar" href="https://cdhmaker.com/ar" />
@@ -127,8 +127,8 @@
   <url>
     <loc>https://cdhmaker.com/fr</loc>
     <lastmod>2026-10-29</lastmod>
-    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/en" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/es" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/" />
     <xhtml:link rel="alternate" hreflang="zh" href="https://cdhmaker.com/zh" />
     <xhtml:link rel="alternate" hreflang="hi" href="https://cdhmaker.com/hi" />
     <xhtml:link rel="alternate" hreflang="ar" href="https://cdhmaker.com/ar" />
@@ -142,8 +142,8 @@
   <url>
     <loc>https://cdhmaker.com/id</loc>
     <lastmod>2026-10-29</lastmod>
-    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/en" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://cdhmaker.com/es" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://cdhmaker.com/" />
     <xhtml:link rel="alternate" hreflang="zh" href="https://cdhmaker.com/zh" />
     <xhtml:link rel="alternate" hreflang="hi" href="https://cdhmaker.com/hi" />
     <xhtml:link rel="alternate" hreflang="ar" href="https://cdhmaker.com/ar" />
@@ -167,7 +167,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/3d-printing-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/3d-printing-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/3d-printing-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/impresion-3d-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/3d-printing-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/en/services/3d-printing-medellin</loc>
@@ -182,7 +182,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/3d-printing-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/3d-printing-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/3d-printing-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/impresion-3d-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/3d-printing-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/zh/services/3d-printing-medellin</loc>
@@ -197,7 +197,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/3d-printing-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/3d-printing-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/3d-printing-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/impresion-3d-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/3d-printing-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/hi/services/3d-printing-medellin</loc>
@@ -212,7 +212,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/3d-printing-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/3d-printing-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/3d-printing-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/impresion-3d-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/3d-printing-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/ar/services/3d-printing-medellin</loc>
@@ -227,7 +227,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/3d-printing-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/3d-printing-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/3d-printing-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/impresion-3d-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/3d-printing-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/pt/services/3d-printing-medellin</loc>
@@ -242,7 +242,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/3d-printing-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/3d-printing-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/3d-printing-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/impresion-3d-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/3d-printing-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/bn/services/3d-printing-medellin</loc>
@@ -257,7 +257,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/3d-printing-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/3d-printing-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/3d-printing-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/impresion-3d-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/3d-printing-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/ru/services/3d-printing-medellin</loc>
@@ -272,7 +272,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/3d-printing-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/3d-printing-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/3d-printing-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/impresion-3d-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/3d-printing-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/fr/services/3d-printing-medellin</loc>
@@ -287,7 +287,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/3d-printing-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/3d-printing-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/3d-printing-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/impresion-3d-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/3d-printing-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/id/services/3d-printing-medellin</loc>
@@ -302,7 +302,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/3d-printing-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/3d-printing-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/3d-printing-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/impresion-3d-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/3d-printing-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/servicios/software-a-la-medida-medellin</loc>
@@ -317,7 +317,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/custom-software-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/custom-software-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/custom-software-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/software-a-la-medida-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/custom-software-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/en/services/custom-software-medellin</loc>
@@ -332,7 +332,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/custom-software-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/custom-software-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/custom-software-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/software-a-la-medida-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/custom-software-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/zh/services/custom-software-medellin</loc>
@@ -347,7 +347,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/custom-software-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/custom-software-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/custom-software-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/software-a-la-medida-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/custom-software-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/hi/services/custom-software-medellin</loc>
@@ -362,7 +362,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/custom-software-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/custom-software-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/custom-software-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/software-a-la-medida-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/custom-software-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/ar/services/custom-software-medellin</loc>
@@ -377,7 +377,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/custom-software-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/custom-software-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/custom-software-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/software-a-la-medida-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/custom-software-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/pt/services/custom-software-medellin</loc>
@@ -392,7 +392,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/custom-software-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/custom-software-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/custom-software-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/software-a-la-medida-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/custom-software-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/bn/services/custom-software-medellin</loc>
@@ -407,7 +407,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/custom-software-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/custom-software-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/custom-software-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/software-a-la-medida-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/custom-software-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/ru/services/custom-software-medellin</loc>
@@ -422,7 +422,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/custom-software-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/custom-software-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/custom-software-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/software-a-la-medida-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/custom-software-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/fr/services/custom-software-medellin</loc>
@@ -437,7 +437,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/custom-software-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/custom-software-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/custom-software-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/software-a-la-medida-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/custom-software-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/id/services/custom-software-medellin</loc>
@@ -452,7 +452,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/custom-software-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/custom-software-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/custom-software-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/software-a-la-medida-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/custom-software-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/servicios/inteligencia-artificial-medellin</loc>
@@ -467,7 +467,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/ai-integration-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/ai-integration-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/ai-integration-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/inteligencia-artificial-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/ai-integration-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/en/services/ai-integration-medellin</loc>
@@ -482,7 +482,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/ai-integration-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/ai-integration-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/ai-integration-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/inteligencia-artificial-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/ai-integration-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/zh/services/ai-integration-medellin</loc>
@@ -497,7 +497,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/ai-integration-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/ai-integration-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/ai-integration-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/inteligencia-artificial-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/ai-integration-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/hi/services/ai-integration-medellin</loc>
@@ -512,7 +512,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/ai-integration-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/ai-integration-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/ai-integration-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/inteligencia-artificial-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/ai-integration-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/ar/services/ai-integration-medellin</loc>
@@ -527,7 +527,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/ai-integration-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/ai-integration-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/ai-integration-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/inteligencia-artificial-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/ai-integration-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/pt/services/ai-integration-medellin</loc>
@@ -542,7 +542,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/ai-integration-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/ai-integration-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/ai-integration-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/inteligencia-artificial-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/ai-integration-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/bn/services/ai-integration-medellin</loc>
@@ -557,7 +557,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/ai-integration-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/ai-integration-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/ai-integration-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/inteligencia-artificial-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/ai-integration-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/ru/services/ai-integration-medellin</loc>
@@ -572,7 +572,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/ai-integration-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/ai-integration-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/ai-integration-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/inteligencia-artificial-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/ai-integration-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/fr/services/ai-integration-medellin</loc>
@@ -587,7 +587,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/ai-integration-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/ai-integration-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/ai-integration-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/inteligencia-artificial-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/ai-integration-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/id/services/ai-integration-medellin</loc>
@@ -602,7 +602,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/ai-integration-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/ai-integration-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/ai-integration-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/inteligencia-artificial-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/ai-integration-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/servicios/iot-automatizacion-medellin</loc>
@@ -617,7 +617,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/iot-automation-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/iot-automation-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/iot-automation-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/iot-automatizacion-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/iot-automation-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/en/services/iot-automation-medellin</loc>
@@ -632,7 +632,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/iot-automation-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/iot-automation-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/iot-automation-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/iot-automatizacion-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/iot-automation-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/zh/services/iot-automation-medellin</loc>
@@ -647,7 +647,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/iot-automation-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/iot-automation-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/iot-automation-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/iot-automatizacion-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/iot-automation-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/hi/services/iot-automation-medellin</loc>
@@ -662,7 +662,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/iot-automation-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/iot-automation-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/iot-automation-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/iot-automatizacion-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/iot-automation-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/ar/services/iot-automation-medellin</loc>
@@ -677,7 +677,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/iot-automation-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/iot-automation-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/iot-automation-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/iot-automatizacion-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/iot-automation-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/pt/services/iot-automation-medellin</loc>
@@ -692,7 +692,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/iot-automation-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/iot-automation-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/iot-automation-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/iot-automatizacion-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/iot-automation-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/bn/services/iot-automation-medellin</loc>
@@ -707,7 +707,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/iot-automation-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/iot-automation-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/iot-automation-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/iot-automatizacion-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/iot-automation-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/ru/services/iot-automation-medellin</loc>
@@ -722,7 +722,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/iot-automation-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/iot-automation-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/iot-automation-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/iot-automatizacion-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/iot-automation-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/fr/services/iot-automation-medellin</loc>
@@ -737,7 +737,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/iot-automation-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/iot-automation-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/iot-automation-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/iot-automatizacion-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/iot-automation-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/id/services/iot-automation-medellin</loc>
@@ -752,7 +752,7 @@
     <xhtml:link rel="alternate" hreflang="ru" href="https://cdhmaker.com/ru/services/iot-automation-medellin" />
     <xhtml:link rel="alternate" hreflang="fr" href="https://cdhmaker.com/fr/services/iot-automation-medellin" />
     <xhtml:link rel="alternate" hreflang="id" href="https://cdhmaker.com/id/services/iot-automation-medellin" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/servicios/iot-automatizacion-medellin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cdhmaker.com/en/services/iot-automation-medellin" />
   </url>
   <url>
     <loc>https://cdhmaker.com/catalogo</loc>

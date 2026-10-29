@@ -10,18 +10,19 @@
      5. Pulsos      → paquetes de datos que viajan por las aristas
      6. HUD         → anillos holográficos, retícula y barrido de escaneo
 
-   Adapta la paleta al tema claro / oscuro, respeta "reducir movimiento",
-   escala la densidad según el área de pantalla y se pausa cuando la pestaña
-   deja de estar visible.
+   Solo se ve en el tema inmersivo (theme.js crea el canvas y carga este
+   archivo la primera vez que se elige): fuera de él la animación se detiene.
+   Respeta "reducir movimiento", escala la densidad según el área de pantalla
+   y se pausa cuando la pestaña deja de estar visible.
    ───────────────────────────────────────────────────────────────────────────
    Autor:    Ing. Henry Taborda — CDH Maker (Medellín, Colombia)
    Contacto: cdhmaker@gmail.com
-   Última actualización: 2026-07-30
+   Última actualización: 2026-10-29
    ═══════════════════════════════════════════════════════════════════════════ */
 
 // IIFE: módulo autocontenido, sin variables globales
 (function () {
-  // Canvas de fondo declarado en index.html; si no existe, no hay nada que hacer
+  // Canvas de fondo (lo crea theme.js); si no existe, no hay nada que hacer
   const canvas = document.getElementById("metaverse");
   if (!canvas) return;
   // Contexto 2D con canal alfa (el degradado de fondo lo pinta el propio canvas)
@@ -72,6 +73,8 @@
   let T = THEMES.dark;
 
   // Sincroniza la paleta con el tema actual del documento (data-theme de <html>)
+  // El inmersivo usa la paleta nocturna; fuera de él la animación se detiene.
+  const inmersivo = () => document.documentElement.getAttribute("data-theme") === "immersive";
   function theme() {
     const t = document.documentElement.getAttribute("data-theme") || "dark";
     T = THEMES[t] || THEMES.dark;
@@ -487,12 +490,20 @@
 
   // ── Gestión de ciclo de vida ────────────────────────────────────────────────
   // Pausar la animación cuando la pestaña no está visible (ahorra batería/CPU)
-  document.addEventListener("visibilitychange", () => {
-    running = !document.hidden;
+  // y cuando el visitante sale del modo inmersivo (el canvas queda oculto).
+  function sincronizar() {
+    running = !document.hidden && inmersivo() && !reduced;
     if (running) start(); else stop();
-  });
+  }
+  document.addEventListener("visibilitychange", sincronizar);
   // Al cambiar el tema: recargar la paleta (los colores se leen en cada frame)
-  window.addEventListener("cdh:themechange", () => { theme(); if (reduced) render(0); });
+  // y arrancar o detener la animación
+  window.addEventListener("cdh:themechange", () => {
+    theme();
+    if (inmersivo() && !W) resize(); // el canvas estaba oculto (0×0) al cargar
+    if (reduced && inmersivo()) render(0);
+    sincronizar();
+  });
   // Redimensionado con "debounce" de 180 ms (evita recalcular en cada píxel)
   let rt;
   window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(resize, 180); });
@@ -506,6 +517,6 @@
     running = false;
     render(0);
   } else {
-    start();
+    sincronizar();
   }
 })();

@@ -9,14 +9,15 @@
    propio HTML, con su URL, sus metadatos y sus datos estructurados.
 
    Qué hace (sin dependencias, solo Node ≥ 18):
-     1. Lee public/index.html (la fuente: el sitio en español) y sincroniza
+     1. Lee public/es.html (la fuente: el sitio en español, servido en /es) y sincroniza
         public/i18n/es.js con sus textos — el HTML manda, el diccionario sigue.
      2. Rellena el bloque <!-- seo:start --> … <!-- seo:end --> de cada página:
         title, description, canonical, hreflang, Open Graph, Twitter y JSON-LD
         (organización, fundador, servicios, proyectos y preguntas frecuentes),
         todo sacado del diccionario del idioma.
-     3. Escribe public/<código>.html para los otros 9 idiomas (Firebase con
-        cleanUrls los sirve en /en, /pt, /fr…), con el cuerpo ya traducido.
+     3. Escribe la portada de los otros 9 idiomas con el cuerpo ya traducido:
+        el inglés en public/index.html ("/", idioma por defecto) y el resto en
+        public/<código>.html (Firebase con cleanUrls los sirve en /pt, /fr…).
      3b. Escribe las páginas por servicio y ciudad (§SERVICES): español en
         public/servicios/<slug>.html (/servicios/…) y los demás idiomas en
         public/<código>/services/<slug>.html, con textos de
@@ -32,11 +33,11 @@
    El deploy de Firebase lo corre solo (firebase.json → hosting.predeploy).
 
    Archivos que este script ESCRIBE (no editarlos a mano):
-     public/{en,zh,hi,ar,pt,bn,ru,fr,id}.html, public/servicios/*.html,
+     public/index.html (inglés), public/{zh,hi,ar,pt,bn,ru,fr,id}.html, public/servicios/*.html,
      public/<código>/services/*.html, public/sitemap.xml,
      public/llms.txt, public/catalogo.html, public/en/catalog.html,
      public/catalogo.json, public/i18n/es.js (solo las claves presentes en el HTML)
-     y el bloque seo de public/index.html.
+     y el bloque seo de public/es.html.
    ───────────────────────────────────────────────────────────────────────────
    Autor:    Ing. Henry Taborda — CDH Maker (Medellín, Colombia)
    Contacto: cdhmaker@gmail.com
@@ -62,7 +63,10 @@ const STRICT = process.argv.includes("--strict");
 const SITE = "https://cdhmaker.com";
 
 // Idiomas: código del sitio, locale de Open Graph y nombre nativo.
-// El español es la portada ("/"); el resto vive en "/<código>".
+// El inglés es la portada ("/") y el idioma por defecto (x-default); el
+// español vive en "/es" y el resto en "/<código>". La FUENTE sigue siendo el
+// español: public/es.html se edita a mano y de ahí salen todas las demás.
+const DEFAULT = "en";
 const LANGS = [
   { code: "es", locale: "es_CO", name: "Español" },
   { code: "en", locale: "en_US", name: "English" },
@@ -163,8 +167,10 @@ const SVC_ICON = {
 // ════════════════════════════════════════════════════════════════════════
 
 const BUILD_DATE = new Date().toISOString().slice(0, 10);
-const urlOf = (code) => (code === "es" ? `${SITE}/` : `${SITE}/${code}`);
-const homePath = (code) => (code === "es" ? "/" : `/${code}`);
+const urlOf = (code) => (code === DEFAULT ? `${SITE}/` : `${SITE}/${code}`);
+const homePath = (code) => (code === DEFAULT ? "/" : `/${code}`);
+// Archivo de la portada de cada idioma: el inglés es index.html ("/")
+const homeFile = (code) => (code === DEFAULT ? "index.html" : `${code}.html`);
 const svcPath = (svc, code) => (code === "es" ? `/servicios/${svc.slug.es}` : `/${code}/services/${svc.slug.en}`);
 const svcUrl = (svc, code) => SITE + svcPath(svc, code);
 // Catálogo: solo español e inglés (los otros idiomas enlazan al inglés)
@@ -271,7 +277,7 @@ function walkI18n(html, visit) {
   return out + html.slice(last);
 }
 
-// ── 1. Sincronizar es.js con index.html ──────────────────────────────────
+// ── 1. Sincronizar es.js con es.html ──────────────────────────────────
 function extractSpanish(html) {
   const found = {};
   walkI18n(html, ({ key, kind, inner }) => {
@@ -280,7 +286,7 @@ function extractSpanish(html) {
     else if (kind === "text") v = squash(decode(inner.replace(/<[^>]+>/g, "")));
     else v = squash(inner);
     if (key in found && found[key] !== v) {
-      throw new Error(`La clave "${key}" aparece con textos distintos en index.html:\n  «${found[key]}»\n  «${v}»`);
+      throw new Error(`La clave "${key}" aparece con textos distintos en es.html:\n  «${found[key]}»\n  «${v}»`);
     }
     found[key] = v;
     return undefined;
@@ -472,7 +478,7 @@ function replaceSeo(html, block) {
   // el reemplazo se comería todo lo que hay entre ambas
   const n = html.split("<!-- seo:start").length - 1;
   if (n !== 1 || !re.test(html)) {
-    throw new Error(`index.html debe tener exactamente un bloque "<!-- seo:start" … "<!-- seo:end -->" (tiene ${n})`);
+    throw new Error(`es.html debe tener exactamente un bloque "<!-- seo:start" … "<!-- seo:end -->" (tiene ${n})`);
   }
   return html.replace(re, () => block);
 }
@@ -495,12 +501,12 @@ function translatePage(src, code, d, es, missing) {
   html = localizeSvcLinks(html, code);
   // Fila de idiomas del footer: marcar como actual el de esta página
   html = html
-    .replace(/(<a href="\/" hreflang="es"[^>]*?) aria-current="page"/, "$1")
-    .replace(new RegExp(`(<a href="/${code}" hreflang="${code}"[^>]*?)>`), `$1 aria-current="page">`);
-  // El comentario de cabecera describe index.html: se cambia por un aviso
+    .replace(/(<a href="[^"]*" hreflang="[a-z]{2}"[^>]*?) aria-current="page"/g, "$1")
+    .replace(new RegExp(`(<a href="${homePath(code)}" hreflang="${code}"[^>]*?)>`), `$1 aria-current="page">`);
+  // El comentario de cabecera describe es.html: se cambia por un aviso
   html = html.replace(
     /^(<!DOCTYPE html>\s*)<!--[\s\S]*?-->/i,
-    `$1<!-- GENERADO por tools/build-i18n.mjs a partir de index.html + i18n/${code}.js.\n     No editar: los cambios se pierden en el próximo build. -->`
+    `$1<!-- GENERADO por tools/build-i18n.mjs a partir de es.html + i18n/${code}.js.\n     No editar: los cambios se pierden en el próximo build. -->`
   );
   return html;
 }
@@ -665,7 +671,7 @@ function svcSeoBlock(svc, code, s, c, d, langsWithPage) {
     `<meta name="description" content="${escAttr(s.meta_desc)}" />`,
     `<link rel="canonical" href="${page}" />`,
     ...langsWithPage.map((l) => `<link rel="alternate" hreflang="${l}" href="${svcUrl(svc, l)}" />`),
-    `<link rel="alternate" hreflang="x-default" href="${svcUrl(svc, "es")}" />`,
+    `<link rel="alternate" hreflang="x-default" href="${svcUrl(svc, langsWithPage.includes(DEFAULT) ? DEFAULT : "es")}" />`,
     `<meta property="og:type" content="website" />`,
     `<meta property="og:site_name" content="${ENTITY.name}" />`,
     `<meta property="og:title" content="${escAttr(s.meta_title)}" />`,
@@ -854,7 +860,7 @@ function buildServicePage(svc, code, home, sd, d, vars, langsWithPage) {
   html = html.replace(/<html\b[^>]*>/, `<html lang="${code}" dir="${RTL.includes(code) ? "rtl" : "ltr"}">`);
   html = html.replace(
     /^(<!DOCTYPE html>\s*)<!--[\s\S]*?-->/i,
-    `$1<!-- GENERADO por tools/build-i18n.mjs (página de servicio "${svc.id}") a partir de index.html,\n     i18n/${code}.js y tools/servicios/${code}.mjs. No editar: los cambios se pierden en el próximo build. -->`
+    `$1<!-- GENERADO por tools/build-i18n.mjs (página de servicio "${svc.id}") a partir de es.html,\n     i18n/${code}.js y tools/servicios/${code}.mjs. No editar: los cambios se pierden en el próximo build. -->`
   );
   // Rutas relativas → absolutas (la página vive en una subcarpeta)
   html = html.replace(/\s(src|href|poster|srcset)="(?!#|\/|[a-z][a-z0-9+.-]*:)([^"]+)"/gi, ` $1="/$2"`);
@@ -1111,7 +1117,7 @@ function buildCatalogPage(code, home, d) {
   html = html.replace(/<html\b[^>]*>/, `<html lang="${L}" dir="ltr">`);
   html = html.replace(
     /^(<!DOCTYPE html>\s*)<!--[\s\S]*?-->/i,
-    `$1<!-- GENERADO por tools/build-i18n.mjs (catálogo) a partir de index.html,\n     i18n/${L}.js y tools/catalogo.mjs. No editar: los cambios se pierden en el próximo build. -->`
+    `$1<!-- GENERADO por tools/build-i18n.mjs (catálogo) a partir de es.html,\n     i18n/${L}.js y tools/catalogo.mjs. No editar: los cambios se pierden en el próximo build. -->`
   );
   html = html.replace(/\s(src|href|poster|srcset)="(?!#|\/|[a-z][a-z0-9+.-]*:)([^"]+)"/gi, ` $1="/$2"`);
   html = html.replace(/<a href="#servicios" class="skip-link"/, '<a href="#contenido" class="skip-link"');
@@ -1160,7 +1166,7 @@ ${alts}
   };
   const urls = [
     group(LANGS.map((l) => l.code), urlOf, `${SITE}/`),
-    ...SERVICES.map((s) => group(svcLangs, (c) => svcUrl(s, c), svcUrl(s, "es"))),
+    ...SERVICES.map((s) => group(svcLangs, (c) => svcUrl(s, c), svcUrl(s, svcLangs.includes(DEFAULT) ? DEFAULT : "es"))),
     group(CAT_LANGS, catUrl, catUrl("en")),
   ].join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -1261,10 +1267,11 @@ async function main() {
   const remoto = process.argv.includes("--sin-crm") ? { origen: "semilla (--sin-crm)", imagenes: [] } : await cargarRemoto();
   escribirImagenesCatalogo(remoto.imagenes);
   console.log(`· catálogo: ${remoto.origen}`);
-  const indexFile = path.join(PUB, "index.html");
+  // La fuente es la portada en español (public/es.html, servida en /es)
+  const indexFile = path.join(PUB, "es.html");
   let index = fs.readFileSync(indexFile, "utf8");
 
-  // 1. es.js ← index.html (el HTML es la fuente del español)
+  // 1. es.js ← es.html (el HTML es la fuente del español)
   const es = loadDict("es");
   Object.assign(es, extractSpanish(index));
   writeDict("es", es);
@@ -1286,7 +1293,7 @@ async function main() {
     // Claves de cabecera y JSON-LD que no viven en el DOM
     for (const k of HEAD_KEYS) if (!(k in d)) missing.add(k);
     const html = translatePage(index, code, d, es, missing);
-    fs.writeFileSync(path.join(PUB, `${code}.html`), html);
+    fs.writeFileSync(path.join(PUB, homeFile(code)), html);
     report.push({ code, missing: [...missing] });
   }
 

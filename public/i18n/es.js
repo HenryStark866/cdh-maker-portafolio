@@ -21,7 +21,7 @@ window.CDH_I18N_DICT["es"] = {
   "nav_about": "Sobre mí",
   "nav_contact": "Contacto",
   "menu_label": "Abrir menú",
-  "theme_label": "Cambiar tema claro/oscuro",
+  "theme_label": "Cambiar tema (claro, oscuro, inmersivo)",
   "lang_label": "Cambiar idioma",
   "hero_typed": [
     "Ingeniería",

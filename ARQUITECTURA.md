@@ -49,16 +49,24 @@ flowchart LR
 ## 2. Build y despliegue
 
 `firebase deploy --only hosting` ejecuta primero `node tools/build-i18n.mjs` (`hosting.predeploy`
-en `firebase.json`). Ese script toma `public/index.html` (fuente en español) y los diccionarios, y
+en `firebase.json`). Ese script toma `public/es.html` (fuente en español) y los diccionarios, y
 escribe todo lo que se publica generado. Detalle en MANUAL §8.3, §8.4 y §11.
+
+El **inglés es el idioma por defecto**: su portada se genera en `public/index.html` (`/`, x-default)
+y el español se sirve en `/es`; `/en` redirige 301 a `/` (`firebase.json`). Quien elige otro idioma
+en el selector queda recordado (`cdh-lang-v2`) y la portada `/` lo lleva a su URL.
+
+Temas (`theme.js`): claro, oscuro e **inmersivo**. El inmersivo es la paleta nocturna con el fondo
+animado de `metaverse.js` detrás, que solo se descarga la primera vez que alguien elige ese modo y
+se detiene al salir de él.
 
 ```mermaid
 flowchart TD
-  SRC["public/index.html<br/>(fuente, español)"] --> B
+  SRC["public/es.html<br/>(fuente, español)"] --> B
   D["public/i18n/&lt;código&gt;.js<br/>(10 diccionarios)"] --> B
   S["tools/servicios/&lt;código&gt;.mjs<br/>(textos de servicios; es.mjs es la fuente)"] --> B
   E["public/estimator.js<br/>(TIME_* y PRICE)"] -->|"tiempos de referencia"| B
-  B["tools/build-i18n.mjs<br/>(predeploy)"] --> ES["i18n/es.js sincronizado<br/>+ bloque seo de index.html"]
+  B["tools/build-i18n.mjs<br/>(predeploy)"] --> ES["i18n/es.js sincronizado<br/>+ bloque seo de es.html"]
   B --> P["public/&lt;código&gt;.html<br/>9 portadas traducidas"]
   B --> SV["public/servicios/*.html<br/>public/&lt;código&gt;/services/*.html<br/>4 servicios × 10 idiomas"]
   B --> SM["sitemap.xml + llms.txt"]
@@ -68,7 +76,7 @@ flowchart TD
   IN --> BING["IndexNow → Bing y otros"]
 ```
 
-- Los archivos generados **se versionan**: tras editar `index.html` o un diccionario, correr el
+- Los archivos generados **se versionan**: tras editar `es.html` o un diccionario, correr el
   build y hacer commit de lo generado, para que el repo refleje lo publicado.
 - `--strict` hace fallar el build si falta alguna traducción (sin él solo avisa y usa el español).
 - `tools/`, `legal/` y `_originales-media/` están fuera de `public/`: **no se publican**.
@@ -77,7 +85,7 @@ flowchart TD
 
 ## 3. Mapa de módulos del front (`public/`)
 
-Orden real de carga en `index.html` (las páginas de servicio cargan los mismos, con ruta absoluta
+Orden real de carga en `es.html` (las páginas de servicio cargan los mismos, con ruta absoluta
 `/archivo.js`). Todos son IIFE autocontenidas que se comunican por globales `window.CDH_*` y
 eventos `cdh:*`.
 
@@ -301,14 +309,14 @@ Deducidas del historial (`git log`). Formato corto: contexto → decisión → c
 - *Decisión*: `tools/build-i18n.mjs` genera una URL por idioma con metadatos, hreflang y JSON-LD,
   más `sitemap.xml` y `llms.txt`; corre como predeploy. El idioma lo decide la URL y nunca se
   redirige automáticamente.
-- *Consecuencia*: hay HTML generado versionado que no se edita a mano; `index.html` es la fuente.
+- *Consecuencia*: hay HTML generado versionado que no se edita a mano; `es.html` es la fuente.
 
 **ADR-9. Páginas por servicio y ciudad** (`ae02a83`)
 - *Contexto*: búsquedas como "impresión 3D Medellín" premian una URL propia por servicio.
 - *Decisión*: 4 servicios × 10 idiomas generados por el mismo build, con textos en
   `tools/servicios/` y tiempos tomados de `estimator.js`.
 - *Consecuencia*: una sola fuente para los tiempos (cotizador y páginas no se contradicen);
-  agregar un servicio toca el build, 10 archivos de textos y `index.html` (MANUAL §8.4).
+  agregar un servicio toca el build, 10 archivos de textos y `es.html` (MANUAL §8.4).
 
 **ADR-10. Superficies sólidas sobre el canvas** (`ee4aa6a`)
 - *Contexto*: el vidrio desenfocado sobre el fondo animado costaba rendimiento.

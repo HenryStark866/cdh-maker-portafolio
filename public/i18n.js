@@ -6,8 +6,8 @@
      1. El HTML marca cada texto traducible con data-i18n="clave" (y los
         atributos con data-i18n-aria / data-i18n-alt).
      2. Cada idioma tiene su PROPIA página estática, generada por
-        tools/build-i18n.mjs a partir de index.html + i18n/<código>.js:
-          /  (español, index.html) · /en · /zh · /hi · /ar · /pt · /bn · /ru · /fr · /id
+        tools/build-i18n.mjs a partir de es.html + i18n/<código>.js:
+          /  (inglés, idioma por defecto) · /es · /zh · /hi · /ar · /pt · /bn · /ru · /fr · /id
         Así buscadores y asistentes de IA (que casi nunca ejecutan JavaScript)
         leen el sitio completo en los 10 idiomas, cada uno con su URL.
      3. En esas páginas el idioma lo decide la URL. Este script solo:
@@ -31,7 +31,7 @@
    ───────────────────────────────────────────────────────────────────────────
    Autor:    Ing. Henry Taborda — CDH Maker (Medellín, Colombia)
    Contacto: cdhmaker@gmail.com
-   Última actualización: 2026-10-14
+   Última actualización: 2026-10-29
    ═══════════════════════════════════════════════════════════════════════════ */
 
 // IIFE: módulo autocontenido
@@ -135,7 +135,7 @@
 
     const p = new Promise((resolve, reject) => {
       const s = document.createElement("script");
-      // Ruta absoluta: la misma para "/" que para "/en"
+      // Ruta absoluta: la misma para "/" que para "/es"
       s.src = "/i18n/" + code + ".js?v=" + DICT_V;
       s.async = true;
       s.onload = () => {
@@ -285,8 +285,8 @@
 
   // ── Arranque ────────────────────────────────────────────────────────────────
   // Redirecciones que deben ocurrir antes de montar nada (sin esperar al DOM):
-  //  - enlaces viejos con ?lang=en → /en
-  //  - la portada "/" con una elección explícita guardada → la URL de ese idioma
+  //  - enlaces viejos con ?lang=es → /es
+  //  - la portada "/" (inglés) con una elección explícita guardada → la URL de ese idioma
   //    (solo la portada: un enlace compartido a /pt se respeta tal cual)
   if (ESTATICO) {
     let destino = null, explicito = false;
@@ -300,7 +300,7 @@
       }
     } catch (e) { }
     const pref = leerPref();
-    if (!destino && !explicito && pref && pref !== PAGINA && RUTAS[pref] && location.pathname === RUTAS[PAGINA] && PAGINA === "es") {
+    if (!destino && !explicito && pref && pref !== PAGINA && RUTAS[pref] && location.pathname === RUTAS[PAGINA] && RUTAS[PAGINA] === "/") {
       destino = pref;
     }
     if (destino) {

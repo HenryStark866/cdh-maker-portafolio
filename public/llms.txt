@@ -5,15 +5,15 @@
 - Founder: Ing. Henry Taborda, engineer and maker (GitHub: https://github.com/HenryStark866). Clients talk directly with the person who designs, builds and delivers the project.
 - Location: Medellín, Antioquia, Colombia. Area served: worldwide (remote) and all of Colombia (shipping of physical parts).
 - How to hire: free, no-commitment quote with price and timeline in under 24 hours; work in stages with partial deliveries and milestone payments.
-- Contact: WhatsApp or email from https://cdhmaker.com/en#contacto — email cdhmaker@gmail.com
-- Website: https://cdhmaker.com/ (available in 10 languages). It includes a free instant time estimator and an STL 3D viewer: https://cdhmaker.com/en#herramientas
+- Contact: WhatsApp or email from https://cdhmaker.com/#contacto — email cdhmaker@gmail.com
+- Website: https://cdhmaker.com/ (available in 10 languages). It includes a free instant time estimator and an STL 3D viewer: https://cdhmaker.com/#herramientas
 
 ## Services
 
-- [Web & software development](https://cdhmaker.com/en#servicios): Custom websites, apps and systems. Modern, fast sites built to grow your business or project. (Websites and landing pages; Custom web applications; Process automation)
-- [Digital fabrication / Maker](https://cdhmaker.com/en#servicios): Prototyping and manufacturing with digital tech: from your idea or drawing to the finished part. (3D printing (FDM / resin); Laser cutting and engraving; CNC machining and prototyping)
-- [Electronics & IoT](https://cdhmaker.com/en#servicios): Electronic and connected systems: sensing, automation and remote monitoring for homes, industry and agriculture. (Embedded systems (Arduino, ESP32, Raspberry Pi); Home automation; Sensor and IoT monitoring)
-- [Design & technical consulting](https://cdhmaker.com/en#servicios): Expert guidance to make your project real: design, advice and training. (2D/3D CAD design; Project advice and consulting; Maker training and workshops)
+- [Web & software development](https://cdhmaker.com/#servicios): Custom websites, apps and systems. Modern, fast sites built to grow your business or project. (Websites and landing pages; Custom web applications; Process automation)
+- [Digital fabrication / Maker](https://cdhmaker.com/#servicios): Prototyping and manufacturing with digital tech: from your idea or drawing to the finished part. (3D printing (FDM / resin); Laser cutting and engraving; CNC machining and prototyping)
+- [Electronics & IoT](https://cdhmaker.com/#servicios): Electronic and connected systems: sensing, automation and remote monitoring for homes, industry and agriculture. (Embedded systems (Arduino, ESP32, Raspberry Pi); Home automation; Sensor and IoT monitoring)
+- [Design & technical consulting](https://cdhmaker.com/#servicios): Expert guidance to make your project real: design, advice and training. (2D/3D CAD design; Project advice and consulting; Maker training and workshops)
 
 ## Service pages
 
@@ -102,10 +102,10 @@ Page: https://cdhmaker.com/en/catalog
 
 Estudio de ingeniería en Medellín, Colombia: software y SaaS a la medida, inteligencia artificial, impresión 3D, corte láser, CNC, electrónica e IoT. Atención remota en todo el mundo.
 
-- [Desarrollo web y software](https://cdhmaker.com/#servicios): Páginas web, aplicaciones y sistemas a la medida. Sitios modernos, rápidos y pensados para hacer crecer tu negocio o proyecto. (Sitios web y landing pages; Aplicaciones web a la medida; Automatización de procesos)
-- [Fabricación digital / Maker](https://cdhmaker.com/#servicios): Prototipado y fabricación con tecnologías digitales: de tu idea o plano a la pieza terminada. (Impresión 3D (FDM / resina); Corte y grabado láser; Mecanizado CNC y prototipado)
-- [Electrónica e IoT](https://cdhmaker.com/#servicios): Sistemas electrónicos y conectados: sensórica, automatización y monitoreo remoto para hogares, industria y agro. (Sistemas embebidos (Arduino, ESP32, Raspberry Pi); Domótica y automatización; Monitoreo con sensores e IoT)
-- [Diseño y consultoría técnica](https://cdhmaker.com/#servicios): Acompañamiento experto para materializar tu proyecto: diseño, asesoría y formación. (Diseño CAD 2D/3D; Asesorías y consultoría de proyectos; Capacitaciones y talleres maker)
+- [Desarrollo web y software](https://cdhmaker.com/es#servicios): Páginas web, aplicaciones y sistemas a la medida. Sitios modernos, rápidos y pensados para hacer crecer tu negocio o proyecto. (Sitios web y landing pages; Aplicaciones web a la medida; Automatización de procesos)
+- [Fabricación digital / Maker](https://cdhmaker.com/es#servicios): Prototipado y fabricación con tecnologías digitales: de tu idea o plano a la pieza terminada. (Impresión 3D (FDM / resina); Corte y grabado láser; Mecanizado CNC y prototipado)
+- [Electrónica e IoT](https://cdhmaker.com/es#servicios): Sistemas electrónicos y conectados: sensórica, automatización y monitoreo remoto para hogares, industria y agro. (Sistemas embebidos (Arduino, ESP32, Raspberry Pi); Domótica y automatización; Monitoreo con sensores e IoT)
+- [Diseño y consultoría técnica](https://cdhmaker.com/es#servicios): Acompañamiento experto para materializar tu proyecto: diseño, asesoría y formación. (Diseño CAD 2D/3D; Asesorías y consultoría de proyectos; Capacitaciones y talleres maker)
 
 - [Impresión 3D en Medellín](https://cdhmaker.com/servicios/impresion-3d-medellin): Impresión 3D por encargo en Medellín (FDM y resina), corte láser, CNC y diseño CAD. Envíos a toda Colombia. Cotización gratis en menos de 24 horas. Incluye: Impresión 3D FDM; Impresión 3D en resina; Corte y grabado láser; Mecanizado CNC; Diseño CAD 2D/3D; Del prototipo a tu puerta.
 - [Software y SaaS a la medida](https://cdhmaker.com/servicios/software-a-la-medida-medellin): Aplicaciones web, plataformas SaaS, páginas web y automatización de procesos a la medida, desde Medellín para Colombia y el mundo. Cotización gratis en 24 h. Incluye: Aplicaciones web a la medida; Plataformas SaaS; Páginas web y tiendas en línea; Automatización de procesos; Cumplimiento de la Ley 1581; Despliegue y acompañamiento.
@@ -167,8 +167,8 @@ Página: https://cdhmaker.com/catalogo
 
 ## Optional
 
-- [Español](https://cdhmaker.com/)
-- [English](https://cdhmaker.com/en)
+- [Español](https://cdhmaker.com/es)
+- [English](https://cdhmaker.com/)
 - [中文](https://cdhmaker.com/zh)
 - [हिन्दी](https://cdhmaker.com/hi)
 - [العربية](https://cdhmaker.com/ar)

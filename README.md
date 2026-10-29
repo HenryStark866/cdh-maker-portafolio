@@ -94,7 +94,7 @@ firebase deploy --only hosting   # corre antes node tools/build-i18n.mjs (predep
 node tools/indexnow.mjs          # avisa a Bing de los cambios
 ```
 
-Tras editar `index.html` o un diccionario: `node tools/build-i18n.mjs` y commit de lo generado.
+Tras editar `es.html` o un diccionario: `node tools/build-i18n.mjs` y commit de lo generado.
 
 ---
 Hecho con 💜 en Colombia.
